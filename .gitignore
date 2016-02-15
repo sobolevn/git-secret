@@ -35,7 +35,8 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -115,3 +116,14 @@ crashlytics-build.properties
 # sftp configuration file
 sftp-config.json
 
+#####=== Jekyll ===#####
+_site/
+.sass-cache/
+
+#####=== Custom ===#####
+git-secret
+vendor/
+temp/
+
+man/
+gh-pages/

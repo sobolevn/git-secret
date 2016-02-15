@@ -17,3 +17,10 @@ indent_size = 4
 
 [*.sh]
 indent_size = 2
+
+[*.bats]
+indent_size = 2
+
+[Makefile]
+indent_style = tab
+indent_size = 4
