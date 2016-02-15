@@ -17,6 +17,7 @@ install-test:
 test:
 	@if [ ! -d "vendor/bats" ]; then make install-test; fi
 	@export SECRET_PROJECT_ROOT="${PWD}"; export PATH="${PWD}/vendor/bats/bin:${PWD}:${PATH}"; \
+	make develop; \
 	rm -rf temp; mkdir temp; cd temp; \
 	bats ../tests;
 
