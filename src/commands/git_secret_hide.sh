@@ -5,7 +5,7 @@ function _show_help_hide {
   echo "usage: git secret hide"
   echo "encrypts all the files added by the 'add' command."
   echo
-  echo "  -c        clean files before creating new ones."
+  echo "  -c        deletes encrypted files before creating new ones."
   echo "  -v        shows which files are deleted."
   exit 0
 }
@@ -35,6 +35,8 @@ function _optional_clean {
   shift $((OPTIND-1))
   [ "$1" = "--" ] && shift
 
+  _user_required
+
   if [[ $clean -eq 1 ]]; then
     clean ${opt_string}
   fi
@@ -42,15 +44,13 @@ function _optional_clean {
 
 
 function hide {
-  _user_required
-
   _optional_clean $@
 
   local counter=0
   while read line; do
     local encrypted_filename=$(_get_encrypted_filename $line)
 
-    local recipients=$($GPGLOCAL --list-keys | sed -n 's/.*<\(.*\)>.*/-r\1/p')
+    local recipients=$($GPGLOCAL --list-public-keys | sed -n 's/.*<\(.*\)>.*/-r\1/p')
     $GPGLOCAL --use-agent --yes --trust-model=always --encrypt $recipients -o "$encrypted_filename" "$line"
 
     counter=$((counter+1))

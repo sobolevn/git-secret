@@ -21,8 +21,6 @@ function tell {
 
         if [[ -z $email ]]; then
           _abort "empty email for current git user."
-        else
-          echo "$email is not empty"
         fi
       ;;
 
@@ -63,6 +61,5 @@ function tell {
   # Importing public key to the local keychain:
   $GPGLOCAL --import "$keyfile" > /dev/null 2>&1
 
-  echo
   echo "done. $email added as a person who knows the secret."
 }

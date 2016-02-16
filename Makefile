@@ -24,6 +24,6 @@ test:
 install-man:
 	gem install ronn
 
-man:
-	@if [ `gem list ronn -i` == "false" ]; then make install-man; fi
-	ronn --roff man/*.ronn
+build-man:
+	@if [ ! `gem list ronn -i` == "true" ]; then make install-man; fi
+	ronn --roff man/man1/*.ronn

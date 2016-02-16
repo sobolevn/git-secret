@@ -121,9 +121,10 @@ _site/
 .sass-cache/
 
 #####=== Custom ===#####
+.gitsecret/
 git-secret
 vendor/
 temp/
 
-man/
+# Temporary:
 gh-pages/

@@ -6,12 +6,12 @@ function _show_help_reveal {
   echo "unencrypts all the files added by the 'add' command."
   echo
   echo "  -d        specifies --homedir option for gpg."
+  echo "  -p        specifies password for noinput mode, adds --passphrase option for gpg."
   exit 0
 }
 
 
 function reveal {
-  _user_required
 
   OPTIND=1
   local homedir=""
@@ -35,6 +35,8 @@ function reveal {
 
   shift $((OPTIND-1))
   [ "$1" = "--" ] && shift
+
+   _user_required
 
   local counter=0
   while read line; do

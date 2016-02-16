@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# encryption: https://www.gnupg.org/gph/en/manual.html#AEN111
-# git hooks: https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
-# adding files to git on pre_commit hook:
-# http://stackoverflow.com/questions/3284292/can-a-git-hook-automatically-add-files-to-the-commit
-
 
 function _check_setup {
   # Checking git and secret-plugin setup:
