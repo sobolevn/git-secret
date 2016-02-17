@@ -28,6 +28,7 @@ function teardown {
   git secret hide
 
   run git secret remove "$SECOND_FILE"
+  echo "$output"
   [ "$status" -eq 0 ]
 
   local mapping_contains=$(grep "$SECOND_FILE" "$SECRETS_DIR_PATHS_MAPPING"; echo $?)
@@ -45,6 +46,7 @@ function teardown {
   git secret hide
 
   run git secret remove -c "$SECOND_FILE"
+  echo "$output"
   [ "$status" -eq 0 ]
 
   local mapping_contains=$(grep "$SECOND_FILE" "$SECRETS_DIR_PATHS_MAPPING"; echo $?)
