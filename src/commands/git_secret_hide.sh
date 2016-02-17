@@ -26,7 +26,7 @@ function _optional_clean {
         _show_help_hide
       ;;
 
-      *)
+      v)
         opt_string="$opt_string -$opt"
       ;;
     esac

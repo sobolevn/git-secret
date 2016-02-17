@@ -16,7 +16,7 @@ This project is still under development. Current objectives:
 - hooks: `pre-commit` to encrypt secret files
 - static site for `gh-pages` build from manuals with `Jekyll` and `Ronn`
 - plugin for `zsh`
-- extra tests, tests for `git-secret-remove`
+- extra tests
 - precompiled distributions for `brew` and other package managers
 - styleguide for bash (?)
 - сygwin support (?)
