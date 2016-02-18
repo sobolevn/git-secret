@@ -2,12 +2,12 @@
 
 
 function __replace_in_file_linux {
-  sed -i.bak -c "s/^\($1\s*=\s*\).*\$/\1$2/" "$3"
+  sed -i.bak "s/^\($1\s*=\s*\).*\$/\1$2/" "$3"
 }
 
 
 function __delete_line_linux {
-  sed -i.bak -c "/$1/d" "$2"
+  sed -i.bak "/$1/d" "$2"
 }
 
 
