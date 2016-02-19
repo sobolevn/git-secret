@@ -38,6 +38,7 @@ function remove {
     fi
 
     _delete_line "$item" "$SECRETS_DIR_PATHS_MAPPING"
+    rm -f "${SECRETS_DIR_PATHS_MAPPING}.bak"
 
     if [[ "$clean" == 1 ]]; then
       local encrypted_filename=`_get_encrypted_filename "$item"`

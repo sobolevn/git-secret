@@ -24,26 +24,16 @@ function teardown {
 }
 
 
-@test "run 'hide' normally" {
-  run git secret hide
+@test "run 'list' normally" {
+  run git secret list
   [ "$status" -eq 0 ]
-  [ "$output" = "done. all 1 files are hidden." ]
+  [ "$output" = "$FILE_TO_HIDE" ]
 }
 
 
-@test "run 'hide' with params" {
-  run git secret hide -v -c
-  [ "$status" -eq 0 ]
-}
+@test "run 'list' on empty repo" {
+  git secret remove "$FILE_TO_HIDE"
 
-
-@test "run 'hide' for multiple users" {
-  local new_user="user2"
-
-  install_fixture_key "$new_user"
-  set_state_secret_tell "$new_user"
-
-  run git secret hide
-  [ "$status" -eq 0 ]
-  [ "$output" = "done. all 1 files are hidden." ]
+  run git secret list
+  [ "$status" -eq 1 ]
 }

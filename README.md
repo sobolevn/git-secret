@@ -6,12 +6,10 @@
 
 This project is still under development. Current objectives:
 
-- `git-secret-list` to show added files
-- `git-secret-whoknows` to show added keys
-- check all exit code, modify if needed
+- check all exit codes, modify if needed
 - add check if the `.gitsecret` folder is ignored, raise exception in that case.
 - add `trust-model` parameter to `git-secret-hide`
-- add exception when running `git secret tell` with no files added
+- add exception when running `git secret hide` with no files added
 - manuals
 - hooks: `pre-commit` to encrypt secret files
 - static site for `gh-pages` build from manuals with `Jekyll` and `Ronn`

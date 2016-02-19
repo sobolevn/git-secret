@@ -63,3 +63,19 @@ function teardown {
 
   uninstall_fixture_full_key "$attacker"
 }
+
+
+@test "run 'reveal' for multiple users" {
+  local new_user="user2"
+  install_fixture_full_key "$new_user"
+  set_state_secret_tell "$new_user"
+  set_state_secret_hide
+
+  uninstall_fixture_full_key "$TEST_DEFAULT_USER"
+
+  local password=`test_user_password "$new_user"`
+  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ -f "$FILE_TO_HIDE" ]
+}

@@ -50,11 +50,11 @@ function hide {
   while read line; do
     local encrypted_filename=$(_get_encrypted_filename $line)
 
-    local recipients=$($GPGLOCAL --list-public-keys | sed -n 's/.*<\(.*\)>.*/-r\1/p')
+    local recipients=$(_get_recepients)
     $GPGLOCAL --use-agent --yes --trust-model=always --encrypt $recipients -o "$encrypted_filename" "$line"
 
     counter=$((counter+1))
-  done < $SECRETS_DIR_PATHS_MAPPING
+  done < "$SECRETS_DIR_PATHS_MAPPING"
 
   echo "done. all $counter files are hidden."
 }

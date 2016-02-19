@@ -118,7 +118,7 @@ function set_state_secret_init {
 
 function set_state_secret_tell {
   local email=`test_user_email $1`
-  git secret tell -d "$TEST_GPG_HOMEDIR" "$email"
+  git secret tell -d "$TEST_GPG_HOMEDIR" "$email" > /dev/null 2>&1
 }
 
 
@@ -128,7 +128,7 @@ function set_state_secret_add {
   echo "$content" > "$filename"
   echo "$filename" >> ".gitignore"
 
-  git secret add "$filename"
+  git secret add "$filename" > /dev/null 2>&1
 }
 
 

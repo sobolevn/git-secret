@@ -144,7 +144,7 @@ function _user_required {
     _abort "$error_message"
   fi
 
-  local keys_exist=$($GPGLOCAL -n --list-keys)
+  local keys_exist=$($GPGLOCAL -n --list-keys --with-colon)
   if [[ -z $keys_exist ]]; then
     _abort "$error_message"
   fi
@@ -158,4 +158,16 @@ function _get_raw_filename {
 
 function _get_encrypted_filename {
   echo "$(dirname "$1")/$(basename "$1" "$SECRETS_EXTENSION")$SECRETS_EXTENSION" | sed -e 's#^\./##'
+}
+
+
+function _get_users_in_keyring {
+  local result=$($GPGLOCAL --list-public-keys --with-colon | sed -n 's/.*<\(.*\)>.*/\1/p')
+  echo "$result"
+}
+
+
+function _get_recepients {
+  local result=$($GPGLOCAL --list-public-keys --with-colon | sed -n 's/.*<\(.*\)>.*/-r\1/p')
+  echo "$result"
 }
