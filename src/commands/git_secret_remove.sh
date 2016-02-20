@@ -41,7 +41,7 @@ function remove {
     rm -f "${SECRETS_DIR_PATHS_MAPPING}.bak"
 
     if [[ "$clean" == 1 ]]; then
-      local encrypted_filename=`_get_encrypted_filename "$item"`
+      local encrypted_filename=$(_get_encrypted_filename "$item")
       rm -f "$encrypted_filename"
     fi
 

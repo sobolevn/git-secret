@@ -16,7 +16,8 @@ This project is still under development. Current objectives:
 - plugin for `zsh`
 - extra tests
 - precompiled distributions for `brew` and other package managers
-- styleguide for bash (?)
+- create CONTRIBUTING.md with custom styleguide and development-hooks: manual auto-build
+- refactor code due to styleguide
 - сygwin support (?)
 
 

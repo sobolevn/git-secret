@@ -28,7 +28,7 @@ function _init_script {
   # for f in ${0%/*}/src/*/*; do [[ -f "$f" ]] && . "$f"; done
 
   # routing the input command:
-  if [[ `_function_exists $1` == 0 ]] && [[ ! $1 == _* ]]; then
+  if [[ $(_function_exists "$1") == 0 ]] && [[ ! $1 == _* ]]; then
     $1 "${@:2}"
   else
     usage "command $1 not found."
