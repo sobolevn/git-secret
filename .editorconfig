@@ -1,0 +1,26 @@
+# Check http://editorconfig.org for more information
+# This is the main config file for this project:
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+trim_trailing_whitespace = true
+end_of_line = lf
+insert_final_newline = true
+
+[*.json]
+indent_size = 2
+
+[*.py]
+indent_size = 4
+
+[*.sh]
+indent_size = 2
+
+[*.bats]
+indent_size = 2
+
+[Makefile]
+indent_style = tab
+indent_size = 4
