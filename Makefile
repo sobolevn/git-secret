@@ -9,8 +9,6 @@ clean:
 
 build: git-secret
 
-develop: clean build
-
 install-test:
 	git clone https://github.com/sstephenson/bats.git vendor/bats
 
@@ -27,3 +25,9 @@ install-man:
 build-man:
 	@if [ ! `gem list ronn -i` == "true" ]; then make install-man; fi
 	ronn --roff man/man1/*.ronn
+
+install-hooks:
+	@ln -fs "${PWD}/utils/pre-commit.sh" "${PWD}/.git/hooks/pre-commit"
+	@chmod +x "${PWD}/.git/hooks/pre-commit"
+
+develop: clean build install-hooks
