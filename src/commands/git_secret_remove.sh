@@ -2,6 +2,7 @@
 
 
 function _show_help_remove {
+<<<<<<< HEAD
       cat <<-EOF
 usage: git secret remove [-c] <pathspec..>
 removes files from git-secret's index."
@@ -11,6 +12,12 @@ options:
   -h        shows this help.
 
 EOF
+=======
+  echo "usage: git secret remove [files..]"
+  echo "removes files from git-secret's index."
+  echo
+  echo "  -c        deletes existing real files."
+>>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
   exit 0
 }
 
@@ -21,9 +28,19 @@ function remove {
 
   while getopts "ch" opt; do
     case "$opt" in
+<<<<<<< HEAD
       c) clean=1;;
 
       h) _show_help_remove;;
+=======
+      c)
+        clean=1
+      ;;
+
+      h)
+        _show_help_remove
+      ;;
+>>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
     esac
   done
 
