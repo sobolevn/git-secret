@@ -2,7 +2,6 @@
 
 
 function _show_help_reveal {
-<<<<<<< HEAD
     cat <<-EOF
 usage: git secret reveal [-d dir] [-p password]
 unencrypts all the files added by the 'add' command.
@@ -13,13 +12,6 @@ options:
   -h        shows this help.
 
 EOF
-=======
-  echo "usage: git secret reveal"
-  echo "unencrypts all the files added by the 'add' command."
-  echo
-  echo "  -d        specifies --homedir option for gpg."
-  echo "  -p        specifies password for noinput mode, adds --passphrase option for gpg."
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
   exit 0
 }
 
@@ -32,25 +24,11 @@ function reveal {
 
   while getopts "hd:p:" opt; do
     case "$opt" in
-<<<<<<< HEAD
       h) _show_help_reveal;;
 
       p) passphrase=$OPTARG;;
 
       d) homedir=$OPTARG;;
-=======
-      h)
-        _show_help_reveal
-      ;;
-
-      p)
-        passphrase=$OPTARG
-      ;;
-
-      d)
-        homedir=$OPTARG
-      ;;
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
     esac
   done
 

@@ -65,15 +65,9 @@ function _set_config {
   # The exit status is 0 (true) if the name was found, 1 (false) if not:
   local contains=$(grep -Fq "$1" $3; echo $?)
 
-<<<<<<< HEAD
   if [[ "$contains" -eq 0 ]]; then
     _os_based __replace_in_file $@
   elif [[ "$contains" -eq 1 ]]; then
-=======
-  if [[ $contains -eq 0 ]]; then
-    _os_based __replace_in_file $@
-  elif [[ $contains -eq 1 ]]; then
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
     echo "$1 = $2" >> "$3"
   fi
 }
@@ -84,11 +78,7 @@ function _file_has_line {
 
   local contains=$(grep -qw "$1" "$2"; echo $?)
   # 0 on contains, 1 for error.
-<<<<<<< HEAD
   echo "$contains";
-=======
-  echo $contains;
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
 }
 
 

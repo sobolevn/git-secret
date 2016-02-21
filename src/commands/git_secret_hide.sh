@@ -2,7 +2,6 @@
 
 
 function _show_help_hide {
-<<<<<<< HEAD
     cat <<-EOF
 usage: git secret hide [-c] [-v]
 encrypts all the files added by the 'add' command.
@@ -13,13 +12,6 @@ options:
   -h        shows this help.
 
 EOF
-=======
-  echo "usage: git secret hide"
-  echo "encrypts all the files added by the 'add' command."
-  echo
-  echo "  -c        deletes encrypted files before creating new ones."
-  echo "  -v        shows which files are deleted."
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
   exit 0
 }
 
@@ -31,25 +23,11 @@ function _optional_clean {
 
   while getopts "cvh" opt; do
     case "$opt" in
-<<<<<<< HEAD
       c) clean=1;;
 
       h) _show_help_hide;;
 
       v) opt_string="-v";;
-=======
-      c)  # -c is used for guaranted clean encryption.
-        clean=1
-      ;;
-
-      h)
-        _show_help_hide
-      ;;
-
-      v)
-        opt_string="$opt_string -$opt"
-      ;;
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
     esac
   done
 
@@ -59,11 +37,7 @@ function _optional_clean {
   _user_required
 
   if [[ $clean -eq 1 ]]; then
-<<<<<<< HEAD
     clean "$opt_string"
-=======
-    clean ${opt_string}
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
   fi
 }
 

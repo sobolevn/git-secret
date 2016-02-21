@@ -2,7 +2,6 @@
 
 
 function _show_help_clean {
-<<<<<<< HEAD
     cat <<-EOF
 usage: git secret clean [-v]
 removes all the hidden files.
@@ -12,12 +11,6 @@ options:
   -h        shows this help.
 
 EOF
-=======
-  echo "usage: git secret clean"
-  echo "removes all the hidden files."
-  echo
-  echo "  -v        shows which files are deleted."
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
   exit 0
 }
 

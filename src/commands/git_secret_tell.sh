@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-<<<<<<< HEAD
 
 function _show_help_tell {
   cat <<-EOF
@@ -17,8 +16,6 @@ EOF
 }
 
 
-=======
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
 function tell {
   _secrets_dir_exists
 
@@ -31,7 +28,6 @@ function tell {
 
   while getopts "h?md:" opt; do
     case "$opt" in
-<<<<<<< HEAD
       h) _show_help_tell;;
 
       m) # Set email of the git current user:
@@ -39,23 +35,6 @@ function tell {
       ;;
 
       d) homedir=$OPTARG;;
-=======
-      h|\?)
-        usage
-      ;;
-
-      m) # Set email of the git current user:
-        email=$(git config user.email) || email=""
-
-        if [[ -z $email ]]; then
-          _abort "empty email for current git user."
-        fi
-      ;;
-
-      d)
-        homedir=$OPTARG
-      ;;
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
     esac
   done
 
@@ -65,39 +44,21 @@ function tell {
   # Custom argument-parsing:
   if [[ -z $email ]]; then
     # Email was not set via `-m` and is in $1:
-<<<<<<< HEAD
     test ! -z "$1" && email="$1"; shift || _abort "first argument must be an email address."
-=======
-    email="$1"
-    if [[ -z $email ]]; then
-      _abort "first argument must be an email address."
-    fi
-    shift
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
   fi
 
   # This file will be removed automatically:
   _temporary_file
-<<<<<<< HEAD
   local keyfile="$filename"
 
   if [[ -z "$homedir" ]]; then
-=======
-  local keyfile=$filename
-
-  if [[ -z $homedir ]]; then
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
     $SECRETS_GPG_COMMAND --export -a "$email" > "$keyfile"
   else
     # It means that homedir is set as an extra argument via `-d`:
     $SECRETS_GPG_COMMAND --no-permission-warning --homedir="$homedir" --export -a "$email" > "$keyfile"
   fi
 
-<<<<<<< HEAD
   if [[ ! -s "$keyfile" ]]; then
-=======
-  if [[ ! -s $keyfile ]]; then
->>>>>>> 9d38280603b2b61d2ec991a031c0e776adde6f18
     _abort 'gpg key is empty. check your key name: `gpg --list-keys`.'
   fi
 
