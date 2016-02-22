@@ -19,8 +19,9 @@ function copy_to_posts {
 
   # Moving new command files:
   local timestamp=$(date "+%Y-%m-%d %H:%M:%S %z")
-  echo "$current_date"
+  local current_date=$(date "+%Y-%m-%d")
 
+  # Creating command refernce:
   for com in $MAN_LOCATION/git-secret-*.1.ronn; do
     local short_name=$(echo "$com" | sed -n "s|$MAN_LOCATION/\(.*\)\.1\.ronn|\1|p")
     local command_header="---
@@ -30,11 +31,21 @@ date:   ${timestamp}
 categories: command
 ---"
 
-    local current_date=$(date "+%Y-%m-%d")
     local post_filename="$POSTS_LOCATION/${current_date}-${short_name}.md"
     echo "$command_header" > "$post_filename"
     cat "$com" >> "$post_filename"
   done
+
+  # Creating main usage file:
+  local usage_header="---
+layout: post
+title:  'git-secret'
+date:   ${timestamp}
+categories: usage
+---"
+  local usage_filename="$POSTS_LOCATION/${current_date}-git-secret.md"
+  echo "$usage_header" > "$usage_filename"
+  cat "$MAN_LOCATION/git-secret.1.ronn" >> "$usage_filename"
 }
 
 checkout_manuals
