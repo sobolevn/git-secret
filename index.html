@@ -1,0 +1,29 @@
+---
+layout: default
+---
+
+<div class="home">
+
+  <h1 class="page-heading">Usage</h1>
+
+
+  {% for post in site.categories.usage %}
+    {{ post.content }}
+  {% endfor %}
+
+
+  <h2 class="page-heading">Command Reference</h2>
+
+  <ul class="post-list">
+    {% for post in site.categories.command %}
+      <li>
+        <h2>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+
+</div>
