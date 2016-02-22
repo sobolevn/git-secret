@@ -2,6 +2,14 @@
 
 
 function add {
+  OPTIND=1
+
+  while getopts "h" opt; do
+    case "$opt" in
+      h) _show_manaul_for "add";;
+    esac
+  done
+
   _user_required
 
   local not_ignored=()

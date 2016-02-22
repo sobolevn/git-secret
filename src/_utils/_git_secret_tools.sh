@@ -112,6 +112,14 @@ function _unique_filename {
 }
 
 
+# Manuals:
+function _show_manual_for {
+  local function_name="$1"
+  man git-secret-$function_name
+  exit 0
+}
+
+
 # VCS :
 
 function _check_ignore {

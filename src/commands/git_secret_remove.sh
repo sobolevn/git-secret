@@ -1,20 +1,6 @@
 #!/usr/bin/env bash
 
 
-function _show_help_remove {
-      cat <<-EOF
-usage: git secret remove [-c] <pathspec..>
-removes files from git-secret's index."
-
-options:
-  -c        deletes existing real encrypted files.
-  -h        shows this help.
-
-EOF
-  exit 0
-}
-
-
 function remove {
   OPTIND=1
   local clean=0
@@ -23,7 +9,7 @@ function remove {
     case "$opt" in
       c) clean=1;;
 
-      h) _show_help_remove;;
+      h) _show_manual_for "remove";;
     esac
   done
 

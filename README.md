@@ -6,17 +6,13 @@
 
 This project is still under development. Current objectives:
 
-- add '-h|-?' to all commands
 - add `trust-model` parameter to `git-secret-hide`
-- add exception when running `git secret hide` with no files added
-- manuals
 - hooks: `pre-commit` to encrypt secret files
 - static site for `gh-pages` build from manuals with `Jekyll` and `Ronn`
-- plugin for `zsh`
+- autocomplete for `zsh` plugin
 - extra tests
 - precompiled distributions for `brew` and other package managers
-- create CONTRIBUTING.md with custom styleguide and development-hooks: manual auto-build
-- refactor code due to styleguide
+- create `CONTRIBUTING.md` with custom styleguide, refactor code due to styleguide
 - сygwin support (?)
 
 

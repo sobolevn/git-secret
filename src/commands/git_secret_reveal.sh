@@ -1,21 +1,6 @@
 #!/usr/bin/env bash
 
 
-function _show_help_reveal {
-    cat <<-EOF
-usage: git secret reveal [-d dir] [-p password]
-unencrypts all the files added by the 'add' command.
-
-options:
-  -d        specifies --homedir option for gpg.
-  -p        specifies password for noinput mode, adds --passphrase option for gpg.
-  -h        shows this help.
-
-EOF
-  exit 0
-}
-
-
 function reveal {
 
   OPTIND=1
@@ -24,7 +9,7 @@ function reveal {
 
   while getopts "hd:p:" opt; do
     case "$opt" in
-      h) _show_help_reveal;;
+      h) _show_manual_for "reveal";;
 
       p) passphrase=$OPTARG;;
 

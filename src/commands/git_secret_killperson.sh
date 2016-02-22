@@ -2,6 +2,14 @@
 
 
 function killperson {
+  OPTIND=1
+
+  while getopts "h" opt; do
+    case "$opt" in
+      h) _show_manual_for "killperson";;
+    esac
+  done
+
   _user_required
 
   if [[ ${#@} -eq 0 ]]; then

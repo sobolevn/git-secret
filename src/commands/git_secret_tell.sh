@@ -1,21 +1,6 @@
 #!/usr/bin/env bash
 
 
-function _show_help_tell {
-  cat <<-EOF
-usage: git secret tell [-m] [-d dir] [email]
-adds a person, who can access the private data.
-
-options:
-  -m        - takes your current 'git config user.email' as an identifier for the key.
-  -d        - specifies '--homedir' option for the 'gpg'
-  -h        shows this help.
-
-EOF
-  exit 0
-}
-
-
 function tell {
   _secrets_dir_exists
 
@@ -28,7 +13,7 @@ function tell {
 
   while getopts "h?md:" opt; do
     case "$opt" in
-      h) _show_help_tell;;
+      h) _show_manual_for "tell";;
 
       m) # Set email of the git current user:
         email=$(git config user.email) || _abort "'git congig user.email' is not set."

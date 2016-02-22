@@ -1,21 +1,6 @@
 #!/usr/bin/env bash
 
 
-function _show_help_hide {
-    cat <<-EOF
-usage: git secret hide [-c] [-v]
-encrypts all the files added by the 'add' command.
-
-options:
-  -c        deletes encrypted files before creating new ones.
-  -v        shows which files are deleted.
-  -h        shows this help.
-
-EOF
-  exit 0
-}
-
-
 function _optional_clean {
   OPTIND=1
   local clean=0
@@ -25,7 +10,7 @@ function _optional_clean {
     case "$opt" in
       c) clean=1;;
 
-      h) _show_help_hide;;
+      h) _show_manual_for "hide";;
 
       v) opt_string="-v";;
     esac

@@ -2,6 +2,13 @@
 
 
 function init {
+  OPTIND=1
+
+  while getopts "h" opt; do
+    case "$opt" in
+      h) _show_manual_for "init";;
+    esac
+  done
 
   if [[ -d "$SECRETS_DIR" ]]; then
     _abort "already inited."
