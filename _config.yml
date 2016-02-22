@@ -10,8 +10,8 @@ title: git-secret
 email: mail@sobolevn.me
 description: > # this means to ignore newlines until "baseurl:"
   A bash-tool to store your private data inside a git repository.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site
+baseurl: "/git-secret" # the subpath of your site, e.g. /blog
+url: "http://sobolevn.github.io" # the base hostname & protocol for your site
 github_username: sobolevn
 
 # Build settings
