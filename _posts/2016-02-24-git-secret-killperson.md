@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-killperson'
-date:   2016-02-24 00:53:36 +0300
+date:   2016-02-24 00:53:51 +0300
 categories: command
 ---
 git-secret-killperson - deletes key identified by an email from the inner keyring.
