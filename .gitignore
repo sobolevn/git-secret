@@ -63,3 +63,6 @@ $RECYCLE.BIN/
 
 #####=== Custom ===#####
 man/
+git-secret
+vendor/
+temp/

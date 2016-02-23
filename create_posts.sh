@@ -45,7 +45,7 @@ categories: usage
 ---"
   local usage_filename="$POSTS_LOCATION/${current_date}-git-secret.md"
   echo "$usage_header" > "$usage_filename"
-  cat "$MAN_LOCATION/git-secret.1.ronn" >> "$usage_filename"
+  cat "$MAN_LOCATION/git-secret.7.ronn" >> "$usage_filename"
 }
 
 checkout_manuals
