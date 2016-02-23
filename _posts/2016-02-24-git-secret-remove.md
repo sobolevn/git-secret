@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-remove'
-date:   2016-02-24 00:26:00 +0300
+date:   2016-02-24 00:29:13 +0300
 categories: command
 ---
 git-secret-remove - removes files from index.
