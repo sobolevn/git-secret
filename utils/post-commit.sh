@@ -2,7 +2,5 @@
 
 set -e
 
-# unset GIT_WORK_TREE
-
 # Build new web documentation:
 make build-gh-pages
