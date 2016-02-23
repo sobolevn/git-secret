@@ -125,6 +125,3 @@ _site/
 git-secret
 vendor/
 temp/
-
-# Temporary:
-gh-pages/
