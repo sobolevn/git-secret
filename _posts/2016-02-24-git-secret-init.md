@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-init'
-date:   2016-02-24 00:48:38 +0300
+date:   2016-02-24 00:52:07 +0300
 categories: command
 ---
 git-secret-init - initializes git-secret repository.
