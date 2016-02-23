@@ -30,7 +30,11 @@ build-gh-pages:
 	@/usr/bin/env bash utils/gh-branch.sh
 
 install-hooks:
+	@# pre-commit:
 	@ln -fs "${PWD}/utils/pre-commit.sh" "${PWD}/.git/hooks/pre-commit"
 	@chmod +x "${PWD}/.git/hooks/pre-commit"
+	@# post-commit:
+	@ln -fs "${PWD}/utils/post-commit.sh" "${PWD}/.git/hooks/post-commit"
+	@chmod +x "${PWD}/.git/hooks/post-commit"
 
 develop: clean build install-hooks
