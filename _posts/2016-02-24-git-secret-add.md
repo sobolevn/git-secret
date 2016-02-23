@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-add'
-date:   2016-02-24 00:20:48 +0300
+date:   2016-02-24 00:26:00 +0300
 categories: command
 ---
 git-secret-add - starts to track added files.
