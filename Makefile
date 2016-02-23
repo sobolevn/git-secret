@@ -26,6 +26,9 @@ build-man:
 	@if [ ! `gem list ronn -i` == "true" ]; then make install-man; fi
 	ronn --roff man/man1/*.ronn
 
+build-gh-pages:
+	@/usr/bin/env bash utils/gh-branch.sh
+
 install-hooks:
 	@ln -fs "${PWD}/utils/pre-commit.sh" "${PWD}/.git/hooks/pre-commit"
 	@chmod +x "${PWD}/.git/hooks/pre-commit"
