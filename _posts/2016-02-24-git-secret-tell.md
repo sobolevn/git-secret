@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-tell'
-date:   2016-02-24 00:52:07 +0300
+date:   2016-02-24 00:53:00 +0300
 categories: command
 ---
 git-secret-tell - adds a person, who can access a private data.
