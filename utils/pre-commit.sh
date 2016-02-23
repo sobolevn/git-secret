@@ -9,4 +9,4 @@ make test
 
 # Build new manuals:
 make build-man
-# git add man/
+git add man/man1/*
