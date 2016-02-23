@@ -2,6 +2,8 @@
 
 set -e
 
+unset GIT_WORK_TREE
+
 # Run tests:
 make test
 
