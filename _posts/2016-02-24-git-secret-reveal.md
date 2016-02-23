@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-reveal'
-date:   2016-02-24 00:54:47 +0300
+date:   2016-02-24 00:54:52 +0300
 categories: command
 ---
 git-secret-reveal - decrypts all added files.
