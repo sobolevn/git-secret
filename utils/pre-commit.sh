@@ -9,5 +9,3 @@ make test
 
 # Build new manuals:
 make build-man
-
-
