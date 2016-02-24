@@ -2,15 +2,19 @@
 
 set -e
 
-unset GIT_WORK_TREE
+BRANCH_NAME=$(git branch | grep '*' | sed 's/* //')
 
-# Run tests:
-make test
+if [[ $BRANCH_NAME != '(no branch)' ]]; then
+  unset GIT_WORK_TREE
 
-if [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]]; then
-  # Build new manuals:
-  make build-man
+  # Run tests:
+  make test
 
-  # Add new files:
-  git add man/man1/*
+  if [[ $BRANCH_NAME == "master" ]]; then
+    # Build new manuals:
+    make build-man
+
+    # Add new files:
+    git add man/man1/*
+  fi
 fi

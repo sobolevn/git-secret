@@ -2,7 +2,9 @@
 
 set -e
 
-if [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]]; then
+BRANCH_NAME=$(git branch | grep '*' | sed 's/* //')
+
+if [[ $BRANCH_NAME == 'master' ]]; then
   # Build new web documentation:
   make build-gh-pages
 fi
