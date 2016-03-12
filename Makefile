@@ -1,3 +1,7 @@
+#
+# Building:
+#
+
 all: build
 
 git-secret: src/_utils/* src/commands/* src/main.sh
@@ -9,6 +13,10 @@ clean:
 
 build: git-secret
 
+#
+# Testing:
+#
+
 install-test:
 	git clone https://github.com/sstephenson/bats.git vendor/bats
 
@@ -19,15 +27,23 @@ test:
 	rm -rf temp; mkdir temp; cd temp; \
 	bats "../tests";
 
-install-man:
-	gem install ronn
+#
+# Manuals:
+#
+
+install-ronn:
+	@if [ ! `gem list ronn -i` == "true" ]; then gem install ronn; fi
 
 build-man:
-	@if [ ! `gem list ronn -i` == "true" ]; then make install-man; fi
+	@make install-ronn
 	ronn --roff man/man1/*.ronn
 
 build-gh-pages:
 	@/usr/bin/env bash utils/gh-branch.sh
+
+#
+# Development:
+#
 
 install-hooks:
 	@# pre-commit:
@@ -38,3 +54,16 @@ install-hooks:
 	@chmod +x "${PWD}/.git/hooks/post-commit"
 
 develop: clean build install-hooks
+
+#
+# Packaging:
+#
+
+install-fpm:
+	@if [ ! `gem list fpm -i` == "true" ]; then gem install fpm; fi
+
+build-deb: clean build
+	@make install-fpm
+	@chmod +x "${PWD}/utils/build-deb.sh"
+	@"./utils/build-deb.sh"
+

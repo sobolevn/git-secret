@@ -25,7 +25,7 @@ This project is still under development. Current objectives:
 ## Testing
 
 For testing this project uses [`bats`](1). You can install it by running `make install-test`.
-To run tests call: `make test`. It will download and install `bats` into `vandor/bats` if it's not installed yet.
+To run tests call: `make test`. It will download and install `bats` into `vendor/bats` if it's not installed yet.
 
 
 [1]: https://github.com/sstephenson/bats
