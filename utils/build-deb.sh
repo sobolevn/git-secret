@@ -3,7 +3,7 @@
 set -e
 
 # Initializing and settings:
-READ_PEM=0744
+READ_PEM=0644
 EXEC_PEM=0755
 
 SCRIPT_NAME="git-secret"
@@ -23,22 +23,20 @@ rm -rf "$SCRIPT_BUILD_DIR"
 mkdir -p "$SCRIPT_DEST_DIR"
 
 # Coping the files inside the build folder:
-install -b -m "$EXEC_PEM" "git-secret" "${SCRIPT_DEST_DIR}/git-secret"
-install -m "$READ_PEM" -d "${SCRIPT_DEST_DIR}/man/man1"
+install -D -T -b -m "$EXEC_PEM" -T "git-secret" "${SCRIPT_DEST_DIR}/usr/bin/git-secret"
+install -m "$READ_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man1"
 for file in man/man1/* ; do
-  if [[ "$file" == *.ronn ]]; then
-    continue
-  fi
+ if [[ "$file" == *.ronn ]]; then
+   continue
+ fi
 
-  install -b -m "$READ_PEM" "$file" "${SCRIPT_DEST_DIR}/${file}"
+ install -D -T -b -m "$READ_PEM" -T "$file" "${SCRIPT_DEST_DIR}/usr/share/${file}"
 done
 
 # Building .deb package:
 cd "$SCRIPT_DEST_DIR" && fpm -s dir -t deb \
   -a all \
   -n "$SCRIPT_NAME" \
-  -d git \
-  -d gpg \
   --epoch "$SCRIPT_EPOCH" \
   --version "$SCRIPT_VERSION" \
   --iteration "$SCRIPT_ITERATION" \
