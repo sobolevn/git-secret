@@ -3,11 +3,13 @@
 set -e
 
 MAN_LOCATION="man/man1"
+MAN7_LOCATION="man/man7"
 POSTS_LOCATION="_posts"
 
 
 function checkout_manuals {
   git checkout master "$MAN_LOCATION"
+  git checkout master "$MAN7_LOCATION"
 
   # rm -f $MAN_LOCATION/*.1
 }
@@ -15,7 +17,7 @@ function checkout_manuals {
 
 function copy_to_posts {
   # Cleaning old files:
-  rm -f $POSTS_LOCATION/*.md
+  rm -f "$POSTS_LOCATION/*.md"
 
   # Moving new command files:
   local timestamp=$(date "+%Y-%m-%d %H:%M:%S %z")
@@ -45,7 +47,7 @@ categories: usage
 ---"
   local usage_filename="$POSTS_LOCATION/${current_date}-git-secret.md"
   echo "$usage_header" > "$usage_filename"
-  cat "$MAN_LOCATION/git-secret.7.ronn" >> "$usage_filename"
+  cat "$MAN7_LOCATION/git-secret.7.ronn" >> "$usage_filename"
 }
 
 checkout_manuals
