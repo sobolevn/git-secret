@@ -16,5 +16,6 @@ if [[ $BRANCH_NAME != '(no branch)' ]]; then
 
     # Add new files:
     git add man/man1/*
+    git add man/man7/*
   fi
 fi

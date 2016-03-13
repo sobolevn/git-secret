@@ -25,6 +25,7 @@ This project is still under development. Current objectives:
 - integrate [`shellcheck`](https://github.com/koalaman/shellcheck) for code style tests
 - create `CONTRIBUTING.md` with development process explained
 - сygwin support (?)
+- add `CHANGELOG.md` with semantic versioning
 
 ## Testing
 

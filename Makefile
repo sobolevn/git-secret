@@ -46,6 +46,7 @@ build-man:
 	ronn --roff man/*/*.ronn
 
 build-gh-pages:
+	@chmod +x "./utils/gh-branch.sh"
 	@"./utils/gh-branch.sh"
 
 #
