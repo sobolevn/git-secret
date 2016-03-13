@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-reveal'
-date:   2016-03-13 12:23:52 +0300
+date:   2016-03-13 13:13:46 +0300
 categories: command
 ---
 git-secret-reveal - decrypts all added files.
@@ -13,7 +13,7 @@ git-secret-reveal - decrypts all added files.
 
 
 ## DESCRIPTION
-`git-secret-reveal` - decrypts all the files in the `.gitsecret/paths/mapping.cfg` by running a `gpg --decrypt` command. It is important to have paired secret-key for one of the public-keys, which were used in the encryption.
+`git-secret-reveal` - decrypts all the files in the `.gitsecret/paths/mapping.cfg` by running a `gpg --decrypt` command. It is important to have paired secret-key with one of the public-keys, which were used in the encryption.
 
 
 ## OPTIONS
