@@ -25,6 +25,7 @@ mkdir -p "$SCRIPT_DEST_DIR"
 # Coping the files inside the build folder:
 install -D -T -b -m "$EXEC_PEM" -T "git-secret" "${SCRIPT_DEST_DIR}/usr/bin/git-secret"
 install -m "$READ_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man1"
+install -m "$READ_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man7"
 for file in man/man1/* ; do
  if [[ "$file" == *.ronn ]]; then
    continue
@@ -32,6 +33,8 @@ for file in man/man1/* ; do
 
  install -D -T -b -m "$READ_PEM" -T "$file" "${SCRIPT_DEST_DIR}/usr/share/${file}"
 done
+install -D -T -b -m "$READ_PEM" -T "man/man7/git-secret.7" \
+  "${SCRIPT_DEST_DIR}/usr/share/man/man7/git-secret.7"
 
 # Building .deb package:
 cd "$SCRIPT_DEST_DIR" && fpm -s dir -t deb \

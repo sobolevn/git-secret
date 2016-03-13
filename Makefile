@@ -1,4 +1,5 @@
 SHELL:=/usr/bin/env bash
+PREFIX?="/usr"
 
 #
 # Building:
@@ -14,6 +15,10 @@ clean:
 	@rm -f git-secret
 
 build: git-secret
+
+install: clean build
+	@chmod +x "./utils/install.sh"
+	@sudo "./utils/install.sh" "$(PREFIX)"
 
 #
 # Testing:
@@ -38,10 +43,10 @@ install-ronn:
 
 build-man:
 	@make install-ronn
-	ronn --roff man/man1/*.ronn
+	ronn --roff man/*/*.ronn
 
 build-gh-pages:
-	@/usr/bin/env bash utils/gh-branch.sh
+	@"./utils/gh-branch.sh"
 
 #
 # Development:
@@ -66,6 +71,6 @@ install-fpm:
 
 build-deb: clean build
 	@make install-fpm
-	@chmod +x "${PWD}/utils/build-deb.sh"
+	@chmod +x "./utils/build-deb.sh"
 	@"./utils/build-deb.sh"
 
