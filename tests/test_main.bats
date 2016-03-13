@@ -23,3 +23,9 @@ function teardown {
   run git secret notacommand
   [ "$status" -eq 126 ]
 }
+
+
+@test "run 'git secret --version'" {
+  run git secret --version
+  [ "$output" == "$GITSECRET_VERSION" ]
+}

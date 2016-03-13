@@ -32,10 +32,10 @@ function reveal {
     fi
 
     if [[ ! -z "$passphrase" ]]; then
-      base="$base --batch --yes --passphrase $passphrase"
+      echo "$passphrase" | $base --batch --yes --no-tty --passphrase-fd 0 -o "$line" "$encrypted_filename"
+    else
+      $base -o "$line" "$encrypted_filename"
     fi
-
-    $base -o "$line" "$encrypted_filename"
 
     counter=$((counter+1))
   done < "$SECRETS_DIR_PATHS_MAPPING"

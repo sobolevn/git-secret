@@ -29,19 +29,29 @@ function _incorrect_usage {
 }
 
 
-function _init_script {
-  # checking for proper set-up:
-  _check_setup
+function _show_version {
+  echo "$GITSECRET_VERSION"
+  exit 0
+}
 
+
+function _init_script {
   if [[ $# == 0 ]]; then
     _incorrect_usage "no input parameters provided." 126
   fi
+
+  if [[ $1 == "--version" ]]; then
+    _show_version
+  fi
+
+  # checking for proper set-up:
+  _check_setup
 
   # load dependencies:
   # for f in ${0%/*}/src/*/*; do [[ -f "$f" ]] && . "$f"; done
 
   # routing the input command:
-  if [[ $(_function_exists "$1") == 0 ]] && [[ ! $1 == _* ]]; then
+  if [[ $(_function_exists $1) == 0 ]] && [[ ! $1 == _* ]]; then
     $1 "${@:2}"
   else
     _incorrect_usage "command $1 not found." 126

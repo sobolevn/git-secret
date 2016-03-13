@@ -5,6 +5,7 @@ sudo: false
 branches:
   only:
     - master
+    - develop
 
 install:
   - make install-test
