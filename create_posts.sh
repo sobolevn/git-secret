@@ -17,6 +17,7 @@ function checkout_manuals {
 
 function copy_to_posts {
   # Cleaning old files:
+  mkdir -p "$POSTS_LOCATION"
   rm -f "$POSTS_LOCATION/*.md"
 
   # Moving new command files:

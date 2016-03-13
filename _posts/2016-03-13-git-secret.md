@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2016-03-13 15:22:55 +0300
+date:   2016-03-13 15:44:15 +0300
 categories: usage
 ---
 ## Content
@@ -53,11 +53,6 @@ There are several ways to install `git-secret`:
 
 1. Add line `antigen bundle sobolevn/git-secret` to your `.zshrc`
 2. Run `source ~/.zshrc` or reopen the terminal
-
-**`make install`**
-
-1. Download the latest realease [here](https://github.com/sobolevn/git-secret/releases)
-2. Unpack and run `make install PREFIX="your/installation/path"`, note that this command may require `sudo`
 
 **The hard way**
 
