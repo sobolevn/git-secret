@@ -16,10 +16,6 @@ clean:
 
 build: git-secret
 
-install: clean build
-	@chmod +x "./utils/install.sh"
-	@sudo "./utils/install.sh" "$(PREFIX)"
-
 #
 # Testing:
 #
