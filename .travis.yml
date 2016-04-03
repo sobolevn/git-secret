@@ -6,13 +6,17 @@ env:
   - SECRETS_GPG_COMMAND=gpg
   - SECRETS_GPG_COMMAND=gpg2
   
+addons:
+  apt:
+    packages:
+    - gnupg2
+    
 branches:
   only:
     - master
     - develop
 
 install:
-  - test $SECRETS_GPG_COMMAND = gpg2 && sudo apt-get install gnupg2
   - make install-test
 
 script:
