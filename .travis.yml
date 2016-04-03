@@ -12,7 +12,7 @@ branches:
     - develop
 
 install:
-  - test $SECRETS_GPG_COMMAND = gpg2 && apt-get install gnupg2
+  - test $SECRETS_GPG_COMMAND = gpg2 && sudo apt-get install gnupg2
   - make install-test
 
 script:
