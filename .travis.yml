@@ -3,8 +3,8 @@ language: c
 sudo: false
 
 env:
-  - SECRET_GPG_COMMAND=gpg
-  - SECRET_GPG_COMMAND=gpg2
+  - SECRETS_GPG_COMMAND=gpg
+  - SECRETS_GPG_COMMAND=gpg2
   
 branches:
   only:
