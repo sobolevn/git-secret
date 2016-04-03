@@ -16,7 +16,7 @@ function tell {
       h) _show_manual_for "tell";;
 
       m) # Set email of the git current user:
-        email=$(git config user.email) || _abort "'git congig user.email' is not set."
+        email=$(git config user.email) || _abort "'git config user.email' is not set."
       ;;
 
       d) homedir=$OPTARG;;
