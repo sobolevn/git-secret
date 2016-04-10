@@ -4,7 +4,7 @@
 
 ## Preview
 
-![git-secret terminal preview](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/gitsecret_terminal.gif)
+[![git-secret terminal preview](https://asciinema.org/a/41811.png)](https://asciinema.org/a/41811?autoplay=1)
 
 ## Usage
 
@@ -25,7 +25,6 @@ This project is still under development. Current objectives:
 - integrate [`shellcheck`](https://github.com/koalaman/shellcheck) for code style tests
 - create `CONTRIBUTING.md` with development process explained
 - сygwin support (?)
-- add `CHANGELOG.md` with semantic versioning
 
 ## Testing
 
@@ -35,6 +34,4 @@ To run tests call: `make test`. It will download and install `bats` into `vendor
 
 ## Changelog
 
-### Version 0.1.0
-
-- Initial release
+See [CHANGELOG.md](CHANGELOG.md)
