@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+set -e
 
 function _check_setup {
   # Checking git and secret-plugin setup:
@@ -40,23 +41,39 @@ function _init_script {
     _incorrect_usage "no input parameters provided." 126
   fi
 
-  if [[ $1 == "--version" ]]; then
-    _show_version
-  fi
+  # Parse plugin-level options:
+  local dry_run=0
 
-  # checking for proper set-up:
-  _check_setup
+  while [[ $# > 0 ]]; do
+    local opt="$1"
 
-  # load dependencies:
-  # for f in ${0%/*}/src/*/*; do [[ -f "$f" ]] && . "$f"; done
+    case "$opt" in
+      # options for quick-exit strategy:
+      --dry-run)
+        dry_run=1
+        shift;;
 
-  # routing the input command:
-  if [[ $(_function_exists $1) == 0 ]] && [[ ! $1 == _* ]]; then
-    $1 "${@:2}"
-  else
-    _incorrect_usage "command $1 not found." 126
+      --version) _show_version;;
+
+      *) break;;  # do nothing
+    esac
+  done
+
+  if [[ "$dry_run" == 0 ]]; then
+    # checking for proper set-up:
+    _check_setup
+
+    # load dependencies:
+    # for f in ${0%/*}/src/*/*; do [[ -f "$f" ]] && . "$f"; done
+
+    # routing the input command:
+    if [[ $(_function_exists $1) == 0 ]] && [[ ! $1 == _* ]]; then
+      $1 "${@:2}"
+    else  # TODO: elif [[ $(_plugin_exists $1) == 0 ]]; then
+      _incorrect_usage "command $1 not found." 126
+    fi
   fi
 }
 
-set -e
+
 _init_script $@
