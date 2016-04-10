@@ -5,9 +5,11 @@ load _test_base
 FILE_TO_HIDE="file_to_hide"
 FILE_CONTENTS="hidden content юникод"
 
+FINGERPRINT=""
+
 
 function setup {
-  install_fixture_full_key "$TEST_DEFAULT_USER"
+  FINGERPRINT=$(install_fixture_full_key "$TEST_DEFAULT_USER")
 
   set_state_git
   set_state_secret_init
@@ -18,7 +20,7 @@ function setup {
 
 
 function teardown {
-  uninstall_fixture_full_key "$TEST_DEFAULT_USER"
+  uninstall_fixture_full_key "$TEST_DEFAULT_USER" "$FINGERPRINT"
   unset_current_state
   rm -f "$FILE_TO_HIDE"
 }
@@ -53,7 +55,7 @@ function teardown {
   rm -f "$FILE_TO_HIDE"
 
   local attacker="attacker1"
-  install_fixture_full_key "$attacker"
+  local atacker_fingerprint=$(install_fixture_full_key "$attacker")
 
   local password=$(test_user_password "$attacker")
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
@@ -61,7 +63,7 @@ function teardown {
   [ "$status" -eq 2 ]
   [ ! -f "$FILE_TO_HIDE" ]
 
-  uninstall_fixture_full_key "$attacker"
+  uninstall_fixture_full_key "$attacker" "$atacker_fingerprint"
 }
 
 
@@ -71,7 +73,7 @@ function teardown {
   set_state_secret_tell "$new_user"
   set_state_secret_hide
 
-  uninstall_fixture_full_key "$TEST_DEFAULT_USER"
+  uninstall_fixture_full_key "$TEST_DEFAULT_USER" "$FINGERPRINT"
 
   local password=$(test_user_password "$new_user")
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
