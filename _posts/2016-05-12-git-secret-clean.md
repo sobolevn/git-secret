@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-clean'
-date:   2016-05-12 14:25:04 +0300
+date:   2016-05-12 16:19:52 +0300
 categories: command
 ---
 git-secret-clean - removes all the hidden files.
