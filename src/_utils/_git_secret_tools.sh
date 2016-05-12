@@ -3,8 +3,8 @@
 GITSECRET_VERSION="0.1.0"
 
 # Global variables:
-
 WORKING_DIRECTORY="$PWD"
+
 # Folders:
 SECRETS_DIR=".gitsecret"
 SECRETS_DIR_KEYS="$SECRETS_DIR/keys"
@@ -12,15 +12,15 @@ SECRETS_DIR_PATHS="$SECRETS_DIR/paths"
 
 # Files:
 SECRETS_DIR_KEYS_MAPPING="$SECRETS_DIR_KEYS/mapping.cfg"
-SECRETS_DIR_KEYS_PUBRING="$SECRETS_DIR_KEYS/pubring.gpg"
 SECRETS_DIR_KEYS_TRUSTDB="$SECRETS_DIR_KEYS/trustdb.gpg"
 
 SECRETS_DIR_PATHS_MAPPING="$SECRETS_DIR_PATHS/mapping.cfg"
 
+: ${SECRETS_EXTENSION:=".secret"}
+
+# Commands:
 : ${SECRETS_GPG_COMMAND:="gpg"}
 GPGLOCAL="$SECRETS_GPG_COMMAND --homedir=$SECRETS_DIR_KEYS --no-permission-warning"
-
-: ${SECRETS_EXTENSION:=".secret"}
 
 
 # Inner bash :
@@ -117,7 +117,7 @@ function _unique_filename {
 # Manuals:
 function _show_manual_for {
   local function_name="$1"
-  man git-secret-$function_name
+  man "git-secret-${function_name}"
   exit 0
 }
 
@@ -139,7 +139,7 @@ function _abort {
 
 
 function _secrets_dir_exists {
-  if [[ ! -d $SECRETS_DIR ]]; then
+  if [[ ! -d "$SECRETS_DIR" ]]; then
     _abort "$SECRETS_DIR does not exist."
   fi
 }
@@ -149,13 +149,12 @@ function _user_required {
   _secrets_dir_exists
 
   local error_message="no users found. run 'git secret tell' before adding files."
-  if [[ ! -f "$SECRETS_DIR_KEYS_PUBRING" ]] ||
-    [[ ! -f "$SECRETS_DIR_KEYS_TRUSTDB" ]]; then
+  if [[ ! -f "$SECRETS_DIR_KEYS_TRUSTDB" ]]; then
     _abort "$error_message"
   fi
 
   local keys_exist=$($GPGLOCAL -n --list-keys --with-colon)
-  if [[ -z $keys_exist ]]; then
+  if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
   fi
 }
