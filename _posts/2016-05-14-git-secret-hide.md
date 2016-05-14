@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-hide'
-date:   2016-05-12 16:19:52 +0300
+date:   2016-05-14 14:09:27 +0300
 categories: command
 ---
 git-secret-hide - encrypts all added files with the inner keyring.
