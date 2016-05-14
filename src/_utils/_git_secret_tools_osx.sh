@@ -13,6 +13,6 @@ function __delete_line_osx {
 
 function __temp_file_osx {
   : "${TMPDIR:=/tmp}"
-  local filename=$(mktemp -t _gitsecrets_ )
+  local filename=$(mktemp -t _gitsecrets_XXX )
   echo "$filename";
 }
