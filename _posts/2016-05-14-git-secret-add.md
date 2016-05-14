@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-add'
-date:   2016-05-14 14:24:34 +0300
+date:   2016-05-14 14:35:50 +0300
 categories: command
 ---
 git-secret-add - starts to track added files.
@@ -9,7 +9,7 @@ git-secret-add - starts to track added files.
 
 ## SYNOPSIS
 
-    git secret add <pathspec>...
+    git secret add [-i] <pathspec>...
 
 
 ## DESCRIPTION
@@ -22,6 +22,7 @@ It is not recommened to add filenames directly into the `.gitsecret/paths/mappin
 
 ## OPTIONS
 
+    -i  - auto adds given files to the `.gitignore` if they are unignored at the moment.
     -h  - shows this help.
 
 

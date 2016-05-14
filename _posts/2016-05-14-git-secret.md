@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2016-05-14 14:24:34 +0300
+date:   2016-05-14 14:35:50 +0300
 categories: usage
 ---
 ## Content
@@ -9,6 +9,7 @@ categories: usage
 1. [Intro](#intro)
 2. [Installation](#installation)
 3. [Usage](#usage)
+4. [Configuration](#configuration)
 
 ## Intro
 
@@ -49,6 +50,11 @@ There are several ways to install `git-secret`:
 
 1. Run `brew install sobolevn/tap/git-secret`
 
+**Manual**
+
+1. Clone the repository first: `git clone https://github.com/sobolevn/git-secret.git git-secret`
+2. Run `PREFIX="/usr/local" make install`, note that you can install to any prefix in your `PATH`
+
 **`antigen` plugin (or any other `oh-my-zsh`-styled plugin-systems)**
 
 1. Add line `antigen bundle sobolevn/git-secret` to your `.zshrc`
@@ -83,6 +89,14 @@ These steps cover the basic process of using `git-secret`:
 4. Reencypt the files, now they will be able to decrypt them with their secret key.
 
 Note, that it is possible to add yourself to the system without decrypting existing files. It will be possible to decrypt them after reencrypting them with the new keyring. So, if you don't want unexpected keys added, make sure to configure some server-side security policy with the `pre-receive` hook.
+
+## Configuration
+You can configure several things to suit your workflow better. To do so, just set the required variable to the value you need. This can be done in your shell environment file or with the each `git-secret` command.
+
+These settings are available to be changed:
+
+* `$SECRETS_GPG_COMMAND` - sets the `gpg` alternatives, defaults to `gpg`. It can be changed to `gpg`, `gpg2`, `pgp`, `/usr/local/gpg` or any other value. After doing so rerun tests to be sure, that it won't break anything. Tested to be working with: `gpg`, `gpg2`.
+* `$SECRETS_EXTENSION` - sets the secret files extension, defaults to `.secret`. It can be changed to any valid file extension.
 
 [1]: https://git-scm.com/
 [2]: https://www.gnupg.org/
