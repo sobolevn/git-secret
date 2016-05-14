@@ -10,6 +10,9 @@ function init {
     esac
   done
 
+  shift $((OPTIND-1))
+  [ "$1" = "--" ] && shift
+
   if [[ -d "$SECRETS_DIR" ]]; then
     _abort "already inited."
   fi

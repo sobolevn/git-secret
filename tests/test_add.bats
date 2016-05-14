@@ -29,6 +29,21 @@ function teardown {
 }
 
 
+@test "run 'add' for unignored file with '-i' option" {
+  local TEST_FILE='test_file.auto_ignore'
+  touch "$TEST_FILE"
+  echo "content" > "$TEST_FILE"
+
+  run git secret add -i "$TEST_FILE"
+  [ "$status" -eq 0 ]
+
+  run _file_has_line "$TEST_FILE" ".gitignore"
+  [ "$status" -eq 0 ]
+
+  rm -f "$TEST_FILE"
+}
+
+
 @test "run 'add' normally" {
   local filename="local_file"
   echo "content" > "$filename"

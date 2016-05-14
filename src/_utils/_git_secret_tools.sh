@@ -130,6 +130,15 @@ function _check_ignore {
 }
 
 
+function _add_ignored_file {
+  if [[ ! -f ".gitignore" ]]; then
+    touch ".gitignore"
+  fi
+
+  echo "$1" >> ".gitignore"
+}
+
+
 # Logic :
 
 function _abort {

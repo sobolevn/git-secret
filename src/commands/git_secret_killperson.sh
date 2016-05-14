@@ -10,6 +10,9 @@ function killperson {
     esac
   done
 
+  shift $((OPTIND-1))
+  [ "$1" = "--" ] && shift
+
   _user_required
 
   if [[ ${#@} -eq 0 ]]; then

@@ -10,6 +10,9 @@ function whoknows {
     esac
   done
 
+  shift $((OPTIND-1))
+  [ "$1" = "--" ] && shift
+
   _user_required
 
   local keys=$(_get_users_in_keyring)

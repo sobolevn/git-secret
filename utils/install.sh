@@ -34,4 +34,4 @@ cp "$SCRIPT_ROOT"/git-secret "$PREFIX"/bin/git-secret
 cp -R "$SCRIPT_ROOT"/man/man1/* "$PREFIX"/share/man/man1
 cp "$SCRIPT_ROOT"/man/man7/git-secret.7 "$PREFIX"/share/man/man7/git-secret.7
 
-echo "Installed git-secret to $PREFIX/bin/git-secret"
+echo "Installed git-secret to ${PREFIX}/bin/git-secret"
