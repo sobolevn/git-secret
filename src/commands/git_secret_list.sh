@@ -10,6 +10,9 @@ function list {
     esac
   done
 
+  shift $((OPTIND-1))
+  [ "$1" = "--" ] && shift
+
   _user_required
 
   if [[ ! -s "$SECRETS_DIR_PATHS_MAPPING" ]]; then

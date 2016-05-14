@@ -23,6 +23,9 @@ function usage {
     esac
   done
 
+  shift $((OPTIND-1))
+  [ "$1" = "--" ] && shift
+
   local commands=""
   local separator="|"
 

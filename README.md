@@ -19,6 +19,7 @@ See the [installation section](https://sobolevn.github.io/git-secret/#installati
 This project is still under development. Current objectives:
 
 - add `trust-model` parameter to `git-secret-hide`
+- translate manuals for popular languages
 - autocomplete for `zsh` plugin
 - extra tests
 - precompiled distribution for `RPM`, add dependencies for `.deb` package
