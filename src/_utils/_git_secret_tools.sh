@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-GITSECRET_VERSION="0.1.0"
+GITSECRET_VERSION="0.1.2"
 
 # Global variables:
 WORKING_DIRECTORY="$PWD"

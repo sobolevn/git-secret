@@ -22,7 +22,7 @@ This project is still under development. Current objectives:
 - translate manuals for popular languages
 - autocomplete for `zsh` plugin
 - extra tests
-- precompiled distribution for `RPM`
+- precompiled distribution for `RPM`, add dependencies for `.deb` package
 - integrate [`shellcheck`](https://github.com/koalaman/shellcheck) for code style tests
 - create `CONTRIBUTING.md` with development process explained
 - сygwin support (?)
