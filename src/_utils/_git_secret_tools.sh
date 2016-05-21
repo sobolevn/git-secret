@@ -85,7 +85,8 @@ function _file_has_line {
 
 
 function _delete_line {
-  _os_based __delete_line $@
+  local escaped_path=$(echo "$1" | sed -e 's/[\/&]/\\&/g')
+  sed -i.bak "/$escaped_path/d" "$2"
 }
 
 

@@ -26,7 +26,7 @@ function reveal {
   while read line; do
     local encrypted_filename=$(_get_encrypted_filename "$line")
 
-    local base="$SECRETS_GPG_COMMAND --use-agent -q --decrypt"
+    local base="$SECRETS_GPG_COMMAND --use-agent -q --decrypt --yes"
     if [[ ! -z "$homedir" ]]; then
       base="$base --homedir=$homedir"
     fi
