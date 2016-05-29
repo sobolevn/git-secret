@@ -4,7 +4,7 @@ load _test_base
 
 
 function setup {
-  install_fixture_key $TEST_DEFAULT_USER
+  install_fixture_key "$TEST_DEFAULT_USER"
   set_state_git
   set_state_secret_init
 }

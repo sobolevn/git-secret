@@ -48,8 +48,7 @@ function teardown {
 
 
 @test "run 'changes' with commit" {
-  git add --all
-  git commit -m 'initial'
+  git_commit "$(test_user_email $TEST_DEFAULT_USER)" 'initial'
   local password=$(test_user_password "$TEST_DEFAULT_USER")
 
   echo "new content" >> "$FILE_TO_HIDE"
