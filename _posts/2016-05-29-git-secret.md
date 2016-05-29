@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2016-05-29 13:57:59 +0300
+date:   2016-05-29 14:20:00 +0300
 categories: usage
 ---
 ## Content
@@ -48,7 +48,10 @@ There are several ways to install `git-secret`:
 
 **Brew**
 
-1. Run `brew install sobolevn/tap/git-secret`
+1. Run `brew install git-secret`. That will do. Also, there are two options:
+  * `--without-gpg` to build without `gpg` support
+  * `--HEAD` to install `HEAD` version
+2. Note, that we have migrated from `tap` to the official `brew` repo
 
 **Manual**
 

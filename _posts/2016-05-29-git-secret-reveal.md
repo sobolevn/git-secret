@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-reveal'
-date:   2016-05-29 13:57:59 +0300
+date:   2016-05-29 14:20:00 +0300
 categories: command
 ---
 git-secret-reveal - decrypts all added files.
@@ -9,7 +9,7 @@ git-secret-reveal - decrypts all added files.
 
 ## SYNOPSIS
 
-    git secret reveal [-d dir] [-p password]
+    git secret reveal [-f] [-d dir] [-p password]
 
 
 ## DESCRIPTION
@@ -18,6 +18,7 @@ git-secret-reveal - decrypts all added files.
 
 ## OPTIONS
 
+    -f  - forces to overwrite exisiting files without prompt.
     -d  - specifies `--homedir` option for the `gpg`, basically use this option if your store your keys in a custom location.
     -p  - specifies password for noinput mode, adds `--passphrase` option for `gpg`.
     -h  - shows help.
