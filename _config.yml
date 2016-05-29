@@ -14,5 +14,9 @@ baseurl: "/git-secret" # the subpath of your site, e.g. /blog
 url: "http://sobolevn.github.io" # the base hostname & protocol for your site
 github_username: sobolevn
 
+# Seo settings:
+gems:
+  - jekyll-seo-tag
+
 # Build settings
 markdown: kramdown
