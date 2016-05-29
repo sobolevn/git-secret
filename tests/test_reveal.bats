@@ -42,6 +42,17 @@ function teardown {
 }
 
 
+@test "run 'reveal' with '-f'" {
+  rm -f "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret reveal -f -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ -f "$FILE_TO_HIDE" ]
+}
+
+
 @test "run 'reveal' with wrong password" {
   rm -f "$FILE_TO_HIDE"
 

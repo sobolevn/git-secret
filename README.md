@@ -16,16 +16,7 @@ See the [installation section](https://sobolevn.github.io/git-secret/#installati
 
 ## Status
 
-This project is still under development. Current objectives:
-
-- add `trust-model` parameter to `git-secret-hide`
-- translate manuals for popular languages
-- autocomplete for `zsh` plugin
-- extra tests
-- precompiled distribution for `RPM`, add dependencies for `.deb` package
-- integrate [`shellcheck`](https://github.com/koalaman/shellcheck) for code style tests
-- create `CONTRIBUTING.md` with development process explained
-- сygwin support (?)
+This project is still under development. See [https://github.com/sobolevn/git-secret/milestones](milestones) for the refence.
 
 ## Testing
 

@@ -14,7 +14,6 @@ TEST_SECRETS_DIR="$BATS_TMPDIR/$SECRETS_DIR"
 TEST_SECRETS_DIR_PATHS_MAPPING="$BATS_TMPDIR/$SECRETS_DIR_PATHS_MAPPING"
 
 TEST_GPG_HOMEDIR="$PWD"
-# TEST_TEMP_FILE="$BATS_TMPDIR/test_temp"
 
 # GPG-based stuff:
 : ${SECRETS_GPG_COMMAND:="gpg"}
@@ -22,6 +21,7 @@ GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warnin
 
 
 # Personal data:
+
 TEST_DEFAULT_USER="user1"
 
 function test_user_password {
@@ -32,7 +32,6 @@ function test_user_password {
 function test_user_email {
   echo "${1}@gitsecret.io"
 }
-
 
 
 # GPG:
@@ -103,6 +102,7 @@ function uninstall_fixture_full_key {
 
 
 # Git:
+
 function git_set_config_email {
   git config --local user.email "$1"
 }
@@ -113,12 +113,22 @@ function git_restore_default_email {
 }
 
 
+function git_commit {
+  git_set_config_email "$1"
+  git config --local user.name "Your Name"
+
+  git add --all
+  git commit -m "$2"
+}
+
+
 function remove_git_repository {
   rm -rf ".git"
 }
 
 
 # Git Secret:
+
 function set_state_git {
   git init > /dev/null 2>&1
 }

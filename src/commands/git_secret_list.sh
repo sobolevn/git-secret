@@ -16,7 +16,7 @@ function list {
   _user_required
 
   if [[ ! -s "$SECRETS_DIR_PATHS_MAPPING" ]]; then
-    exit 1
+    _abort "$SECRETS_DIR_PATHS_MAPPING is missing."
   fi
 
   while read line; do
