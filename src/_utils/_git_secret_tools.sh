@@ -116,6 +116,7 @@ function _unique_filename {
 
 
 # Manuals:
+
 function _show_manual_for {
   local function_name="$1"
   man "git-secret-${function_name}"
@@ -189,4 +190,38 @@ function _get_users_in_keyring {
 function _get_recepients {
   local result=$($GPGLOCAL --list-public-keys --with-colon | sed -n 's/.*<\(.*\)>.*/-r\1/p')
   echo "$result"
+}
+
+
+function _decrypt {
+  # required:
+  local filename="$1"
+
+  # optional:
+  local write_to_file=${2:-1} # can be 0 or 1
+  local force=${3:-0} # can be 0 or 1
+  local homedir=${4:-""}
+  local passphrase=${5:-""}
+
+  local encrypted_filename=$(_get_encrypted_filename "$filename")
+
+  local base="$SECRETS_GPG_COMMAND --use-agent -q --decrypt"
+
+  if [[ "$write_to_file" -eq 1 ]]; then
+    base="$base -o "${filename}""
+  fi
+
+  if [[ "$force" -eq 1 ]]; then
+    base="$base --yes"
+  fi
+
+  if [[ ! -z "$homedir" ]]; then
+    base="$base --homedir=$homedir"
+  fi
+
+  if [[ ! -z "$passphrase" ]]; then
+    echo "$passphrase" | $base --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename"
+  else
+    $base "$encrypted_filename"
+  fi
 }
