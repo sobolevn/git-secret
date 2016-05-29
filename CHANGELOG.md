@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.2.0
+
+- Added `changes` command to see the difference between current version of the hidden files and the commited one
+- Added `-f` option to the `reveal` command to remove prompts
+- Changed the way files were decrypted, now it is a separate functon
+- Some bugs are fixed
+- New installation instractions
+
 ## Version 0.1.2
 
 - Added `-i` option to the `git-secret-add` command, which auto adds unignored files to the `.gitignore`
