@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-GITSECRET_VERSION="0.1.2"
-
 # Global variables:
 WORKING_DIRECTORY="$PWD"
 
@@ -177,7 +175,8 @@ function _get_raw_filename {
 
 
 function _get_encrypted_filename {
-  echo "$(dirname "$1")/$(basename "$1" "$SECRETS_EXTENSION")$SECRETS_EXTENSION" | sed -e 's#^\./##'
+  local filename="$(dirname "$1")/$(basename "$1" "$SECRETS_EXTENSION")"
+  echo "${filename}${SECRETS_EXTENSION}" | sed -e 's#^\./##'
 }
 
 

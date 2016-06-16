@@ -10,10 +10,12 @@ if [[ "$BRANCH_NAME" == 'master' ]]; then
 fi
 
 if [[ "$BRANCH_NAME" == 'staging' ]]; then
-  # create new release:
+  # Compare script version and the latest tag:
   NEWEST_TAG=$(git describe --abbrev=0 --tags)
   SCRIPT_VERSION=$(bash ${PWD}/git-secret --version)
+
   if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
+    # Create new release:
     git tag -a "v${SCRIPT_VERSION}" -m "version $SCRIPT_VERSION"
   fi
 fi

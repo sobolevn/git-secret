@@ -121,7 +121,15 @@ _site/
 .sass-cache/
 
 #####=== Custom ===#####
+# Logic files:
 .gitsecret/
 git-secret
+
+# Temporary packages:
 vendor/
 temp/
+
+# Packaging:
+build/
+*.deb
+*.fpm
