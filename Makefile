@@ -24,6 +24,11 @@ install:
 	@chmod +x "./utils/install.sh"; sync; \
 	"./utils/install.sh" "${PREFIX}"
 
+.PHONY: uninstall
+uninstall:
+	@chmod +x "./utils/uninstall.sh"; sync; \
+	"./utils/uninstall.sh" "${PREFIX}"
+
 #
 # Testing:
 #
