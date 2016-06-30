@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 function clean {
   OPTIND=1
 
@@ -15,10 +16,14 @@ function clean {
   shift $((OPTIND-1))
   [ "$1" = "--" ] && shift
 
-  [[ ! -z "$verbose" ]] && echo && echo "cleaing:" || :  # bug with custom bash on OSX
+  if [[ ! -z "$verbose" ]]; then
+    echo && echo "cleaing:"
+  fi
 
-  find . -name *$SECRETS_EXTENSION -type f | xargs rm -f$verbose
+  find . -name "*$SECRETS_EXTENSION" -type f -print0 | xargs rm -f$verbose
 
-  [[ ! -z "$verbose" ]] && echo || :  # bug with custom bash on OSX
+  if [[ ! -z "$verbose" ]]; then
+    echo
+  fi
 
 }

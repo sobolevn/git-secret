@@ -4,20 +4,21 @@
 function init {
   OPTIND=1
 
-  while getopts "h" opt; do
+  while getopts 'h' opt; do
     case "$opt" in
-      h) _show_manual_for "init";;
+      h) _show_manual_for 'init';;
     esac
   done
 
   shift $((OPTIND-1))
-  [ "$1" = "--" ] && shift
+  [ "$1" = '--' ] && shift
 
   if [[ -d "$SECRETS_DIR" ]]; then
-    _abort "already inited."
+    _abort 'already inited.'
   fi
 
-  local ignores=$(_check_ignore "$SECRETS_DIR"/)
+  local ignores
+  ignores=$(_check_ignore "$SECRETS_DIR"/)
 
   if [[ ! $ignores -eq 1 ]]; then
     _abort "'${SECRETS_DIR}/' is ignored."
