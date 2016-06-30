@@ -21,7 +21,8 @@ if [[ -z "$DOCKER_DIST" ]]; then
   make test
 fi
 
-if [[ $(command -v shellcheck; echo $?) -eq 0 ]]; then
+SHELLCHECK=$(command -v shellcheck; echo $?)
+if [[ "$SHELLCHECK" -eq 0 ]]; then
   echo 'running lint'
   # If running a native build with lint param, do a lint:
   find src -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
