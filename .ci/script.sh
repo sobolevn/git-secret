@@ -21,7 +21,7 @@ if [[ -z "$DOCKER_DIST" ]]; then
   make test
 fi
 
-if [[ "$GITSECRET_DIST" == 'none' ]]; then
-  # If running a native build, do a lint:
+if [[ "$GITSECRET_LINT" == 'lint' ]]; then
+  # If running a native build with lint param, do a lint:
   find src -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
 fi

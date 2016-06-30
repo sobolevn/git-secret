@@ -17,7 +17,7 @@ matrix:
       sudo: required
       language: ruby
     - os: linux
-      env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"
+      env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"; GITSECRET_LINT="lint"
       sudo: required
       language: ruby
       addons:
@@ -30,12 +30,6 @@ matrix:
       env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg2"; SECRETS_GPG_COMMAND="gpg2"
       sudo: required
       language: ruby
-      addons:
-        apt:
-          sources:
-          - debian-sid
-          packages:
-          - shellcheck
     - os: osx
       env: GITSECRET_DIST="brew"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"
       sudo: false
