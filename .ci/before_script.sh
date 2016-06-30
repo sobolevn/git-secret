@@ -18,6 +18,8 @@ fi
 
 # Local linux (standart build):
 if [[ "$GITSECRET_DIST" == "none" ]]; then
+  sudo apt-get update
+
   # Installing linter:
   sudo apt-get install -y shellcheck
 
