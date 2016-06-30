@@ -18,13 +18,6 @@ fi
 
 # Local linux (standart build):
 if [[ "$GITSECRET_DIST" == "none" ]]; then
-  if [[ "$GITSECRET_LINT" == 'lint' ]]; then
-    sudo apt-get update
-
-    # Installing linter:
-    sudo apt-get install -y shellcheck
-  fi
-
   if [[ "$GITSECRET_GPG_DEP" == "gnupg2" ]]; then
     # Installing custom GPG version:
     sudo apt-get install -y gnupg2

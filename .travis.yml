@@ -17,7 +17,7 @@ matrix:
       sudo: required
       language: ruby
     - os: linux
-      env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"; GITSECRET_LINT="lint"
+      env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"
       sudo: required
       language: ruby
       addons:
