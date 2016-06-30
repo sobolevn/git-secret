@@ -13,12 +13,16 @@ fi
 
 # Mac:
 if [[ "$GITSECRET_DIST" == "brew" ]]; then
-  brew install $GITSECRET_GPG_DEP
+  brew install "$GITSECRET_GPG_DEP"
 fi
 
 # Local linux (standart build):
-if [[ "$GITSECRET_DIST" == "none" ]] &&
-   [[ "$GITSECRET_GPG_DEP" == "gnupg2" ]]; then
-  # Installing custom GPG version:
-  sudo apt-get install -y gnupg2
+if [[ "$GITSECRET_DIST" == "none" ]]; then
+  # Installing linter:
+  sudo apt-get install -y shellcheck
+
+  if [[ "$GITSECRET_GPG_DEP" == "gnupg2" ]]; then
+    # Installing custom GPG version:
+    sudo apt-get install -y gnupg2
+  fi
 fi

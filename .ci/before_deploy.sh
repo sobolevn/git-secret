@@ -11,5 +11,5 @@ fi
 if [[ ! -z "$DOCKER_DIST" ]]; then
   # When making a non-container build, this step will generate
   # proper manifest files:
-  make deploy-${GITSECRET_DIST};
+  make "deploy-${GITSECRET_DIST}";
 fi

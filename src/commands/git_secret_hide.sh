@@ -12,7 +12,7 @@ function _optional_clean {
 
       h) _show_manual_for 'hide';;
 
-      v) opt_string="-v";;
+      v) opt_string='-v';;
     esac
   done
 

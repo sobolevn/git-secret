@@ -2,8 +2,9 @@
 
 
 function remove {
-  OPTIND=1
   local clean=0
+
+  OPTIND=1
 
   while getopts 'ch' opt; do
     case "$opt" in
@@ -14,9 +15,9 @@ function remove {
   done
 
   shift $((OPTIND-1))
-  [ "$1" = "--" ] && shift
+  [ "$1" = '--' ] && shift
 
-  # validate if user exist:
+  # Validate if user exists:
   _user_required
 
   for item in "$@"; do
@@ -25,7 +26,7 @@ function remove {
     fi
 
     _delete_line "$item" "$SECRETS_DIR_PATHS_MAPPING"
-    rm -f "${SECRETS_DIR_PATHS_MAPPING}.bak"
+    rm -f "${SECRETS_DIR_PATHS_MAPPING}.bak"  # not all systems create '.bak'
 
     if [[ "$clean" == 1 ]]; then
       local encrypted_filename

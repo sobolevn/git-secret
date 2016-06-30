@@ -212,7 +212,7 @@ function _decrypt {
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
-  local base="$SECRETS_GPG_COMMAND --use-agent -q --decrypt"
+  local base="$SECRETS_GPG_COMMAND --use-agent -q --decrypt --no-permission-warning"
 
   if [[ "$write_to_file" -eq 1 ]]; then
     base="$base -o $filename"

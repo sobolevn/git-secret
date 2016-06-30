@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 function changes {
+  local passphrase=""
+
   OPTIND=1
 
-  while getopts "hd:p:" opt; do
+  while getopts 'hd:p:' opt; do
     case "$opt" in
-      h) _show_manual_for "changes";;
+      h) _show_manual_for 'changes';;
 
       p) passphrase=$OPTARG;;
 
@@ -14,7 +16,7 @@ function changes {
   done
 
   shift $((OPTIND-1))
-  [ "$1" = "--" ] && shift
+  [ "$1" = '--' ] && shift
 
   local filenames="$1"
   if [[ -z "$filenames" ]]; then
@@ -22,18 +24,21 @@ function changes {
     filenames=$(git secret list)
   fi
 
-  local previous_commit=$(git rev-parse HEAD)
-
-  for filename in "$filenames"; do
-    # Meta information:
-    local encrypted_filename=$(_get_encrypted_filename "$filename")
-    local last_encrypted=$(git show "${previous_commit}:${encrypted_filename}")
+  IFS='
+  '
+  for filename in $filenames; do
+    local decrypted
+    local content
+    local diff_result
 
     # Now we have all the data required:
-    local decrypted=$(_decrypt "$filename" "0" "0" "$homedir" "$passphrase")
-    local content=$(cat "$filename")
+    decrypted=$(_decrypt "$filename" "0" "0" "$homedir" "$passphrase")
+    content=$(cat "$filename")
 
-    local diff_result=$(diff <(echo "$decrypted") <(echo "$content"))
+    # Let's diff the result:
+    diff_result=$(diff <(echo "$decrypted") <(echo "$content")) || true
+    # There was a bug in the previous version, since `diff` returns
+    # exit code `1` when the files are different.
     echo "changes in ${filename}: ${diff_result}"
   done
 }
