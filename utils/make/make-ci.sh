@@ -28,6 +28,5 @@ function integration_tests {
 integration_tests
 
 # Unit tests:
-# shellcheck source=./utils/tests.sh
-# shellcheck disable=SC1091
+# shellcheck disable=SC1090,SC1091
 source "${SECRET_PROJECT_ROOT}/utils/tests.sh"

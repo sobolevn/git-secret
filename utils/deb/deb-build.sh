@@ -2,8 +2,7 @@
 
 set -e
 
-# shellcheck source=./utils/build-utils.sh
-# shellcheck disable=SC1091
+# shellcheck disable=SC1090,SC1091
 source "${SECRET_PROJECT_ROOT}/utils/build-utils.sh"
 
 preinstall_files
