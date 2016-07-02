@@ -2,7 +2,7 @@
 
 set -e
 
-BRANCH_NAME=$(git branch | grep '*' | sed 's/* //')
+BRANCH_NAME=$(git branch | grep '\*' | sed 's/* //')
 
 if [[ $BRANCH_NAME != '(no branch)' ]]; then
   unset GIT_WORK_TREE

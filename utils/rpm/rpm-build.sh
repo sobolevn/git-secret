@@ -2,6 +2,8 @@
 
 set -e
 
+# shellcheck source=./utils/build-utils.sh
+# shellcheck disable=SC1091
 source "${SECRET_PROJECT_ROOT}/utils/build-utils.sh"
 
 # Copying all the required files to the build directory:

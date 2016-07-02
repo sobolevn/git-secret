@@ -22,7 +22,10 @@ if [[ -z "$DOCKER_DIST" ]]; then
 fi
 
 if [[ ! -z "$(command -v shellcheck)" ]]; then
+  # This means, that `shellcheck` does exist, so run it:
   echo 'running lint'
-  # If running a native build with lint param, do a lint:
   find src -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
+  find utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
+  # TODO: add tests to lint
+  # see: https://github.com/koalaman/shellcheck/issues/709
 fi

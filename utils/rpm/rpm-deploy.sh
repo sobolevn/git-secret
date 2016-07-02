@@ -2,10 +2,12 @@
 
 set -e
 
+# shellcheck source=./utils/build-utils.sh
+# shellcheck disable=SC1091
 source "${SECRET_PROJECT_ROOT}/utils/build-utils.sh"
 
 # Variables, which will be used in `bintray.json`:
-SCRIPT_VERSION=$(bash ${PWD}/git-secret --version)
+SCRIPT_VERSION=$(bash "${PWD}/git-secret" --version)
 RELEASE_DATE=$(date +%Y-%m-%d)
 
 # add `\"override\": 1 \` into the `matrixParams`, if needed:

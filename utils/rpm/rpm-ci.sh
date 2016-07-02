@@ -7,6 +7,8 @@ set -e
 # 2. It does not use `sudo` or anything
 # 3. If you would like to install `.rpm` package on your system, see `Installation`
 
+# shellcheck source=./utils/build-utils.sh
+# shellcheck disable=SC1091
 source "${SECRET_PROJECT_ROOT}/utils/build-utils.sh"
 
 # This folder should contain just one .rpm file:
@@ -30,4 +32,6 @@ function integration_tests {
 integration_tests
 
 # Unit tests:
+# shellcheck source=./utils/tests.sh
+# shellcheck disable=SC1091
 source "${SECRET_PROJECT_ROOT}/utils/tests.sh"
