@@ -4,13 +4,13 @@ layout: default
 
 <div class="home">
 
-  <h1 class="page-heading">Usage</h1>
-
+  <img src="{{ "/images/git-secret-big.png" | prepend: site.baseurl }}"
+       alt="git-secret" title="git-secret"
+       class="home-logo-image" />
 
   {% for post in site.categories.usage %}
     {{ post.content }}
   {% endfor %}
-
 
   <h2 class="page-heading">Command Reference</h2>
 

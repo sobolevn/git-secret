@@ -75,7 +75,7 @@
             display: none;
         }
 
-        &:hover .trigger {
+        &:hover .trigger, &:active .trigger {
             display: block;
             padding-bottom: 5px;
         }
@@ -89,6 +89,10 @@
             }
             margin-left: 20px;
         }
+    }
+
+    .trigger {
+        padding-top: 13px;
     }
 }
 
@@ -240,3 +244,14 @@
         }
     }
 }
+
+/**
+ * Homepage
+ */
+
+ .home {
+   .home-logo-image {
+     margin-top: 50px;
+     margin-bottom: 70px;
+   }
+ }
