@@ -127,3 +127,11 @@ deploy-rpm: build-rpm
 	@chmod +x "./utils/rpm/rpm-deploy.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	"./utils/rpm/rpm-deploy.sh"
+
+# make:
+
+.PHONY: test-make-ci
+test-make-ci: clean install-test
+	@chmod +x "./utils/make/make-ci.sh"; sync; \
+	export SECRET_PROJECT_ROOT="${PWD}"; \
+	"./utils/make/make-ci.sh"

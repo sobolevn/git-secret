@@ -2,6 +2,11 @@ matrix:
   fast_finish: true
   include:
     - os: linux
+      env: GITSECRET_DIST="make"; DOCKER_DIST="debian"
+      services: docker
+      sudo: required
+      language: ruby
+    - os: linux
       env: GITSECRET_DIST="deb"; DOCKER_DIST="debian";
       services: docker
       sudo: required
