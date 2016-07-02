@@ -8,11 +8,11 @@ EXEC_PEM=0755
 
 SCRIPT_NAME="git-secret"
 SCRIPT_DESCRIPTION="A bash-tool to store your private data inside a git repository."
-SCRIPT_VERSION=$(bash ${PWD}/git-secret --version)
+SCRIPT_VERSION=$(bash "${PWD}"/git-secret --version)
 
 # This might be overridden someday:
-: ${SCRIPT_EPOCH:=0}
-: ${SCRIPT_ITERATION:=1}
+: "${SCRIPT_EPOCH:=0}"
+: "${SCRIPT_ITERATION:=1}"
 
 # This may be overridden:
 if [[ -z "$SCRIPT_BUILD_DIR" ]]; then
@@ -23,12 +23,12 @@ SCRIPT_DEST_DIR="${SCRIPT_BUILD_DIR}/buildroot"
 
 
 function locate_deb {
-  ls $SCRIPT_DEST_DIR/*.deb | head -1
+  find . -maxdepth 1 -name "$SCRIPT_DEST_DIR/*.deb" | head -1
 }
 
 
 function locate_rpm {
-  ls $SCRIPT_DEST_DIR/*.rpm | head -1
+  find . -maxdepth 1 -name "$SCRIPT_DEST_DIR/*.rpm" | head -1
 }
 
 
@@ -77,5 +77,5 @@ function build_package {
 
 
 function clean_up_files {
-  rm -rf "${SCRIPT_DEST_DIR}/usr"
+  rm -rf "${SCRIPT_DEST_DIR:?}/usr"
 }

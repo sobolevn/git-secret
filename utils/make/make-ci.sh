@@ -8,13 +8,13 @@ set -e
 # 3. If you would like to install a package with `make` on your system,
 #    see `Installation`
 
-source "${SECRET_PROJECT_ROOT}/utils/build-utils.sh"
-
 
 # Integration tests
 function integration_tests {
-  # Installing the package:
+  # Building the package:
   make build
+
+  # Installing the package:
   make install
 
   # Testing the installation:
