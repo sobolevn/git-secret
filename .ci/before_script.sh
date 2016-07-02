@@ -17,9 +17,7 @@ if [[ "$GITSECRET_DIST" == "brew" ]]; then
 fi
 
 # Local linux (standart build):
-if [[ "$GITSECRET_DIST" == "none" ]]; then
-  if [[ "$GITSECRET_GPG_DEP" == "gnupg2" ]]; then
-    # Installing custom GPG version:
-    sudo apt-get install -y gnupg2
-  fi
+if [[ "$GITSECRET_DIST" == "none" ]] && [[ "$GITSECRET_GPG_DEP" == "gnupg2" ]]; then
+  # Installing custom GPG version:
+  sudo apt-get install -y gnupg2
 fi

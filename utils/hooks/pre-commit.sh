@@ -4,13 +4,13 @@ set -e
 
 BRANCH_NAME=$(git branch | grep '\*' | sed 's/* //')
 
-if [[ $BRANCH_NAME != '(no branch)' ]]; then
+if [[ "$BRANCH_NAME" != '(no branch)' ]]; then
   unset GIT_WORK_TREE
 
   # Run tests:
   make test
 
-  if [[ $BRANCH_NAME == "master" ]]; then
+  if [[ "$BRANCH_NAME" == "staging" ]]; then
     # Build new manuals:
     make build-man
 
