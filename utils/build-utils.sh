@@ -23,12 +23,12 @@ SCRIPT_DEST_DIR="${SCRIPT_BUILD_DIR}/buildroot"
 
 
 function locate_deb {
-  find . -maxdepth 1 -name "$SCRIPT_DEST_DIR/*.deb" | head -1
+  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name "*.deb" | head -1
 }
 
 
 function locate_rpm {
-  find . -maxdepth 1 -name "$SCRIPT_DEST_DIR/*.rpm" | head -1
+  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name "*.rpm" | head -1
 }
 
 

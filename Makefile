@@ -134,4 +134,5 @@ deploy-rpm: build-rpm
 test-make-ci: clean install-test
 	@chmod +x "./utils/make/make-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
+	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
 	"./utils/make/make-ci.sh"
