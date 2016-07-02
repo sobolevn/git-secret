@@ -8,18 +8,18 @@ Your contributions are always welcome!
 
 Before starting make sure you have:
 
-* git
-* bash
-* gnupg (or gnupg2)
-* [shellcheck](https://github.com/koalaman/shellcheck)
+- git
+- bash
+- gnupg (or gnupg2)
+- [shellcheck](https://github.com/koalaman/shellcheck)
 
 Only required if dealing with manuals, `gh-pages` or releases:
 
-* ruby, ruby-dev
+- ruby, ruby-dev
 
 ### Getting started
 
-1. Create your own or pick an opened issue from the [tracker](https://github.com/sobolevn/git-secret/issues). Take a look at the [`help-wanted` tag](https://github.com/sobolevn/git-secret/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
+1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
 2. Fork and clone your repository: `git clone https://github.com/${YOUR_NAME}/git-secret.git`
 3. Make sure that everything works fine by running `make test`
 
@@ -41,17 +41,17 @@ It basically looks like that:
 
 > `your-branch` -> `develop` -> `staging` -> `master`
 
-* `master` branch is protected, since `antigen` and tools like it installs the app from main branch directly. So only fully tested code goes there
-* `staging` - this brach is used to create a new `git` tag and a `github` release, then it gets merged into `master`
-* `develop` is where the development is done and the branch you should send your pull-requests to
+- `master` branch is protected, since `antigen` and tools like it installs the app from main branch directly. So only fully tested code goes there
+- `staging` - this brach is used to create a new `git` tag and a `github` release, then it gets merged into `master`
+- `develop` is where the development is done and the branch you should send your pull-requests to
 
 ### Continuous integration
 
 CI is done with the help of `travis`. `travis` handles multiple environments:
 
-* `Docker`-based jobs, or so-called 'integration tests', these tests creates a local release, installs it with the package-manager and then runs unit-tests and system checks
-* `OSX` jobs, they just assure that everything will work under `OSX`
-* Native `travis` jobs, which handles basic unit-tests and style-checks
+- `Docker`-based jobs, or so-called 'integration tests', these tests creates a local release, installs it with the package-manager and then runs unit-tests and system checks
+- `OSX` jobs, they just assure that everything will work under `OSX`
+- Native `travis` jobs, which handles basic unit-tests and stylechecks
 
 ### Release process
 
@@ -61,7 +61,7 @@ When creating a commit inside the `staging` branch (it is usually a documentatio
 
 Firstly, new manuals will be created and added to the current commit with `make build-man` on `pre-commit` hook.
 
-Secondly, after the commit is successfully created it will also trigger `make build-gh-pages` target on `post-commit` hook, which will push new manuals to the https://sobolevn.github.io/git-secret/. And the new `git` tag will be automatically created if the version is changed:
+Secondly, after the commit is successfully created it will also trigger `make build-gh-pages` target on `post-commit` hook, which will push new manuals to the [https://sobolevn.github.io/git-secret/][git-secret site]. And the new `git` tag will be automatically created if the version is changed:
 
 ```bash
 if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
@@ -84,3 +84,7 @@ Releases to `brew` are made manually.
 #### Dockerhub releases
 
 [`Dockerhub`](https://hub.docker.com/r/sobolevn/git-secret/) contains `Docker` images with different OS'es used for testing. It is updated via a `github` webhook on commit into `master`.
+
+[tracker]: https://github.com/sobolevn/git-secret/issues
+[help-wanted]: https://github.com/sobolevn/git-secret/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22
+[git-secret site]: https://sobolevn.github.io/git-secret/
