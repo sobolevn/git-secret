@@ -8,10 +8,6 @@ function setup {
   set_state_git
   set_state_secret_init
   set_state_secret_tell "$TEST_DEFAULT_USER"
-
-  # init_git_repository
-  # git_secret_init
-  # git_secret_tell_test
 }
 
 

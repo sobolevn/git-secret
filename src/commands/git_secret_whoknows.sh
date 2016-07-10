@@ -13,8 +13,12 @@ function whoknows {
   shift $((OPTIND-1))
   [ "$1" = "--" ] && shift
 
+  # Validating, that we have a user:
   _user_required
 
-  local keys=$(_get_users_in_keyring)
+  local keys
+
+  # Just to the point:
+  keys=$(_get_users_in_keyring)
   echo "$keys"
 }

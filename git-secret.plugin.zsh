@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # Copyright 2016 Sobolev Nikita <mail@sobolevn.me>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +15,7 @@
 # limitations under the License.
 
 # Create binary:
-PLUGIN_DIR="$(dirname $0)"
+PLUGIN_DIR="$(dirname "$0")"
 
 if [ ! -f "$PLUGIN_DIR/git-secret" ]; then
   cd "$PLUGIN_DIR" && make build && cd ..
