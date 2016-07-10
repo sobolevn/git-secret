@@ -22,11 +22,7 @@ See the [installation section](https://sobolevn.github.io/git-secret/#installati
 
 ## Contributing
 
-<<<<<<< HEAD
-This project is still under development. See [https://github.com/sobolevn/git-secret/milestones](milestones) for the reference.
-=======
 See [CONTRIBUTING.md](CONTRIBUTING.md).
->>>>>>> develop
 
 ## Changelog
 
