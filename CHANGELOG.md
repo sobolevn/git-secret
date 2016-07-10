@@ -1,5 +1,7 @@
 # Changelog
 
+## Version 0.2.0
+
 ## Version 0.1.2
 
 - Added `-i` option to the `git-secret-add` command, which auto adds unignored files to the `.gitignore`

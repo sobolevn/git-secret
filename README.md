@@ -1,6 +1,6 @@
 # git-secret
 
-[![Build Status](https://img.shields.io/travis/sobolevn/git-secret/master.svg)](https://travis-ci.org/sobolevn/git-secret) [![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](http://braumeister.org/formula/git-secret) [![Bintray deb](https://img.shields.io/bintray/v/sobolevn/deb/git-secret.svg)](https://bintray.com/sobolevn/deb/git-secret/view) [![Bintray rpm](https://img.shields.io/bintray/v/sobolevn/rpm/git-secret.svg)](https://bintray.com/sobolevn/rpm/git-secret/view) [![Dockerhub](https://img.shields.io/docker/pulls/sobolevn/git-secret.svg)](https://hub.docker.com/r/sobolevn/git-secret/)
+[![Build Status](https://img.shields.io/travis/sobolevn/git-secret/master.svg)](https://travis-ci.org/sobolevn/git-secret) [![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](http://braumeister.org/formula/git-secret) [![Bintray deb](https://img.shields.io/bintray/v/sobolevn/deb/git-secret.svg)](https://bintray.com/sobolevn/deb/git-secret/view) [![Dockerhub](https://img.shields.io/docker/pulls/sobolevn/git-secret.svg)](https://hub.docker.com/r/sobolevn/git-secret/)
 
 [![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](https://sobolevn.github.io/git-secret/)
 
