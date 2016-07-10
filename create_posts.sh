@@ -8,8 +8,8 @@ POSTS_LOCATION="_posts"
 
 
 function checkout_manuals {
-  git checkout master "$MAN_LOCATION"
-  git checkout master "$MAN7_LOCATION"
+  git checkout staging "$MAN_LOCATION"
+  git checkout staging "$MAN7_LOCATION"
 
   # rm -f $MAN_LOCATION/*.1
 }

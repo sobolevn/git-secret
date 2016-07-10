@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2016-07-10 14:51:07 +0300
+date:   2016-07-10 14:53:27 +0300
 categories: usage
 ---
 ## Content
@@ -31,14 +31,14 @@ There's a known problem in server configuration and deploying, when you have to 
 
 ### Dependencies
 
-`git secret` relies on two dependecies: [`git`][1] and [`gpg`][2]. Download and install them before using this project. `git-secret` is tested to work with:
+`git-secret` relies on two dependencies: [`git`][1] and [`gpg`][2]. Download and install them before using this project. `git-secret` is tested to work with:
 
     git version 2.7.0
     gpg (GnuPG) 1.4.20
 
 ### Supported platforms
 
-`git secret` works with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04 and `Debian` >= 8.3
+`git-secret` works with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04 and `Debian` >= 8.3
 You can add your platform to this list, if all the tests pass for you.
 `Cygwin` support is planned.
 
@@ -46,42 +46,42 @@ You can add your platform to this list, if all the tests pass for you.
 
 There are several ways to install `git-secret`:
 
-**Brew**
+**** Homebrew ****
 
 1. Run `brew install git-secret`. That will do. Also, there are two options:
   * `--without-gpg` to build without `gpg` support
   * `--HEAD` to install `HEAD` version
 2. Note, that we have migrated from `tap` to the official `brew` repo
 
-**Manual**
+**** `deb` package ****
 
-1. Clone the repository first: `git clone https://github.com/sobolevn/git-secret.git git-secret`
-2. Run `PREFIX="/usr/local" make install`, note that you can install to any prefix in your `PATH`
+1. Run `echo "deb https://dl.bintray.com/sobolevn/deb git-secret stable" | sudo tee -a /etc/apt/sources.list`
+2. Run `sudo apt-get install git-secret`
 
-**`antigen` plugin (or any other `oh-my-zsh`-styled plugin-systems)**
+**** `rpm` package ****
 
-1. Add line `antigen bundle sobolevn/git-secret` to your `.zshrc`
-2. Run `source ~/.zshrc` or reopen the terminal
+1. Run `wget https://bintray.com/sobolevn/rpm/rpm -O bintray-sobolevn-rpm.repo && sudo mv bintray-sobolevn-rpm.repo /etc/yum.repos.d/`
+2. Run `sudo yum install git-secret`
 
-**The hard way**
+**** Manual ****
 
 1. Clone the repository first: `git clone https://github.com/sobolevn/git-secret.git git-secret`
 2. Run `cd git-secret && make build`
-3. Move `git-secret` file and `man/` folder somewhere inside your `$PATH`, or extend your `$PATH` to contain `git-secret` file and `man/` folder
+3. Run `PREFIX="/usr/local" make install`, note that you can install to any prefix in your `PATH`
 
-**Local `.deb` package**
+**** `antigen` plugin (or any other `oh-my-zsh`-styled plugin-systems) ****
 
-1. Download the latest realease [here](https://github.com/sobolevn/git-secret/releases)
-2. Unpack, and run `make build-deb`, it is possible to set the output folder with `$SCRIPT_BUILD_DIR` variable.
-3. Install the local `.deb` package with `dpkp -i git-secret-package-name.deb`, note that this command may require `sudo` and the package name will be different
+1. Add line `antigen bundle sobolevn/git-secret` to your `~/.zshrc`
+2. Run `source ~/.zshrc` or reopen the terminal
+
 
 ## Usage
 These steps cover the basic process of using `git-secret`:
 
 0. Before starting, make sure you have created `gpg` RSA key-pair: public and secret key identified by your email address.
-1. Initialize `git-secret` repository by running `git secret init` command. `.gitsecret/` folder will be created.
-2. Add first user to the system by running `git secret tell your@gpg.email-id`.
-3. Now it's time to add files you wish to encrypt inside the `git-secret` repository. It can be done by running `git secret add <filenames...>` command. Make sure these files are ignored, otherwise `git secret` won't allow you to add them, as these files will be stored unencrypted.
+1. Initialize `git-secret` repository by running `git secret init` command. `.gitsecret/` folder will be created, **note** that `.gitsecret/` folder [should **not** be ignored](https://github.com/sobolevn/git-secret/issues/39).
+2. Add first user to the system by running `git secret tell your@gpg.email`.
+3. Now it's time to add files you wish to encrypt inside the `git-secret` repository. It can be done by running `git secret add <filenames...>` command. Make sure these files are ignored, otherwise `git-secret` won't allow you to add them, as these files will be stored unencrypted.
 4. When done, run `git secret hide` all files, which you have added by `git secret add` command will be encrypted with added public-keys by the `git secret tell` command. Now it is safe to commit your changes. **But**. It's recommended to add `git secret hide` command to your `pre-commit` hook, so you won't miss any changes.
 5. Now decrypt files with `git secret reveal` command. It will ask you for your password. And you're done!
 
