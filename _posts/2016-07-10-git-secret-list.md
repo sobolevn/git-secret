@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-list'
-date:   2016-07-10 14:40:45 +0300
+date:   2016-07-10 14:49:01 +0300
 categories: command
 ---
 git-secret-list - prints all the added files.
