@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-whoknows'
-date:   2016-05-29 14:20:00 +0300
+date:   2016-07-10 14:40:45 +0300
 categories: command
 ---
 git-secret-whoknows - prints email-labels for each key in the keyring.
