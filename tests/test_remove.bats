@@ -26,6 +26,9 @@ function teardown {
   uninstall_fixture_full_key "$TEST_DEFAULT_USER"
   unset_current_state
   rm -f "$FIRST_FILE" "$SECOND_FILE"
+
+  # This needs to be cleaned
+  rm -rf "$FOLDER"
 }
 
 

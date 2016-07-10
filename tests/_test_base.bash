@@ -3,6 +3,7 @@
 # This file is following a name convention defined in:
 # https://github.com/sstephenson/bats
 
+source "$SECRET_PROJECT_ROOT/src/version.sh"
 source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 
 # Constants:
@@ -36,7 +37,7 @@ function test_user_email {
 
 # GPG:
 
-function _get_gpg_fingerprint_by_email {
+function get_gpg_fingerprint_by_email {
   local email="$1"
   local fingerprint=$($GPGTEST --list-public-keys --with-fingerprint --with-colons | \
     sed -e '/<'$email'>::scESC:/,/[A-Z0-9]\{40\}:/!d' | \
@@ -108,17 +109,20 @@ function git_set_config_email {
 }
 
 
-function git_restore_default_email {
-  git config --local user.email "$1"
-}
-
-
 function git_commit {
   git_set_config_email "$1"
-  git config --local user.name "Your Name"
+
+  local user_name=$(git config user.name)
+  local commit_gpgsign=$(git config commit.gpgsign)
+
+  git config --local user.name "$TEST_DEFAULT_USER"
+  git config --local commit.gpgsign false
 
   git add --all
   git commit -m "$2"
+
+  git config --local user.name "$user_name"
+  git config --local commit.gpgsign "$commit_gpgsign"
 }
 
 

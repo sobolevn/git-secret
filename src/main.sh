@@ -9,16 +9,17 @@ function _check_setup {
   fi
 
   # Checking if the '.gitsecret' is not ignored:
-  local ignored=$(_check_ignore ".gitsecret/")
+  local ignored
+  ignored=$(_check_ignore ".gitsecret/")
   if [[ ! $ignored -eq 1 ]]; then
-    _abort ".gitsecret folder is ignored."
+    _abort '.gitsecret folder is ignored.'
   fi
 
   # Checking gpg setup:
   local secring="$SECRETS_DIR_KEYS/secring.gpg"
   if [[ -f $secring ]] && [[ -s $secring ]]; then
     # secring.gpg is not empty, someone has imported a private key.
-    _abort "it seems that someone has imported a secret key."
+    _abort 'it seems that someone has imported a secret key.'
   fi
 }
 
@@ -38,17 +39,17 @@ function _show_version {
 
 function _init_script {
   if [[ $# == 0 ]]; then
-    _incorrect_usage "no input parameters provided." 126
+    _incorrect_usage 'no input parameters provided.' 126
   fi
 
   # Parse plugin-level options:
   local dry_run=0
 
-  while [[ $# > 0 ]]; do
+  while [[ $# -gt 0 ]]; do
     local opt="$1"
 
     case "$opt" in
-      # options for quick-exit strategy:
+      # Options for quick-exit strategy:
       --dry-run)
         dry_run=1
         shift;;
@@ -60,14 +61,11 @@ function _init_script {
   done
 
   if [[ "$dry_run" == 0 ]]; then
-    # checking for proper set-up:
+    # Checking for proper set-up:
     _check_setup
 
-    # load dependencies:
-    # for f in ${0%/*}/src/*/*; do [[ -f "$f" ]] && . "$f"; done
-
-    # routing the input command:
-    if [[ $(_function_exists $1) == 0 ]] && [[ ! $1 == _* ]]; then
+    # Routing the input command:
+    if [[ $(_function_exists "$1") == 0 ]] && [[ ! $1 == _* ]]; then
       $1 "${@:2}"
     else  # TODO: elif [[ $(_plugin_exists $1) == 0 ]]; then
       _incorrect_usage "command $1 not found." 126
@@ -76,4 +74,4 @@ function _init_script {
 }
 
 
-_init_script $@
+_init_script "$@"

@@ -4,14 +4,14 @@
 function list {
   OPTIND=1
 
-  while getopts "h?" opt; do
+  while getopts 'h' opt; do
     case "$opt" in
-      h) _show_manual_for "list";;
+      h) _show_manual_for 'list';;
     esac
   done
 
   shift $((OPTIND-1))
-  [ "$1" = "--" ] && shift
+  [ "$1" = '--' ] && shift
 
   _user_required
 
@@ -19,7 +19,7 @@ function list {
     _abort "$SECRETS_DIR_PATHS_MAPPING is missing."
   fi
 
-  while read line; do
+  while read -r line; do
     echo "$line"
   done < "$SECRETS_DIR_PATHS_MAPPING"
 }

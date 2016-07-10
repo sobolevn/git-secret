@@ -4,9 +4,9 @@
 function killperson {
   OPTIND=1
 
-  while getopts "h" opt; do
+  while getopts 'h' opt; do
     case "$opt" in
-      h) _show_manual_for "killperson";;
+      h) _show_manual_for 'killperson';;
     esac
   done
 

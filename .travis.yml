@@ -1,20 +1,79 @@
-language: c
+matrix:
+  fast_finish: true
+  include:
+    - os: linux
+      env: GITSECRET_DIST="make"; DOCKER_DIST="debian"
+      services: docker
+      sudo: required
+      language: ruby
+    - os: linux
+      env: GITSECRET_DIST="deb"; DOCKER_DIST="debian";
+      services: docker
+      sudo: required
+      language: ruby
+    - os: linux
+      env: GITSECRET_DIST="deb"; DOCKER_DIST="ubuntu"
+      services: docker
+      sudo: required
+      language: ruby
+    - os: linux
+      env: GITSECRET_DIST="rpm"; DOCKER_DIST="fedora"
+      services: docker
+      sudo: required
+      language: ruby
+    - os: linux
+      env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"
+      sudo: required
+      language: ruby
+    - os: linux
+      env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg2"; SECRETS_GPG_COMMAND="gpg2"
+      sudo: required
+      language: ruby
+    - os: linux
+      env: GITSECRET_DIST="shellcheck"
+      sudo: required
+      language: ruby
+      addons:
+        apt:
+          sources:
+          - debian-sid
+          packages:
+          - shellcheck
+    - os: osx
+      env: GITSECRET_DIST="brew"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"
+      sudo: false
+      language: generic
+    - os: osx
+      env: GITSECRET_DIST="brew"; GITSECRET_GPG_DEP="gnupg2"; SECRETS_GPG_COMMAND="gpg2"
+      sudo: false
+      language: generic
 
-env:
-  - SECRETS_GPG_COMMAND=gpg
-  - SECRETS_GPG_COMMAND=gpg2
-    
-branches:
-  only:
-    - master
-    - develop
-
-install:
-  - test $SECRETS_GPG_COMMAND = gpg2 && sudo apt-get install gnupg2 || echo 0
-  - make install-test
+before_script:
+  - chmod +x ".ci/before_script.sh" && ".ci/before_script.sh"
 
 script:
-  - make test
+  - chmod +x ".ci/script.sh" && ".ci/script.sh"
+
+before_deploy:
+  - chmod +x ".ci/before_deploy.sh" && ".ci/before_deploy.sh"
+
+deploy:
+  - provider: bintray
+    on:
+      branch: master
+      condition: "$GITSECRET_DIST == deb"
+    file: "build/deb_descriptor.json"
+    user: "sobolevn"
+    key: "$BINTRAY_API_KEY"
+    passphrase: "$BINTRAY_GPG_PASS"
+  - provider: bintray
+    on:
+      branch: master
+      condition: "$GITSECRET_DIST == rpm"
+    file: "build/rpm_descriptor.json"
+    user: "sobolevn"
+    key: "$BINTRAY_API_KEY"
+    passphrase: "$BINTRAY_GPG_PASS"
 
 notifications:
   email:

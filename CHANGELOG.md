@@ -1,12 +1,21 @@
 # Changelog
 
+## Version 0.2.1
+
+- Now everything is tested inside the `docker`-containers and `OSX` images on `travis`.
+- Added autodeploy to `bintray` in `.travis.yml`.
+- Added `.ci/` folder for continuous integration, refactored `utils/` folder.
+- Added `CONTRIBUTING.md` and `LICENSE.md`.
+- New brand logo in the `README.md`.
+- Everything is `shellcheck`ed (except `tests/`).
+
 ## Version 0.2.0
 
 - Added `changes` command to see the difference between current version of the hidden files and the commited one
 - Added `-f` option to the `reveal` command to remove prompts
-- Changed the way files were decrypted, now it is a separate functon
+- Changed the way files were decrypted, now it is a separate function
 - Some bugs are fixed
-- New installation instractions
+- New installation instructions
 
 ## Version 0.1.2
 
