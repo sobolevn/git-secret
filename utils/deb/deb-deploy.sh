@@ -27,7 +27,7 @@ echo "{ \
     \"includePattern\": \"build/buildroot/(.*\.deb)\", \
     \"uploadPattern\": \"/git-secret_${SCRIPT_VERSION}_all.deb\", \
     \"matrixParams\": { \
-      \"deb_distribution\": \"stable\", \
+      \"deb_distribution\": \"git-secret\", \
       \"deb_component\": \"main\", \
       \"deb_architecture\": \"all\" \
     } \
