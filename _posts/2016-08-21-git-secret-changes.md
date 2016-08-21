@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-changes'
-date:   2016-07-10 14:53:27 +0300
+date:   2016-08-21 16:17:52 +0300
 categories: command
 ---
 git-secret-changes - view diff of the hidden files.
