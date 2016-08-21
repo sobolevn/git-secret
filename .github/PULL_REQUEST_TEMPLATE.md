@@ -1,11 +1,11 @@
-Thanks for sending a pull request!
+<!-- Thanks for sending a pull request!
 
 Here's how it's done:
 1. Make sure that you open your pull-request to the `develop` branch (master branch is protected, since some plugins use it when installed)
 2. Make sure that tests pass
 3. Make sure that your code has the same style
 
-Please make sure you click the link above to view the contribution guidelines, then fill out the blanks below.
+Please make sure you click the link above to view the contribution guidelines, then fill out the blanks below. -->
 
 What does this implement/fix? Explain your changes.
 ---------------------------------------------------
