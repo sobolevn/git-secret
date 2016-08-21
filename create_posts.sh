@@ -22,16 +22,21 @@ function copy_to_posts {
   mkdir -p "$POSTS_LOCATION"
 
   # Moving new command files:
-  local timestamp=$(date "+%Y-%m-%d %H:%M:%S %z")
-  local current_date=$(date "+%Y-%m-%d")
+  local timestamp
+  local current_date
+
+  timestamp=$(date "+%Y-%m-%d %H:%M:%S %z")
+  current_date=$(date "+%Y-%m-%d")
 
   # Creating command refernce:
   for com in $MAN_LOCATION/git-secret-*.1.ronn; do
-    local short_name=$(echo "$com" | sed -n "s|$MAN_LOCATION/\(.*\)\.1\.ronn|\1|p")
+    local short_name
+    short_name=$(echo "$com" | sed -n "s|$MAN_LOCATION/\(.*\)\.1\.ronn|\1|p")
     local command_header="---
 layout: post
 title:  '${short_name}'
 date:   ${timestamp}
+permalink: ${short_name}
 categories: command
 ---"
 
@@ -45,6 +50,7 @@ categories: command
 layout: post
 title:  'git-secret'
 date:   ${timestamp}
+permalink: git-secret
 categories: usage
 ---"
   local usage_filename="$POSTS_LOCATION/${current_date}-git-secret.md"

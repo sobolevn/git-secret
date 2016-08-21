@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2016-08-21 16:17:52 +0300
+date:   2016-08-21 16:36:33 +0300
+permalink: git-secret
 categories: usage
 ---
 ## Content
@@ -55,10 +56,16 @@ There are several ways to install `git-secret`:
 
 **** `deb` package ****
 
-1. Run `echo "deb https://dl.bintray.com/sobolevn/deb git-secret stable" | sudo tee -a /etc/apt/sources.list`
-2. Run `sudo apt-get install git-secret`
+You can find the `deb` repository [here](https://bintray.com/sobolevn/deb/git-secret).
+
+0. Pre-requirements: make sure you have installed `apt-transport-https`
+1. Run `echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | sudo tee -a /etc/apt/sources.list`
+2. Add the release key: `wget -qO - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | sudo apt-key add -`
+3. Run `sudo apt-get update && sudo apt-get install git-secret`
 
 **** `rpm` package ****
+
+You can find the `rpm` repository [here](https://bintray.com/sobolevn/rpm/git-secret).
 
 1. Run `wget https://bintray.com/sobolevn/rpm/rpm -O bintray-sobolevn-rpm.repo && sudo mv bintray-sobolevn-rpm.repo /etc/yum.repos.d/`
 2. Run `sudo yum install git-secret`
