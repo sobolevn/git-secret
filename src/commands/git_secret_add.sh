@@ -8,7 +8,7 @@ function add {
   while getopts "ih" opt; do
     case "$opt" in
       i) auto_add=1;;
-      h) _show_manaul_for "add";;
+      h) _show_manual_for "add";;
     esac
   done
 
