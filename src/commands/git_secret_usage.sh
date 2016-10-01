@@ -1,19 +1,6 @@
 #!/usr/bin/env bash
 
 
-function _show_help_usage {
-    cat <<-EOF
-usage: git secret usage
-prints all the available commands.
-
-options:
-  -h        shows this help.
-
-EOF
-  exit 0
-}
-
-
 function usage {
   OPTIND=1
 

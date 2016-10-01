@@ -59,6 +59,22 @@ function teardown {
 }
 
 
+@test "run 'add' for file in subdirectory" {
+  local TEST_FILE='test_file'
+  local TEST_DIR='test_dir'
+
+  mkdir "$TEST_DIR"
+  touch "$TEST_DIR/$TEST_FILE"
+  echo "content" > "$TEST_DIR/$TEST_FILE"
+  echo "$TEST_DIR/$TEST_FILE" > ".gitignore"
+
+  run git secret add "$TEST_DIR/$TEST_FILE"
+  rm -rf "$TEST_DIR"
+
+  [ "$status" -eq 0 ]
+}
+
+
 @test "run 'add' twice for one file" {
   local filename="local_file"
   echo "content" > "$filename"
