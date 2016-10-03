@@ -128,7 +128,7 @@ function _show_manual_for {
 # VCS :
 
 function _check_ignore {
-  git check-ignore -q "$1";
+  git check-ignore --no-index -q "$1";
   echo $?
 }
 

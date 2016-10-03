@@ -23,9 +23,9 @@ function teardown {
   echo "content" > "$TEST_FILE"
 
   run git secret add "$TEST_FILE"
-  rm -f "$TEST_FILE"
-
   [ "$status" -eq 1 ]
+
+  rm -f "$TEST_FILE"
 }
 
 
@@ -50,9 +50,9 @@ function teardown {
   echo "$filename" > ".gitignore"
 
   run git secret add "$filename"
-  rm -f "$filename" ".gitignore"
-
   [ "$status" -eq 0 ]
+
+  rm -f "$filename" ".gitignore"
 
   local files_list=$(cat "$SECRETS_DIR_PATHS_MAPPING")
   [ "$files_list" = "$filename" ]
@@ -69,9 +69,10 @@ function teardown {
   echo "$TEST_DIR/$TEST_FILE" > ".gitignore"
 
   run git secret add "$TEST_DIR/$TEST_FILE"
-  rm -rf "$TEST_DIR"
-
   [ "$status" -eq 0 ]
+  [[ "$output" == *"1 items added."* ]]
+
+  rm -rf "$TEST_DIR"
 }
 
 
@@ -82,10 +83,10 @@ function teardown {
 
   run git secret add "$filename"
   run git secret add "$filename"
-  rm -f "$filename" ".gitignore"
-
   [ "$status" -eq 0 ]
   [ "$output" = "1 items added." ]
+
+  rm -f "$filename" ".gitignore"
 
   local files_list=`cat "$SECRETS_DIR_PATHS_MAPPING"`
   [ "$files_list" = "$filename" ]
@@ -102,8 +103,8 @@ function teardown {
   echo "$filename2" >> ".gitignore"
 
   run git secret add "$filename1" "$filename2"
-  rm -f "$filename1" "$filename2" ".gitignore"
-
   [ "$status" -eq 0 ]
   [ "$output" = "2 items added." ]
+
+  rm -f "$filename1" "$filename2" ".gitignore"
 }
