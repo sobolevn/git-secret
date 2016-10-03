@@ -53,7 +53,7 @@ function install_fixture_key {
 
   $SECRETS_GPG_COMMAND --homedir="$FIXTURES_DIR/gpg/${1}" \
     --no-permission-warning --output "$public_key" \
-    --armor --batch --yes --export "$email"  > /dev/null 2>&1
+    --armor --batch --yes --export "$email"
   $GPGTEST --import "$public_key" > /dev/null 2>&1
   rm -f "$public_key"
 }
@@ -65,7 +65,7 @@ function install_fixture_full_key {
 
   $SECRETS_GPG_COMMAND --homedir="$FIXTURES_DIR/gpg/${1}" \
     --no-permission-warning --output "$private_key" --armor \
-    --yes --export-secret-key "$email" > /dev/null 2>&1
+    --yes --export-secret-key "$email"
 
   $GPGTEST --allow-secret-key-import --import "$private_key" > /dev/null 2>&1
 
@@ -93,7 +93,7 @@ function uninstall_fixture_full_key {
   local fingerprint="$2"
   if [[ -z "$fingerprint" ]]; then
     # see issue_12, fingerprint on `gpg2` has different format:
-    fingerprint=$(_get_gpg_fingerprint_by_email "$email")
+    fingerprint=$(get_gpg_fingerprint_by_email "$email")
   fi
 
   $GPGTEST --batch --yes --delete-secret-keys "$fingerprint" > /dev/null 2>&1
