@@ -13,14 +13,7 @@ function usage {
   shift $((OPTIND-1))
   [ "$1" = "--" ] && shift
 
-  local commands=""
-  local separator="|"
+  local commands="add|changes|clean|hide|init|killperson|list|remove|reveal|tell|usage|whoknows"
 
-  for com in $(compgen -A function); do
-    if [[ ! $com == _* ]]; then
-      commands+="$com$separator"
-    fi
-  done
-
-  echo "usage: git secret [${commands%?}]"
+  echo "usage: git secret [${commands}]"
 }
