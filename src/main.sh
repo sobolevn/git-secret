@@ -4,7 +4,9 @@ set -e
 
 function _check_setup {
   # Checking git and secret-plugin setup:
-  if [[ ! -d ".git" ]] || [[ ! -d ".git/hooks" ]]; then
+  local is_tree
+  is_tree=$(_is_inside_git_tree)
+  if [[ $is_tree != "0" ]]; then
     _abort "repository is broken. try running 'git init' or 'git clone'."
   fi
 
