@@ -142,6 +142,12 @@ function _add_ignored_file {
 }
 
 
+function _is_inside_git_tree {
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1
+    echo $?
+}
+
+
 # Logic :
 
 function _abort {
