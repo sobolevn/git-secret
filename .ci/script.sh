@@ -15,7 +15,7 @@ if [[ ! -z "$DOCKER_DIST" ]]; then
 fi
 
 # Local builds:
-if [[ "$GITSECRET_DIST" == "brew" ]] || [[ "$GITSECRET_DIST" == "brew" ]]; then
+if [[ "$GITSECRET_DIST" == "brew" ]] || [[ "$GITSECRET_DIST" == "none" ]]; then
   # Only running `make test` on standard (non-docker) build,
   # since it is called inside the docker container anyway.
   make test
@@ -25,6 +25,4 @@ if [[ ! -z "$(command -v shellcheck)" ]]; then
   # This means, that `shellcheck` does exist, so run it:
   echo 'running lint'
   find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
-  # TODO: add tests to lint
-  # see: https://github.com/koalaman/shellcheck/issues/709
 fi

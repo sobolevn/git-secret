@@ -6,7 +6,7 @@ function _check_setup {
   # Checking git and secret-plugin setup:
   local is_tree
   is_tree=$(_is_inside_git_tree)
-  if [[ $is_tree != "0" ]]; then
+  if [[ ! $is_tree -eq 0 ]]; then
     _abort "repository is broken. try running 'git init' or 'git clone'."
   fi
 
