@@ -18,7 +18,6 @@ function teardown {
 
   run git secret init
   [ "$status" -eq 1 ]
-  [ "$output" = "repository is broken. try running 'git init' or 'git clone'. abort." ]
 }
 
 

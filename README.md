@@ -34,4 +34,4 @@ MIT. See [LICENSE.md](LICENSE.md) for details.
 
 ## Thanks
 
-Special thanks to [Elio Qoshi](https://elioqoshi.me/sq/) from [ura](http://ura.al/) for the awesome logo.
+Special thanks to [Elio Qoshi](https://elioqoshi.me/sq/) from [ura](http://ura.design/) for the awesome logo.
