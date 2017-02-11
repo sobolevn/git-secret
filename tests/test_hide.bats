@@ -31,9 +31,16 @@ function teardown {
 }
 
 
-@test "run 'hide' with params" {
+@test "run 'hide' with -c param" {
   run git secret hide -v -c
   [ "$status" -eq 0 ]
+}
+
+
+@test "run 'hide' with -d param" {
+  run git secret hide -v -d
+  [ "$status" -eq 0 ]
+  [ ! -f "$FILE_TO_HIDE" ]
 }
 
 

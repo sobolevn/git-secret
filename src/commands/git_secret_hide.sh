@@ -6,7 +6,7 @@ function _optional_clean {
   local clean=0
   local opt_string=''
 
-  while getopts 'cvh' opt; do
+  while getopts 'cdvh' opt; do
     case "$opt" in
       c) clean=1;;
 
@@ -27,6 +27,40 @@ function _optional_clean {
 }
 
 
+function _optional_delete {
+  local verbose=''
+  local delete=0
+
+  OPTIND=1
+
+  while getopts 'vd' opt; do
+    case "$opt" in
+      d) delete=1;;
+
+      v) verbose="v";;
+    esac
+  done
+
+  shift $((OPTIND-1))
+  [ "$1" = '--' ] && shift
+
+  if [[ $delete -eq 1 ]]; then
+    if [[ ! -z "$verbose" ]]; then
+      echo && echo 'removing unencrypted files:'
+    fi
+
+    while read -r line; do
+      find . -name "*$line" -type f -print0 | xargs -0 rm -f$verbose
+    done < "$SECRETS_DIR_PATHS_MAPPING"
+
+    if [[ ! -z "$verbose" ]]; then
+      echo
+    fi
+  fi
+
+}
+
+
 function hide {
   _optional_clean "$@"
 
@@ -44,6 +78,8 @@ function hide {
 
     counter=$((counter+1))
   done < "$SECRETS_DIR_PATHS_MAPPING"
+
+  _optional_delete "$@"
 
   echo "done. all $counter files are hidden."
 }
