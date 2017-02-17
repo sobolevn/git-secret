@@ -18,7 +18,7 @@ function changes {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
-  local filenames="$1"
+  local filenames="$@"
   if [[ -z "$filenames" ]]; then
     # Checking if no filenames are passed, show diff for all files.
     filenames=$(git secret list)
