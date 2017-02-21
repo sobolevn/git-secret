@@ -18,15 +18,15 @@ function changes {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
-  local filenames="$@"
-  if [[ -z "$filenames" ]]; then
+  local filenames=( "$@" )
+  if [[ ${#filenames[@]} -eq 0 ]]; then
     # Checking if no filenames are passed, show diff for all files.
-    filenames=$(git secret list)
+    filenames=( $(git secret list) )
   fi
 
   IFS='
   '
-  for filename in $filenames; do
+  for filename in "${filenames[@]}"; do
     local decrypted
     local content
     local diff_result
