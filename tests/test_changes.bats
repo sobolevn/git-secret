@@ -66,3 +66,21 @@ function teardown {
   [[ "$output" == *"changes in $SECOND_FILE_TO_HIDE"* ]]
   [[ "$output" == *"$second_file_to_hide"* ]]
 }
+
+@test "run 'changes' with multiple selected files changed" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  local new_content="new content"
+  local second_new_content="something different"
+  echo "$new_content" >> "$FILE_TO_HIDE"
+  echo "$second_new_content" >> "$SECOND_FILE_TO_HIDE"
+
+  run git secret changes "$FILE_TO_HIDE" "$SECOND_FILE_TO_HIDE" -d "$TEST_GPG_HOMEDIR" -p "$password"
+  [ "$status" -eq 2 ]
+
+  # Testing that output has both filename and changes:
+  [[ "$output" == *"changes in $FILE_TO_HIDE"* ]]
+  [[ "$output" == *"$new_content"* ]]
+
+  [[ "$output" == *"changes in $SECOND_FILE_TO_HIDE"* ]]
+  [[ "$output" == *"$second_file_to_hide"* ]]
+}
