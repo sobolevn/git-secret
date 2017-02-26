@@ -5,8 +5,17 @@ layout: default
 <div class="home">
 
   <img src="{{ "/images/git-secret-big.png" | prepend: site.baseurl }}"
-       alt="git-secret" title="git-secret"
+       alt="git-secret"
+       title="git-secret"
        class="home-logo-image" />
+
+  <h1>Synopsis</h1>
+
+  {% capture markdown_file %}
+    {% include why.md %}
+  {% endcapture %}
+
+  {{ markdown_file | markdownify }}
 
   {% for post in site.categories.usage %}
     {{ post.content }}
@@ -18,12 +27,17 @@ layout: default
     {% for post in site.categories.command %}
       <li>
         <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">
+            {{ post.title }}
+          </a>
         </h2>
       </li>
     {% endfor %}
   </ul>
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+  <p class="rss-subscribe">
+    subscribe
+    <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a>
+  </p>
 
 </div>
