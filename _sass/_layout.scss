@@ -25,6 +25,7 @@
 }
 
 .site-nav {
+    @extend %clearfix;
     float: right;
     line-height: 56px;
 
@@ -245,13 +246,28 @@
     }
 }
 
+
+/**
+ * Navigation
+ */
+.site-navigation {
+    @extend .wrapper;
+
+    display: flex;
+    justify-content: space-between;
+
+    a {
+        color: $purple-color-dark;
+    }
+}
+
+
 /**
  * Homepage
  */
-
  .home {
-   .home-logo-image {
-     margin-top: 50px;
-     margin-bottom: 70px;
-   }
+    .home-logo-image {
+        margin-top: 50px;
+        margin-bottom: 70px;
+    }
  }

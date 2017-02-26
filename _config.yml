@@ -12,7 +12,12 @@ description: > # this means to ignore newlines until "baseurl:"
   A bash-tool to store your private data inside a git repository.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://sobolevn.github.io" # the base hostname & protocol for your site
+
+# Github links:
 github_username: sobolevn
+github_changelog: "https://github.com/sobolevn/git-secret/blob/master/CHANGELOG.md"
+github_plugins: "https://github.com/sobolevn/git-secret/wiki/Third-party-plugins"
+github_using: "https://github.com/sobolevn/git-secret/wiki/Who-uses"
 
 # Seo settings:
 gems:
