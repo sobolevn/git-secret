@@ -15,9 +15,13 @@ function killperson {
 
   _user_required
 
-  if [[ ${#@} -eq 0 ]]; then
-    _abort "email is required."
+  local emails=( "$@" )
+
+  if [[ ${#emails[@]} -eq 0 ]]; then
+    _abort "at least one email is required."
   fi
 
-  $GPGLOCAL --batch --yes --delete-key "$1"
+  for email in "${emails[@]}"; do
+    $GPGLOCAL --batch --yes --delete-key "$email"
+  done
 }

@@ -5,6 +5,8 @@ load _test_base
 
 function setup {
   install_fixture_key "$TEST_DEFAULT_USER"
+
+  set_state_initial
   set_state_git
   set_state_secret_init
   set_state_secret_tell "$TEST_DEFAULT_USER"
@@ -29,7 +31,7 @@ function teardown {
 }
 
 
-@test "run 'add' for unignored file with '-i' option" {
+@test "run 'add' for unignored file with '-i'" {
   local TEST_FILE='test_file.auto_ignore'
   touch "$TEST_FILE"
   echo "content" > "$TEST_FILE"
@@ -63,7 +65,7 @@ function teardown {
   local TEST_FILE='test_file'
   local TEST_DIR='test_dir'
 
-  mkdir "$TEST_DIR"
+  mkdir -p "$TEST_DIR"
   touch "$TEST_DIR/$TEST_FILE"
   echo "content" > "$TEST_DIR/$TEST_FILE"
   echo "$TEST_DIR/$TEST_FILE" > ".gitignore"

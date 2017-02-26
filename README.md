@@ -2,7 +2,7 @@
 
 [![Build Status](https://img.shields.io/travis/sobolevn/git-secret/master.svg)](https://travis-ci.org/sobolevn/git-secret) [![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](http://braumeister.org/formula/git-secret) [![Bintray deb](https://img.shields.io/bintray/v/sobolevn/deb/git-secret.svg)](https://bintray.com/sobolevn/deb/git-secret/view) [![Dockerhub](https://img.shields.io/docker/pulls/sobolevn/git-secret.svg)](https://hub.docker.com/r/sobolevn/git-secret/)
 
-[![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](https://sobolevn.github.io/git-secret/)
+[![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](http://git-secret.io/)
 
 ## What is `git-secret`?
 
@@ -14,11 +14,11 @@
 
 ## Usage
 
-See the [git-secret site](https://sobolevn.github.io/git-secret/).
+See the [git-secret site](http://git-secret.io/).
 
 ## Installation
 
-See the [installation section](https://sobolevn.github.io/git-secret/#installation).
+See the [installation section](http://git-secret.io/#installation).
 
 ## Contributing
 

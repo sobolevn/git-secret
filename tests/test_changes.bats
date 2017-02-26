@@ -12,6 +12,7 @@ FINGERPRINT=""
 function setup {
   FINGERPRINT=$(install_fixture_full_key "$TEST_DEFAULT_USER")
 
+  set_state_initial
   set_state_git
   set_state_secret_init
   set_state_secret_tell "$TEST_DEFAULT_USER"
@@ -74,8 +75,10 @@ function teardown {
   echo "$new_content" >> "$FILE_TO_HIDE"
   echo "$second_new_content" >> "$SECOND_FILE_TO_HIDE"
 
-  run git secret changes "$FILE_TO_HIDE" "$SECOND_FILE_TO_HIDE" -d "$TEST_GPG_HOMEDIR" -p "$password"
-  [ "$status" -eq 2 ]
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" \
+    "$FILE_TO_HIDE" "$SECOND_FILE_TO_HIDE"
+
+  [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
   [[ "$output" == *"changes in $FILE_TO_HIDE"* ]]

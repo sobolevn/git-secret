@@ -18,7 +18,7 @@ function whoknows {
 
   local keys
 
-  # Just to the point:
+  # Getting the users from gpg:
   keys=$(_get_users_in_keyring)
   echo "$keys"
 }

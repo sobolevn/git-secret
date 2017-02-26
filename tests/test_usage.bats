@@ -4,6 +4,7 @@ load _test_base
 
 
 function setup {
+  set_state_initial
   set_state_git
 }
 

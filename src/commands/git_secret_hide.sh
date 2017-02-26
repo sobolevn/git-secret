@@ -2,55 +2,28 @@
 
 
 function _optional_clean {
-  OPTIND=1
-  local clean=0
-  local opt_string=''
-
-  while getopts 'cdvh' opt; do
-    case "$opt" in
-      c) clean=1;;
-
-      h) _show_manual_for 'hide';;
-
-      v) opt_string='-v';;
-    esac
-  done
-
-  shift $((OPTIND-1))
-  [ "$1" = '--' ] && shift
-
-  _user_required
+  local clean="$1"
+  local verbose=${2:-""}
 
   if [[ $clean -eq 1 ]]; then
-    clean "$opt_string"
+    _find_and_clean_formated "*$SECRETS_EXTENSION" "$verbose"
   fi
 }
 
 
 function _optional_delete {
-  local verbose=''
-  local delete=0
-
-  OPTIND=1
-
-  while getopts 'vd' opt; do
-    case "$opt" in
-      d) delete=1;;
-
-      v) verbose="v";;
-    esac
-  done
-
-  shift $((OPTIND-1))
-  [ "$1" = '--' ] && shift
+  local delete="$1"
+  local verbose=${2:-""}
 
   if [[ $delete -eq 1 ]]; then
+    # We use custom formating here:
     if [[ ! -z "$verbose" ]]; then
       echo && echo 'removing unencrypted files:'
     fi
 
     while read -r line; do
-      find . -name "*$line" -type f -print0 | xargs -0 rm -f$verbose
+      # So the formating would not be repeated several times here:
+      _find_and_clean "*$line" "$verbose"
     done < "$SECRETS_DIR_PATHS_MAPPING"
 
     if [[ ! -z "$verbose" ]]; then
@@ -62,7 +35,33 @@ function _optional_delete {
 
 
 function hide {
-  _optional_clean "$@"
+  local clean=0
+  local delete=0
+  local verbose=''
+
+  OPTIND=1
+
+  while getopts 'cdvh' opt; do
+    case "$opt" in
+      c) clean=1;;
+
+      d) delete=1;;
+
+      v) verbose='v';;
+
+      h) _show_manual_for 'hide';;
+    esac
+  done
+
+  shift $((OPTIND-1))
+  [ "$1" = '--' ] && shift
+
+  # We need user to continue:
+  _user_required
+
+  # If -c option was provided, it would clean the hidden files
+  # before creating new ones.
+  _optional_clean "$clean" "$verbose"
 
   local counter=0
   while read -r line; do
@@ -79,7 +78,9 @@ function hide {
     counter=$((counter+1))
   done < "$SECRETS_DIR_PATHS_MAPPING"
 
-  _optional_delete "$@"
+  # If -d option was provided, it would delete the source files
+  # after we have already hidden them.
+  _optional_delete "$delete" "$verbose"
 
   echo "done. all $counter files are hidden."
 }
