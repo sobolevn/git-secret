@@ -67,7 +67,7 @@ Note that you can install to any prefix in your `PATH`
 
 ---
 
-## `antigen` plugin (or any other `oh-my-zsh`-styled plugin-systems)
+### `antigen` plugin
 
 *Deprecated*
 
