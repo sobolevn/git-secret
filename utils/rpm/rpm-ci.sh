@@ -16,6 +16,9 @@ RPM_FILE_LOCATION=$(locate_rpm)
 
 # Integration tests
 function integration_tests {
+  # Note that `dnf` must be installed.
+  # CentOS 6 does not support `dnf`.
+
   # Installing the package:
   dnf install -y "$RPM_FILE_LOCATION"
 

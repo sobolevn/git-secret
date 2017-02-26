@@ -28,10 +28,10 @@ Only required if dealing with manuals, `gh-pages` or releases:
 1. Firstly, you will need to setup development hooks with `make install-hooks`
 2. Make changes to the files that need to be changed
 3. When making changes to any files inside `src/` you will need to rebuild the binary `git-secret` with `make clean && make build` command
-4. Run [`shellcheck`][shellcheck] against all your changes with `find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}`
+4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`
 5. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`, make sure you write a good message, which will explain your work
 6. When running `git commit` the tests will run automatically, your commit will be canceled if they fail
-7. Push to your repository, make a pull-request against `develop` branch. Please, make sure you have **one** commit per pull-request
+7. Push to your repository, make a pull-request against `develop` branch. Please, make sure you have **one** commit per pull-request, it will be merge into one anyways
 
 ### Branches
 
@@ -55,7 +55,7 @@ CI is done with the help of `travis`. `travis` handles multiple environments:
 
 ### Release process
 
-The release process is defined in the `git`-hooks and `.travis.yml`.  
+The release process is defined in the `git`-hooks and `.travis.yml`.
 
 When creating a commit inside the `staging` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) it will trigger two main events.
 
@@ -88,6 +88,6 @@ Releases to `brew` are made manually.
 [tracker]: https://github.com/sobolevn/git-secret/issues
 [help-wanted]: https://github.com/sobolevn/git-secret/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22
 [shellcheck]: https://github.com/koalaman/shellcheck
-[git-secret-site]: https://sobolevn.github.io/git-secret/
+[git-secret-site]: http://git-secret.io
 [bintray]: https://bintray.com/sobolevn
 [Dockerhub]: https://hub.docker.com/r/sobolevn/git-secret/

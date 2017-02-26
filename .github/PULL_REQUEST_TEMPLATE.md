@@ -15,7 +15,6 @@ Does this close any currently open issues?
 ------------------------------------------
 …
 
-
 Any relevant logs, error output, etc?
 -------------------------------------
 (If it’s long, please paste to https://ghostbin.com/ and insert the link here.)
@@ -23,11 +22,3 @@ Any relevant logs, error output, etc?
 Any other comments?
 -------------------
 …
-
-Where has this been tested?
----------------------------
-**Operating system:** …
-
-**`git-secret` version:** …
-
-**Shell type and version:** …

@@ -13,7 +13,11 @@ function usage {
   shift $((OPTIND-1))
   [ "$1" = "--" ] && shift
 
+  # There was a bug with some shells, which were adding extra commands
+  # to the old dynamic-loading version of this code.
+  # thanks to @antmak it is now fixed, see:
+  # https://github.com/sobolevn/git-secret/issues/47
   local commands="add|changes|clean|hide|init|killperson|list|remove|reveal|tell|usage|whoknows"
 
-  echo "usage: git secret [${commands}]"
+  echo "usage: git secret [$commands]"
 }

@@ -4,6 +4,7 @@ load _test_base
 
 
 function setup {
+  set_state_initial
   set_state_git
 }
 
@@ -13,7 +14,7 @@ function teardown {
 }
 
 
-@test "run 'init' without .git" {
+@test "run 'init' without '.git'" {
   remove_git_repository
 
   run git secret init

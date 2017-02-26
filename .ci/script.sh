@@ -24,5 +24,5 @@ fi
 if [[ ! -z "$(command -v shellcheck)" ]]; then
   # This means, that `shellcheck` does exist, so run it:
   echo 'running lint'
-  find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
+  make lint
 fi

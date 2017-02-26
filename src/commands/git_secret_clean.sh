@@ -17,14 +17,8 @@ function clean {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
-  if [[ ! -z "$verbose" ]]; then
-    echo && echo 'cleaing:'
-  fi
+  _user_required
 
-  find . -name "*$SECRETS_EXTENSION" -type f -print0 | xargs rm -f$verbose
-
-  if [[ ! -z "$verbose" ]]; then
-    echo
-  fi
-
+  # User should see properly formated output:
+  _find_and_clean_formated "*$SECRETS_EXTENSION" "$verbose"
 }

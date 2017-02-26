@@ -9,6 +9,7 @@ FILE_CONTENTS="hidden content юникод"
 function setup {
   install_fixture_key "$TEST_DEFAULT_USER"
 
+  set_state_initial
   set_state_git
   set_state_secret_init
   set_state_secret_tell "$TEST_DEFAULT_USER"
@@ -31,9 +32,27 @@ function teardown {
 }
 
 
+@test "run 'list' with multiple files" {
+  # Preparations:
+  local second_file="second_file.txt"
+  set_state_secret_add "$second_file" "$FILE_CONTENTS"
+
+  run git secret list
+  [ "$status" -eq 0 ]
+
+  # Now it should list two files:
+  [[ "$output" == *"$FILE_TO_HIDE"* ]]
+  [[ "$output" == *"$second_file"* ]]
+
+  # Cleaning up:
+  rm -f "$second_file"
+}
+
+
 @test "run 'list' on empty repo" {
   git secret remove "$FILE_TO_HIDE"
 
+  # Running `list` on empty mapping should result an error:
   run git secret list
   [ "$status" -eq 1 ]
 }

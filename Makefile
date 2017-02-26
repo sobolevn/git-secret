@@ -53,9 +53,13 @@ test: install-test clean build
 install-ronn:
 	@if [ ! `gem list ronn -i` == "true" ]; then gem install ronn; fi
 
+.PHONY: clean-man
+clean-man:
+	@find "man/" -type f ! -name "*.ronn" -delete
+
 .PHONY: build-man
-build-man: install-ronn
-	@ronn --roff man/*/*.ronn
+build-man: install-ronn clean-man
+	@ronn --roff --organization="sobolevn" --manual="git-secret" man/*/*.ronn
 
 .PHONY: build-gh-pages
 build-gh-pages:
@@ -75,6 +79,10 @@ install-hooks:
 
 .PHONY: develop
 develop: clean build install-hooks
+
+.PHONY: lint
+lint:
+	@find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
 
 #
 # Packaging:

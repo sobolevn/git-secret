@@ -21,15 +21,15 @@ SECRETS_DIR_PATHS_MAPPING="$SECRETS_DIR_PATHS/mapping.cfg"  # shellcheck disable
 GPGLOCAL="$SECRETS_GPG_COMMAND --homedir=$SECRETS_DIR_KEYS --no-permission-warning"
 
 
-# Inner bash :
+# Inner bash:
 
 function _function_exists {
-  declare -f -F "$1" > /dev/null
+  declare -f -F "$1" > /dev/null 2>&1
   echo $?
 }
 
 
-# OS based :
+# OS based:
 
 function _os_based {
   # Pass function name as first parameter.
@@ -57,7 +57,7 @@ function _os_based {
 }
 
 
-# File System :
+# File System:
 
 function _set_config {
   # First parameter is the KEY, second is VALUE, third is filename.
@@ -125,7 +125,7 @@ function _show_manual_for {
 }
 
 
-# VCS :
+# VCS:
 
 function _check_ignore {
   git check-ignore --no-index -q "$1";
@@ -143,22 +143,67 @@ function _add_ignored_file {
 
 
 function _is_inside_git_tree {
-    git rev-parse --is-inside-work-tree >/dev/null 2>&1
-    echo $?
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1
+  echo $?
 }
 
 
-# Logic :
+function _get_git_root_path {
+  # We need this function to get the location of the `.git` folder,
+  # since `.gitsecret` must be on the same level.
+  local result
+  result=$(git rev-parse --show-toplevel)
+  echo "$result"
+}
+
+
+# Logic:
 
 function _abort {
   >&2 echo "$1 abort."
   exit 1
 }
 
+function _find_and_clean {
+  # required:
+  local pattern="$1" # can be any string pattern
+
+  # optional:
+  local verbose=${2:-""} # can be empty or should be equal to "v"
+
+  # shellcheck disable=2086
+  find . -name "$pattern" -type f -print0 | xargs -0 rm -f$verbose
+}
+
+
+function _find_and_clean_formated {
+  # required:
+  local pattern="$1" # can be any string pattern
+
+  # optional:
+  local verbose=${2:-""} # can be empty or should be equal to "v"
+  local message=${3:-"cleaning:"} # can be any string
+
+  if [[ ! -z "$verbose" ]]; then
+    echo && echo "$message"
+  fi
+
+  _find_and_clean "$pattern" "$verbose"
+
+  if [[ ! -z "$verbose" ]]; then
+    echo
+  fi
+}
+
 
 function _secrets_dir_exists {
-  if [[ ! -d "$SECRETS_DIR" ]]; then
-    _abort "$SECRETS_DIR does not exist."
+  local root_path
+  root_path=$(_get_git_root_path)
+
+  local full_path="$root_path/$SECRETS_DIR"
+
+  if [[ ! -d "$full_path" ]]; then
+    _abort "$full_path does not exist."
   fi
 }
 
@@ -172,7 +217,7 @@ function _user_required {
   fi
 
   local keys_exist
-  keys_exist=$($GPGLOCAL -n --list-keys --with-colon)
+  keys_exist=$($GPGLOCAL -n --list-keys)
   if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
   fi
@@ -234,8 +279,8 @@ function _decrypt {
 
   if [[ ! -z "$passphrase" ]]; then
     echo "$passphrase" | $base --batch --yes --no-tty --passphrase-fd 0 \
-      "$encrypted_filename"
+      "$encrypted_filename" > /dev/null 2>&1
   else
-    $base "$encrypted_filename"
+    $base "$encrypted_filename" > /dev/null 2>&1
   fi
 }
