@@ -3,34 +3,35 @@
 # This file is following a name convention defined in:
 # https://github.com/sstephenson/bats
 
+# shellcheck disable=1090
 source "$SECRET_PROJECT_ROOT/src/version.sh"
+# shellcheck disable=1090
 source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 
 # Constants:
-
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
-# Folders:
-TEST_SECRETS_DIR="$BATS_TMPDIR/$SECRETS_DIR"
-TEST_SECRETS_DIR_PATHS_MAPPING="$BATS_TMPDIR/$SECRETS_DIR_PATHS_MAPPING"
-
-TEST_GPG_HOMEDIR="$PWD"
+TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
 # GPG-based stuff:
-: ${SECRETS_GPG_COMMAND:="gpg"}
+: "${SECRETS_GPG_COMMAND:="gpg"}"
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning"
 
 
 # Personal data:
 
 TEST_DEFAULT_USER="user1"
+TEST_SECOND_USER="user2" # shellcheck disable=2034
+TEST_ATTACKER_USER="attacker1" # shellcheck disable=2034
 
 function test_user_password {
+  # It was set on key creation:
   echo "${1}pass"
 }
 
 
 function test_user_email {
+  # It was set on key creation:
   echo "${1}@gitsecret.io"
 }
 
@@ -39,21 +40,25 @@ function test_user_email {
 
 function get_gpg_fingerprint_by_email {
   local email="$1"
-  local fingerprint=$($GPGTEST --list-public-keys --with-fingerprint --with-colons | \
-    sed -e '/<'$email'>::scESC:/,/[A-Z0-9]\{40\}:/!d' | \
+  local fingerprint
+
+  fingerprint=$($GPGTEST --list-public-keys --with-fingerprint --with-colons | \
+    sed -e '/<'"$email"'>::scESC:/,/[A-Z0-9]\{40\}:/!d' | \
     sed -e '/fpr/!d' | \
     sed -n 's/fpr:::::::::\([A-Z|0-9]\{40\}\):/\1/p')
-  echo $fingerprint
+  echo "$fingerprint"
 }
 
 
 function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
-  local email=$(test_user_email "$1")
+  local email
+
+  email=$(test_user_email "$1")
 
   $SECRETS_GPG_COMMAND --homedir="$FIXTURES_DIR/gpg/${1}" \
     --no-permission-warning --output "$public_key" \
-    --armor --batch --yes --export "$email"  > /dev/null 2>&1
+    --armor --batch --yes --export "$email" > /dev/null 2>&1
   $GPGTEST --import "$public_key" > /dev/null 2>&1
   rm -f "$public_key"
 }
@@ -61,18 +66,23 @@ function install_fixture_key {
 
 function install_fixture_full_key {
   local private_key="$BATS_TMPDIR/private-${1}.key"
-  local email=$(test_user_email "$1")
+  local email
+  local fp
+  local fingerprint
+
+  email=$(test_user_email "$1")
 
   $SECRETS_GPG_COMMAND --homedir="$FIXTURES_DIR/gpg/${1}" \
     --no-permission-warning --output "$private_key" --armor \
     --yes --export-secret-key "$email" > /dev/null 2>&1
 
-  $GPGTEST --allow-secret-key-import --import "$private_key" > /dev/null 2>&1
+  $GPGTEST --allow-secret-key-import \
+    --import "$private_key" > /dev/null 2>&1
 
-  local fp=$($GPGTEST --with-fingerprint "$private_key")
+  fp=$($GPGTEST --with-fingerprint "$private_key")
 
   # since 0.1.2 fingerprint is returned:
-  local fingerprint=$(echo "$fp" | tr -d ' ' | sed -n '2p' | sed -e 's/.*=//g')
+  fingerprint=$(echo "$fp" | tr -d ' ' | sed -n '2p' | sed -e 's/.*=//g')
 
   install_fixture_key "$1"
 
@@ -82,21 +92,25 @@ function install_fixture_full_key {
 
 
 function uninstall_fixture_key {
-  local email=$(test_user_email "$1")
+  local email
+
+  email=$(test_user_email "$1")
   $GPGTEST --batch --yes --delete-key "$email" > /dev/null 2>&1
 }
 
 
 function uninstall_fixture_full_key {
-  local email=$(test_user_email "$1")
+  local email
+  email=$(test_user_email "$1")
 
   local fingerprint="$2"
   if [[ -z "$fingerprint" ]]; then
     # see issue_12, fingerprint on `gpg2` has different format:
-    fingerprint=$(_get_gpg_fingerprint_by_email "$email")
+    fingerprint=$(get_gpg_fingerprint_by_email "$email")
   fi
 
-  $GPGTEST --batch --yes --delete-secret-keys "$fingerprint" > /dev/null 2>&1
+  $GPGTEST --batch --yes \
+    --delete-secret-keys "$fingerprint" > /dev/null 2>&1
 
   uninstall_fixture_key "$1"
 }
@@ -112,8 +126,12 @@ function git_set_config_email {
 function git_commit {
   git_set_config_email "$1"
 
-  local user_name=$(git config user.name)
-  local commit_gpgsign=$(git config commit.gpgsign)
+  local user_name
+  local commit_gpgsign
+
+  user_name=$(git config user.name)
+
+  commit_gpgsign=$(git config commit.gpgsign)
 
   git config --local user.name "$TEST_DEFAULT_USER"
   git config --local commit.gpgsign false
@@ -133,6 +151,11 @@ function remove_git_repository {
 
 # Git Secret:
 
+function set_state_initial {
+  cd "$BATS_TMPDIR" || exit 1
+}
+
+
 function set_state_git {
   git init > /dev/null 2>&1
 }
@@ -144,7 +167,9 @@ function set_state_secret_init {
 
 
 function set_state_secret_tell {
-  local email=$(test_user_email $1)
+  local email
+
+  email=$(test_user_email "$1")
   git secret tell -d "$TEST_GPG_HOMEDIR" "$email" > /dev/null 2>&1
 }
 
@@ -166,7 +191,7 @@ function set_state_secret_hide {
 
 function unset_current_state {
   # states order:
-  # git, secret_init, secret_tell, secret_add, secret_hide
+  # initial, git, secret_init, secret_tell, secret_add, secret_hide
 
   # unsets `secret_hide`
   # removes .secret files:
@@ -181,4 +206,7 @@ function unset_current_state {
 
   # removes gpg homedir:
   rm -f "pubring.gpg" "pubring.gpg~" "secring.gpg" "trustdb.gpg" "random_seed"
+
+  # return to the base dir:
+  cd "$SECRET_PROJECT_ROOT" || exit 1
 }

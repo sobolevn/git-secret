@@ -133,4 +133,3 @@ temp/
 build/
 *.deb
 *.fpm
-test.txt

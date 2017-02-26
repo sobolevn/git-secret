@@ -18,14 +18,17 @@ function changes {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
-  local filenames="$1"
-  if [[ -z "$filenames" ]]; then
+  _user_required
+
+  local filenames="$*"
+  if [[ -z $filenames ]]; then
     # Checking if no filenames are passed, show diff for all files.
     filenames=$(git secret list)
   fi
 
   IFS='
   '
+
   for filename in $filenames; do
     local decrypted
     local content

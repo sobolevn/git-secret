@@ -5,6 +5,8 @@ load _test_base
 
 function setup {
   install_fixture_key "$TEST_DEFAULT_USER"
+
+  set_state_initial
   set_state_git
   set_state_secret_init
   set_state_secret_tell "$TEST_DEFAULT_USER"
@@ -23,13 +25,13 @@ function teardown {
   echo "content" > "$TEST_FILE"
 
   run git secret add "$TEST_FILE"
-  rm -f "$TEST_FILE"
-
   [ "$status" -eq 1 ]
+
+  rm -f "$TEST_FILE"
 }
 
 
-@test "run 'add' for unignored file with '-i' option" {
+@test "run 'add' for unignored file with '-i'" {
   local TEST_FILE='test_file.auto_ignore'
   touch "$TEST_FILE"
   echo "content" > "$TEST_FILE"
@@ -50,12 +52,29 @@ function teardown {
   echo "$filename" > ".gitignore"
 
   run git secret add "$filename"
-  rm -f "$filename" ".gitignore"
-
   [ "$status" -eq 0 ]
+
+  rm -f "$filename" ".gitignore"
 
   local files_list=$(cat "$SECRETS_DIR_PATHS_MAPPING")
   [ "$files_list" = "$filename" ]
+}
+
+
+@test "run 'add' for file in subdirectory" {
+  local TEST_FILE='test_file'
+  local TEST_DIR='test_dir'
+
+  mkdir -p "$TEST_DIR"
+  touch "$TEST_DIR/$TEST_FILE"
+  echo "content" > "$TEST_DIR/$TEST_FILE"
+  echo "$TEST_DIR/$TEST_FILE" > ".gitignore"
+
+  run git secret add "$TEST_DIR/$TEST_FILE"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"1 items added."* ]]
+
+  rm -rf "$TEST_DIR"
 }
 
 
@@ -66,10 +85,10 @@ function teardown {
 
   run git secret add "$filename"
   run git secret add "$filename"
-  rm -f "$filename" ".gitignore"
-
   [ "$status" -eq 0 ]
   [ "$output" = "1 items added." ]
+
+  rm -f "$filename" ".gitignore"
 
   local files_list=`cat "$SECRETS_DIR_PATHS_MAPPING"`
   [ "$files_list" = "$filename" ]
@@ -86,8 +105,8 @@ function teardown {
   echo "$filename2" >> ".gitignore"
 
   run git secret add "$filename1" "$filename2"
-  rm -f "$filename1" "$filename2" ".gitignore"
-
   [ "$status" -eq 0 ]
   [ "$output" = "2 items added." ]
+
+  rm -f "$filename1" "$filename2" ".gitignore"
 }

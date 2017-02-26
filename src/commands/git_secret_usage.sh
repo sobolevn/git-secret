@@ -1,19 +1,6 @@
 #!/usr/bin/env bash
 
 
-function _show_help_usage {
-    cat <<-EOF
-usage: git secret usage
-prints all the available commands.
-
-options:
-  -h        shows this help.
-
-EOF
-  exit 0
-}
-
-
 function usage {
   OPTIND=1
 
@@ -26,14 +13,11 @@ function usage {
   shift $((OPTIND-1))
   [ "$1" = "--" ] && shift
 
-  local commands=""
-  local separator="|"
+  # There was a bug with some shells, which were adding extra commands
+  # to the old dynamic-loading version of this code.
+  # thanks to @antmak it is now fixed, see:
+  # https://github.com/sobolevn/git-secret/issues/47
+  local commands="add|changes|clean|hide|init|killperson|list|remove|reveal|tell|usage|whoknows"
 
-  for com in $(compgen -A function); do
-    if [[ ! $com == _* ]]; then
-      commands+="$com$separator"
-    fi
-  done
-
-  echo "usage: git secret [${commands%?}]"
+  echo "usage: git secret [$commands]"
 }
