@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-hide'
-date:   2016-08-21 16:36:33 +0300
+date:   2017-02-26 18:27:18 +0300
 permalink: git-secret-hide
 categories: command
 ---
@@ -23,9 +23,15 @@ It is possible to modify the names of the encrypted files by setting `SECRETS_EX
 
     -v  - verbose, shows extra information.
     -c  - deletes encrypted files before creating new ones.
+    -d  - deletes unencrypted files after encryption.
     -h  - shows help.
+
+
+## MANUAL
+
+Run `man git-secret-hide` to see this note.
 
 
 ## SEE ALSO
 
-git-secret-init(1), git-secret-tell(1), git-secret-add(1), git-secret-reveal(1)
+[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-tell(1)](http://git-secret.io/git-secret-tell), [git-secret-add(1)](http://git-secret.io/git-secret-add), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal)

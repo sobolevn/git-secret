@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-init'
-date:   2016-08-21 16:36:33 +0300
+date:   2017-02-26 18:27:18 +0300
 permalink: git-secret-init
 categories: command
 ---
@@ -22,6 +22,11 @@ git-secret-init - initializes git-secret repository.
     -h  - shows this help.
 
 
+## MANUAL
+
+Run `man git-secret-init` to see this note.
+
+
 ## SEE ALSO
 
-git-init(1), git-secret-tell(1)
+[git-secret-usage(1)](http://git-secret.io/git-secret-usage), [git-secret-tell(1)](http://git-secret.io/git-secret-tell)

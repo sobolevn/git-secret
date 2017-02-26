@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-remove'
-date:   2016-08-21 16:36:33 +0300
+date:   2017-02-26 18:27:18 +0300
 permalink: git-secret-remove
 categories: command
 ---
@@ -10,7 +10,7 @@ git-secret-remove - removes files from index.
 
 ## SYNOPSIS
 
-    git secret remove [-c] <pathspec..>
+    git secret remove [-c] <pathspec>...
 
 
 ## DESCRIPTION
@@ -23,6 +23,11 @@ git-secret-remove - removes files from index.
     -h  - shows help.
 
 
+## MANUAL
+
+Run `man git-secret-remove` to see this note.
+
+
 ## SEE ALSO
 
-git-secret-add(1), git-secret-reveal(1), git-secret-hide(1)
+[git-secret-add(1)](http://git-secret.io/git-secret-add), [git-secret-clean(1)](http://git-secret.io/git-secret-clean), [git-secret-killperson(1)](http://git-secret.io/git-secret-killperson)

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-reveal'
-date:   2016-08-21 16:36:33 +0300
+date:   2017-02-26 18:27:18 +0300
 permalink: git-secret-reveal
 categories: command
 ---
@@ -25,6 +25,11 @@ git-secret-reveal - decrypts all added files.
     -h  - shows help.
 
 
+## MANUAL
+
+Run `man git-secret-reveal` to see this note.
+
+
 ## SEE ALSO
 
-git-secret-init(1), git-secret-tell(1), git-secret-add(1), git-secret-hide(1)
+[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-tell(1)](http://git-secret.io/git-secret-tell), [git-secret-add(1)](http://git-secret.io/git-secret-add), [git-secret-hide(1)](http://git-secret.io/git-secret-hide)

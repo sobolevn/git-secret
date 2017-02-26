@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-add'
-date:   2016-08-21 16:36:33 +0300
+date:   2017-02-26 18:27:18 +0300
 permalink: git-secret-add
 categories: command
 ---
@@ -27,6 +27,11 @@ It is not recommened to add filenames directly into the `.gitsecret/paths/mappin
     -h  - shows this help.
 
 
+## MANUAL
+
+Run `man git-secret-add` to see this note.
+
+
 ## SEE ALSO
 
-git-secret-init(1), git-secret-tell(1), git-secret-hide(1), git-secret-reveal(1)
+[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-tell(1)](http://git-secret.io/git-secret-tell), [git-secret-hide(1)](http://git-secret.io/git-secret-hide), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal)

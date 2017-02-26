@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-list'
+date:   2017-02-26 18:27:18 +0300
+permalink: git-secret-list
+categories: command
+---
 git-secret-list - prints all the added files.
 =============================================
 
