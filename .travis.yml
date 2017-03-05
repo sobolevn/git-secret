@@ -23,7 +23,7 @@ matrix:
       language: ruby
     - os: linux
       env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"
-      sudo: required
+      sudo: false
       language: ruby
     - os: linux
       env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg2"; SECRETS_GPG_COMMAND="gpg2"

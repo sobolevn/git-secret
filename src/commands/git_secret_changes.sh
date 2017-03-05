@@ -31,17 +31,16 @@ function changes {
 
   for filename in $filenames; do
     local decrypted
-    local content
     local diff_result
 
     # Now we have all the data required:
     decrypted=$(_decrypt "$filename" "0" "0" "$homedir" "$passphrase")
-    content=$(cat "$filename")
 
     # Let's diff the result:
-    diff_result=$(diff <(echo "$decrypted") <(echo "$content")) || true
+    diff_result=$(diff -u <(echo "$decrypted") "$filename") || true
     # There was a bug in the previous version, since `diff` returns
     # exit code `1` when the files are different.
-    echo "changes in ${filename}: ${diff_result}"
+    echo "changes in ${filename}:"
+    echo "${diff_result}"
   done
 }

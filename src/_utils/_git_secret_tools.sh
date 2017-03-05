@@ -432,9 +432,9 @@ function _decrypt {
   fi
 
   if [[ ! -z "$passphrase" ]]; then
-    echo "$passphrase" | $base --batch --yes --no-tty --passphrase-fd 0 \
-      "$encrypted_filename" > /dev/null 2>&1
+    echo "$passphrase" | $base --quiet --batch --yes --no-tty --passphrase-fd 0 \
+      "$encrypted_filename"
   else
-    $base "$encrypted_filename" > /dev/null 2>&1
+    $base --quiet "$encrypted_filename"
   fi
 }
