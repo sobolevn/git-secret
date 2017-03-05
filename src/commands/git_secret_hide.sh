@@ -21,16 +21,18 @@ function _optional_delete {
       echo && echo 'removing unencrypted files:'
     fi
 
+    local path_mappings
+    path_mappings=$(_get_secrets_dir_paths_mapping)
+
     while read -r line; do
       # So the formating would not be repeated several times here:
       _find_and_clean "*$line" "$verbose"
-    done < "$SECRETS_DIR_PATHS_MAPPING"
+    done < "$path_mappings"
 
     if [[ ! -z "$verbose" ]]; then
       echo
     fi
   fi
-
 }
 
 
@@ -63,6 +65,11 @@ function hide {
   # before creating new ones.
   _optional_clean "$clean" "$verbose"
 
+  # Encrypting files:
+
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+
   local counter=0
   while read -r line; do
     local encrypted_filename
@@ -71,12 +78,15 @@ function hide {
     local recipients
     recipients=$(_get_recepients)
 
+    local gpg_local
+    gpg_local=$(_get_gpg_local)
+
     # shellcheck disable=2086
-    $GPGLOCAL --use-agent --yes --trust-model=always --encrypt \
+    $gpg_local --use-agent --yes --trust-model=always --encrypt \
       $recipients -o "$encrypted_filename" "$line"
 
     counter=$((counter+1))
-  done < "$SECRETS_DIR_PATHS_MAPPING"
+  done < "$path_mappings"
 
   # If -d option was provided, it would delete the source files
   # after we have already hidden them.

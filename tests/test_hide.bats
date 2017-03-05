@@ -18,10 +18,10 @@ function setup {
 
 
 function teardown {
+  rm "$FILE_TO_HIDE"
+
   uninstall_fixture_key $TEST_DEFAULT_USER
   unset_current_state
-
-  rm -f "$FILE_TO_HIDE"
 }
 
 
@@ -48,6 +48,9 @@ function teardown {
   run git secret hide
   [ "$status" -eq 0 ]
   [ "$output" = "done. all 2 files are hidden." ]
+
+  # Cleaning up:
+  rm "$second_file"
 }
 
 

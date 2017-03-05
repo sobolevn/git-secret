@@ -26,6 +26,7 @@ function tell {
   # Validates that application is inited:
   _secrets_dir_exists
 
+  # Command logic:
   emails=( "$@" )
   local git_email
 
@@ -64,7 +65,9 @@ function tell {
     fi
 
     # Importing public key to the local keychain:
-    $GPGLOCAL --import "$keyfile" > /dev/null 2>&1
+    local gpg_local
+    gpg_local=$(_get_gpg_local)
+    $gpg_local --import "$keyfile" > /dev/null 2>&1
   done
 
   echo "done. ${emails[*]} added as someone who know(s) the secret."

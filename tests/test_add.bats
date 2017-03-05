@@ -19,6 +19,25 @@ function teardown {
 }
 
 
+@test "run 'add' normally" {
+  local filename="local_file"
+  echo "content" > "$filename"
+  echo "$filename" > ".gitignore"
+
+  run git secret add "$filename"
+  [ "$status" -eq 0 ]
+
+  rm -f "$filename" ".gitignore"
+
+  # Ensuring that path mappings was set correctly:
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+
+  local files_list=$(cat "$path_mappings")
+  [ "$files_list" = "$filename" ]
+}
+
+
 @test "run 'add' for unignored file" {
   local TEST_FILE='test_file'
   touch "$TEST_FILE"
@@ -27,7 +46,7 @@ function teardown {
   run git secret add "$TEST_FILE"
   [ "$status" -eq 1 ]
 
-  rm -f "$TEST_FILE"
+  rm "$TEST_FILE"
 }
 
 
@@ -42,26 +61,47 @@ function teardown {
   run _file_has_line "$TEST_FILE" ".gitignore"
   [ "$status" -eq 0 ]
 
-  rm -f "$TEST_FILE"
+  rm "$TEST_FILE"
 }
 
 
-@test "run 'add' normally" {
-  local filename="local_file"
-  echo "content" > "$filename"
-  echo "$filename" > ".gitignore"
+@test "run 'add' for unignored file with '-i' in subfolder" {
+  # This test covers this issue:
+  # https://github.com/sobolevn/git-secret/issues/85 task 1
 
-  run git secret add "$filename"
+  if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
+    skip "this test is skiped while 'git commmit'"
+  fi
+
+  # Preparations:
+  local test_dir='test_dir'
+  local nested_dir="$test_dir/adding"
+  local current_dir=$(pwd)
+
+  mkdir -p "$nested_dir"
+  cd "$nested_dir"
+
+  local TEST_FILE='test_file.auto_ignore'
+  touch "$TEST_FILE"
+  echo "content" > "$TEST_FILE"
+
+  # Test commands:
+  run git secret add -i "$TEST_FILE"
   [ "$status" -eq 0 ]
 
-  rm -f "$filename" ".gitignore"
+  run _file_has_line "$TEST_FILE" "../.gitignore"
+  [ "$status" -eq 0 ]
 
-  local files_list=$(cat "$SECRETS_DIR_PATHS_MAPPING")
-  [ "$files_list" = "$filename" ]
+  # .gitignore was not created:
+  [[ ! -f ".gitignore" ]]
+
+  # Cleaning up:
+  cd "$current_dir"
+  rm -r "$test_dir"
 }
 
 
-@test "run 'add' for file in subdirectory" {
+@test "run 'add' for file in subfolder" {
   local TEST_FILE='test_file'
   local TEST_DIR='test_dir'
 
@@ -74,7 +114,7 @@ function teardown {
   [ "$status" -eq 0 ]
   [[ "$output" == *"1 items added."* ]]
 
-  rm -rf "$TEST_DIR"
+  rm -r "$TEST_DIR"
 }
 
 
@@ -86,11 +126,17 @@ function teardown {
   run git secret add "$filename"
   run git secret add "$filename"
   [ "$status" -eq 0 ]
+  echo "$output"
+  echo "dance"
   [ "$output" = "1 items added." ]
 
-  rm -f "$filename" ".gitignore"
+  rm "$filename" ".gitignore"
 
-  local files_list=`cat "$SECRETS_DIR_PATHS_MAPPING"`
+  # Ensuring that path mappings was set correctly:
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+
+  local files_list=$(cat "$path_mappings")
   [ "$files_list" = "$filename" ]
 }
 
@@ -108,5 +154,5 @@ function teardown {
   [ "$status" -eq 0 ]
   [ "$output" = "2 items added." ]
 
-  rm -f "$filename1" "$filename2" ".gitignore"
+  rm "$filename1" "$filename2" ".gitignore"
 }

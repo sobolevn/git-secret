@@ -32,6 +32,33 @@ function teardown {
 }
 
 
+@test "run 'whoknows' in subfolder" {
+  if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
+    skip "this test is skiped while 'git commmit'"
+  fi
+
+  # Preparations:
+  local current_dir=$(pwd)
+  local root_dir='test_dir'
+  local test_dir="$root_dir/subfolders/case"
+
+  mkdir -p "$test_dir"
+  cd "$test_dir"
+
+  # Test:
+  run git secret whoknows
+  [ "$status" -eq 0 ]
+
+  # Now test the output, both users should be present:
+  [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
+  [[ "$output" == *"$TEST_SECOND_USER"* ]]
+
+  # Cleaning up:
+  cd "$current_dir"
+  rm -r "$root_dir"
+}
+
+
 @test "run 'whoknows' without any users" {
   # Preparations, removing users:
   local email1=$(test_user_email "$TEST_DEFAULT_USER")

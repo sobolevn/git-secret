@@ -41,7 +41,10 @@ function teardown {
 
 
 @test "run 'tell' with secret-key imported" {
-  local private_key="$SECRETS_DIR_KEYS/secring.gpg"
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
+
+  local private_key="$secrets_dir_keys/secring.gpg"
   echo "private key" > "$private_key"
   [ -s "$private_key" ]
 
@@ -51,7 +54,10 @@ function teardown {
 
 
 @test "run 'tell' without '.gitsecret'" {
-  rm -rf "$SECRETS_DIR"
+  local secrets_dir
+  secrets_dir=$(_get_secrets_dir)
+
+  rm -r "$secrets_dir"
 
   run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
   [ "$status" -eq 1 ]
@@ -115,4 +121,35 @@ function teardown {
 
   # Cleaning up:
   uninstall_fixture_key "$TEST_SECOND_USER"
+}
+
+
+@test "run 'tell' in subfolder" {
+  if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
+    skip "this test is skiped while 'git commmit'"
+  fi
+
+  # Preparations
+  local root_dir='test_dir'
+  local test_dir="$root_dir/telling"
+  local current_dir=$(pwd)
+
+  mkdir -p "$test_dir"
+  cd "$test_dir"
+
+  # Test:
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
+  [ "$status" -eq 0 ]
+
+  # Testing that now user is found:
+  run _user_required
+  [ "$status" -eq 0 ]
+
+  # Testing that now user is in the list of people who knows the secret:
+  run git secret whoknows
+  [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
+
+  # Cleaning up:
+  cd "$current_dir"
+  rm -r "$root_dir"
 }

@@ -23,7 +23,7 @@ function changes {
   local filenames="$*"
   if [[ -z $filenames ]]; then
     # Checking if no filenames are passed, show diff for all files.
-    filenames=$(git secret list)
+    filenames=$(_list_all_added_files)
   fi
 
   IFS='

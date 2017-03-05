@@ -20,13 +20,18 @@ function remove {
   # Validate if user exists:
   _user_required
 
+  # Command logic:
+
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+
   for item in "$@"; do
     if [[ ! -f "$item" ]]; then
       _abort "$item is not a file."
     fi
 
-    _delete_line "$item" "$SECRETS_DIR_PATHS_MAPPING"
-    rm -f "${SECRETS_DIR_PATHS_MAPPING}.bak"  # not all systems create '.bak'
+    _delete_line "$item" "$path_mappings"
+    rm -f "${path_mappings}.bak"  # not all systems create '.bak'
 
     if [[ "$clean" == 1 ]]; then
       local encrypted_filename

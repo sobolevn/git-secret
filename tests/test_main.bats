@@ -34,7 +34,7 @@ function teardown {
 
 @test "run 'git secret --dry-run'" {
   # We will break things apart, so normally it won't run:
-  rm -rf ".git"
+  rm -r "./.git"
 
   # This must fail:
   run git secret usage

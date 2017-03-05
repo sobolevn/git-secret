@@ -6,19 +6,18 @@ function _check_setup {
   # Checking git and secret-plugin setup:
   local is_tree
   is_tree=$(_is_inside_git_tree)
-  if [[ ! $is_tree -eq 0 ]]; then
+  if [[ "$is_tree" -ne 0 ]]; then
     _abort "repository is broken. try running 'git init' or 'git clone'."
   fi
 
   # Checking if the '.gitsecret' is not ignored:
-  local ignored
-  ignored=$(_check_ignore ".gitsecret/")
-  if [[ ! $ignored -eq 1 ]]; then
-    _abort '.gitsecret folder is ignored.'
-  fi
+  _secrets_dir_is_not_ignored
 
   # Checking gpg setup:
-  local secring="$SECRETS_DIR_KEYS/secring.gpg"
+  local keys_dir
+  keys_dir=$(_get_secrets_dir_keys)
+
+  local secring="$keys_dir/secring.gpg"
   if [[ -f $secring ]] && [[ -s $secring ]]; then
     # secring.gpg is not empty, someone has imported a private key.
     _abort 'it seems that someone has imported a secret key.'
@@ -67,7 +66,10 @@ function _init_script {
     _check_setup
 
     # Routing the input command:
-    if [[ $(_function_exists "$1") == 0 ]] && [[ ! $1 == _* ]]; then
+    local function_exists
+    function_exists=$(_function_exists "$1")
+
+    if [[ "$function_exists" == 0 ]] && [[ ! $1 == _* ]]; then
       $1 "${@:2}"
     else  # TODO: elif [[ $(_plugin_exists $1) == 0 ]]; then
       _incorrect_usage "command $1 not found." 126

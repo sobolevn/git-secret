@@ -15,11 +15,6 @@ function list {
 
   _user_required
 
-  if [[ ! -s "$SECRETS_DIR_PATHS_MAPPING" ]]; then
-    _abort "$SECRETS_DIR_PATHS_MAPPING is missing."
-  fi
-
-  while read -r line; do
-    echo "$line"
-  done < "$SECRETS_DIR_PATHS_MAPPING"
+  # Command logic:
+  _list_all_added_files
 }

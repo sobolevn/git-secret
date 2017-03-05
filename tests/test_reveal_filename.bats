@@ -26,16 +26,18 @@ function setup {
 
 
 function teardown {
+  rm "$FILE_TO_HIDE"
+
   uninstall_fixture_full_key "$TEST_DEFAULT_USER" "$FINGERPRINT"
   unset_current_state
-  rm -f "$FILE_TO_HIDE"
+
   export SECRETS_EXTENSION="$OLD_SECRETS_EXTENSION"
 }
 
 
 @test "run 'reveal' with different file extension" {
   cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
-  rm -f "$FILE_TO_HIDE"
+  rm "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
@@ -45,5 +47,5 @@ function teardown {
 
   cmp --silent "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
 
-  rm -f "${FILE_TO_HIDE}2"
+  rm "${FILE_TO_HIDE}2"
 }

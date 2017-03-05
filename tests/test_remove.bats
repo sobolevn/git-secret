@@ -23,17 +23,21 @@ function setup {
 
 
 function teardown {
+  rm "$FIRST_FILE" "$SECOND_FILE"
+  rm -r "$FOLDER"
+
   uninstall_fixture_key "$TEST_DEFAULT_USER"
   unset_current_state
-
-  # This also needs to be cleaned:
-  rm -f "$FIRST_FILE" "$SECOND_FILE"
-  rm -rf "$FOLDER"
 }
 
 
 function _has_line {
-  local result=$(grep -q "$1" "$SECRETS_DIR_PATHS_MAPPING"; echo $?)
+  local line="$1"
+
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+
+  local result=$(grep -q "$line" "$path_mappings"; echo $?)
   echo "$result"
 }
 

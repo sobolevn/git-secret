@@ -23,9 +23,10 @@ function setup {
 
 
 function teardown {
+  rm "$FILE_TO_HIDE" "$SECOND_FILE_TO_HIDE"
+
   uninstall_fixture_full_key "$TEST_DEFAULT_USER" "$FINGERPRINT"
   unset_current_state
-  rm -f "$FILE_TO_HIDE"
 }
 
 
@@ -45,6 +46,7 @@ function teardown {
 
 @test "run 'changes' without changes" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
+
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -eq 0 ]
 }
