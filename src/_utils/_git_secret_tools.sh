@@ -144,8 +144,18 @@ function _show_manual_for {
 function _check_ignore {
   local filename="$1" # required
 
-  git check-ignore --no-index -q "$filename";
-  echo $?
+  local result
+  result="$(git check-ignore --no-index -q "$filename" > /dev/null 2>&1; echo $?)";
+  echo "$result"
+}
+
+
+function _git_normalize_filename {
+  local filename="$1" # required
+
+  local result
+  result=$(git ls-files --full-name -o "$filename")
+  echo "$result"
 }
 
 
@@ -165,12 +175,13 @@ function _add_ignored_file {
   # This function adds a line with the filename into the '.gitgnore' file.
   # It also creates '.gitignore' if it's not there
 
+  local filename="$1" # required
+
   _maybe_create_gitignore
 
   local full_path
   full_path=$(_append_root_path '.gitignore')
 
-  local filename="$1" # required
   echo "$filename" >> "$full_path"
 }
 
@@ -267,8 +278,11 @@ function _find_and_clean {
   # optional:
   local verbose=${2:-""} # can be empty or should be equal to "v"
 
+  local root
+  root=$(_get_git_root_path)
+
   # shellcheck disable=2086
-  find . -name "$pattern" -type f -print0 | xargs -0 rm -f$verbose
+  find "$root" -name "$pattern" -type f -print0 | xargs -0 rm -f$verbose
 }
 
 

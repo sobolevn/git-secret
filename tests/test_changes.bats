@@ -39,7 +39,8 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
-  [[ "$output" == *"changes in $FILE_TO_HIDE"* ]]
+  local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"+$new_content"* ]]
 }
 
@@ -53,7 +54,8 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
-  [[ "$output" == *"changes in $FILE_TO_HIDE"* ]]
+  local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"-$FILE_CONTENTS"* ]]
   [[ "$output" == *"+$new_content"* ]]
 }
@@ -78,11 +80,13 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
-  [[ "$output" == *"changes in $FILE_TO_HIDE"* ]]
+  local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"+$new_content"* ]]
 
-  [[ "$output" == *"changes in $SECOND_FILE_TO_HIDE"* ]]
-  [[ "$output" == *"$second_file_to_hide"* ]]
+  local second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
+  [[ "$output" == *"changes in $second_path"* ]]
+  [[ "$output" == *"+$second_new_content"* ]]
 }
 
 
@@ -99,9 +103,11 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
-  [[ "$output" == *"changes in $FILE_TO_HIDE"* ]]
+  local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"+$new_content"* ]]
 
-  [[ "$output" == *"changes in $SECOND_FILE_TO_HIDE"* ]]
-  [[ "$output" == *"+$second_file_to_hide"* ]]
+  local second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
+  [[ "$output" == *"changes in $second_path"* ]]
+  [[ "$output" == *"+$second_new_content"* ]]
 }

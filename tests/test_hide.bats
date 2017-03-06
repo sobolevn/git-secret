@@ -75,6 +75,8 @@ function teardown {
   run git secret hide -d
   [ "$status" -eq 0 ]
 
+  ls && pwd
+
   # File must be removed:
   [ ! -f "$FILE_TO_HIDE" ]
 }
@@ -83,6 +85,8 @@ function teardown {
 @test "run 'hide' with '-d' and '-v'" {
   run git secret hide -v -d
   [ "$status" -eq 0 ]
+
+  ls && pwd
 
   # File must be removed:
   [ ! -f "$FILE_TO_HIDE" ]

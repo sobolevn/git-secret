@@ -16,17 +16,17 @@ function _optional_delete {
   local verbose=${2:-""}
 
   if [[ $delete -eq 1 ]]; then
+    local path_mappings
+    path_mappings=$(_get_secrets_dir_paths_mapping)
+
     # We use custom formating here:
     if [[ ! -z "$verbose" ]]; then
       echo && echo 'removing unencrypted files:'
     fi
 
-    local path_mappings
-    path_mappings=$(_get_secrets_dir_paths_mapping)
-
     while read -r line; do
       # So the formating would not be repeated several times here:
-      _find_and_clean "*$line" "$verbose"
+      _find_and_clean "$line" "$verbose"
     done < "$path_mappings"
 
     if [[ ! -z "$verbose" ]]; then
@@ -81,9 +81,14 @@ function hide {
     local gpg_local
     gpg_local=$(_get_gpg_local)
 
+    local input_path
+    local output_path
+    input_path=$(_append_root_path "$line")
+    output_path=$(_append_root_path "$encrypted_filename")
+
     # shellcheck disable=2086
     $gpg_local --use-agent --yes --trust-model=always --encrypt \
-      $recipients -o "$encrypted_filename" "$line"
+      $recipients -o "$output_path" "$input_path"
 
     counter=$((counter+1))
   done < "$path_mappings"

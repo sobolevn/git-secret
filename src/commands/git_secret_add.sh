@@ -18,22 +18,30 @@ function add {
 
   _user_required
 
-  # Checking if all files are ignored:
+  # Checking if all files are correct (ignored and inside the repo):
 
   local not_ignored=()
   local items=( "$@" )
 
+  # Checking if all files in options are ignored:
   for item in "${items[@]}"; do
-    # Checking if all files in options are ignored:
-    if [[ ! -f "$item" ]]; then
+    local path # absolute path
+    local normalized_path # relative to the .git dir
+    normalized_path=$(_git_normalize_filename "$item")
+    path=$(_append_root_path "$normalized_path")
+
+    # Checking that file is valid:
+    if [[ ! -f "$path" ]]; then
       _abort "$item is not a file."
     fi
 
+    # Checking that it is ignored:
     local ignored
-    ignored=$(_check_ignore "$item")
-    if [[ ! "$ignored" -eq 0 ]]; then
-      # Collect unignored files.
-      not_ignored+=("$item")
+    ignored=$(_check_ignore "$path")
+
+    if [[ "$ignored" -ne 0 ]]; then
+      # Collect unignored files:
+      not_ignored+=("$normalized_path")
     fi
   done
 
@@ -65,13 +73,16 @@ function add {
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
   for item in "${items[@]}"; do
+    local path
+    path=$(_git_normalize_filename "$item")
+
     # Adding files into system, skipping duplicates.
     local already_in
-    already_in=$(_file_has_line "$item" "$path_mappings")
+    already_in=$(_file_has_line "$path" "$path_mappings")
     if [[ "$already_in" -eq 1 ]]; then
-      echo "$item" >> "$path_mappings"
+      echo "$path" >> "$path_mappings"
     fi
   done
 
-  echo "${#@} items added."
+  echo "${#@} item(s) added."
 }

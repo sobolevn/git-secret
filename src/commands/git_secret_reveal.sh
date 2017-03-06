@@ -32,8 +32,11 @@ function reveal {
 
   local counter=0
   while read -r line; do
+    local path
+    path=$(_append_root_path "$line")
+
     # The parameters are: filename, write-to-file, force, homedir, passphrase
-    _decrypt "$line" "1" "$force" "$homedir" "$passphrase"
+    _decrypt "$path" "1" "$force" "$homedir" "$passphrase"
 
     counter=$((counter+1))
   done < "$path_mappings"
