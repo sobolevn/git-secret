@@ -282,7 +282,7 @@ function _find_and_clean {
   root=$(_get_git_root_path)
 
   # shellcheck disable=2086
-  find "$root" -name "$pattern" -type f -print0 | xargs -0 rm -f$verbose
+  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose
 }
 
 

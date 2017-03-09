@@ -97,6 +97,32 @@ function teardown {
 }
 
 
+@test "run 'hide' with '-d' and '-v' and files in subdirectories" {
+  # Preparations:
+  local root_dir='test_sub_dir'
+  mkdir -p "$root_dir"
+  local second_file="$root_dir/second_file.txt"
+  local second_content="some content"
+  set_state_secret_add "$second_file" "$second_content"
+
+  # Verify that the second file is there:
+  [ -f "$second_file" ]
+
+  # Now it should hide 2 files:
+  run git secret hide -v -d
+  [ "$status" -eq 0 ]
+
+  # File must be removed:
+  [ ! -f "$FILE_TO_HIDE" ]
+  [ ! -f "$second_file" ]
+
+  # It should be verbose:
+  [[ "$output" == *"removing unencrypted files"* ]]
+  [[ "$output" == *"$FILE_TO_HIDE"* ]]
+  [[ "$output" == *"$second_file"* ]]
+}
+
+
 @test "run 'hide' with multiple users" {
   install_fixture_key "$TEST_SECOND_USER"
   set_state_secret_tell "$TEST_SECOND_USER"
