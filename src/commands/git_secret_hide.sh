@@ -26,7 +26,7 @@ function _optional_delete {
 
     while read -r line; do
       # So the formating would not be repeated several times here:
-      _find_and_clean "$line" "$verbose"
+      _find_and_clean "*$line" "$verbose"
     done < "$path_mappings"
 
     if [[ ! -z "$verbose" ]]; then
