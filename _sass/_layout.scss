@@ -181,10 +181,7 @@
 }
 
 .post-list {
-    margin-left: 0;
-    // list-style: none;
-
-    > li {
+    li {
         margin-bottom: 10px;
     }
 }
@@ -255,9 +252,15 @@
 
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 
     a {
         color: $purple-color-dark;
+
+        @include media-query($on-laptop) {
+            flex-basis: 100%;
+            text-align: center;
+        }
     }
 }
 
