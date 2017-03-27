@@ -71,6 +71,9 @@ deploy:
     key: "$BINTRAY_API_KEY"
     passphrase: "$BINTRAY_GPG_PASS"
 
+after_deploy:
+  - chmod +x ".ci/after_deploy.sh" && ".ci/after_deploy.sh"
+
 notifications:
   email:
     on_success: never
