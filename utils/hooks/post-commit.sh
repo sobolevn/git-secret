@@ -4,7 +4,7 @@ set -e
 
 BRANCH_NAME=$(git branch | grep '\*' | sed 's/* //')
 
-if [[ "$BRANCH_NAME" == 'staging' ]]; then
+if [[ "$BRANCH_NAME" == 'master' ]]; then
   # Build new web documentation:
   make build-gh-pages
 
@@ -15,6 +15,6 @@ if [[ "$BRANCH_NAME" == 'staging' ]]; then
   if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
     # Create new release:
     git tag -a "v${SCRIPT_VERSION}" -m "version $SCRIPT_VERSION"
-    # TODO: echo tag name to stdout
+    echo "Created new tag 'v${SCRIPT_VERSION}'"
   fi
 fi

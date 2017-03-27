@@ -15,7 +15,7 @@ if [[ "$BRANCH_NAME" != '(no branch)' ]]; then
   # Run tests:
   make test
 
-  if [[ "$BRANCH_NAME" == "staging" ]]; then
+  if [[ "$BRANCH_NAME" == "master" ]]; then
     # Build new manuals:
     make build-man
 
