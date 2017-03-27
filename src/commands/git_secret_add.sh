@@ -2,12 +2,12 @@
 
 
 function add {
-  local auto_add=0
+  local auto_ignore=0
   OPTIND=1
 
   while getopts "ih" opt; do
     case "$opt" in
-      i) auto_add=1;;
+      i) auto_ignore=1;;
 
       h) _show_manual_for "add";;
     esac
@@ -18,29 +18,41 @@ function add {
 
   _user_required
 
+  # Checking if all files are correct (ignored and inside the repo):
+
   local not_ignored=()
   local items=( "$@" )
 
+  # Checking if all files in options are ignored:
   for item in "${items[@]}"; do
-    # Checking if all files in options are ignored:
-    if [[ ! -f "$item" ]]; then
+    local path # absolute path
+    local normalized_path # relative to the .git dir
+    normalized_path=$(_git_normalize_filename "$item")
+    path=$(_append_root_path "$normalized_path")
+
+    # Checking that file is valid:
+    if [[ ! -f "$path" ]]; then
       _abort "$item is not a file."
     fi
 
+    # Checking that it is ignored:
     local ignored
-    ignored=$(_check_ignore "$item")
-    if [[ ! "$ignored" -eq 0 ]]; then
-      # Collect unignored files.
-      not_ignored+=("$item")
+    ignored=$(_check_ignore "$path")
+
+    if [[ "$ignored" -ne 0 ]]; then
+      # Collect unignored files:
+      not_ignored+=("$normalized_path")
     fi
   done
+
+  # Are there any uningnored files?
 
   if [[ ! "${#not_ignored[@]}" -eq 0 ]]; then
     # And show them all at once.
     local message
     message="these files are not ignored: $* ;"
 
-    if [[ "$auto_add" -eq 0 ]]; then
+    if [[ "$auto_ignore" -eq 0 ]]; then
       # This file is not ignored. user don't want it to be added automatically.
       # Raise the exception, since all files, which will be hidden, must be ignored.
       _abort "$message"
@@ -55,14 +67,22 @@ function add {
     fi
   fi
 
+  # Adding files to path mappings:
+
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+
   for item in "${items[@]}"; do
+    local path
+    path=$(_git_normalize_filename "$item")
+
     # Adding files into system, skipping duplicates.
     local already_in
-    already_in=$(_file_has_line "$item" "$SECRETS_DIR_PATHS_MAPPING")
+    already_in=$(_file_has_line "$path" "$path_mappings")
     if [[ "$already_in" -eq 1 ]]; then
-      echo "$item" >> "$SECRETS_DIR_PATHS_MAPPING"
+      echo "$path" >> "$path_mappings"
     fi
   done
 
-  echo "${#@} items added."
+  echo "${#@} item(s) added."
 }

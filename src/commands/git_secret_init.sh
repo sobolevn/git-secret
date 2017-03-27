@@ -13,19 +13,21 @@ function init {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
-  if [[ -d "$SECRETS_DIR" ]]; then
+  # Check if '.gitsecret/' already exists:
+  local git_secret_dir
+  git_secret_dir=$(_get_secrets_dir)
+
+  if [[ -d "$git_secret_dir" ]]; then
     _abort 'already inited.'
   fi
 
-  local ignores
-  ignores=$(_check_ignore "$SECRETS_DIR"/)
+  # Check if it is ignored:
+  _secrets_dir_is_not_ignored
 
-  if [[ ! $ignores -eq 1 ]]; then
-    _abort "'${SECRETS_DIR}/' is ignored."
-  fi
+  # Create internal files:
 
-  mkdir "$SECRETS_DIR" "$SECRETS_DIR_KEYS" "$SECRETS_DIR_PATHS"
-  touch "$SECRETS_DIR_KEYS_MAPPING" "$SECRETS_DIR_PATHS_MAPPING"
+  mkdir "$git_secret_dir" "$(_get_secrets_dir_keys)" "$(_get_secrets_dir_path)"
+  touch "$(_get_secrets_dir_keys_mapping)" "$(_get_secrets_dir_paths_mapping)"
 
-  echo "'${SECRETS_DIR}/' created."
+  echo "'$git_secret_dir/' created."
 }

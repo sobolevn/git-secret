@@ -25,11 +25,50 @@ function teardown {
 @test "run 'init' normally" {
   run git secret init
   [ "$status" -eq 0 ]
+
+  [[ -d "${_SECRETS_DIR}" ]]
+}
+
+
+@test "run 'init' in subfolder" {
+  # This test covers this issue:
+  # https://github.com/sobolevn/git-secret/issues/83
+
+  if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
+    skip "this test is skiped while 'git commmit'"
+  fi
+
+  # Preparations
+  local test_dir='test_dir'
+  local nested_dir="$test_dir/nested/dirs"
+  local current_dir=$(pwd)
+
+  mkdir -p "$nested_dir"
+  cd "$nested_dir"
+
+  # Test:
+  run git secret init
+  [ "$status" -eq 0 ]
+
+  # It should not be created in the current folder:
+  [[ ! -d "${_SECRETS_DIR}" ]]
+
+  # It should be created here:
+  local secrets_dir
+  secrets_dir=$(_get_secrets_dir)
+  [[ -d "$secrets_dir" ]]
+
+  # Cleaning up:
+  cd "$current_dir"
+  rm -r "$test_dir"
 }
 
 
 @test "run 'init' with '.gitsecret' already inited" {
-  mkdir "$SECRETS_DIR"
+  local secrets_dir
+  secrets_dir=$(_get_secrets_dir)
+
+  mkdir "$secrets_dir"
 
   run git secret init
   [ "$output" = "already inited. abort." ]

@@ -15,6 +15,8 @@ TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
 # GPG-based stuff:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
+
+# This command is used with absolute homedir set and disabled warnings:
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning"
 
 
@@ -153,6 +155,7 @@ function remove_git_repository {
 
 function set_state_initial {
   cd "$BATS_TMPDIR" || exit 1
+  rm -rf "${BATS_TMPDIR:?}/*"
 }
 
 
@@ -197,8 +200,11 @@ function unset_current_state {
   # removes .secret files:
   git secret clean > /dev/null 2>&1
 
-  # unsets `secret_add`, `secret_tell` and `secret_init`
-  rm -rf "$SECRETS_DIR"
+  # unsets `secret_add`, `secret_tell` and `secret_init` by removing $_SECRETS_DIR
+  local secrets_dir
+  secrets_dir=$(_get_secrets_dir)
+
+  rm -rf "$secrets_dir"
   rm -rf ".gitignore"
 
   # unsets `git` state

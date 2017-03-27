@@ -10,6 +10,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Deprecation warning:
+(>&2 echo "warning: this installation method is deprecated since version 0.2.3")
+(>&2 echo "warning: it will be completely removed by the version 0.3.0")
+(>&2 echo "warning: use binary installation instead")
+
 # Create binary:
 PLUGIN_DIR="$(dirname "$0")"
 

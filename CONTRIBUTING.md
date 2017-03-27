@@ -35,14 +35,13 @@ Only required if dealing with manuals, `gh-pages` or releases:
 
 ### Branches
 
-We have three long-live branches: `master`, `staging` and `develop` (and `gh-pages` for static site).
+We have three long-live branches: `master`, `develop` and `gh-pages` for static site.
 
 It basically looks like that:
 
-> `your-branch` -> `develop` -> `staging` -> `master`
+> `your-branch` -> `develop` -> `master`
 
-- `master` branch is protected, since `antigen` and tools like it install the app from the main branch directly. So only fully tested code goes there
-- `staging` - this branch is used to create a new `git` tag and a `github` release, then it gets merged into `master`
+- `master` branch is protected. So only fully tested code goes there. It is also used to create a new `git` tag and a `github` release
 - `develop` is where the development is done and the branch you should send your pull-requests to
 
 ### Continuous integration
@@ -57,7 +56,7 @@ CI is done with the help of `travis`. `travis` handles multiple environments:
 
 The release process is defined in the `git`-hooks and `.travis.yml`.
 
-When creating a commit inside the `staging` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) it will trigger two main events.
+When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) it will trigger two main events.
 
 Firstly, new manuals will be created and added to the current commit with `make build-man` on `pre-commit` hook.
 
@@ -68,8 +67,6 @@ if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
   git tag -a "v${SCRIPT_VERSION}" -m "version $SCRIPT_VERSION"
 fi
 ```
-
-Then it will be merged inside `master` when ready.
 
 #### Travis releases
 

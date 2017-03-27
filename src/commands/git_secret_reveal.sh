@@ -25,13 +25,21 @@ function reveal {
 
   _user_required
 
+  # Command logic:
+
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+
   local counter=0
   while read -r line; do
+    local path
+    path=$(_append_root_path "$line")
+
     # The parameters are: filename, write-to-file, force, homedir, passphrase
-    _decrypt "$line" "1" "$force" "$homedir" "$passphrase"
+    _decrypt "$path" "1" "$force" "$homedir" "$passphrase"
 
     counter=$((counter+1))
-  done < "$SECRETS_DIR_PATHS_MAPPING"
+  done < "$path_mappings"
 
   echo "done. all $counter files are revealed."
 }

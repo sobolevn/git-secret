@@ -20,21 +20,35 @@ function remove {
   # Validate if user exists:
   _user_required
 
+  # Command logic:
+
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+
   for item in "$@"; do
-    if [[ ! -f "$item" ]]; then
+    local path # absolute path
+    local normalized_path # relative to .git folder
+    normalized_path=$(_git_normalize_filename "$item")
+    path=$(_append_root_path "$normalized_path")
+
+    echo "$item -> $normalized_path -> $path"
+
+    # Checking if file exists:
+    if [[ ! -f "$path" ]]; then
       _abort "$item is not a file."
     fi
 
-    _delete_line "$item" "$SECRETS_DIR_PATHS_MAPPING"
-    rm -f "${SECRETS_DIR_PATHS_MAPPING}.bak"  # not all systems create '.bak'
+    # Deleting it from path mappings:
+    _delete_line "$normalized_path" "$path_mappings"
+    rm -f "${path_mappings}.bak"  # not all systems create '.bak'
 
-    if [[ "$clean" == 1 ]]; then
+    # Optional clean:
+    if [[ "$clean" -eq 1 ]]; then
       local encrypted_filename
-      encrypted_filename=$(_get_encrypted_filename "$item")
+      encrypted_filename=$(_get_encrypted_filename "$path")
 
-      rm -f "$encrypted_filename"
+      rm "$encrypted_filename" # fail on error
     fi
-
   done
 
   echo 'removed from index.'

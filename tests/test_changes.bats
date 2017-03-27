@@ -23,9 +23,10 @@ function setup {
 
 
 function teardown {
+  rm "$FILE_TO_HIDE" "$SECOND_FILE_TO_HIDE"
+
   uninstall_fixture_full_key "$TEST_DEFAULT_USER" "$FINGERPRINT"
   unset_current_state
-  rm -f "$FILE_TO_HIDE"
 }
 
 
@@ -38,13 +39,31 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
-  [[ "$output" == *"changes in $FILE_TO_HIDE"* ]]
-  [[ "$output" == *"$new_content"* ]]
+  local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"+$new_content"* ]]
+}
+
+
+@test "run 'changes' with one file changed (with deletions)" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  local new_content="replace"
+  echo "$new_content" > "$FILE_TO_HIDE"
+
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+  [ "$status" -eq 0 ]
+
+  # Testing that output has both filename and changes:
+  local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"-$FILE_CONTENTS"* ]]
+  [[ "$output" == *"+$new_content"* ]]
 }
 
 
 @test "run 'changes' without changes" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
+
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -eq 0 ]
 }
@@ -61,12 +80,15 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
-  [[ "$output" == *"changes in $FILE_TO_HIDE"* ]]
-  [[ "$output" == *"$new_content"* ]]
+  local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"+$new_content"* ]]
 
-  [[ "$output" == *"changes in $SECOND_FILE_TO_HIDE"* ]]
-  [[ "$output" == *"$second_file_to_hide"* ]]
+  local second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
+  [[ "$output" == *"changes in $second_path"* ]]
+  [[ "$output" == *"+$second_new_content"* ]]
 }
+
 
 @test "run 'changes' with multiple selected files changed" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
@@ -81,9 +103,11 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
-  [[ "$output" == *"changes in $FILE_TO_HIDE"* ]]
-  [[ "$output" == *"$new_content"* ]]
+  local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"+$new_content"* ]]
 
-  [[ "$output" == *"changes in $SECOND_FILE_TO_HIDE"* ]]
-  [[ "$output" == *"$second_file_to_hide"* ]]
+  local second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
+  [[ "$output" == *"changes in $second_path"* ]]
+  [[ "$output" == *"+$second_new_content"* ]]
 }

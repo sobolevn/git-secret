@@ -21,10 +21,10 @@ function setup {
 
 
 function teardown {
+  rm "$FILE_TO_HIDE"
+
   uninstall_fixture_full_key "$TEST_DEFAULT_USER" "$FINGERPRINT"
   unset_current_state
-
-  rm -f "$FILE_TO_HIDE"
 }
 
 
@@ -40,12 +40,12 @@ function teardown {
 
   cmp --silent "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
 
-  rm -f "${FILE_TO_HIDE}2"
+  rm "${FILE_TO_HIDE}2"
 }
 
 
 @test "run 'reveal' with '-f'" {
-  rm -f "$FILE_TO_HIDE"
+  rm "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -f -d "$TEST_GPG_HOMEDIR" -p "$password"
@@ -56,7 +56,7 @@ function teardown {
 
 
 @test "run 'reveal' with wrong password" {
-  rm -f "$FILE_TO_HIDE"
+  rm "$FILE_TO_HIDE"
 
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "WRONG"
   [ "$status" -eq 2 ]
@@ -66,7 +66,7 @@ function teardown {
 
 @test "run 'reveal' for attacker" {
   # Preparations
-  rm -f "$FILE_TO_HIDE"
+  rm "$FILE_TO_HIDE"
 
   local atacker_fingerprint=$(install_fixture_full_key "$TEST_ATTACKER_USER")
   local password=$(test_user_password "$TEST_ATTACKER_USER")

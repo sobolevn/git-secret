@@ -18,10 +18,10 @@ function setup {
 
 
 function teardown {
+  rm "$FILE_TO_HIDE"
+
   uninstall_fixture_key $TEST_DEFAULT_USER
   unset_current_state
-
-  rm -f "$FILE_TO_HIDE"
 }
 
 
@@ -48,6 +48,9 @@ function teardown {
   run git secret hide
   [ "$status" -eq 0 ]
   [ "$output" = "done. all 2 files are hidden." ]
+
+  # Cleaning up:
+  rm "$second_file"
 }
 
 
@@ -72,6 +75,8 @@ function teardown {
   run git secret hide -d
   [ "$status" -eq 0 ]
 
+  ls && pwd
+
   # File must be removed:
   [ ! -f "$FILE_TO_HIDE" ]
 }
@@ -81,12 +86,40 @@ function teardown {
   run git secret hide -v -d
   [ "$status" -eq 0 ]
 
+  ls && pwd
+
   # File must be removed:
   [ ! -f "$FILE_TO_HIDE" ]
 
   # It should be verbose:
   [[ "$output" == *"removing unencrypted files"* ]]
   [[ "$output" == *"$FILE_TO_HIDE"* ]]
+}
+
+
+@test "run 'hide' with '-d' and '-v' and files in subdirectories" {
+  # Preparations:
+  local root_dir='test_sub_dir'
+  mkdir -p "$root_dir"
+  local second_file="$root_dir/second_file.txt"
+  local second_content="some content"
+  set_state_secret_add "$second_file" "$second_content"
+
+  # Verify that the second file is there:
+  [ -f "$second_file" ]
+
+  # Now it should hide 2 files:
+  run git secret hide -v -d
+  [ "$status" -eq 0 ]
+
+  # File must be removed:
+  [ ! -f "$FILE_TO_HIDE" ]
+  [ ! -f "$second_file" ]
+
+  # It should be verbose:
+  [[ "$output" == *"removing unencrypted files"* ]]
+  [[ "$output" == *"$FILE_TO_HIDE"* ]]
+  [[ "$output" == *"$second_file"* ]]
 }
 
 
