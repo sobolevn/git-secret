@@ -454,7 +454,7 @@ function _secrets_dir_exists {
 
 
 function _secrets_dir_is_not_ignored {
-  # This function checks that "${_SECRETS_DIR}" is not ignored.
+  # This function checks that "$_SECRETS_DIR" is not ignored.
 
   local git_secret_dir
   git_secret_dir=$(_get_secrets_dir)
