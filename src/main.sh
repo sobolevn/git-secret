@@ -19,7 +19,8 @@ function _check_setup {
 
   local secring="$keys_dir/secring.gpg"
   if [[ -f $secring ]] && [[ -s $secring ]]; then
-    # secring.gpg is not empty, someone has imported a private key.
+    # secring.gpg exists and is not empty,
+    # someone has imported a private key.
     _abort 'it seems that someone has imported a secret key.'
   fi
 }

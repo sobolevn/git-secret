@@ -12,21 +12,25 @@
 
 [![git-secret terminal preview](https://asciinema.org/a/41811.png)](https://asciinema.org/a/41811?autoplay=1)
 
-## Usage
-
-See the [git-secret site](http://git-secret.io/).
-
 ## Installation
 
-See the [installation section](http://git-secret.io/#installation).
+`git-secret` supports `brew`, just type: `brew install git-secret`
+
+It also supports `apt` and `yum`. You can also use `make` if you want to.
+
+See the [installation section](http://git-secret.io/installation) for the details.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+Do you want to help the project? Find an [issue](https://github.com/sobolevn/git-secret/issues) and send a PR. It is more than welcomed! See [CONTRIBUTING.md](CONTRIBUTING.md) on how to do that.
+
+### Security
+
+If you found any security related issues, please do not enclose it in public. Send an email to `security@wemake.services`
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md).
+`git-secret` uses semver. See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
