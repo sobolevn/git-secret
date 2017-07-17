@@ -40,7 +40,11 @@ matrix:
           packages:
           - shellcheck
     - os: osx
-      env: GITSECRET_DIST="brew"; GITSECRET_GPG_DEP="gnupg2"; SECRETS_GPG_COMMAND="gpg2"
+      env: GITSECRET_DIST="brew"; GITSECRET_GPG_DEP="gpg1"
+      sudo: false
+      language: generic
+    - os: osx
+      env: GITSECRET_DIST="brew"; GITSECRET_GPG_DEP="gnupg@2.0"
       sudo: false
       language: generic
 
