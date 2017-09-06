@@ -460,10 +460,10 @@ function _secrets_dir_is_not_ignored {
   git_secret_dir=$(_get_secrets_dir)
 
   local ignores
-  ignores=$(_check_ignore "${_SECRETS_DIR}/")
+  ignores=$(_check_ignore "${_SECRETS_DIR}")
 
   if [[ ! $ignores -eq 1 ]]; then
-    _abort "'$git_secret_dir/' is ignored."
+    _abort "'$git_secret_dir' is ignored."
   fi
 }
 
