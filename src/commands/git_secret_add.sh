@@ -69,18 +69,20 @@ function add {
 
   # Adding files to path mappings:
 
-  local path_mappings
-  path_mappings=$(_get_secrets_dir_paths_mapping)
+  local fsdb
+  fsdb=$(_get_secrets_dir_paths_mapping)
 
   for item in "${items[@]}"; do
     local path
+    local key
     path=$(_git_normalize_filename "$item")
+    key="$path"
 
     # Adding files into system, skipping duplicates.
     local already_in
-    already_in=$(_file_has_line "$path" "$path_mappings")
+    already_in=$(_fsdb_has_record "$key" "$fsdb")
     if [[ "$already_in" -eq 1 ]]; then
-      echo "$path" >> "$path_mappings"
+      echo "$key" >> "$fsdb"
     fi
   done
 
