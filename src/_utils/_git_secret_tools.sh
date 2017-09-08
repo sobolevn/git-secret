@@ -15,7 +15,37 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 
 # Commands:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
+: "${SECRETS_CHECKSUM_COMMAND:="sha256sum"}"
 
+
+# AWK scripts:
+AWK_FSDB_HAS_RECORD='
+BEGIN { FS=":"; OFS=":"; cnt=0; }
+{
+  if ( key == $1 )
+  {
+    cnt++
+  }
+}
+END { if ( cnt > 0 ) print "0"; else print "1"; }
+'
+
+AWK_FSDB_RM_RECORD='
+BEGIN { FS=":"; OFS=":"; }
+{
+  if ( key != $1 )
+  {
+    print $1,$2;
+  }
+}
+'
+
+AWK_FSDB_CLEAR_HASHES='
+BEGIN { FS=":"; OFS=":"; }
+{
+  print $1,"";
+}
+'
 
 # Bash:
 
@@ -126,6 +156,55 @@ function _unique_filename {
     result="${2}-${n}" # calling to the original "$2"
   done
   echo "$result"
+}
+
+
+# File System Database (fsdb):
+
+
+function _get_record_filename {
+  # Returns 1st field from passed record
+  local record="$1"
+  local filename=$(echo "$record" | awk -F: '{print $1}')
+
+  echo "$filename"
+}
+
+
+function _get_record_hash {
+  # Returns 2nd field from passed record
+  local record="$1"
+  local hash=$(echo "$record" | awk -F: '{print $2}')
+
+  echo "$hash"
+}
+
+
+function _fsdb_has_record {
+  # First parameter is the key
+  # Second is the fsdb
+  local key="$1"  # required
+  local fsdb="$2" # required
+
+  # 0 on contains, 1 for error.
+  gawk -v key=$key "$AWK_FSDB_HAS_RECORD" "$fsdb"
+}
+
+
+function _fsdb_rm_record {
+  # First parameter is the key (filename)
+  # Second is the path to fsdb
+  local key="$1"  # required
+  local fsdb="$2" # required
+
+  gawk -i inplace -v key=$key "$AWK_FSDB_RM_RECORD" "$fsdb"
+}
+
+function _fsdb_clear_hashes {
+  # First parameter is the path to fsdb
+  local fsdb="$1" # required
+
+  gawk -i inplace "$AWK_FSDB_CLEAR_HASHES" "$fsdb"
 }
 
 
@@ -315,7 +394,7 @@ function _list_all_added_files {
   fi
 
   while read -r line; do
-    echo "$line"
+    _get_record_filename "$line"
   done < "$path_mappings"
 }
 
