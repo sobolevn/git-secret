@@ -84,7 +84,11 @@ function tell {
   done
 
   echo "done. ${emails[*]} added as someone who know(s) the secret."
+
+  # force re-encrypting of files if required
+  local fsdb
   local end_key_cnt
+  fsdb=$(_get_secrets_dir_paths_mapping)
   end_key_cnt=$(get_gpg_key_count)
-  [[ $start_key_cnt -ne $end_key_cnt ]] && _fsdb_clear_hashes
+  [[ $start_key_cnt -ne $end_key_cnt ]] && _fsdb_clear_hashes "$fsdb"
 }
