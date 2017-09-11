@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
-AWK_CHECK_GITIGNORE='
+AWK_ADD_TO_GITIGNORE='
 BEGIN { cnt=0; }
 {
-  if ( pattern == $0 )
-    cnt++
+  print $0
+  if ( $0 == pattern ) cnt++;
 }
-
-END { print cnt }
+ENDFILE { if ( cnt == 0) print pattern; }
 '
 
-
-function gitignore_has_pattern {
+function gitignore_add_pattern {
   local pattern
   local gitignore_file_path
 
@@ -19,9 +17,8 @@ function gitignore_has_pattern {
   gitignore_file_path=$(_append_root_path '.gitignore')
 
   _maybe_create_gitignore
-  gawk -v pattern="$pattern" "$AWK_CHECK_GITIGNORE" "$gitignore_file_path"
+  gawk -i inplace -v pattern="$pattern" "$AWK_ADD_TO_GITIGNORE" "$gitignore_file_path"
 }
-
 
 function init {
   OPTIND=1
@@ -53,12 +50,9 @@ function init {
 
   echo "'$git_secret_dir/' created."
 
-  # verify random_seed file is ignored
   local random_seed_file
-  local already_in
-  random_seed_file=$(_append_root_path '.gitignore/random_seed')
-  already_in=$(gitignore_has_pattern "$random_seed_file")
-  [[ "$already_in" -gt 0 ]] && \
-    echo "$random_seed_file" >> "$gitignore_file_path"
+  random_seed_file=".gitsecret/keys/random_seed"
+  gitignore_add_pattern "$random_seed_file"
+
   # TODO: git attributes to view diffs
 }
