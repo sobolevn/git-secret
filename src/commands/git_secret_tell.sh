@@ -58,7 +58,7 @@ function tell {
   fi
 
   local start_key_cnt
-  start_key_cnt=$(get_gpg_key_cnt)
+  start_key_cnt=$(get_gpg_key_count)
   for email in "${emails[@]}"; do
     # This file will be removed automatically:
     _temporary_file  # note, that `_temporary_file` will export `filename` var.
@@ -85,6 +85,6 @@ function tell {
 
   echo "done. ${emails[*]} added as someone who know(s) the secret."
   local end_key_cnt
-  end_key_cnt=$(get_gpg_key_cnt)
+  end_key_cnt=$(get_gpg_key_count)
   [[ $start_key_cnt -ne $end_key_cnt ]] && _fsdb_clear_hashes
 }
