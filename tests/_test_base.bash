@@ -11,13 +11,49 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 # Constants:
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
-TEST_GPG_HOMEDIR="$BATS_TMPDIR"
+TEST_GPG_HOMEDIR="$BATS_TMPDIR/gnupg"
+
+AWK_GPG_VER_CHECK='
+/^gpg/{
+  version=$3
+  n=split(version,array,".")
+  if( n >= 2) {
+    if(array[1] >= 2)
+    {
+      if(array[2] >= 1)
+      {
+        print 1
+      }
+      else
+      {
+        print 0
+      }
+    }
+    else
+    {
+      print 0
+    }
+  }
+  else if(array[1] >= 2)
+  {
+    print 1
+  }
+  else
+  {
+    print 0
+  }
+}
+'
+
 
 # GPG-based stuff:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
 
 # This command is used with absolute homedir set and disabled warnings:
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning"
+
+# This is 1 is 2.1 or greater otherwise 0
+GPG_VER_21="$(gpg --version | gawk "$AWK_GPG_VER_CHECK")"
 
 
 # Personal data:
@@ -40,6 +76,21 @@ function test_user_email {
 
 # GPG:
 
+function stop_gpg_agent {
+  local username=$(id -u -n)
+  ps awx -u "$username" | gawk \
+    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill -9"$1) } }' \
+    > /dev/null 2>&1
+}
+
+function get_gpgtest_prefix {
+  if [[ $GPG_VER_21 -eq 1  ]]; then
+    echo "echo \"$(test_user_password $1)\" | "
+  else
+    echo ""
+  fi
+}
+
 function get_gpg_fingerprint_by_email {
   local email="$1"
   local fingerprint
@@ -54,13 +105,9 @@ function get_gpg_fingerprint_by_email {
 
 function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
-  local email
 
-  email=$(test_user_email "$1")
-
-  $SECRETS_GPG_COMMAND --homedir="$FIXTURES_DIR/gpg/${1}" \
-    --no-permission-warning --output "$public_key" \
-    --armor --batch --yes --export "$email" > /dev/null 2>&1
+  \cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
+  stop_gpg_agent
   $GPGTEST --import "$public_key" > /dev/null 2>&1
   rm -f "$public_key"
 }
@@ -68,17 +115,15 @@ function install_fixture_key {
 
 function install_fixture_full_key {
   local private_key="$BATS_TMPDIR/private-${1}.key"
-  local email
+  local gpgtest_prefix="$(get_gpgtest_prefix $1)"
+  local gpgtest_import="$gpgtest_prefix $GPGTEST"
   local fp
   local fingerprint
 
-  email=$(test_user_email "$1")
+  \cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
-  $SECRETS_GPG_COMMAND --homedir="$FIXTURES_DIR/gpg/${1}" \
-    --no-permission-warning --output "$private_key" --armor \
-    --yes --export-secret-key "$email" > /dev/null 2>&1
-
-  $GPGTEST --allow-secret-key-import \
+  stop_gpg_agent
+  $gpgtest_import --allow-secret-key-import \
     --import "$private_key" > /dev/null 2>&1
 
   fp=$($GPGTEST --with-fingerprint "$private_key")
@@ -156,6 +201,9 @@ function remove_git_repository {
 function set_state_initial {
   cd "$BATS_TMPDIR" || exit 1
   rm -rf "${BATS_TMPDIR:?}/*"
+  rm -rf "$TEST_GPG_HOMEDIR"
+  mkdir -p "$TEST_GPG_HOMEDIR"
+  chmod 700 "$TEST_GPG_HOMEDIR"
 }
 
 
