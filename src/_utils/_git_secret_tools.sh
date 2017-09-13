@@ -47,6 +47,42 @@ BEGIN { FS=":"; OFS=":"; }
 }
 '
 
+AWK_GPG_VER_CHECK='
+/^gpg/{
+  version=$3
+  n=split(version,array,".")
+  if( n >= 2) {
+    if(array[1] >= 2)
+    {
+      if(array[2] >= 1)
+      {
+        print 1
+      }
+      else
+      {
+        print 0
+      }
+    }
+    else
+    {
+      print 0
+    }
+  }
+  else if(array[1] >= 2)
+  {
+    print 1
+  }
+  else
+  {
+    print 0
+  }
+}
+'
+
+# This is 1 for gpg vesion  2.1 or greater, otherwise 0
+GPG_VER_21="$(gpg --version | gawk "$AWK_GPG_VER_CHECK")"
+
+
 # Bash:
 
 function _function_exists {
@@ -522,6 +558,10 @@ function _decrypt {
 
   if [[ ! -z "$homedir" ]]; then
     base="$base --homedir=$homedir"
+  fi
+
+  if [[ "$GPG_VER_21" -eq 1 ]]; then
+    base="$base --pinentry-mode loopback"
   fi
 
   if [[ ! -z "$passphrase" ]]; then
