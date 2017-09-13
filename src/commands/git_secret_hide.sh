@@ -139,7 +139,7 @@ function hide {
     if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
       # shellcheck disable=2086
       $gpg_local --use-agent --yes --trust-model=always --encrypt \
-        $recipients -o "$output_path" "$input_path"
+        $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
       # If -u option was provided, it will update unencrypted file hash
       local key="$filename"
       local hash="$file_hash"
