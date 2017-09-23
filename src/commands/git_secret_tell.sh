@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=2016
 AWK_GPG_KEY_CNT='
 BEGIN { cnt=0; OFS=":"; FS=":"; }
 flag=0; $1 == "pub" { cnt++ }

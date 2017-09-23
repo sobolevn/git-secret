@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=2016
 AWK_FSDB_UPDATE_HASH='
 BEGIN { FS=":"; OFS=":"; }
 {
@@ -39,7 +40,8 @@ function _optional_delete {
 
     while read -r line; do
       # So the formating would not be repeated several times here:
-      local filename=$(_get_record_filename "$line")
+      local filename
+      filename=$(_get_record_filename "$line")
       _find_and_clean "*$filename" "$verbose"
     done < "$path_mappings"
 
@@ -59,8 +61,8 @@ function _get_file_hash {
   local checksum_local
   local file_hash
 
-  checksum_local=$(_get_checksum_local)
-  file_hash=$($checksum_local $input_path | awk '{print $1}')
+  checksum_local="$(_get_checksum_local)"
+  file_hash=$($checksum_local "$input_path" | awk '{print $1}')
 
   echo "$file_hash"
 }
@@ -72,7 +74,7 @@ function _optional_fsdb_update_hash {
 
   fsdb=$(_get_secrets_dir_paths_mapping)
 
-  gawk -i inplace -v key=$key -v hash=$hash "$AWK_FSDB_UPDATE_HASH" "$fsdb"
+  gawk -i inplace -v key="$key" -v hash="$hash" "$AWK_FSDB_UPDATE_HASH" "$fsdb"
 }
 
 
@@ -133,7 +135,7 @@ function hide {
     input_path=$(_append_root_path "$filename")
     output_path=$(_append_root_path "$encrypted_filename")
 
-    file_hash=$(_get_file_hash $input_path)
+    file_hash=$(_get_file_hash "$input_path")
 
     # encrypt file only if required
     if [[ "$fsdb_file_hash" != "$file_hash" ]]; then

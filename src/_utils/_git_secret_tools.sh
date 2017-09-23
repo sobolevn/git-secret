@@ -19,6 +19,7 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 
 
 # AWK scripts:
+# shellcheck disable=2016
 AWK_FSDB_HAS_RECORD='
 BEGIN { FS=":"; OFS=":"; cnt=0; }
 {
@@ -30,6 +31,7 @@ BEGIN { FS=":"; OFS=":"; cnt=0; }
 END { if ( cnt > 0 ) print "0"; else print "1"; }
 '
 
+# shellcheck disable=2016
 AWK_FSDB_RM_RECORD='
 BEGIN { FS=":"; OFS=":"; }
 {
@@ -40,6 +42,7 @@ BEGIN { FS=":"; OFS=":"; }
 }
 '
 
+# shellcheck disable=2016
 AWK_FSDB_CLEAR_HASHES='
 BEGIN { FS=":"; OFS=":"; }
 {
@@ -47,6 +50,7 @@ BEGIN { FS=":"; OFS=":"; }
 }
 '
 
+# shellcheck disable=2016
 AWK_GPG_VER_CHECK='
 /^gpg/{
   version=$3
@@ -201,7 +205,8 @@ function _unique_filename {
 function _get_record_filename {
   # Returns 1st field from passed record
   local record="$1"
-  local filename=$(echo "$record" | awk -F: '{print $1}')
+  local filename
+  filename=$(echo "$record" | awk -F: '{print $1}')
 
   echo "$filename"
 }
@@ -210,7 +215,8 @@ function _get_record_filename {
 function _get_record_hash {
   # Returns 2nd field from passed record
   local record="$1"
-  local hash=$(echo "$record" | awk -F: '{print $2}')
+  local hash
+  hash=$(echo "$record" | awk -F: '{print $2}')
 
   echo "$hash"
 }
@@ -223,7 +229,7 @@ function _fsdb_has_record {
   local fsdb="$2" # required
 
   # 0 on contains, 1 for error.
-  gawk -v key=$key "$AWK_FSDB_HAS_RECORD" "$fsdb"
+  gawk -v key="$key" "$AWK_FSDB_HAS_RECORD" "$fsdb"
 }
 
 
@@ -233,7 +239,7 @@ function _fsdb_rm_record {
   local key="$1"  # required
   local fsdb="$2" # required
 
-  gawk -i inplace -v key=$key "$AWK_FSDB_RM_RECORD" "$fsdb"
+  gawk -i inplace -v key="$key" "$AWK_FSDB_RM_RECORD" "$fsdb"
 }
 
 function _fsdb_clear_hashes {
