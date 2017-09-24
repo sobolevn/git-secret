@@ -86,13 +86,13 @@ function hide {
 
   OPTIND=1
 
-  while getopts 'cduvh' opt; do
+  while getopts 'cdmvh' opt; do
     case "$opt" in
       c) clean=1;;
 
       d) delete=1;;
 
-      u) fsdb_update_hash=1;;
+      m) fsdb_update_hash=1;;
 
       v) verbose='v';;
 
@@ -142,7 +142,7 @@ function hide {
       # shellcheck disable=2086
       $gpg_local --use-agent --yes --trust-model=always --encrypt \
         $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
-      # If -u option was provided, it will update unencrypted file hash
+      # If -m option was provided, it will update unencrypted file hash
       local key="$filename"
       local hash="$file_hash"
       # Update file hash if required in fsdb
