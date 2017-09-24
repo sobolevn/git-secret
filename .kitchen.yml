@@ -1,0 +1,112 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+
+provisioner:
+  # name of the host
+  hosts: test-kitchen
+  # use an ansible playbook to provision our server
+  name: ansible_playbook
+  ansible_verbose: false
+  require_ansible_repo: false
+  require_ansible_omnibus: true
+  ansible_version: 2.4
+  require_chef_for_busser: false
+  sudo_command: sudo -E -H
+  idempotency_test: false
+  sudo: true
+  ansible_extra_flags: "-e '{ kitchen_testrun: True }'"
+  additional_copy_path:
+    - ".ci-tests/integration/vars"
+    - ".ci-tests/integration/tasks"
+
+transport:
+  max_ssh_sessions: 3
+
+platforms:
+  - name: debian-stable
+    driver_config:
+      run_command: /lib/systemd/systemd
+      dockerfile: .Dockerfiles/debian/stable/Dockerfile
+      platform: debian
+      cap_add:
+        - SYS_ADMIN
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+      run_options:
+        tmpfs:
+        - /run
+
+  - name: fedora-latest
+    driver_config:
+      run_command: /lib/systemd/systemd
+      dockerfile: .Dockerfiles/fedora/latest/Dockerfile
+      platform: fedora
+      cap_add:
+        - SYS_ADMIN
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+      run_options:
+        tmpfs:
+        - /run
+
+  - name: ubuntu-latest
+    driver_config:
+      run_command: /lib/systemd/systemd
+      dockerfile: .Dockerfiles/ubuntu/latest/Dockerfile
+      platform: ubuntu
+      cap_add:
+        - SYS_ADMIN
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+      run_options:
+        tmpfs:
+        - /run
+
+  - name: ubuntu-rolling
+    driver_config:
+      run_command: /lib/systemd/systemd
+      dockerfile: .Dockerfiles/ubuntu/rolling/Dockerfile
+      platform: ubuntu
+      cap_add:
+        - SYS_ADMIN
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+      run_options:
+        tmpfs:
+        - /run
+
+verifier:
+  name: serverspec
+  sudo_path: true
+
+suites:
+  # suites found at /test/integration/$test-name
+  # in container @/tmp/kitchen
+  - name: gnupg1
+    verifier:
+      patterns:
+        - roles/git-secret/.ci-tests/integration/gnupg1/serverspec/*_spec.rb
+      bundler_path: '/usr/local/bin'
+      rspec_path: '/usr/local/bin'
+  - name: gnupg2
+    verifier:
+      patterns:
+        - roles/git-secret/.ci-tests/integration/gnupg2/serverspec/*_spec.rb
+      bundler_path: '/usr/local/bin'
+      rspec_path: '/usr/local/bin'
+    excludes:
+      - ubuntu-latest
+  - name: gnupg-git
+    verifier:
+      patterns:
+        - roles/git-secret/.ci-tests/integration/gnupg-git/serverspec/*_spec.rb
+      bundler_path: '/usr/local/bin'
+      rspec_path: '/usr/local/bin'
+    excludes:
+      - ubuntu-latest

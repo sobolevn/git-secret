@@ -1,0 +1,131 @@
+---
+# host to test against
+- hosts: test-kitchen
+  remote_user: root
+  tasks:
+    - include_tasks: tasks/dependencies.yml
+
+    - name: Install build tools
+      package:
+        name: "{{ item }}"
+      with_items: "{{ build_tools }}"
+
+    - name: Check wether deb-src repos are enabled
+      command: grep -c -e "^deb-src.*" /etc/apt/sources.list
+      register: deb_src_check
+      ignore_errors: yes
+      when:
+        - ansible_os_family == "Debian"
+
+    - name: Set deb-src check results
+      set_fact:
+        deb_src_check_result: "{{ deb_src_check.stdout | default(0) | int }}"
+
+    - name: Enable Ubuntu main & restricted source repo
+      replace:
+        path: '/etc/apt/sources.list'
+        regexp: '^(#\s)(.*main\srestricted)$'
+        replace: '\2 # enabled'
+      when:
+        - ansible_distribution == "Ubuntu"
+        - deb_src_check_result >= 1
+
+    - name: Enable Debian source repos
+      replace:
+        path: '/etc/apt/sources.list'
+        regexp: '^(deb)(.*)$'
+        replace: '\1\2\ndeb-src\2'
+      when:
+        - ansible_distribution == "Debian"
+        - deb_src_check_result >= 1
+
+    - name: Install gnupg build dependencies for Debian based distros
+      apt:
+        name: gnupg2
+        state: build-dep
+        update_cache: yes
+      when:
+        - ansible_os_family == "Debian"
+
+    - name: Install gnupg build dependencies for RedHat based distros
+      command: bash -lc "yum --assumeyes install yum-utils && yum-builddep --assumeyes gnupg2"
+      when:
+        - ansible_os_family == "RedHat"
+
+    - name: Get GnuPG github api content
+      uri:
+        url: https://api.github.com/repos/gpg/gnupg/tags
+        method: GET
+        return_content: yes
+        body_format: json
+      register: gnupg_tags
+
+    - name: Set url for latest gnupg release source
+      set_fact:
+        gnupg_tarball_url: >-
+          {{
+            gnupg_tags.json |
+            selectattr('name','match','gnupg-2.*') |
+            map(attribute='tarball_url') | first
+          }}
+
+    - name: Download latest release of gnupg source
+      get_url:
+        url: "{{ gnupg_tarball_url }}"
+        dest: /tmp/gnupg.tar.gz
+        force: yes
+      retries: 5
+      delay: 10
+
+    - name: Extract gnupg source tarball
+      unarchive:
+        src: /tmp/gnupg.tar.gz
+        dest: /usr/local/src/
+
+    - name: Find gnupg src directory
+      find:
+        paths: /usr/local/src
+        patterns: "gpg-gnupg*"
+        file_type: directory
+        recurse: no
+      register: found_gpg_src
+
+    - name: Set gnupg src directory
+      set_fact:
+        gpg_src_path: "{{ found_gpg_src.files | map(attribute='path') | first }}"
+
+    - name: Run gnupg autogen
+      command: bash -lc "cd {{ gpg_src_path }} && ./autogen.sh "
+      changed_when: False
+
+    - name: Disable development msg for gnupg
+      lineinfile:
+        path: "{{ gpg_src_path }}/configure"
+        regexp: '^development_version=.*'
+        line: 'development_version=no'
+
+    - name: Set gnupg build config
+      set_fact:
+        gpg_build_config: >-
+          --sysconfdir=/etc
+          --prefix=/usr
+          --enable-symcryptrun
+          --docdir=/usr/share/doc/gnupg-2.2.0
+          --disable-rpath
+          --enable-maintainer-mode
+      changed_when: False
+
+    - name: Configure gnupg build
+      command: bash -lc "cd {{ gpg_src_path }} && ./configure {{ gpg_build_config }}"
+      changed_when: False
+
+    - name: Compile gnupg src
+      command: bash -lc "cd {{ gpg_src_path }} && make"
+      changed_when: False
+
+    - name: Install compiled gnupg
+      command: bash -lc "cd {{ gpg_src_path }}  && make install"
+      changed_when: False
+
+    - include_tasks: tasks/prep-tests.yml
+    - include_tasks: tasks/run-tests.yml
