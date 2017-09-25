@@ -29,7 +29,7 @@ function teardown {
 
 
 @test "run 'usage' with ignored '.gitsecret/'" {
-  echo ".gitsecret/" >> ".gitignore"
+  echo ".gitsecret" >> ".gitignore"
 
   run git secret usage
   [ "$status" -eq 1 ]
