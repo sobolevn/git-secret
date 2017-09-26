@@ -2,12 +2,30 @@
 
 # shellcheck disable=2016
 AWK_ADD_TO_GITIGNORE='
-BEGIN { cnt=0; }
-{
-  print $0
-  if ( $0 == pattern ) cnt++;
+BEGIN {
+  cnt=0
 }
-ENDFILE { if ( cnt == 0) print pattern; }
+
+function check_print_line(line){
+  if (line == pattern) {
+    cnt++
+  }
+  print line
+}
+
+# main function
+{
+  check_print_line($0)      # check and print first line
+  while (getline == 1) {    # check and print all other
+    check_print_line($0)
+  }
+}
+
+END {
+  if ( cnt == 0) {         # if file did not contain pattern add
+    print pattern
+  }
+}
 '
 
 function gitignore_add_pattern {
