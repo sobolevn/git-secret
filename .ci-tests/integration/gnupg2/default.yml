@@ -1,0 +1,38 @@
+---
+# host to test against
+- hosts: test-kitchen
+  remote_user: root
+  tasks:
+    - include_tasks: tasks/dependencies.yml
+
+    - name: Install gnupg
+      package:
+        name: "{{ item.name }}"
+        state: present
+      when:
+        - ansible_distribution == item.distribution
+      with_items:
+        - name: gnupg2
+          distribution: Fedora
+        - name: gnupg2
+          distribution: Ubuntu
+        - name: gnupg
+          distribution: Debian
+
+    - name: Check for gpg2 binary
+      stat:
+        path: /usr/bin/gpg2
+      register: gpg2
+
+    - name: Make gpg2 default binary
+      file:
+        src: /usr/bin/gpg2
+        dest: /usr/bin/gpg
+        state: link
+        force: yes
+      when:
+        - gpg2.stat.exists
+        - gpg2.stat.islnk == False
+
+    - include_tasks: tasks/prep-tests.yml
+    - include_tasks: tasks/run-tests.yml

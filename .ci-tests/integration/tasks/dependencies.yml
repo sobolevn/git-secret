@@ -1,0 +1,30 @@
+---
+- name: Load a variable file based on the OS type, or a default if not found.
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+    - "default.yml"
+
+- name: Install Dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ test_dependencies }}"
+
+- name: Get bats
+  git:
+    repo: 'https://github.com/sstephenson/bats.git'
+    dest: /opt/bats
+
+- name: Install bats
+  file:
+    src: /opt/bats/libexec/bats
+    dest: /usr/bin/bats
+    state: link
+
+- name: Install fpm
+  gem:
+    name: fpm
+    state: present
+    user_install: no

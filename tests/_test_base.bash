@@ -13,11 +13,22 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
+AWK_GPG_GET_FP='
+BEGIN { OFS=":"; FS=":"; }
+{
+  if ( $1 == "fpr" )
+  {
+    print $10
+    exit
+  }
+}
+'
+
 # GPG-based stuff:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
 
 # This command is used with absolute homedir set and disabled warnings:
-GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning"
+GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
 
 
 # Personal data:
@@ -40,6 +51,23 @@ function test_user_email {
 
 # GPG:
 
+function stop_gpg_agent {
+  local username=$(id -u -n)
+  ps awx -u "$username" | gawk \
+    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
+    > /dev/null 2>&1
+}
+
+
+function get_gpgtest_prefix {
+  if [[ $GPG_VER_21 -eq 1  ]]; then
+    echo "echo \"$(test_user_password $1)\" | "
+  else
+    echo ""
+  fi
+}
+
+
 function get_gpg_fingerprint_by_email {
   local email="$1"
   local fingerprint
@@ -54,13 +82,8 @@ function get_gpg_fingerprint_by_email {
 
 function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
-  local email
 
-  email=$(test_user_email "$1")
-
-  $SECRETS_GPG_COMMAND --homedir="$FIXTURES_DIR/gpg/${1}" \
-    --no-permission-warning --output "$public_key" \
-    --armor --batch --yes --export "$email" > /dev/null 2>&1
+  \cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
   $GPGTEST --import "$public_key" > /dev/null 2>&1
   rm -f "$public_key"
 }
@@ -68,26 +91,27 @@ function install_fixture_key {
 
 function install_fixture_full_key {
   local private_key="$BATS_TMPDIR/private-${1}.key"
+  local gpgtest_prefix="$(get_gpgtest_prefix $1)"
+  local gpgtest_import="$gpgtest_prefix $GPGTEST"
   local email
   local fp
   local fingerprint
 
   email=$(test_user_email "$1")
 
-  $SECRETS_GPG_COMMAND --homedir="$FIXTURES_DIR/gpg/${1}" \
-    --no-permission-warning --output "$private_key" --armor \
-    --yes --export-secret-key "$email" > /dev/null 2>&1
+  \cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
-  $GPGTEST --allow-secret-key-import \
-    --import "$private_key" > /dev/null 2>&1
-
-  fp=$($GPGTEST --with-fingerprint "$private_key")
+  bash -c "$gpgtest_import --allow-secret-key-import \
+    --import \"$private_key\"" > /dev/null 2>&1
 
   # since 0.1.2 fingerprint is returned:
-  fingerprint=$(echo "$fp" | tr -d ' ' | sed -n '2p' | sed -e 's/.*=//g')
+  fingerprint=$($GPGTEST --with-fingerprint \
+                         --with-colon \
+                         --list-secret-key $email | gawk "$AWK_GPG_GET_FP")
 
   install_fixture_key "$1"
 
+  rm -f "$private_key"
   # return fingerprint to delete it later:
   echo "$fingerprint"
 }
@@ -97,7 +121,7 @@ function uninstall_fixture_key {
   local email
 
   email=$(test_user_email "$1")
-  $GPGTEST --batch --yes --delete-key "$email" > /dev/null 2>&1
+  $GPGTEST --yes --delete-key "$email" > /dev/null 2>&1
 }
 
 
@@ -111,7 +135,7 @@ function uninstall_fixture_full_key {
     fingerprint=$(get_gpg_fingerprint_by_email "$email")
   fi
 
-  $GPGTEST --batch --yes \
+  $GPGTEST --yes \
     --delete-secret-keys "$fingerprint" > /dev/null 2>&1
 
   uninstall_fixture_key "$1"
@@ -210,8 +234,13 @@ function unset_current_state {
   # unsets `git` state
   remove_git_repository
 
+  # stop gpg-agent
+  stop_gpg_agent
+
   # removes gpg homedir:
-  rm -f "pubring.gpg" "pubring.gpg~" "secring.gpg" "trustdb.gpg" "random_seed"
+  find "$TEST_GPG_HOMEDIR" \
+    -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
+    -exec rm -rf {} +
 
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1

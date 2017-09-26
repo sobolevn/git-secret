@@ -1,0 +1,34 @@
+---
+# host to test against
+- hosts: test-kitchen
+  remote_user: root
+  tasks:
+    - include_tasks: tasks/dependencies.yml
+
+    - name: Install gnupg
+      package:
+        name: "{{ item.name }}"
+        state: present
+      when:
+        - ansible_distribution == item.distribution
+      with_items:
+        - name: gnupg
+          distribution: Fedora
+        - name: gnupg1
+          distribution: Debian
+
+    - name: Check for gpg1 binary
+      stat:
+        path: /usr/bin/gpg1
+      register: gpg1
+
+    - name: Make gpg1 default binary
+      file:
+        src: /usr/bin/gpg1
+        dest: /usr/bin/gpg
+        state: link
+        force: yes
+      when: gpg1.stat.exists
+
+    - include_tasks: tasks/prep-tests.yml
+    - include_tasks: tasks/run-tests.yml

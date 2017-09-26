@@ -1,0 +1,20 @@
+---
+test_dependencies:
+  - ShellCheck
+  - gawk
+  - git
+  - make
+  - man
+  - redhat-rpm-config
+  - rpm-build
+  - rsync
+  - ruby-devel
+  - rubygems
+  - rubygems-devel
+
+build_tools:
+  - ImageMagick
+  - autoconf
+  - automake
+  - texinfo
+  - transfig

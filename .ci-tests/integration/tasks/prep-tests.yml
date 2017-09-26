@@ -1,0 +1,31 @@
+---
+- name: Get OS package type
+  set_fact:
+    os_pkg_type: "{{ item.os_pkg_type }}"
+  when:
+    - item.os_family == ansible_os_family
+  with_items:
+    - os_family: RedHat
+      os_pkg_type: "rpm"
+    - os_family: Debian
+      os_pkg_type: "deb"
+    - os_family: Suse
+      os_pkg_type: "rpm"
+  changed_when: false
+  tags:
+    - skip_ansible_lint
+
+- name: Get gpg version
+  command: gpg --version
+  register: gpg_version
+  changed_when: False
+
+- name: Print gpg version
+  debug:
+    msg: "Running test againts {{ gpg_version.stdout_lines | first | string }}."
+  changed_when: False
+
+- name: Copy git-secret src
+  synchronize:
+    src: /opt/workspace/
+    dest: /tmp/git-secret

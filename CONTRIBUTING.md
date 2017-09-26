@@ -10,8 +10,14 @@ Before starting make sure you have:
 
 - git
 - bash
+- bundler
+- docker
+- gawk
 - gnupg (or gnupg2)
+- ruby
+- sha256sum
 - [shellcheck](https://github.com/koalaman/shellcheck)
+- test-kitchen
 
 Only required if dealing with manuals, `gh-pages` or releases:
 
@@ -21,7 +27,8 @@ Only required if dealing with manuals, `gh-pages` or releases:
 
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
 2. Fork and clone your repository: `git clone https://github.com/${YOUR_NAME}/git-secret.git`
-3. Make sure that everything works fine by running `make test`
+3. Make sure that everything works on the current platform by running `make test`
+4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci-tests/integration"`.
 
 ### Development Process
 
@@ -46,11 +53,19 @@ It basically looks like that:
 
 ### Continuous integration
 
-CI is done with the help of `travis`. `travis` handles multiple environments:
+Local CI is done with the help [`test-kitchen`](http://kitchen.ci/). `test-kitchen` handles multiple test-suites on various platforms.
+`bundle exec kitchen list` will output the list of test suites to be run aginst supported platforms.
+
+Cloud CI is done with the help of `travis`. `travis` handles multiple environments:
 
 - `Docker`-based jobs or so-called 'integration tests', these tests create a local release, install it with the package manager and then run unit-tests and system checks
 - `OSX` jobs, which handle basic unit-tests on `OSX`
 - Native `travis` jobs, which handle basic unit-tests and stylechecks
+
+### Running local ci-tests
+
+1. Install requied gems with `bundle install`.
+2. Run ci-tests with `bundle exec kitchen verify --test-base-path="$PWD/.ci-tests/integration"`
 
 ### Release process
 

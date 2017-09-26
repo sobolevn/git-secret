@@ -1,0 +1,17 @@
+---
+test_dependencies:
+  - gawk
+  - git
+  - make
+  - man
+  - ruby-dev
+  - rubygems
+  - shellcheck
+
+build_tools:
+  - autoconf
+  - automake
+  - build-essential
+  - imagemagick
+  - texinfo
+  - transfig

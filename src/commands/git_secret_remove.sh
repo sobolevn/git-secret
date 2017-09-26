@@ -39,7 +39,13 @@ function remove {
     fi
 
     # Deleting it from path mappings:
-    _delete_line "$normalized_path" "$path_mappings"
+    # _delete_line "$normalized_path" "$path_mappings"
+    # Remove record from fsdb with matching key
+    local key
+    key="$normalized_path"
+    fsdb="$path_mappings"
+    _fsdb_rm_record "$key" "$fsdb"
+
     rm -f "${path_mappings}.bak"  # not all systems create '.bak'
 
     # Optional clean:
