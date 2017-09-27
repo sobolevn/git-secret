@@ -163,6 +163,7 @@ function _file_has_line {
 
 function _delete_line {
   local escaped_path
+  # shellcheck disable=2001
   escaped_path=$(echo "$1" | sed -e 's/[\/&]/\\&/g') # required
 
   local line="$2" # required
@@ -196,6 +197,20 @@ function _unique_filename {
     result="${2}-${n}" # calling to the original "$2"
   done
   echo "$result"
+}
+
+# Helper function
+
+
+function _gawk_inplace {
+  local parms="$*"
+  local dest_file
+  dest_file="$(echo "$parms" | gawk -v RS="'" -v FS="'" 'END{ gsub(/^\s+/,""); print $1 }')"
+
+  _temporary_file
+
+  bash -c "gawk ${parms}" > "$filename"
+  mv "$filename" "$dest_file"
 }
 
 
@@ -239,14 +254,14 @@ function _fsdb_rm_record {
   local key="$1"  # required
   local fsdb="$2" # required
 
-  gawk -i inplace -v key="$key" "$AWK_FSDB_RM_RECORD" "$fsdb"
+  _gawk_inplace -v key="$key" "'$AWK_FSDB_RM_RECORD'" "$fsdb"
 }
 
 function _fsdb_clear_hashes {
   # First parameter is the path to fsdb
   local fsdb="$1" # required
 
-  gawk -i inplace "$AWK_FSDB_CLEAR_HASHES" "$fsdb"
+  _gawk_inplace "'$AWK_FSDB_CLEAR_HASHES'" "$fsdb"
 }
 
 
@@ -257,6 +272,14 @@ function _show_manual_for {
 
   man "git-secret-${function_name}"
   exit 0
+}
+
+
+# Invalid options
+
+function _invalid_option {
+  echo "Invalid option."
+  exit 1
 }
 
 
@@ -568,7 +591,7 @@ function _decrypt {
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
-  local base="$SECRETS_GPG_COMMAND --use-agent -q --decrypt --no-permission-warning"
+  local base="$SECRETS_GPG_COMMAND --use-agent --decrypt --no-permission-warning"
 
   if [[ "$write_to_file" -eq 1 ]]; then
     base="$base -o $filename"
