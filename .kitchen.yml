@@ -69,6 +69,20 @@ platforms:
         tmpfs:
         - /run
 
+  - name: centos-latest
+    driver_config:
+      run_command: /lib/systemd/systemd
+      dockerfile: .Dockerfiles/centos/latest/Dockerfile
+      platform: centos
+      cap_add:
+        - SYS_ADMIN
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+      run_options:
+        tmpfs:
+        - /run
+
   - name: ubuntu-latest
     driver_config:
       run_command: /lib/systemd/systemd
@@ -110,6 +124,8 @@ suites:
         - roles/git-secret/.ci-tests/integration/gnupg1/serverspec/*_spec.rb
       bundler_path: '/usr/local/bin'
       rspec_path: '/usr/local/bin'
+    excludes:
+      - centos-latest
   - name: gnupg2
     verifier:
       patterns:
