@@ -2,48 +2,81 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      env: GITSECRET_DIST="make"; DOCKER_DIST="debian"
+      env: KITCHEN_REGEXP="gnupg1-debian-stable"
       services: docker
       sudo: required
       language: ruby
+      rvm: 2.4
     - os: linux
-      env: GITSECRET_DIST="deb"; DOCKER_DIST="debian";
+      env: KITCHEN_REGEXP="gnupg1-fedora"
       services: docker
       sudo: required
       language: ruby
+      rvm: 2.4
     - os: linux
-      env: GITSECRET_DIST="deb"; DOCKER_DIST="ubuntu"
+      env: KITCHEN_REGEXP="gnupg1-ubuntu-latest"
       services: docker
       sudo: required
       language: ruby
+      rvm: 2.4
     - os: linux
-      env: GITSECRET_DIST="rpm"; DOCKER_DIST="fedora"
+      env: KITCHEN_REGEXP="gnupg1-ubuntu-rolling"
       services: docker
       sudo: required
       language: ruby
+      rvm: 2.4
     - os: linux
-      env: GITSECRET_DIST="make"; DOCKER_DIST="alpine"
+      env: KITCHEN_REGEXP="gnupg2-debian-stable"
       services: docker
       sudo: required
       language: ruby
+      rvm: 2.4
     - os: linux
-      env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"
-      sudo: false
-      language: ruby
-    - os: linux
-      env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg2"; SECRETS_GPG_COMMAND="gpg2"
+      env: KITCHEN_REGEXP="gnupg2-fedora"
+      services: docker
       sudo: required
       language: ruby
+      rvm: 2.4
     - os: linux
-      env: GITSECRET_DIST="shellcheck"
+      env: KITCHEN_REGEXP="gnupg2-centos"
+      services: docker
       sudo: required
       language: ruby
-      addons:
-        apt:
-          sources:
-          - debian-sid
-          packages:
-          - shellcheck
+      rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg-git-debian-stable"
+      language: ruby
+      rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg-git-debian-stable"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg-git-fedora"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg-git-ubuntu-rolling"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
     - os: osx
       env: GITSECRET_DIST="brew"; GITSECRET_GPG_DEP="gpg1"
       sudo: false
