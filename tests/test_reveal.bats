@@ -107,7 +107,8 @@ function teardown {
 @test "run 'reveal' for multiple users (normally)" {
   # Preparations:
   local second_fingerprint=$(install_fixture_full_key "$TEST_SECOND_USER")
-  local password=$(test_user_password "$TEST_SECOND_USER")
+  # bug in gpg v2.0.22, need to use default password
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
   set_state_secret_tell "$TEST_SECOND_USER"
   set_state_secret_hide
 

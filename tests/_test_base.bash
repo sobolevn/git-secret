@@ -72,10 +72,9 @@ function get_gpg_fingerprint_by_email {
   local email="$1"
   local fingerprint
 
-  fingerprint=$($GPGTEST --list-public-keys --with-fingerprint --with-colons | \
-    sed -e '/<'"$email"'>::scESC:/,/[A-Z0-9]\{40\}:/!d' | \
-    sed -e '/fpr/!d' | \
-    sed -n 's/fpr:::::::::\([A-Z|0-9]\{40\}\):/\1/p')
+  fingerprint=$($GPGTEST --with-fingerprint \
+                         --with-colon \
+                         --list-secret-key $email | gawk "$AWK_GPG_GET_FP")
   echo "$fingerprint"
 }
 
@@ -105,9 +104,7 @@ function install_fixture_full_key {
     --import \"$private_key\"" > /dev/null 2>&1
 
   # since 0.1.2 fingerprint is returned:
-  fingerprint=$($GPGTEST --with-fingerprint \
-                         --with-colon \
-                         --list-secret-key $email | gawk "$AWK_GPG_GET_FP")
+  fingerprint=$(get_gpg_fingerprint_by_email $email)
 
   install_fixture_key "$1"
 
