@@ -24,17 +24,14 @@
     state: link
 
 - name: Get ShellCheck
-    get_url:
+  get_url:
     url: https://storage.googleapis.com/shellcheck/shellcheck-latest.linux.x86_64.tar.xz
     dest: /tmp/shellcheck.tar.xz
 
 - name: Install ShellCheck
-    unarchive:
-    src: /tmp/shellcheck.tar.xz
-    dest: /usr/bin
-    extra_opts:
-        - --strip-components=1
-        - --wildcard ".shellcheck"
+  command: tar xvf /tmp/shellcheck.tar.xz --strip-component=1 --wildcards "*shellcheck" -C /usr/bin
+  args:
+    warn: no
 
 - name: Install fpm
   gem:

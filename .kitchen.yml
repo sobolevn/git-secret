@@ -142,3 +142,4 @@ suites:
       rspec_path: '/usr/local/bin'
     excludes:
       - ubuntu-latest
+      - centos-latest
