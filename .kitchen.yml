@@ -18,8 +18,8 @@ provisioner:
   sudo: true
   ansible_extra_flags: "-e '{ kitchen_testrun: True }'"
   additional_copy_path:
-    - ".ci-tests/integration/vars"
-    - ".ci-tests/integration/tasks"
+    - ".ci/integration/vars"
+    - ".ci/integration/tasks"
 
 transport:
   max_ssh_sessions: 3
@@ -121,7 +121,7 @@ suites:
   - name: gnupg1
     verifier:
       patterns:
-        - roles/git-secret/.ci-tests/integration/gnupg1/serverspec/*_spec.rb
+        - roles/git-secret/.ci/integration/gnupg1/serverspec/*_spec.rb
       bundler_path: '/usr/local/bin'
       rspec_path: '/usr/local/bin'
     excludes:
@@ -129,7 +129,7 @@ suites:
   - name: gnupg2
     verifier:
       patterns:
-        - roles/git-secret/.ci-tests/integration/gnupg2/serverspec/*_spec.rb
+        - roles/git-secret/.ci/integration/gnupg2/serverspec/*_spec.rb
       bundler_path: '/usr/local/bin'
       rspec_path: '/usr/local/bin'
     excludes:
@@ -137,7 +137,7 @@ suites:
   - name: gnupg-git
     verifier:
       patterns:
-        - roles/git-secret/.ci-tests/integration/gnupg-git/serverspec/*_spec.rb
+        - roles/git-secret/.ci/integration/gnupg-git/serverspec/*_spec.rb
       bundler_path: '/usr/local/bin'
       rspec_path: '/usr/local/bin'
     excludes:
