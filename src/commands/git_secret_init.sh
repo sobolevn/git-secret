@@ -36,7 +36,7 @@ function gitignore_add_pattern {
   gitignore_file_path=$(_append_root_path '.gitignore')
 
   _maybe_create_gitignore
-  gawk -i inplace -v pattern="$pattern" "$AWK_ADD_TO_GITIGNORE" "$gitignore_file_path"
+  _gawk_inplace -v pattern="$pattern" "'$AWK_ADD_TO_GITIGNORE'" "$gitignore_file_path"
 }
 
 function init {
@@ -45,6 +45,8 @@ function init {
   while getopts 'h' opt; do
     case "$opt" in
       h) _show_manual_for 'init';;
+
+      *) _invalid_option;;
     esac
   done
 

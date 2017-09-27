@@ -11,6 +11,8 @@ function remove {
       c) clean=1;;
 
       h) _show_manual_for 'remove';;
+
+      *) _invalid_option;;
     esac
   done
 
@@ -39,7 +41,6 @@ function remove {
     fi
 
     # Deleting it from path mappings:
-    # _delete_line "$normalized_path" "$path_mappings"
     # Remove record from fsdb with matching key
     local key
     key="$normalized_path"

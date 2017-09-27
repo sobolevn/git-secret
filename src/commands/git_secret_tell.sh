@@ -29,6 +29,8 @@ function tell {
       m) self_email=1;;
 
       d) homedir=$OPTARG;;
+
+      *) _invalid_option;;
     esac
   done
 

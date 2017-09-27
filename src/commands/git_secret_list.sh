@@ -7,6 +7,8 @@ function list {
   while getopts 'h' opt; do
     case "$opt" in
       h) _show_manual_for 'list';;
+
+      *) _invalid_option;;
     esac
   done
 

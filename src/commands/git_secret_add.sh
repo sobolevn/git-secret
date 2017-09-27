@@ -10,6 +10,8 @@ function add {
       i) auto_ignore=1;;
 
       h) _show_manual_for "add";;
+
+      *) _invalid_option;;
     esac
   done
 

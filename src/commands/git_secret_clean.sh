@@ -11,6 +11,8 @@ function clean {
       v) verbose="v";;
 
       h) _show_manual_for 'clean';;
+
+      *) _invalid_option;;
     esac
   done
 
