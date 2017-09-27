@@ -23,6 +23,19 @@
     dest: /usr/bin/bats
     state: link
 
+- name: Get ShellCheck
+    get_url:
+    url: https://storage.googleapis.com/shellcheck/shellcheck-latest.linux.x86_64.tar.xz
+    dest: /tmp/shellcheck.tar.xz
+
+- name: Install ShellCheck
+    unarchive:
+    src: /tmp/shellcheck.tar.xz
+    dest: /usr/bin
+    extra_opts:
+        - --strip-components=1
+        - --wildcard ".shellcheck"
+
 - name: Install fpm
   gem:
     name: fpm

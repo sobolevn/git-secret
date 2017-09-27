@@ -6,7 +6,6 @@ test_dependencies:
   - man
   - ruby-dev
   - rubygems
-  - shellcheck
 
 build_tools:
   - autoconf
