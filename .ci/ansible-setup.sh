@@ -16,7 +16,7 @@ export ANSIBLE_VERSIONS_1="2.4.0.0"
 export INSTALL_TYPE_1="pip"
 export ANSIBLE_LABEL_1="v2.4"
 # Whats the default version
-ANSIBLE_DEFAULT_VERSION="v2.4"
+export ANSIBLE_DEFAULT_VERSION="v2.4"
 
 ## Create a temp dir to download avm
 avm_dir="$(mktemp -d 2> /dev/null || mktemp -d -t 'mytmpdir')"
