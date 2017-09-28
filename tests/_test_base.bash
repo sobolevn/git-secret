@@ -53,7 +53,7 @@ function test_user_email {
 
 function stop_gpg_agent {
   local username=$(id -u -n)
-  ps awx -u "$username" | gawk \
+  ps -wx -U "$username" | gawk \
     '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
     > /dev/null 2>&1
 }
