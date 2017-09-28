@@ -20,6 +20,7 @@ function install_ansible {
 # Mac:
 if [[ "$GITSECRET_DIST" == "brew" ]]; then
   brew install "$GITSECRET_GPG_DEP"
+  brew install gawk
 fi
 
 # Linux:

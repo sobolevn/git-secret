@@ -78,7 +78,7 @@ matrix:
       language: ruby
       rvm: 2.4
     - os: osx
-      env: GITSECRET_DIST="brew"; GITSECRET_GPG_DEP="gpg1"
+      env: GITSECRET_DIST="brew"; GITSECRET_GPG_DEP="gnupg@1.4"
       sudo: false
       language: generic
     - os: osx
