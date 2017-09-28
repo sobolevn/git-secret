@@ -42,6 +42,8 @@
   register: test_results
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  when:
+    ansible_distribution != "Alpine"
 
 - name: Find git-secret {{ os_pkg_type }} file
   find:
@@ -49,14 +51,19 @@
     patterns: "*.{{ os_pkg_type }}"
     recurse: yes
   register: pkg_location
+  when:
+    ansible_distribution != "Alpine"
 
 - name: Set git-secret {{ os_pkg_type }} location
   set_fact:
     pkg_path: "{{ pkg_location.files | map(attribute='path') | first }}"
+  when:
+    ansible_distribution != "Alpine"
 
 - name: Install git-secret {{ os_pkg_type }} package
   command: bash -lc "{{ item.command }} {{ pkg_path }}"
   when:
+    - ansible_distribution != "Alpine"
     - item.os_family == ansible_os_family
   with_items:
     - command: "rpm --nodeps --install --force"

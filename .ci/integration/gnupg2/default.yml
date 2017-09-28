@@ -20,6 +20,8 @@
           distribution: Ubuntu
         - name: gnupg
           distribution: Debian
+        - name: gnupg
+          distribution: Alpine
 
     - name: Check for gpg2 binary
       stat:

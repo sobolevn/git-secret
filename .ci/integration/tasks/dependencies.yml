@@ -29,7 +29,7 @@
     dest: /tmp/shellcheck.tar.xz
 
 - name: Install ShellCheck
-  command: tar xvf /tmp/shellcheck.tar.xz -C /usr/bin --strip-components=1 --wildcards "*shellcheck"
+  command: tar xvf /tmp/shellcheck.tar.xz -C /usr/bin --strip-components=1
   args:
     warn: no
     creates: /usr/bin/shellcheck

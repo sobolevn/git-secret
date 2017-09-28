@@ -38,7 +38,7 @@ function teardown {
   [ "$status" -eq 0 ]
   [ -f "$FILE_TO_HIDE" ]
 
-  cmp --silent "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
+  cmp -s "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
 
   rm "${FILE_TO_HIDE}2"
 }

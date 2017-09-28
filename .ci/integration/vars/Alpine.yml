@@ -1,0 +1,10 @@
+---
+test_dependencies:
+  - gawk
+  - git
+  - make
+  - man
+  - procps
+  - rsync
+  - ruby
+  - ruby-dev

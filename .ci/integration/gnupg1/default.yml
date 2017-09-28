@@ -18,6 +18,8 @@
           distribution: Fedora
         - name: gnupg1
           distribution: Debian
+        - name: gnupg1
+          distribution: Alpine
 
     - name: Check for gpg1 binary
       stat:

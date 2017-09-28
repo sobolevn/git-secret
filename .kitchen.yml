@@ -111,6 +111,18 @@ platforms:
         tmpfs:
         - /run
 
+  - name: alpine-latest
+    driver_config:
+      run_command: /sbin/init
+      dockerfile: .Dockerfiles/alpine/latest/Dockerfile
+      platform: alpine
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+      run_options:
+        tmpfs:
+        - /run
+
 verifier:
   name: serverspec
   sudo_path: true
@@ -122,16 +134,12 @@ suites:
     verifier:
       patterns:
         - roles/git-secret/.ci/integration/gnupg1/serverspec/*_spec.rb
-      bundler_path: '/usr/local/bin'
-      rspec_path: '/usr/local/bin'
     excludes:
       - centos-latest
   - name: gnupg2
     verifier:
       patterns:
         - roles/git-secret/.ci/integration/gnupg2/serverspec/*_spec.rb
-      bundler_path: '/usr/local/bin'
-      rspec_path: '/usr/local/bin'
     excludes:
       - ubuntu-latest
   - name: gnupg-git
@@ -143,3 +151,4 @@ suites:
     excludes:
       - ubuntu-latest
       - centos-latest
+      - alpine-latest
