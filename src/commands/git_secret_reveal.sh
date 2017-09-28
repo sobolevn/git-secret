@@ -18,7 +18,7 @@ function reveal {
 
       d) homedir=$OPTARG;;
 
-      *) _invalid_option;;
+      *) _invalid_option_for 'reveal';;
     esac
   done
 

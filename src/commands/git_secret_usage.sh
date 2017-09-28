@@ -8,7 +8,7 @@ function usage {
     case "$opt" in
       h) _show_manual_for "usage";;
 
-      *) _invalid_option;;
+      *) _invalid_option_for "usage";;
     esac
   done
 

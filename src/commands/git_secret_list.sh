@@ -8,7 +8,7 @@ function list {
     case "$opt" in
       h) _show_manual_for 'list';;
 
-      *) _invalid_option;;
+      *) _invalid_option_for 'list';;
     esac
   done
 

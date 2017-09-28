@@ -13,7 +13,7 @@ function changes {
 
       d) homedir=$OPTARG;;
 
-      *) _invalid_option;;
+      *) _invalid_option_for 'changes';;
     esac
   done
 

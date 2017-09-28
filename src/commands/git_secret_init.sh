@@ -46,7 +46,7 @@ function init {
     case "$opt" in
       h) _show_manual_for 'init';;
 
-      *) _invalid_option;;
+      *) _invalid_option_for 'init';;
     esac
   done
 

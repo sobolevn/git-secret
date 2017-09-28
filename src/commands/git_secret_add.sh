@@ -11,7 +11,7 @@ function add {
 
       h) _show_manual_for "add";;
 
-      *) _invalid_option;;
+      *) _invalid_option_for "add";;
     esac
   done
 

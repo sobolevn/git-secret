@@ -8,7 +8,7 @@ function whoknows {
     case "$opt" in
       h) _show_manual_for "whoknows";;
 
-      *) _invalid_option;;
+      *) _invalid_option_for "whoknows";;
     esac
   done
 

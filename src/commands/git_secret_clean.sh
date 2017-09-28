@@ -12,7 +12,7 @@ function clean {
 
       h) _show_manual_for 'clean';;
 
-      *) _invalid_option;;
+      *) _invalid_option_for 'clean';;
     esac
   done
 

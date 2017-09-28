@@ -30,7 +30,7 @@ function tell {
 
       d) homedir=$OPTARG;;
 
-      *) _invalid_option;;
+      *) _invalid_option_for 'tell';;
     esac
   done
 

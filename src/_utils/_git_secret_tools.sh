@@ -277,8 +277,10 @@ function _show_manual_for {
 
 # Invalid options
 
-function _invalid_option {
-  echo "Invalid option."
+function _invalid_option_for {
+  local function_name="$1" # required
+
+  man "git-secret-${function_name}"
   exit 1
 }
 

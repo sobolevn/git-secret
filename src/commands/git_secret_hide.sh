@@ -98,7 +98,7 @@ function hide {
 
       h) _show_manual_for 'hide';;
 
-      *) _invalid_option;;
+      *) _invalid_option_for 'hide';;
     esac
   done
 

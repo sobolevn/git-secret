@@ -12,7 +12,7 @@ function remove {
 
       h) _show_manual_for 'remove';;
 
-      *) _invalid_option;;
+      *) _invalid_option_for 'remove';;
     esac
   done
 
