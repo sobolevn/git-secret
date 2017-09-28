@@ -65,7 +65,7 @@ Cloud CI is done with the help of `travis`. `travis` handles multiple environmen
 ### Running local ci-tests
 
 1. Install requied gems with `bundle install`.
-2. Run ci-tests with `bundle exec kitchen verify --test-base-path="$PWD/.ci-tests/integration"`
+2. Run ci-tests with `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`
 
 ### Release process
 
