@@ -21,6 +21,9 @@ function install_ansible {
 if [[ "$GITSECRET_DIST" == "brew" ]]; then
   gnupg_installed="$(brew list | grep -c "gnupg")"
   [[ "$gnupg_installed" -ge 1 ]] || brew install gnupg
+  if [[ -f "/usr/local/bin/gpg1" ]]; then
+    ln -s /usr/local/bin/gpg1 /usr/local/bin/gpg
+  fi
   brew install gawk
 fi
 
