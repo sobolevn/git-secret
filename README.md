@@ -18,7 +18,7 @@ See the [git-secret site](http://git-secret.io/).
 
 ## Installation
 
-See the [installation section](http://git-secret.io/#installation).
+See the [installation section](http://git-secret.io/installation).
 
 ## Contributing
 
