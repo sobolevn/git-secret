@@ -63,3 +63,5 @@
       os_family: "RedHat"
     - command: "dpkg --force-all --install"
       os_family: "Debian"
+    - command: "apk add --allow-untrusted"
+      os_family: "Alpine"

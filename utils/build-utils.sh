@@ -22,6 +22,10 @@ fi
 SCRIPT_DEST_DIR="${SCRIPT_BUILD_DIR}/buildroot"
 
 
+function locate_apk {
+  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name "*.apk" | head -1
+}
+
 function locate_deb {
   find "$SCRIPT_DEST_DIR" -maxdepth 1 -name "*.deb" | head -1
 }
@@ -33,12 +37,15 @@ function locate_rpm {
 
 
 function preinstall_files {
+  # Only requires `-T` or `-c` depending on the OS
+  local dir_switch="$1"
+
   # Preparing the files:
   rm -rf "$SCRIPT_BUILD_DIR"
   mkdir -p "$SCRIPT_DEST_DIR"
 
   # Coping the files inside the build folder:
-  install -D -T -b -m "$EXEC_PEM" -T "git-secret" "${SCRIPT_DEST_DIR}/usr/bin/git-secret"
+  install -D "${dir_switch}" -b -m "$EXEC_PEM" "${dir_switch}" "git-secret" "${SCRIPT_DEST_DIR}/usr/bin/git-secret"
   install -m "$EXEC_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man1"
   install -m "$EXEC_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man7"
   for file in man/man1/* ; do
@@ -46,15 +53,15 @@ function preinstall_files {
       continue
     fi
 
-    install -D -T -b -m "$READ_PEM" -T "$file" "${SCRIPT_DEST_DIR}/usr/share/$file"
+    install -D "${dir_switch}" -b -m "$READ_PEM" "${dir_switch}" "$file" "${SCRIPT_DEST_DIR}/usr/share/$file"
   done
-  install -D -T -b -m "$READ_PEM" -T "man/man7/git-secret.7" \
+  install -D "${dir_switch}" -b -m "$READ_PEM" "${dir_switch}" "man/man7/git-secret.7" \
     "${SCRIPT_DEST_DIR}/usr/share/man/man7/git-secret.7"
 }
 
 
 function build_package {
-  # Only requires `rpm` or `deb` as first argument:
+  # Only requires `rpm`, `apk` or `deb` as first argument:
   local build_type="$1"
 
   # See https://github.com/jordansissel/fpm for docs:

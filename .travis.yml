@@ -22,6 +22,11 @@ matrix:
       sudo: required
       language: ruby
     - os: linux
+      env: GITSECRET_DIST="make"; DOCKER_DIST="alpine"
+      services: docker
+      sudo: required
+      language: ruby
+    - os: linux
       env: GITSECRET_DIST="none"; GITSECRET_GPG_DEP="gnupg"; SECRETS_GPG_COMMAND="gpg"
       sudo: false
       language: ruby

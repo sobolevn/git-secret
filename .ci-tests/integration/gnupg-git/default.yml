@@ -10,7 +10,7 @@
         name: "{{ item }}"
       with_items: "{{ build_tools }}"
 
-    - name: Check wether deb-src repos are enabled
+    - name: Check whether deb-src repos are enabled
       command: grep -c -e "^deb-src.*" /etc/apt/sources.list
       register: deb_src_check
       ignore_errors: yes

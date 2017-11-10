@@ -13,6 +13,8 @@
         - ansible_distribution == item.distribution
       with_items:
         - name: gnupg
+          distribution: Alpine
+        - name: gnupg
           distribution: Fedora
         - name: gnupg1
           distribution: Debian
