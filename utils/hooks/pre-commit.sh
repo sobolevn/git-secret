@@ -13,7 +13,7 @@ if [[ "$BRANCH_NAME" != '(no branch)' ]]; then
   export BATS_RUNNING_FROM_GIT=1
 
   # Run tests:
-#  make test
+  make test
 
   if [[ "$BRANCH_NAME" == "master" ]]; then
     # Build new manuals:
