@@ -10,6 +10,10 @@ describe 'git-secret::test' do
     describe command('find /tmp/git-secret/build -name "*.rpm"') do
       its(:stdout) { should match /git-secret.*rpm/ }
     end
+  elsif host_inventory['platform'] == 'alpine'
+    describe command('find /tmp/git-secret/build -name "*.apk"') do
+      its(:stdout) { should match /git-secret.*apk/ }
+    end
   else
     describe command('find /tmp/git-secret/build -name "*.deb"') do
       its(:stdout) { should match /git-secret.*deb/ }
@@ -28,17 +32,21 @@ describe 'git-secret::test' do
     describe command('rpm --query --info git-secret') do
       its(:exit_status) { should eq 0 }
     end
+  elsif host_inventory['platform'] == 'alpine'
+    describe command('apk info git-secret') do
+      its(:exit_status) { should eq 0 }
+    end
   else
     describe command('dpkg-query --status git-secret') do
       its(:exit_status) { should eq 0 }
     end
   end
 
-  describe command('man --where "git-secret"') do
+  describe command('man -w "git-secret"') do
     its(:exit_status) { should eq 0 }
   end
 
-  describe command('man --where "git-secret-init"') do
+  describe command('man -w "git-secret-init"') do
     its(:exit_status) { should eq 0 }
   end
 

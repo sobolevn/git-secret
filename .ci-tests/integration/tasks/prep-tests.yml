@@ -11,6 +11,8 @@
       os_pkg_type: "deb"
     - os_family: Suse
       os_pkg_type: "rpm"
+    - os_family: Alpine
+      os_pkg_type: "apk"
   changed_when: false
   tags:
     - skip_ansible_lint
@@ -29,3 +31,6 @@
   synchronize:
     src: /opt/workspace/
     dest: /tmp/git-secret
+    archive: false
+    owner: no
+    recursive: yes

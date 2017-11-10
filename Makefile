@@ -92,6 +92,28 @@ lint:
 install-fpm:
 	@if [ ! `gem list fpm -i` == "true" ]; then gem install fpm; fi
 
+	# .apk:
+
+.PHONY: build-apk
+build-apk: clean build install-fpm
+	@chmod +x "./utils/build-utils.sh"; sync; \
+	chmod +x "./utils/apk/apk-build.sh"; sync; \
+	export SECRET_PROJECT_ROOT="${PWD}"; \
+	"./utils/apk/apk-build.sh"
+
+.PHONY: test-apk-ci
+test-apk-ci: install-test build-apk
+	@chmod +x "./utils/apk/apk-ci.sh"; sync; \
+	export SECRET_PROJECT_ROOT="${PWD}"; \
+	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
+	"./utils/apk/apk-ci.sh"
+
+.PHONY: deploy-apk
+deploy-apk: build-apk
+	@chmod +x "./utils/apk/apk-deploy.sh"; sync; \
+	export SECRET_PROJECT_ROOT="${PWD}"; \
+	"./utils/apk/apk-deploy.sh"
+
 # .deb:
 
 .PHONY: build-deb

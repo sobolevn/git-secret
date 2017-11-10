@@ -1,0 +1,7 @@
+---
+test_dependencies:
+  - gawk
+  - man
+
+build_tools:
+  - make
