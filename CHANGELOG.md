@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 0.2.3
+- Added `-m` option to `hide` command, files will only be hidden when modifications are detected (#92)
+- Changed how path mappings file works: colon delimited FSDB (#92)
+- Fixed `gnupg` >= 2.1 CI tests (#6)
+- Now users can run local CI tests using test-kitchen (#6)
+- `git secret init` now adds `random_seed` to `.gitignore` (#93)
+- Added more `gpg` version to test matrix (#99)
+- Dropped `git check-ignore`, using `git add --dry-run` instead to check for ignored files (#105,#38)
+- Added CentOS to test matrix (#38,#91)
+- All tested Linux platforms now use latest release of `shellchek`
+
 ## Version 0.2.2
 
 - Change how the `usage` command works (#48)
