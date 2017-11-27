@@ -8,3 +8,7 @@ test_dependencies:
   - rsync
   - ruby
   - ruby-dev
+
+build_tools:
+  - make
+  - tar
