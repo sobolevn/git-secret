@@ -2,13 +2,19 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-debian-stable"
+      env: KITCHEN_REGEXP="gnupg1-alpine-latest"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-fedora"
+      env: KITCHEN_REGEXP="gnupg1-debian-latest"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg1-fedora-latest"
       services: docker
       sudo: required
       language: ruby
@@ -26,19 +32,25 @@ matrix:
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg2-debian-stable"
+      env: KITCHEN_REGEXP="gnupg2-alpine-latest"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg2-fedora"
+      env: KITCHEN_REGEXP="gnupg2-debian-latest"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg2-centos"
+      env: KITCHEN_REGEXP="gnupg2-fedora-latest"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg2-centos-latest"
       services: docker
       sudo: required
       language: ruby
@@ -50,13 +62,13 @@ matrix:
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-debian-stable"
+      env: KITCHEN_REGEXP="gnupg-git-debian-latest"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-fedora"
+      env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
       services: docker
       sudo: required
       language: ruby
