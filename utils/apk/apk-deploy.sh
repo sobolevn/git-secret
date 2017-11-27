@@ -24,7 +24,7 @@ echo "{ \
     \"gpgSign\": true \
   }, \
   \"files\": [{ \
-    \"includePattern\": \"build/buildroot/(.*\.apk)\", \
+    \"includePattern\": \"build/buildroot/(.*\\\\\\.apk)\", \
     \"uploadPattern\": \"/git-secret_${SCRIPT_VERSION}_all.apk\" \
   }], \
   \"publish\": true \
