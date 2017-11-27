@@ -51,7 +51,7 @@ RUN dnf clean all \
  && ln -s /lib/systemd/system/systemd-journald.service /etc/systemd/system/multi-user.target.wants/systemd-journald.service \
  && echo $'[Unit]\
 \nDescription=Finish boot up\
-\nAfter=ssh.service\
+\nAfter=sshd.service\
 \n\
 \n[Service]\
 \nType=oneshot\

@@ -25,26 +25,10 @@ transport:
   max_ssh_sessions: 3
 
 platforms:
-  - name: alpine-latest
-    provisioner:
-      require_ansible_omnibus: false
-    driver_config:
-      run_command: /sbin/tini -v -- /usr/sbin/sshd -D -E /var/log/secure
-      dockerfile: .Dockerfiles/alpine/latest/Dockerfile
-      platform: alpine
-      cap_add:
-        - SYS_ADMIN
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
-      run_options:
-        tmpfs:
-        - /run
-
-  - name: debian-stable
+  - name: debian-latest
     driver_config:
       run_command: /lib/systemd/systemd
-      dockerfile: .Dockerfiles/debian/stable/Dockerfile
+      dockerfile: .Dockerfiles/debian/latest/Dockerfile
       platform: debian
       cap_add:
         - SYS_ADMIN
@@ -53,7 +37,8 @@ platforms:
         - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
       run_options:
         tmpfs:
-        - /run
+          - /run
+          - /run/lock
 
   - name: fedora-latest
     driver_config:
@@ -67,7 +52,8 @@ platforms:
         - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
       run_options:
         tmpfs:
-        - /run
+          - /run
+          - /run/lock
 
   - name: centos-latest
     driver_config:
@@ -81,7 +67,8 @@ platforms:
         - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
       run_options:
         tmpfs:
-        - /run
+          - /run
+          - /run/lock
 
   - name: ubuntu-latest
     driver_config:
@@ -95,7 +82,8 @@ platforms:
         - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
       run_options:
         tmpfs:
-        - /run
+          - /run
+          - /run/lock
 
   - name: ubuntu-rolling
     driver_config:
@@ -109,7 +97,8 @@ platforms:
         - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
       run_options:
         tmpfs:
-        - /run
+          - /run
+          - /run/lock
 
   - name: alpine-latest
     driver_config:
@@ -121,7 +110,8 @@ platforms:
         - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
       run_options:
         tmpfs:
-        - /run
+          - /run
+          - /run/lock
 
 verifier:
   name: serverspec

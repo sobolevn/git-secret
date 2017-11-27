@@ -45,7 +45,7 @@ RUN apt-get update \
  && sed -ri 's/^#?UsePrivilegeSeparation\s+.*/UsePrivilegeSeparation no/' /etc/ssh/sshd_config \
  && echo "UseDNS=no" >> /etc/ssh/sshd_config \
  && systemctl set-default multi-user.target \
- && ln -s /lib/systemd/system/sshd.service /etc/systemd/system/multi-user.target.wants/sshd.service \
+ && ln -s /lib/systemd/system/ssh.service /etc/systemd/system/multi-user.target.wants/ssh.service \
  && ln -s /lib/systemd/system/systemd-journald.service /etc/systemd/system/multi-user.target.wants/systemd-journald.service \
  && echo $'[Unit]\
 \nDescription=Finish boot up\
