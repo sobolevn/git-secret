@@ -28,7 +28,7 @@ Only required if dealing with manuals, `gh-pages` or releases:
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
 2. Fork and clone your repository: `git clone https://github.com/${YOUR_NAME}/git-secret.git`
 3. Make sure that everything works on the current platform by running `make test`
-4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci-tests/integration"`.
+4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
 
 ### Development Process
 
