@@ -54,6 +54,51 @@ function teardown {
 }
 
 
+@test "run 'hide' with '-m'" {
+  run git secret hide -m
+
+  # Command must execute normally:
+  [ "$status" -eq 0 ]
+  # git secret hide -m, use temp file so cleaning should take place
+  [[ "${#lines[@]}" -eq 2 ]]
+  [ "${lines[0]}" = "done. all 1 files are hidden." ]
+  [ "${lines[1]}" = "cleaning up..." ]
+
+  # New files should be crated:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [ -f "$encrypted_file" ]
+}
+
+
+@test "run 'hide' with '-m' twice" {
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+  run git secret hide -m
+
+
+  # Command must execute normally:
+  [ "$status" -eq 0 ]
+  # git secret hide -m, uses a temp file so cleaning should take place
+  [[ "${#lines[@]}" -eq 2 ]]
+  [ "${lines[0]}" = "done. all 1 files are hidden." ]
+  [ "${lines[1]}" = "cleaning up..." ]
+  # back path mappings
+  cp "${path_mappings}" "${path_mappings}.bak"
+  # run hide again
+  run git secret hide -m
+  # compare
+  [ "$status" -eq 0 ]
+  [[ "${#lines[@]}" -eq 1 ]]
+  [ "$output" = "done. all 1 files are hidden." ]
+  # no changes should occur to path_mappings files
+  cmp -s "${path_mappings}" "${path_mappings}.bak"
+
+  # New files should be crated:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [ -f "$encrypted_file" ]
+}
+
+
 @test "run 'hide' with '-c' and '-v'" {
   # Preparations:
   local encrypted_filename=$(_get_encrypted_filename "$FILE_TO_HIDE")
