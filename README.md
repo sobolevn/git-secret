@@ -28,8 +28,10 @@ See the [installation section](http://git-secret.io/installation) for the detail
 `git-secret` relies on several external packages:
 
 - `bash` since `3.2.57` (it is hard to tell the correct `patch` release)
-- `git` since `2.6`
-- `gpg` since `gnupg 1.4` to `gnupg 2.0`, versions `2.1` are not yet supported
+- `gawk` since `4.0.2`
+- `git` since `1.8.3.1`
+- `gpg` since `gnupg 1.4` to `gnupg 2.X`
+- `sha256sum` since `8.21`
 
 
 ## Contributing
