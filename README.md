@@ -28,8 +28,10 @@ See the [installation section](http://git-secret.io/installation) for the detail
 `git-secret` relies on several external packages:
 
 - `bash` since `3.2.57` (it is hard to tell the correct `patch` release)
-- `git` since `2.6`
-- `gpg` since `gnupg 1.4` to `gnupg 2.0`, versions `2.1` are not yet supported
+- `gawk` since `4.0.2`
+- `git` since `1.8.3.1`
+- `gpg` since `gnupg 1.4` to `gnupg 2.X`
+- `sha256sum` since `8.21`
 
 
 ## Contributing
@@ -37,6 +39,15 @@ See the [installation section](http://git-secret.io/installation) for the detail
 Do you want to help the project? Find an [issue](https://github.com/sobolevn/git-secret/issues) and send a PR. It is more than welcomed! See [CONTRIBUTING.md](CONTRIBUTING.md) on how to do that.
 
 ### Security
+
+In order to encrypt (git-secret hide -m) files only when modified, the path
+mappings file tracks sha256sum checksums of the files added (git-secret add) to
+git-secret's path mappings filesystem database. Although, the chances of
+encountering a sha collision are low, it is recommend that you pad files with
+random data for greater security. Or avoid using  the `-m` option altogether.
+If your secret file holds more data than just a single password these
+precautions should not be necessary, but could be followed for greater
+security.
 
 If you found any security related issues, please do not enclose it in public. Send an email to `security@wemake.services`
 

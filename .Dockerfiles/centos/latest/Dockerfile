@@ -1,25 +1,30 @@
-FROM debian:stable
+FROM centos:latest
 
-ENV DEBIAN_FRONTEND="noninteractive" container="docker"
+ENV container="docker"
 
-RUN apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y \
-	apt-utils \
+RUN yum clean all \
+ && yum makecache \
+ && yum install -y epel-release \
+ && yum makecache \
+ && yum install -y \
 	curl \
-	locales \
-	lsb-release \
+	findutils \
+	gcc \
+	glibc-langpack-en.x86_64  \
+	libffi-devel \
 	net-tools \
 	openssh-server \
-	python-pip \
-	python2.7 \
+	openssl-devel \
+	python2-devel \
+	python2-pip \
+	redhat-lsb \
+	redhat-rpm-config \
 	sudo \
 	systemd \
  && pip install --upgrade pip \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+ && yum clean all \
  && if ! getent passwd <%= @username %>; then \
-      useradd -d /home/<%= @username %> -m -s /bin/bash -p '*' <%= @username %>; \
+      useradd -d /home/<%= @username %> -m -s /usr/bin/bash -p '*' <%= @username %>; \
     fi \
  && echo "<%= @username %> ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
  && echo "Defaults !requiretty" >> /etc/sudoers \
@@ -29,18 +34,17 @@ RUN apt-get update \
  && echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/authorized_keys \
  && chown <%= @username %> /home/<%= @username %>/.ssh/authorized_keys \
  && chmod 0600 /home/<%= @username %>/.ssh/authorized_keys \
- && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen \
+ && export LANG="en_US.UTF-8" && echo "LANG=\"en_US.UTF-8\"" > /etc/locale.conf \
  && cd /lib/systemd/system/sysinit.target.wants/; ls | grep -v systemd-tmpfiles-setup | /usr/bin/xargs rm -f $1 \
- && /bin/rm -f /lib/systemd/system/multi-user.target.wants/* \
- && /bin/rm -f /etc/systemd/system/*.wants/* \
- && /bin/rm -f /lib/systemd/system/local-fs.target.wants/* \
- && /bin/rm -f /lib/systemd/system/sockets.target.wants/*udev* \
- && /bin/rm -f /lib/systemd/system/sockets.target.wants/*initctl* \
- && /bin/rm -f /lib/systemd/system/basic.target.wants/* \
- && /bin/rm -f /lib/systemd/system/anaconda.target.wants/*  \
- && /bin/rm -f /lib/systemd/system/plymouth* \
- && /bin/rm -f /lib/systemd/system/systemd-update-utmp* \
- && sed -ri 's/^#?UsePAM\s+.*/UsePAM no/' /etc/ssh/sshd_config \
+ && /usr/bin/rm -f /lib/systemd/system/multi-user.target.wants/* \
+ && /usr/bin/rm -f /etc/systemd/system/*.wants/* \
+ && /usr/bin/rm -f /lib/systemd/system/local-fs.target.wants/* \
+ && /usr/bin/rm -f /lib/systemd/system/sockets.target.wants/*udev* \
+ && /usr/bin/rm -f /lib/systemd/system/sockets.target.wants/*initctl* \
+ && /usr/bin/rm -f /lib/systemd/system/basic.target.wants/* \
+ && /usr/bin/rm -f /lib/systemd/system/anaconda.target.wants/*  \
+ && /usr/bin/rm -f /lib/systemd/system/plymouth* \
+ && /usr/bin/rm -f /lib/systemd/system/systemd-update-utmp* \
  && sed -ri 's/^#?PubkeyAuthentication\s+.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config \
  && sed -ri 's/^#?UsePrivilegeSeparation\s+.*/UsePrivilegeSeparation no/' /etc/ssh/sshd_config \
  && echo "UseDNS=no" >> /etc/ssh/sshd_config \
@@ -49,7 +53,7 @@ RUN apt-get update \
  && ln -s /lib/systemd/system/systemd-journald.service /etc/systemd/system/multi-user.target.wants/systemd-journald.service \
  && echo $'[Unit]\
 \nDescription=Finish boot up\
-\nAfter=ssh.service\
+\nAfter=sshd.service\
 \n\
 \n[Service]\
 \nType=oneshot\
@@ -60,6 +64,7 @@ RUN apt-get update \
 \n[Install]\
 \nWantedBy=default.target' >> /etc/systemd/system/FinishBootUp.service \
  && ln -s /etc/systemd/system/FinishBootUp.service /etc/systemd/system/multi-user.target.wants/FinishBootUp.service
+
 
 EXPOSE 22
 

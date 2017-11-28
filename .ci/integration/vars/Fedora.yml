@@ -4,14 +4,16 @@ test_dependencies:
   - git
   - make
   - man
-  - ruby-dev
+  - redhat-rpm-config
+  - rpm-build
+  - rsync
+  - ruby-devel
   - rubygems
-  - shellcheck
+  - rubygems-devel
 
 build_tools:
+  - ImageMagick
   - autoconf
   - automake
-  - build-essential
-  - imagemagick
   - texinfo
   - transfig

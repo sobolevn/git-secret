@@ -1,12 +1,11 @@
 ---
 test_dependencies:
   - gawk
-  - make
   - git
-  - shellcheck
+  - make
+  - man
   - ruby-dev
   - rubygems
-  - man
 
 build_tools:
   - autoconf

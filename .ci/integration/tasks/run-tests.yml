@@ -53,6 +53,8 @@
 - name: Set git-secret {{ os_pkg_type }} location
   set_fact:
     pkg_path: "{{ pkg_location.files | map(attribute='path') | first }}"
+  when:
+    - pkg_location is defined
 
 - name: Install git-secret {{ os_pkg_type }} package
   command: bash -lc "{{ item.command }} {{ pkg_path }}"

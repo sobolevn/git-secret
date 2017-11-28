@@ -7,6 +7,8 @@ function killperson {
   while getopts 'h' opt; do
     case "$opt" in
       h) _show_manual_for 'killperson';;
+
+      *) _invalid_option_for 'killperson';;
     esac
   done
 

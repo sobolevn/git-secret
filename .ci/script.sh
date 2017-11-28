@@ -2,27 +2,24 @@
 
 set -e
 
-# Docker-baised builds:
-if [[ ! -z "$DOCKER_DIST" ]]; then
-  TEMPLATE="sobolevn/git-secret-docker-$DOCKER_DIST"
-  # Passing the `TRAVIS_COMMIT` into the container:
-  COMMAND="if [ ! -z ${TRAVIS_COMMIT} ]; then git checkout ${TRAVIS_COMMIT}; fi; make test-${GITSECRET_DIST}-ci"
-
-  # This will run the full intergration check inside the `docker` container:
-  # see `test-deb-ci` and `test-rpm-ci` in `Makefile`
-  docker run "$TEMPLATE" /bin/bash -c "$COMMAND"
-  docker ps -a
-fi
+function run_kitchen_tests {
+  ansible --version
+  ruby --version
+  python --version
+  pip --version
+  bundler --version
+  bundle show
+  bundle exec kitchen test --test-base-path="$PWD/.ci/integration" $KITCHEN_REGEXP
+}
 
 # Local builds:
-if [[ "$GITSECRET_DIST" == "brew" ]] || [[ "$GITSECRET_DIST" == "none" ]]; then
+if [[ "$GITSECRET_DIST" == "brew" ]]; then
   # Only running `make test` on standard (non-docker) build,
   # since it is called inside the docker container anyway.
   make test
 fi
 
-if [[ ! -z "$(command -v shellcheck)" ]]; then
-  # This means, that `shellcheck` does exist, so run it:
-  echo 'running lint'
-  make lint
+# Linux:
+if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
+  run_kitchen_tests
 fi

@@ -62,7 +62,7 @@ function _get_file_hash {
   local file_hash
 
   checksum_local="$(_get_checksum_local)"
-  file_hash=$($checksum_local "$input_path" | awk '{print $1}')
+  file_hash=$($checksum_local "$input_path" | gawk '{print $1}')
 
   echo "$file_hash"
 }
@@ -74,7 +74,7 @@ function _optional_fsdb_update_hash {
 
   fsdb=$(_get_secrets_dir_paths_mapping)
 
-  gawk -i inplace -v key="$key" -v hash="$hash" "$AWK_FSDB_UPDATE_HASH" "$fsdb"
+  _gawk_inplace -v key="$key" -v hash="$hash" "'$AWK_FSDB_UPDATE_HASH'" "$fsdb"
 }
 
 
@@ -97,6 +97,8 @@ function hide {
       v) verbose='v';;
 
       h) _show_manual_for 'hide';;
+
+      *) _invalid_option_for 'hide';;
     esac
   done
 

@@ -92,7 +92,7 @@ lint:
 install-fpm:
 	@if [ ! `gem list fpm -i` == "true" ]; then gem install fpm; fi
 
-	# .apk:
+# .apk:
 
 .PHONY: build-apk
 build-apk: clean build install-fpm

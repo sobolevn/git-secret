@@ -2,12 +2,30 @@
 
 # shellcheck disable=2016
 AWK_ADD_TO_GITIGNORE='
-BEGIN { cnt=0; }
-{
-  print $0
-  if ( $0 == pattern ) cnt++;
+BEGIN {
+  cnt=0
 }
-ENDFILE { if ( cnt == 0) print pattern; }
+
+function check_print_line(line){
+  if (line == pattern) {
+    cnt++
+  }
+  print line
+}
+
+# main function
+{
+  check_print_line($0)      # check and print first line
+  while (getline == 1) {    # check and print all other
+    check_print_line($0)
+  }
+}
+
+END {
+  if ( cnt == 0) {         # if file did not contain pattern add
+    print pattern
+  }
+}
 '
 
 function gitignore_add_pattern {
@@ -18,7 +36,7 @@ function gitignore_add_pattern {
   gitignore_file_path=$(_append_root_path '.gitignore')
 
   _maybe_create_gitignore
-  gawk -i inplace -v pattern="$pattern" "$AWK_ADD_TO_GITIGNORE" "$gitignore_file_path"
+  _gawk_inplace -v pattern="$pattern" "'$AWK_ADD_TO_GITIGNORE'" "$gitignore_file_path"
 }
 
 function init {
@@ -27,6 +45,8 @@ function init {
   while getopts 'h' opt; do
     case "$opt" in
       h) _show_manual_for 'init';;
+
+      *) _invalid_option_for 'init';;
     esac
   done
 

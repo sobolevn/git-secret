@@ -24,7 +24,7 @@ echo "{ \
     \"gpgSign\": true \
   }, \
   \"files\": [{ \
-    \"includePattern\": \"build/buildroot/(.*\.deb)\", \
+    \"includePattern\": \"build/buildroot/(.*\\\\\\.deb)\", \
     \"uploadPattern\": \"/git-secret_${SCRIPT_VERSION}_all.deb\", \
     \"matrixParams\": { \
       \"deb_distribution\": \"git-secret\", \

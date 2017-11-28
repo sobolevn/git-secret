@@ -7,6 +7,8 @@ function whoknows {
   while getopts "h?" opt; do
     case "$opt" in
       h) _show_manual_for "whoknows";;
+
+      *) _invalid_option_for "whoknows";;
     esac
   done
 

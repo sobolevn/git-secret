@@ -14,27 +14,25 @@
       with_items:
         - name: gnupg
           distribution: Alpine
-        - name: gnupg2
-          distribution: Fedora
-        - name: gnupg2
-          distribution: Ubuntu
         - name: gnupg
+          distribution: Fedora
+        - name: gnupg1
           distribution: Debian
+        - name: gnupg1
+          distribution: Alpine
 
-    - name: Check for gpg2 binary
+    - name: Check for gpg1 binary
       stat:
-        path: /usr/bin/gpg2
-      register: gpg2
+        path: /usr/bin/gpg1
+      register: gpg1
 
-    - name: Make gpg2 default binary
+    - name: Make gpg1 default binary
       file:
-        src: /usr/bin/gpg2
+        src: /usr/bin/gpg1
         dest: /usr/bin/gpg
         state: link
         force: yes
-      when:
-        - gpg2.stat.exists
-        - gpg2.stat.islnk == False
+      when: gpg1.stat.exists
 
     - include_tasks: tasks/prep-tests.yml
     - include_tasks: tasks/run-tests.yml

@@ -6,7 +6,7 @@ describe 'git-secret::test' do
     it { should be_installed }
   end
 
-  if host_inventory['platform'] == 'fedora'
+  if host_inventory['platform'] == 'fedora' || host_inventory['platform'] == 'redhat'
     describe command('find /tmp/git-secret/build -name "*.rpm"') do
       its(:stdout) { should match /git-secret.*rpm/ }
     end
@@ -16,7 +16,7 @@ describe 'git-secret::test' do
     end
   else
     describe command('find /tmp/git-secret/build -name "*.deb"') do
-      its(:stdout) { should match /git-secret.*deb/ }
+      its(:stdout) { should match(/git-secret.*deb/) }
     end
   end
 
@@ -28,7 +28,7 @@ describe 'git-secret::test' do
     it { should exist }
   end
 
-  if host_inventory['platform'] == 'fedora'
+  if host_inventory['platform'] == 'fedora' || host_inventory['platform'] == 'redhat'
     describe command('rpm --query --info git-secret') do
       its(:exit_status) { should eq 0 }
     end

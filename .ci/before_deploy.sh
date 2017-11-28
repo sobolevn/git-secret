@@ -7,9 +7,8 @@ if [[ "$GITSECRET_DIST" == "rpm" ]]; then
   sudo apt-get install -y rpm;
 fi
 
-
-if [[ ! -z "$DOCKER_DIST" ]]; then
+if [[ ! -z "$GITSECRET_DIST" ]] && [[ -z "$KITCHEN_REGEXP" ]]; then
   # When making a non-container build, this step will generate
   # proper manifest files:
-  make "deploy-${GITSECRET_DIST}";
+  make "deploy-$GITSECRET_DIST";
 fi

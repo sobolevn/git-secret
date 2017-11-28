@@ -1,28 +1,25 @@
-FROM fedora:latest
+FROM debian:stable
 
-ENV container="docker"
+ENV DEBIAN_FRONTEND="noninteractive" container="docker"
 
-RUN dnf clean all \
- && dnf makecache \
- && dnf install -y \
+RUN apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install -y \
+	apt-utils \
 	curl \
-	findutils \
-	gcc \
-	glibc-langpack-en.x86_64  \
-	libffi-devel \
+	locales \
+	lsb-release \
 	net-tools \
 	openssh-server \
-	openssl-devel \
-	python2-devel \
-	python2-pip \
-	redhat-lsb \
-	redhat-rpm-config \
+	python-pip \
+	python2.7 \
 	sudo \
 	systemd \
  && pip install --upgrade pip \
- && dnf clean all \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
  && if ! getent passwd <%= @username %>; then \
-      useradd -d /home/<%= @username %> -m -s /usr/bin/bash -p '*' <%= @username %>; \
+      useradd -d /home/<%= @username %> -m -s /bin/bash -p '*' <%= @username %>; \
     fi \
  && echo "<%= @username %> ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
  && echo "Defaults !requiretty" >> /etc/sudoers \
@@ -32,26 +29,27 @@ RUN dnf clean all \
  && echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/authorized_keys \
  && chown <%= @username %> /home/<%= @username %>/.ssh/authorized_keys \
  && chmod 0600 /home/<%= @username %>/.ssh/authorized_keys \
- && export LANG="en_US.UTF-8" && echo "LANG=\"en_US.UTF-8\"" > /etc/locale.conf \
+ && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen \
  && cd /lib/systemd/system/sysinit.target.wants/; ls | grep -v systemd-tmpfiles-setup | /usr/bin/xargs rm -f $1 \
- && /usr/bin/rm -f /lib/systemd/system/multi-user.target.wants/* \
- && /usr/bin/rm -f /etc/systemd/system/*.wants/* \
- && /usr/bin/rm -f /lib/systemd/system/local-fs.target.wants/* \
- && /usr/bin/rm -f /lib/systemd/system/sockets.target.wants/*udev* \
- && /usr/bin/rm -f /lib/systemd/system/sockets.target.wants/*initctl* \
- && /usr/bin/rm -f /lib/systemd/system/basic.target.wants/* \
- && /usr/bin/rm -f /lib/systemd/system/anaconda.target.wants/*  \
- && /usr/bin/rm -f /lib/systemd/system/plymouth* \
- && /usr/bin/rm -f /lib/systemd/system/systemd-update-utmp* \
+ && /bin/rm -f /lib/systemd/system/multi-user.target.wants/* \
+ && /bin/rm -f /etc/systemd/system/*.wants/* \
+ && /bin/rm -f /lib/systemd/system/local-fs.target.wants/* \
+ && /bin/rm -f /lib/systemd/system/sockets.target.wants/*udev* \
+ && /bin/rm -f /lib/systemd/system/sockets.target.wants/*initctl* \
+ && /bin/rm -f /lib/systemd/system/basic.target.wants/* \
+ && /bin/rm -f /lib/systemd/system/anaconda.target.wants/*  \
+ && /bin/rm -f /lib/systemd/system/plymouth* \
+ && /bin/rm -f /lib/systemd/system/systemd-update-utmp* \
+ && sed -ri 's/^#?UsePAM\s+.*/UsePAM no/' /etc/ssh/sshd_config \
  && sed -ri 's/^#?PubkeyAuthentication\s+.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config \
  && sed -ri 's/^#?UsePrivilegeSeparation\s+.*/UsePrivilegeSeparation no/' /etc/ssh/sshd_config \
  && echo "UseDNS=no" >> /etc/ssh/sshd_config \
  && systemctl set-default multi-user.target \
- && ln -s /lib/systemd/system/sshd.service /etc/systemd/system/multi-user.target.wants/sshd.service \
+ && ln -s /lib/systemd/system/ssh.service /etc/systemd/system/multi-user.target.wants/ssh.service \
  && ln -s /lib/systemd/system/systemd-journald.service /etc/systemd/system/multi-user.target.wants/systemd-journald.service \
  && echo $'[Unit]\
 \nDescription=Finish boot up\
-\nAfter=sshd.service\
+\nAfter=ssh.service\
 \n\
 \n[Service]\
 \nType=oneshot\
@@ -62,7 +60,6 @@ RUN dnf clean all \
 \n[Install]\
 \nWantedBy=default.target' >> /etc/systemd/system/FinishBootUp.service \
  && ln -s /etc/systemd/system/FinishBootUp.service /etc/systemd/system/multi-user.target.wants/FinishBootUp.service
-
 
 EXPOSE 22
 

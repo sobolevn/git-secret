@@ -1,6 +1,5 @@
 ---
 test_dependencies:
-  - ShellCheck
   - gawk
   - git
   - make

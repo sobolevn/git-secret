@@ -24,7 +24,7 @@ echo "{ \
     \"gpgSign\": true \
   }, \
   \"files\": [{ \
-    \"includePattern\": \"build/buildroot/(.*\.rpm)\", \
+    \"includePattern\": \"build/buildroot/(.*\\\\\\.rpm)\", \
     \"uploadPattern\": \"/git-secret-${SCRIPT_VERSION}-1.noarch.rpm\"
   }], \
   \"publish\": true \

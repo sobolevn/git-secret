@@ -12,6 +12,8 @@ function changes {
       p) passphrase=$OPTARG;;
 
       d) homedir=$OPTARG;;
+
+      *) _invalid_option_for 'changes';;
     esac
   done
 
