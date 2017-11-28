@@ -40,6 +40,15 @@ Do you want to help the project? Find an [issue](https://github.com/sobolevn/git
 
 ### Security
 
+In order to encrypt (git-secret hide -m) files only when modified, the path
+mappings file tracks sha256sum checksums of the files added (git-secret add) to
+git-secret's path mappings filesystem database. Although, the chances of
+encountering a sha collision are low, it is recommend that you pad files with
+random data for greater security. Or avoid using  the `-m` option altogether.
+If your secret file holds more data than just a single password these
+precautions should not be necessary, but could be followed for greater
+security.
+
 If you found any security related issues, please do not enclose it in public. Send an email to `security@wemake.services`
 
 
