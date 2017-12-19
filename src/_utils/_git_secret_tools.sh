@@ -112,6 +112,10 @@ function _os_based {
     Linux)
       "$1_linux" "${@:2}"
     ;;
+	
+    MINGW*)
+      "$1_linux" "${@:2}"
+    ;;
 
     # TODO: add MS Windows support.
     # CYGWIN*|MINGW32*|MSYS*)
