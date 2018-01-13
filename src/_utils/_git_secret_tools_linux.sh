@@ -12,3 +12,7 @@ function __temp_file_linux {
   filename=$(mktemp)
   echo "$filename"
 }
+
+function __sha256_linux {
+  sha256sum "$1"
+}

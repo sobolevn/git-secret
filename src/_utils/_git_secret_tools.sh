@@ -15,7 +15,7 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 
 # Commands:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
-: "${SECRETS_CHECKSUM_COMMAND:="sha256sum"}"
+: "${SECRETS_CHECKSUM_COMMAND:="_os_based __sha256"}"
 
 
 # AWK scripts:

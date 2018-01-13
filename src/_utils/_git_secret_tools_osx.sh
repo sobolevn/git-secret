@@ -13,3 +13,8 @@ function __temp_file_osx {
   filename=$(mktemp -t _gitsecrets_XXX )
   echo "$filename";
 }
+
+
+function __sha256_osx {
+  /usr/bin/shasum -a256 "$1"
+}
