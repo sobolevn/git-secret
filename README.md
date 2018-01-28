@@ -19,8 +19,7 @@
 
 `git-secret` supports `brew`, just type: `brew install git-secret`
 
-It also supports `apt` and `yum`. You can also use `make` if you want to.
-
+It also supports `apt` and `yum`. You can also use `make` if you want to. 
 See the [installation section](http://git-secret.io/installation) for the details.
 
 ### Requirements
@@ -32,6 +31,14 @@ See the [installation section](http://git-secret.io/installation) for the detail
 - `git` since `1.8.3.1`
 - `gpg` since `gnupg 1.4` to `gnupg 2.X`
 - `sha256sum` since `8.21`
+
+
+## Help
+
+Do you want to help the project? Consider these options:
+
+- [Become a sponsor on OpenCollective](https://opencollective.com/git-secret/#contribute)
+- [Become a backer on OpenCollective](https://opencollective.com/git-secret/)
 
 
 ## Contributing
