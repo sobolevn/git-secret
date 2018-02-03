@@ -33,14 +33,6 @@ See the [installation section](http://git-secret.io/installation) for the detail
 - `sha256sum` since `8.21`
 
 
-## Help
-
-Do you want to help the project? Consider these options:
-
-- [Become a sponsor on OpenCollective](https://opencollective.com/git-secret/#contribute)
-- [Become a backer on OpenCollective](https://opencollective.com/git-secret/)
-
-
 ## Contributing
 
 Do you want to help the project? Find an [issue](https://github.com/sobolevn/git-secret/issues) and send a PR. It is more than welcomed! See [CONTRIBUTING.md](CONTRIBUTING.md) on how to do that.
