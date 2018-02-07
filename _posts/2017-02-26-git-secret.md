@@ -16,7 +16,7 @@ These steps cover the basic process of using `git-secret`:
 5. Now decrypt files with `git secret reveal` command. It will ask you for your password. And you're done!
 
 ### I want to add someone to the repository
-1. Get his `gpg` public-key. **You won't need their secret key.**
+1. Get their `gpg` public-key. **You won't need their secret key.**
 2. Import this key inside your `gpg` by running `gpg --import KEY_NAME`
 3. Now add this person to the `git-secret` by running `git secret tell persons@email.id`
 4. Reencypt the files, now they will be able to decrypt them with their secret key.
