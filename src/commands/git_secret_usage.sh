@@ -19,7 +19,7 @@ function usage {
   # to the old dynamic-loading version of this code.
   # thanks to @antmak it is now fixed, see:
   # https://github.com/sobolevn/git-secret/issues/47
-  local commands="add|changes|clean|hide|init|killperson|list|remove|reveal|tell|usage|whoknows"
+  local commands="add|cat|changes|clean|hide|init|killperson|list|remove|reveal|tell|usage|whoknows"
 
   echo "usage: git secret [$commands]"
 }
