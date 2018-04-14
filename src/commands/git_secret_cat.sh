@@ -7,7 +7,7 @@ function cat {
 
   OPTIND=1
 
-  while getopts 'hfd:p:' opt; do
+  while getopts 'hd:p:' opt; do
     case "$opt" in
       h) _show_manual_for 'cat';;
 
@@ -26,14 +26,11 @@ function cat {
 
   # Command logic:
 
-  #local path_mappings
-  #path_mappings=$(_get_secrets_dir_paths_mapping)
-
   for line in "$@"
   do
     local filename
     local path
-    #echo $line
+  
     filename=$(_get_record_filename "$line")
     path=$(_append_root_path "$filename")
 
