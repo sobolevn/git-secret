@@ -26,8 +26,8 @@ function cat {
 
   # Command logic:
 
-  local path_mappings
-  path_mappings=$(_get_secrets_dir_paths_mapping)
+  #local path_mappings
+  #path_mappings=$(_get_secrets_dir_paths_mapping)
 
   for line in "$@"
   do
