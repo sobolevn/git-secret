@@ -27,10 +27,6 @@ function teardown {
 
 
 @test "run 'cat' with password argument" {
-  # these two lines are needed for CI? Previous run stalled.
-  cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
-  rm -f "$FILE_TO_HIDE"
-
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE" 
 
@@ -39,10 +35,6 @@ function teardown {
   # $output is the output from 'git secret cat' above
   # note that currently content may differ by a newline
   [ "$FILE_CONTENTS" == "$output" ]
-
-  # these two lines needed for CI? Previous run stalled.
-  touch "$FILE_TO_HIDE)"
-  rm "${FILE_TO_HIDE}2"
 }
 
 @test "run 'cat' with wrong filename" {
