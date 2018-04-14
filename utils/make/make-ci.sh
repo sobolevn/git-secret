@@ -21,7 +21,6 @@ function integration_tests {
   # 'command -v' is like 'which'
   command -v "git-secret"
 
-
   # Test the manuals:
   man --where "git-secret" # .7
   man --where "git-secret-init" # .1
