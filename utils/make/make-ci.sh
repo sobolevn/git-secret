@@ -18,7 +18,9 @@ function integration_tests {
   make install
 
   # Testing the installation:
-  which "git-secret"
+  # 'command -v' is like 'which'
+  command -v "git-secret"
+
 
   # Test the manuals:
   man --where "git-secret" # .7

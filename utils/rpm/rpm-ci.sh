@@ -24,7 +24,8 @@ function integration_tests {
 
   # Testing the installation:
   dnf info "git-secret"
-  which "git-secret"
+  # 'command -v' is like 'which'
+  command -v "git-secret"
 
   # Test the manuals:
   man --where "git-secret" # .7
