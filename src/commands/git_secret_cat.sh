@@ -36,9 +36,5 @@ function cat {
 
     # The parameters are: filename, write-to-file, force, homedir, passphrase
     _decrypt "$path" "0" "0" "$homedir" "$passphrase"
-
-    #if [[ "$?" ne "0" ]]; then
-    #  _abort( "error decrypting $(filename): $?" )
-    #fi
   done
 }
