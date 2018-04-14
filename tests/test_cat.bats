@@ -40,6 +40,7 @@ function teardown {
   # $output is the output from 'git secret cat' above
   [ "$FILE_CONTENTS" == "$output" ]
 
+  touch "$FILE_TO_HIDE)"
   rm "${FILE_TO_HIDE}2"
 }
 
