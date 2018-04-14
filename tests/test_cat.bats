@@ -21,27 +21,20 @@ function setup {
 
 
 function teardown {
-  #rm "$FILE_TO_HIDE"
-
   uninstall_fixture_full_key "$TEST_DEFAULT_USER" "$FINGERPRINT"
   unset_current_state
 }
 
 
 @test "run 'cat' with password argument" {
-  cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
-  rm -f "$FILE_TO_HIDE"
-
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE" 
 
   [ "$status" -eq 0 ]
 
   # $output is the output from 'git secret cat' above
+  # note that currently content may differ by a newline
   [ "$FILE_CONTENTS" == "$output" ]
-
-  touch "$FILE_TO_HIDE)"
-  rm "${FILE_TO_HIDE}2"
 }
 
 @test "run 'cat' with wrong filename" {
