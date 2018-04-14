@@ -43,4 +43,8 @@ function teardown {
   rm "${FILE_TO_HIDE}2"
 }
 
+@test "run 'cat' with wrong filename" {
+  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" NO_SUCH_FILE
+  [ "$status" -eq 2 ]
+}
 
