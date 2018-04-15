@@ -58,11 +58,38 @@ your .gitignore file.
 ### Set up the file(s) for the secret(s)
 
 Create the files you want to store the secrets in (probably small files like `config.yml`
-or `app.ini`) and add them to .gitignore.
+or `app.ini`).
 
-git-secret will only encrypt files that are specifically listed in .gitignore
+You might as well also put some real (or sample) secrets into those files.
 
+Then add the filenames of the files with secrets to .gitignore.  Note that git-secret will only encrypt files 
+that are specifically listed in .gitignore
 
+### Encrypt your secret files
 
+Now just run
+
+        git secret hide
+
+to encrypt your files and rename them like `config.yml.secret`.
+
+### Add your encypted files to your repo and commit them.
+
+Now you can safely commit your encrypted files into your repo.  For example:
+
+    git add config.yml.secret
+    git commit -m 'encrypted copy of config.yml' config.yml.secret
+    git push
+
+### Later you can use `git secret cat` or `git secret reveal` to decrypt your secrets
+
+Now only people specifically permissioned (via their gpg public keys) to decrypt the data
+can do so. You can use the various `git secret` commands to add or revoke permissions 
+or re-encrypt your data. Remember to also generate new keys and re-encrypt them after you 
+revoke permissions for users.
+
+### DESCRIBE IMPORTANT SUBSET OF git secret COMMANDS HERE
+
+    usage: git secret [add|cat|changes|clean|hide|init|killperson|list|remove|reveal|tell|usage|whoknows]
 
 
