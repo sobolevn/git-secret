@@ -1,6 +1,11 @@
 # Changelog
 
+## Version 0.2.4
+
+- Added `git secret cat` feature
+
 ## Version 0.2.3
+
 - Added `-m` option to `hide` command, files will only be hidden when modifications are detected (#92)
 - Changed how path mappings file works: colon delimited FSDB (#92)
 - Fixed `gnupg` >= 2.1 CI tests (#6)
@@ -30,7 +35,6 @@
 - Tests are refactored. Added `clean` command tests, removed a lot of hardcoded things, moved tests execution from `./temp` folder to `/tmp`, added a lot of new check in old tests, and some new test cases (#52)
 - Refactored `hide` and `clean` commands to be shorter
 - `shellcheck` is now supported with `make lint`
-
 
 ## Version 0.2.1
 
