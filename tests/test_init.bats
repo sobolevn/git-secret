@@ -35,7 +35,7 @@ function teardown {
   # https://github.com/sobolevn/git-secret/issues/83
 
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
-    skip "this test is skiped while 'git commmit'"
+    skip "this test is skipped while running under 'git commmit'"
   fi
 
   # Preparations
