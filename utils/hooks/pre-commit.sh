@@ -7,8 +7,8 @@ BRANCH_NAME=$(git branch | grep '\*' | sed 's/* //')
 if [[ "$BRANCH_NAME" != '(no branch)' ]]; then
   unset GIT_WORK_TREE
 
-  # Set marker, that we running tests from `git commit`,
-  # so some tests will be skiped. It is done, because `git rev-parse`
+  # Set marker that we running tests from `git commit`,
+  # so some tests will be skipped. This is done because `git rev-parse`
   # is not working when running from pre-commit hook.
   export BATS_RUNNING_FROM_GIT=1
 

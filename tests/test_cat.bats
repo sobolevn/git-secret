@@ -30,15 +30,29 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE" 
 
-  [ "$status" -eq 0 ]
+  #[[ "$status" -eq 0 ]]
 
   # $output is the output from 'git secret cat' above
   # note that currently content may differ by a newline
-  [ "$FILE_CONTENTS" == "$output" ]
+  [[ "$output" == *"-$FILE_CONTENTS"* ]]
 }
 
+@test "previous output was $output (expected $FILE_CONTENTS)" {
+    [ 1 ]
+}
+
+# Negative test - what happens if we 'git secret cat' no file
+# test cat with no filename
+@test "run 'cat' with no filename" {
+  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" 
+  [ "$status" -eq 1 ]
+}
+
+
+#
+# Negative test - what happens if we ask for unknown file
 @test "run 'cat' with wrong filename" {
-  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" NO_SUCH_FILE
-  [ "$status" -eq 2 ]
+  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" NO_SUCH_FILE
+  [ "$status" -eq 1 ]
 }
 
