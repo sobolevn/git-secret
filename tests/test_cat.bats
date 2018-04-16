@@ -30,11 +30,11 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE" 
 
-  [ "$status" -eq 0 ]
+  #[[ "$status" -eq 0 ]]
 
   # $output is the output from 'git secret cat' above
   # note that currently content may differ by a newline
-  [ "$output" == *"-$FILE_CONTENTS"* ]
+  [[ "$output" == *"-$FILE_CONTENTS"* ]]
 }
 
 @test "previous output was $output (expected $FILE_CONTENTS)" {
