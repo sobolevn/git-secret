@@ -72,7 +72,7 @@ function teardown {
   # https://github.com/sobolevn/git-secret/issues/85 task 1
 
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
-    skip "this test is skiped while 'git commmit'"
+    skip "this test is skipped while 'git commmit'"
   fi
 
   # Preparations:
@@ -105,7 +105,7 @@ function teardown {
 
 @test "run 'add' for relative path" {
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
-    skip "this test is skiped while 'git commmit'"
+    skip "this test is skipped while 'git commmit'"
   fi
 
   # Prepations:

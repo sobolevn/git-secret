@@ -2,7 +2,7 @@
 
 ## Version 0.2.4
 
-- Added `git secret cat` feature
+- Added `git secret cat` feature (#141)
 
 ## Version 0.2.3
 
@@ -22,14 +22,14 @@
 
 - Change how the `usage` command works (#48)
 - Now `git-secret` works from any place inside `git-tree` (#56)
-- Added `-d` option to the `hide` coomand: it deletes unencrypted files (#62)
+- Added `-d` option to the `hide` command: it deletes unencrypted files (#62)
 - Added new command `changes` to see the diff between the secret files (#64)
 - Fixed bug when `_user_required` was not working after reimporting keys (#74)
 - Now it is possible to provide multiple emails to the `killperson` command (#73)
 - Now it is possible to provide multiple emails to the `tell` command (#72)
 - Now every doc in this project refer to `git-secret.io` instead of old `gh-pages` website (#71)
 - Now installation section is removed from main `man` file (#70)
-- Now "See also" section in the `man`s are clickable (#69)
+- Now "See also" sections in the `man` pages are clickable (#69)
 - Added "Manual" section to the manuals (#61)
 - Added `centos` container for `ci` testing (#38)
 - Tests are refactored. Added `clean` command tests, removed a lot of hardcoded things, moved tests execution from `./temp` folder to `/tmp`, added a lot of new check in old tests, and some new test cases (#52)
@@ -66,7 +66,7 @@
 - Added `--dry-run` option to the `git secret` command, which prevents any actions.
 - Now `install_full_fixture()` returns a fingerprint
 - Now `uninstall_full_fixture()` receives two args
-- Fixed bug, when tests were failing with `gpg2`
+- Fixed bug when tests were failing with `gpg2`
 - New travis strategy: testing both `gpg` and `gpg2`
 - Removed animation from docs, now using `asciinema.org`
 
