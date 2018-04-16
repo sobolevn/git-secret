@@ -34,18 +34,25 @@ function teardown {
 
   # $output is the output from 'git secret cat' above
   # note that currently content may differ by a newline
-  [ "$FILE_CONTENTS" == "$output" ]
+  [ "$output" == *"-$FILE_CONTENTS"* ]
 }
+
+@test "previous output was $output (expected $FILE_CONTENTS)" {
+    [ 1 ]
+}
+
+# Negative test - what happens if we 'git secret cat' no file
+# test cat with no filename
+@test "run 'cat' with no filename" {
+  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" 
+  [ "$status" -eq 1 ]
+}
+
 
 #
 # Negative test - what happens if we ask for unknown file
-#
-#  in some environments we see this test stall running pgp under the covers with the output:
-#    ✓ run 'cat' with password argument
-#    Inserisci la passphrase:
-#
-#@test "run 'cat' with wrong filename" {
-#  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" NO_SUCH_FILE
-#  [ "$status" -eq 2 ]
-#}
+@test "run 'cat' with wrong filename" {
+  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" NO_SUCH_FILE
+  [ "$status" -eq 1 ]
+}
 

@@ -39,9 +39,9 @@ function cat {
     ignored=$(_check_ignore "$path")
 
     # Checking that file is valid:
-    if [[ ! -f "$path" ]]; then
+    if [ ! -f "$path" ]; then
       _abort "$item is not a file."
-    elif [[ "$ignored" -ne 0 ]]; then
+    elif [ "$ignored" -ne 0 ]; then
       # abort on un-ignored files
       _abort "$path is not an ignored file."
     else
