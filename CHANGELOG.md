@@ -3,6 +3,7 @@
 ## Version 0.2.4
 
 - Added `git secret cat` feature (#141)
+- Documentation improvements (#144)
 
 ## Version 0.2.3
 
