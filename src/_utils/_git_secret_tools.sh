@@ -351,6 +351,18 @@ function _is_inside_git_tree {
   echo "$result"
 }
 
+function _is_tracked_in_git {
+  local filename="$1" # required
+  local result
+  result="$(git ls-files --error-unmatch "$filename" >/dev/null 2>&1; echo $?)"
+
+  if [[ "$result" -eq 0 ]]; then
+    echo "1"
+  else
+    echo "0"
+  fi
+}
+
 
 function _get_git_root_path {
   # We need this function to get the location of the `.git` folder,
