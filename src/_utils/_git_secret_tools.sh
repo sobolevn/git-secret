@@ -484,7 +484,9 @@ function _secrets_dir_exists {
   full_path=$(_get_secrets_dir)
 
   if [[ ! -d "$full_path" ]]; then
-    _abort "$full_path does not exist."
+    local name
+    name=$(basename "$full_path")
+    _abort "secrets directory '$name' does not exist. Use 'git secret init' to initialize git-secret"
   fi
 }
 
