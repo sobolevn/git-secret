@@ -22,7 +22,7 @@ function killperson {
   local emails=( "$@" )
 
   if [[ ${#emails[@]} -eq 0 ]]; then
-    _abort "at least one email is required."
+    _abort "at least one email is required for killperson."
   fi
 
   # Getting the local `gpg` command:

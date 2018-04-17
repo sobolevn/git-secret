@@ -486,7 +486,7 @@ function _secrets_dir_exists {
   if [[ ! -d "$full_path" ]]; then
     local name
     name=$(basename "$full_path")
-    _abort "secrets directory '$name' does not exist. Use 'git secret init' to initialize git-secret"
+    _abort "directory '$name' does not exist. Use 'git secret init' to initialize git-secret"
   fi
 }
 
@@ -510,7 +510,7 @@ function _secrets_dir_is_not_ignored {
   fi
 
   if [[ ! $ignores -eq 1 ]]; then
-    _abort "'$git_secret_dir' is ignored."
+    _abort "'$git_secret_dir' is in .gitignore"
   fi
 }
 
