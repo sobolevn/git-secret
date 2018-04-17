@@ -32,9 +32,14 @@ function add {
     normalized_path=$(_git_normalize_filename "$item")
     path=$(_append_root_path "$normalized_path")
 
+    # check that the file is not tracked
+    if [[ $(git ls-files --error-unmatch "$@") ]]; then
+        _abort "file tracked in git, consider using 'git rm --cached $@'"
+    fi
+
     # Checking that file is valid:
     if [[ ! -f "$path" ]]; then
-      _abort "$item is not a file."
+      _abort "not a file: $item"
     fi
 
     # Checking that it is ignored:
