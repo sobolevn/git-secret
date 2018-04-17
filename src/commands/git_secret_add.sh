@@ -33,8 +33,8 @@ function add {
     path=$(_append_root_path "$normalized_path")
 
     # check that the file is not tracked
-    if [[ $(git ls-files --error-unmatch "$@") ]]; then
-        _abort "file tracked in git, consider using 'git rm --cached $@'"
+    if [[ $(git ls-files --error-unmatch "$item") ]]; then
+        _abort "file tracked in git, consider using 'git rm --cached $item'"
     fi
 
     # Checking that file is valid:
@@ -52,7 +52,7 @@ function add {
     fi
   done
 
-  # Are there any uningnored files?
+  # Are there any unignored files?
 
   if [[ ! "${#not_ignored[@]}" -eq 0 ]]; then
     # And show them all at once.
