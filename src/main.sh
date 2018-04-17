@@ -27,7 +27,7 @@ function _check_setup {
 
 
 function _incorrect_usage {
-  echo "git-server: abort: $1"
+  echo "git-secret: abort: $1"
   usage
   exit "$2"
 }
