@@ -7,7 +7,13 @@
 
 ## What is `git-secret`?
 
-`git-secret` is a bash tool which stores private data inside a git repo. `git-secret` encrypts tracked files with public keys for all users whom you trust using `gpg`. Therefore, everyone has access to these tracked files using only their personal secret key. With `git-secret` changes to access rights is made easy and private-public key issues are avoided. Passwords do not needed changing with `git-secret` and when someone is out - just delete their public key, re-encrypt the files, and they won’t be able to decrypt secrets anymore.
+`git-secret` is a bash tool which stores private data inside a git repo. 
+`git-secret` encrypts tracked files with public keys for users whom you trust using `gpg`, 
+allowing permitted users to access encrypted data using their secret keys. 
+With `git-secret`, changes to access rights are made easy and private-public key issues are handled for you. 
+Passwords do not need to be changed with `git-secret` when someone's permission is revoked - 
+just remove their key from the keychain using `git secret killperson their@email.com`, 
+and re-encrypt the files, and they won't be able to decrypt secrets anymore.
 
 
 ## Preview
@@ -35,7 +41,8 @@ See the [installation section](http://git-secret.io/installation) for the detail
 
 ## Contributing
 
-Do you want to help the project? Find an [issue](https://github.com/sobolevn/git-secret/issues) and send a PR. It is more than welcomed! See [CONTRIBUTING.md](CONTRIBUTING.md) on how to do that.
+Do you want to help the project? Find an [issue](https://github.com/sobolevn/git-secret/issues) 
+and send a PR. It is more than welcomed! See [CONTRIBUTING.md](CONTRIBUTING.md) on how to do that.
 
 ### Security
 
