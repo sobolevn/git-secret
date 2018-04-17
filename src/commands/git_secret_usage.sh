@@ -22,7 +22,7 @@ function usage {
   local commands="add|cat|changes|clean|hide|init|killperson|list|remove|reveal|tell|usage|whoknows"
 
   echo "usage: git secret [--version] [$commands]"
-  echo "See 'git secret --version will show version and exit"
+  echo " 'git secret --version' will show version and exit"
   echo "See 'git secret [command] -h' for more information on each command below"
   echo " add [filename.txt] - adds file to be hidden. Also add this file to .gitignore"
   echo " cat [filename.txt] - cats the decrypted contents of the named file to stdout"
