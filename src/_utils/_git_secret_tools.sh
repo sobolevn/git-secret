@@ -424,7 +424,7 @@ function _get_gpg_local {
 function _abort {
   local message="$1" # required
 
-  >&2 echo "$message abort."
+  >&2 echo "git-secret: abort: $message"
   exit 1
 }
 
@@ -484,7 +484,9 @@ function _secrets_dir_exists {
   full_path=$(_get_secrets_dir)
 
   if [[ ! -d "$full_path" ]]; then
-    _abort "$full_path does not exist."
+    local name
+    name=$(basename "$full_path")
+    _abort "directory '$name' does not exist. Use 'git secret init' to initialize git-secret"
   fi
 }
 
@@ -508,7 +510,7 @@ function _secrets_dir_is_not_ignored {
   fi
 
   if [[ ! $ignores -eq 1 ]]; then
-    _abort "'$git_secret_dir' is ignored."
+    _abort "'$git_secret_dir' is in .gitignore"
   fi
 }
 
