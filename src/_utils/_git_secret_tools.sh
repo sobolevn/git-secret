@@ -424,7 +424,7 @@ function _get_gpg_local {
 function _abort {
   local message="$1" # required
 
-  >&2 echo "$message abort."
+  >&2 echo "git-secret: abort: $message"
   exit 1
 }
 
