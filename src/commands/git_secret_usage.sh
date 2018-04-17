@@ -31,8 +31,8 @@ function usage {
   echo " init - creates the .gitsecret directory and contents needed for git-secret"
   echo " killperson [emails] - the reverse of 'tell', removes access for the named user"
   echo " list - shows files to be hidden/encrypted, as in .gitsecret/paths/mapping.cfg"
-  echo " remove [files] - removes files from list of those to be hidden. Removes from mapping.cfg"
-  echo " reveal - decrypts all hidden files, as mentioned in mapping.cfg"
+  echo " remove [files] - removes files from list of hidden files"
+  echo " reveal - decrypts all hidden files, as mentioned in 'git secret list'"
   echo " tell [email] - add access for the user with imported public key with email"
   echo " whoknows - shows list of email addresses associated with public keys that can reveal files"
 }
