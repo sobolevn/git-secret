@@ -77,7 +77,7 @@ function tell {
     fi
 
     if [[ ! -s "$keyfile" ]]; then
-      _abort 'gpg key is empty. check your key name: "gpg --list-keys".'
+      _abort "no keyfile found for '$email'. Check your key name: 'gpg --list-keys'."
     fi
 
     # Importing public key to the local keychain:

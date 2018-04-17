@@ -71,6 +71,6 @@ function teardown {
   mkdir "$secrets_dir"
 
   run git secret init
-  [ "$output" = "already inited. abort." ]
+  [ "$output" = "git-secret: abort: already inited." ]
   [ "$status" -eq 1 ]
 }
