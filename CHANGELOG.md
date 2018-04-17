@@ -4,6 +4,7 @@
 
 - Added `git secret cat` feature (#141)
 - Documentation improvements (#144)
+- Fixed CI builds (#152)
 
 ## Version 0.2.3
 
