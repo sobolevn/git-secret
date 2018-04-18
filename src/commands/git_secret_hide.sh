@@ -117,14 +117,31 @@ function hide {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
-  local counter=0
+  # make sure all the unencrypted files needed are present
+  local to_hide=()
   while read -r record; do
+    local filename
+    filename=$(_get_record_filename "$record")
+
+    if [[ ! -f "$filename" ]]; then
+      _abort "file not found: $filename"
+    fi
+    to_hide+=("$record")  # add record to array
+  done < "$path_mappings"
+
+  local counter=0
+  for record in "${to_hide[@]}"; do
     local filename
     local fsdb_file_hash
     local encrypted_filename
     filename=$(_get_record_filename "$record")
     fsdb_file_hash=$(_get_record_hash "$record")
     encrypted_filename=$(_get_encrypted_filename "$filename")
+
+    # Checking that file is valid:
+    if [[ ! -f "$filename" ]]; then
+      _abort "file not found: $filename"
+    fi
 
     local recipients
     recipients=$(_get_recepients)
@@ -152,7 +169,7 @@ function hide {
         _optional_fsdb_update_hash "$key" "$hash"
     fi
     counter=$((counter+1))
-  done < "$path_mappings"
+  done
 
   # If -d option was provided, it would delete the source files
   # after we have already hidden them.

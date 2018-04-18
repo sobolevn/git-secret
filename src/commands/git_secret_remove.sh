@@ -37,7 +37,7 @@ function remove {
 
     # Checking if file exists:
     if [[ ! -f "$path" ]]; then
-      _abort "not a file: $item"
+      _abort "file not found: $item"
     fi
 
     # Deleting it from path mappings:

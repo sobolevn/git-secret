@@ -37,6 +37,21 @@ function teardown {
   [ -f "$encrypted_file" ]
 }
 
+@test "run 'hide' with missing file" {
+  # Preparations:
+  local second_file="second_file.txt"
+  local second_content="some content"
+  set_state_secret_add "$second_file" "$second_content"
+
+  # now remove the second file to cause failure
+  rm -f "$second_file"
+
+  # Now it should return an error because one file can't be found
+  run git secret hide
+  [ "$status" -ne 0 ]
+  [ "$output" != "done. all 2 files are hidden." ]
+}
+
 
 @test "run 'hide' with multiple files" {
   # Preparations:
