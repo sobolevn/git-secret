@@ -32,6 +32,9 @@ function changes {
   '
 
   for filename in $filenames; do
+    local decrypted
+    local diff_result
+
     local path # absolute path
     local normalized_path # relative to the .git dir
     normalized_path=$(_git_normalize_filename "$filename")
@@ -44,23 +47,13 @@ function changes {
     fi
 
     # Now we have all the data required:
-    #decrypted=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase")
+    decrypted=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase")
 
     # Let's diff the result:
-    local secret_filename
-    local diff_result
-
-    secret_filename=$(_get_encrypted_filename "$path")
-    #diff_result=$(git diff --shortstat "$secret_filename") || true
-    if [[ ! -f "$secret_filename" ]]; then
-        _abort "file not found: $secret_filename"
-    fi
-    diff_result=$(git diff --name-only "$secret_filename") || true
-    
-    if [[ "$diff_result" = "" ]]; then
-      echo "${filename}${SECRETS_EXTENSION}: no change"
-    else
-      echo "${filename}${SECRETS_EXTENSION}: changed"
-    fi
+    diff_result=$(diff -u <(echo "$decrypted") "$path") || true
+    # There was a bug in the previous version, since `diff` returns
+    # exit code `1` when the files are different.
+    echo "changes in ${path}:"
+    echo "${diff_result}"
   done
 }

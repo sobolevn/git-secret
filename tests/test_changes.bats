@@ -40,9 +40,8 @@ function teardown {
 
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
-  [[ "$output" == *"no change"* ]]
-  #[[ "$output" == *"+$new_content"* ]]
-  #[[ "$output" == *"+$new_content"* ]]
+  [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"+$new_content"* ]]
 }
 
 
@@ -56,10 +55,9 @@ function teardown {
 
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
-  [[ "$output" == *"no change"* ]]
-  #[[ "$output" == *"changes in $fullpath"* ]]
-  #[[ "$output" == *"-$FILE_CONTENTS"* ]]
-  #[[ "$output" == *"+$new_content"* ]]
+  [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"-$FILE_CONTENTS"* ]]
+  [[ "$output" == *"+$new_content"* ]]
 }
 
 
@@ -68,7 +66,6 @@ function teardown {
 
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -eq 0 ]
-  [[ "$output" == *"no change"* ]]
 }
 
 
@@ -84,14 +81,12 @@ function teardown {
 
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
-  [[ "$output" == *"no change"* ]]
-  #[[ "$output" == *"changes in $fullpath"* ]]
-  #[[ "$output" == *"+$new_content"* ]]
+  [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"+$new_content"* ]]
 
   local second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
-  [[ "$output" == *"no change"* ]]
-  #[[ "$output" == *"changes in $second_path"* ]]
-  #[[ "$output" == *"+$second_new_content"* ]]
+  [[ "$output" == *"changes in $second_path"* ]]
+  [[ "$output" == *"+$second_new_content"* ]]
 }
 
 
@@ -109,12 +104,10 @@ function teardown {
 
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
-  [[ "$output" == *"no change"* ]]
-  #[[ "$output" == *"changes in $fullpath"* ]]
-  #[[ "$output" == *"+$new_content"* ]]
+  [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"+$new_content"* ]]
 
   local second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
-  [[ "$output" == *"no change"* ]]
-  #[[ "$output" == *"changes in $second_path"* ]]
-  #[[ "$output" == *"+$second_new_content"* ]]
+  [[ "$output" == *"changes in $second_path"* ]]
+  [[ "$output" == *"+$second_new_content"* ]]
 }
