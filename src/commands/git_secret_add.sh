@@ -32,9 +32,16 @@ function add {
     normalized_path=$(_git_normalize_filename "$item")
     path=$(_append_root_path "$normalized_path")
 
+    # check that the file is not tracked
+    local in_git
+    in_git=$(_is_tracked_in_git "$item")
+    if [[ "$in_git" -ne 0  ]]; then
+       _abort "file tracked in git, consider using 'git rm --cached $item'"
+    fi
+
     # Checking that file is valid:
     if [[ ! -f "$path" ]]; then
-      _abort "$item is not a file."
+      _abort "not a file: $item"
     fi
 
     # Checking that it is ignored:
@@ -47,12 +54,12 @@ function add {
     fi
   done
 
-  # Are there any uningnored files?
+  # Are there any unignored files?
 
   if [[ ! "${#not_ignored[@]}" -eq 0 ]]; then
     # And show them all at once.
     local message
-    message="these files are not in .gitignore: $* ;"
+    message="these files are not in .gitignore: $*"
 
     if [[ "$auto_ignore" -eq 0 ]]; then
       # This file is not ignored. user don't want it to be added automatically.
