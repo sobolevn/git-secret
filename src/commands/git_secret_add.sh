@@ -41,7 +41,7 @@ function add {
 
     # Checking that file is valid:
     if [[ ! -f "$path" ]]; then
-      _abort "not a file: $item"
+      _abort "file not found: $item"
     fi
 
     # Checking that it is ignored:
