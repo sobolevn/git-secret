@@ -126,6 +126,11 @@ function hide {
     fsdb_file_hash=$(_get_record_hash "$record")
     encrypted_filename=$(_get_encrypted_filename "$filename")
 
+    # Checking that file is valid:
+    if [[ ! -f "$filename" ]]; then
+      _abort "file not found: $filename"
+    fi
+
     local recipients
     recipients=$(_get_recepients)
 
