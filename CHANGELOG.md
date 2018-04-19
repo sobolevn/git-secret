@@ -3,7 +3,8 @@
 ## Version 0.2.4
 
 - Added `git secret cat` feature (#141)
-- Documentation and error message improvements (#144)
+- `git secret hide` checks for input files more carefully (#154)
+- Documentation and error message improvements (#144, #150, #126)
 - Fixed CI builds (#152)
 
 ## Version 0.2.3
