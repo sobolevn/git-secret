@@ -8,25 +8,25 @@ matrix:
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-debian-latest"
+      env: KITCHEN_REGEXP="gnupg1-debian-latest"; GITSECRET_DIST="deb"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-fedora-latest"
+      env: KITCHEN_REGEXP="gnupg1-fedora-latest"; GITSECRET_DIST="rpm"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-ubuntu-latest"
+      env: KITCHEN_REGEXP="gnupg1-ubuntu-latest"; GITSECRET_DIST="deb"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-ubuntu-rolling"
+      env: KITCHEN_REGEXP="gnupg1-ubuntu-rolling"; GITSECRET_DIST="deb"
       services: docker
       sudo: required
       language: ruby
@@ -38,43 +38,43 @@ matrix:
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg2-debian-latest"
+      env: KITCHEN_REGEXP="gnupg2-debian-latest"; GITSECRET_DIST="deb"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg2-fedora-latest"
+      env: KITCHEN_REGEXP="gnupg2-fedora-latest"; GITSECRET_DIST="rpm"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg2-centos-latest"
+      env: KITCHEN_REGEXP="gnupg2-centos-latest"; GITSECRET_DIST="rpm"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"
+      env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"; GITSECRET_DIST="deb"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-debian-latest"
+      env: KITCHEN_REGEXP="gnupg-git-debian-latest"; GITSECRET_DIST="make"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
+      env: KITCHEN_REGEXP="gnupg-git-fedora-latest"; GITSECRET_DIST="make"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-ubuntu-rolling"
+      env: KITCHEN_REGEXP="gnupg-git-ubuntu-rolling"; GITSECRET_DIST="make"
       services: docker
       sudo: required
       language: ruby
