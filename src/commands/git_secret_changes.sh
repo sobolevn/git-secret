@@ -37,13 +37,22 @@ function changes {
 
     local path # absolute path
     local normalized_path # relative to the .git dir
+    local encrypted_filename
     normalized_path=$(_git_normalize_filename "$filename")
+    encrypted_filename=$(_get_encrypted_filename "$filename")
 
+    if [[ ! -f "$encrypted_filename" ]]; then
+        _abort "cannot find encrypted version of file: $filename"
+    fi
     if [[ ! -z "$normalized_path" ]]; then
       path=$(_append_root_path "$normalized_path")
     else
       # Path was already normalized
       path=$(_append_root_path "$filename")
+    fi
+    
+    if [[ ! -f "$path" ]]; then
+        _abort "file not found. Consider using 'git secret reveal': $filename"
     fi
 
     # Now we have all the data required:

@@ -44,6 +44,23 @@ function teardown {
   [[ "$output" == *"+$new_content"* ]]
 }
 
+@test "run 'changes' with source file missing" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  rm "$FILE_TO_HIDE"
+
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+  [ "$status" -ne 0 ]
+}
+
+@test "run 'changes' with hidden file missing" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  local encrypted_file=$(_get_encrypted_filename $FILE_TO_HIDE)
+  rm "$encrypted_file"
+
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+  [ "$status" -ne 0 ]
+}
+
 
 @test "run 'changes' with one file changed (with deletions)" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
