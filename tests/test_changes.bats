@@ -44,6 +44,20 @@ function teardown {
   [[ "$output" == *"+$new_content"* ]]
 }
 
+@test "run 'changes' with one source file missing" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  #local new_content="new content"
+  #echo "$new_content" >> "$FILE_TO_HIDE"
+
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+  [ "$status" -ne 0 ]
+
+  ## Testing that output has both filename and changes:
+  #local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  #[[ "$output" == *"changes in $fullpath"* ]]
+  #[[ "$output" == *"+$new_content"* ]]
+}
+
 
 @test "run 'changes' with one file changed (with deletions)" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
