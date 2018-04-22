@@ -5,7 +5,7 @@ set -e
 # Linux helper functions:
 function update_linux() {
   sudo apt-get update -qq
-  sudo apt-get install -qq python-apt python-pycurl git python-pip ruby ruby-dev build-essential autoconf rpm
+  sudo apt-get install -qq python-apt python-pycurl git python-pip ruby ruby-dev build-essential autoconf rpm  libffi-dev libssl-dev
   gem install bundler
 }
 
