@@ -21,7 +21,7 @@ RUN yum clean all \
 	redhat-rpm-config \
 	sudo \
 	systemd \
- && pip install --upgrade pip==9.0.3 \
+ && pip install --upgrade pip==10.0.1 \
  && yum clean all \
  && if ! getent passwd <%= @username %>; then \
       useradd -d /home/<%= @username %> -m -s /usr/bin/bash -p '*' <%= @username %>; \

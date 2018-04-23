@@ -16,7 +16,7 @@ RUN apt-get update \
 	python2.7 \
 	sudo \
 	systemd \
- && pip install --upgrade pip==9.0.3 \
+ && pip install --upgrade pip==10.0.1 \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
  && if ! getent passwd <%= @username %>; then \

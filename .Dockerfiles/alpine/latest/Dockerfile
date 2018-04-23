@@ -21,7 +21,7 @@ RUN apk add --no-cache --update \
 	rsyslog \
 	sudo \
 	xz \
- && pip install --upgrade pip==9.0.3 \
+ && pip install --upgrade pip==10.0.1 \
  && if ! getent passwd <%= @username %>; then \
       adduser -h /home/<%= @username %> -s /bin/bash -D <%= @username %>; \
       passwd -d <%= @username %>; \
