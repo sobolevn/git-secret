@@ -12,8 +12,8 @@ function update_linux() {
 function install_ansible {
   bash .ci/ansible-setup.sh
   bundle install
-  ~/.avm/v2.3/venv/bin/pip install netaddr ansible-lint security 
-  ~/.avm/v2.5/venv/bin/pip install netaddr ansible-lint security
+  ~/.avm/v2.3/venv/bin/pip install -U netaddr ansible-lint requests[security]
+  ~/.avm/v2.5/venv/bin/pip install -U netaddr ansible-lint requests[security]
 }
 
 
