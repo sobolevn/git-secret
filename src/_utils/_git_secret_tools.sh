@@ -538,7 +538,7 @@ function _user_required {
   local trustdb
   trustdb=$(_get_secrets_dir_keys_trustdb)
 
-  local error_message="no users found. run 'git secret tell'."
+  local error_message="no permitted users found. run 'git secret tell email@address'."
   if [[ ! -f "$trustdb" ]]; then
     _abort "$error_message"
   fi
@@ -548,6 +548,10 @@ function _user_required {
 
   local keys_exist
   keys_exist=$($gpg_local -n --list-keys)
+  local exit_code=$?
+  if [[ exit_code -ne 0 ]]; then
+    _abort "unable to list public keys in gpg: exit code $exit_code"
+  fi
   if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
   fi

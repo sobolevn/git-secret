@@ -43,7 +43,7 @@ function reveal {
     _decrypt "$path" "1" "$force" "$homedir" "$passphrase"
 
     if [[ ! -f "$path" ]]; then
-        _abort "cannot find decrypted version of file: $filename"
+      _abort "cannot find decrypted version of file: $filename"
     fi
 
     counter=$((counter+1))
