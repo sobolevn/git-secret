@@ -42,6 +42,10 @@ function reveal {
     # The parameters are: filename, write-to-file, force, homedir, passphrase
     _decrypt "$path" "1" "$force" "$homedir" "$passphrase"
 
+    if [[ ! -f "$path" ]]; then
+        _abort "cannot find decrypted version of file: $filename"
+    fi
+
     counter=$((counter+1))
   done < "$path_mappings"
 
