@@ -549,7 +549,7 @@ function _user_required {
   local keys_exist
   keys_exist=$($gpg_local -n --list-keys)
   local exit_code=$?
-  if [[ exit_code -ne 0 ]]; then
+  if [[ "$exit_code" -ne 0 ]]; then
     # this might catch corner case where gpg --list-keys shows 
     # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds? 
     # See #136
