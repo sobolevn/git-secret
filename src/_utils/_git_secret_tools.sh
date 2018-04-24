@@ -538,7 +538,7 @@ function _user_required {
   local trustdb
   trustdb=$(_get_secrets_dir_keys_trustdb)
 
-  local error_message="no permitted users found. run 'git secret tell email@address'."
+  local error_message="no public keys for users found. run 'git secret tell email@address'."
   if [[ ! -f "$trustdb" ]]; then
     _abort "$error_message"
   fi
@@ -550,7 +550,10 @@ function _user_required {
   keys_exist=$($gpg_local -n --list-keys)
   local exit_code=$?
   if [[ exit_code -ne 0 ]]; then
-    _abort "unable to list public keys in gpg: exit code $exit_code"
+    # this might catch corner case where gpg --list-keys shows 
+    # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds? 
+    # See #136
+    _abort "problem listing public keys in gpg: exit code $exit_code"
   fi
   if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
