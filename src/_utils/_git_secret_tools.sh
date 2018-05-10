@@ -213,8 +213,8 @@ function _gawk_inplace {
 
   _temporary_file
 
-  bash -c "gawk ${parms}" > "$filename"
-  #gawk "${parms}" > "$filename"  
+  # below doesn't handle directories with spaces correctly
+  bash -c "gawk ${parms}" > "$filename" 
   mv "$filename" "$dest_file"
 }
 
