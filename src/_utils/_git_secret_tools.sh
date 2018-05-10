@@ -214,6 +214,7 @@ function _gawk_inplace {
   _temporary_file
 
   bash -c "gawk ${parms}" > "$filename"
+  #gawk "${parms}" > "$filename"  
   mv "$filename" "$dest_file"
 }
 
