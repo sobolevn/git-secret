@@ -28,7 +28,7 @@ function _check_setup {
 
 function _incorrect_usage {
   echo "git-secret: abort: $1"
-  usage
+  usage "$@"
   exit "$2"
 }
 
