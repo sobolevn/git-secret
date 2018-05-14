@@ -7,13 +7,13 @@ RUN apt-get update \
  && apt-get install -y \
 	apt-utils \
 	curl \
-  rsync \
 	locales \
 	lsb-release \
 	net-tools \
 	openssh-server \
 	python-pip \
 	python2.7 \
+	rsync \
 	sudo \
 	systemd \
  && pip install --upgrade pip \
