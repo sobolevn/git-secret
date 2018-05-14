@@ -430,6 +430,7 @@ function _get_gpg_local {
   homedir=$(_get_secrets_dir_keys)
 
   local gpg_local="$SECRETS_GPG_COMMAND --homedir $homedir --no-permission-warning"
+  #local gpg_local="$SECRETS_GPG_COMMAND --homedir=$homedir --no-permission-warning"
   echo "$gpg_local"
 }
 
@@ -630,7 +631,7 @@ function _decrypt {
   fi
 
   if [[ ! -z "$homedir" ]]; then
-    base="$base --homedir \"$homedir\""
+    base="$base --homedir $homedir"
   fi
 
   if [[ "$GPG_VER_21" -eq 1 ]]; then
