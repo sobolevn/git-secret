@@ -430,7 +430,6 @@ function _get_gpg_local {
   homedir=$(_get_secrets_dir_keys)
 
   local gpg_local="$SECRETS_GPG_COMMAND --homedir $homedir --no-permission-warning"
-  #local gpg_local="$SECRETS_GPG_COMMAND --homedir=$homedir --no-permission-warning"
   echo "$gpg_local"
 }
 
@@ -620,28 +619,30 @@ function _decrypt {
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
-  local base="$SECRETS_GPG_COMMAND --use-agent --decrypt --no-permission-warning"
+  local base="$SECRETS_GPG_COMMAND"
+  local params=( --use-agent --decrypt --no-permission-warning --quiet )
 
   if [[ "$write_to_file" -eq 1 ]]; then
-    base="$base -o $filename"
+    params+=(-o "$filename")
   fi
 
   if [[ "$force" -eq 1 ]]; then
-    base="$base --yes"
+    params+=(--yes)
   fi
 
   if [[ ! -z "$homedir" ]]; then
-    base="$base --homedir $homedir"
+    params+=(--homedir "$homedir")
   fi
 
   if [[ "$GPG_VER_21" -eq 1 ]]; then
-    base="$base --pinentry-mode loopback"
+    params+=(--pinentry-mode loopback)
   fi
 
   if [[ ! -z "$passphrase" ]]; then
-    echo "$passphrase" | $base --quiet --batch --yes --no-tty --passphrase-fd 0 \
-      "$encrypted_filename"
+    params+=( --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename" )
+    echo "$passphrase" | $base "${params[@]}" 
   else
-    $base --quiet "$encrypted_filename"
+    params+=( "$encrypted_filename" )
+    $base "${params[@]}"
   fi
 }
