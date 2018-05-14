@@ -428,6 +428,7 @@ function _get_gpg_local {
   local homedir
   homedir=$(_get_secrets_dir_keys)
 
+  # below can't work with spaces in $homedir
   local gpg_local="$SECRETS_GPG_COMMAND --homedir=$homedir --no-permission-warning"
   echo "$gpg_local"
 }
