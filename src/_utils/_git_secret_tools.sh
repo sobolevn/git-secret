@@ -458,13 +458,13 @@ function _find_and_clean_formated {
   local verbose=${2:-""} # can be empty or should be equal to "v"
   local message=${3:-"cleaning:"} # can be any string
 
-  if [[ ! -z "$verbose" ]]; then
+  if [[ "$verbose" ]]; then
     echo && echo "$message"
   fi
 
   _find_and_clean "$pattern" "$verbose"
 
-  if [[ ! -z "$verbose" ]]; then
+  if [[ "$verbose" ]]; then
     echo
   fi
 }
@@ -625,7 +625,7 @@ function _decrypt {
     params+=(--yes)
   fi
 
-  if [[ ! -z "$homedir" ]]; then
+  if [[ "$homedir" ]]; then
     params+=(--homedir "$homedir")
   fi
 
@@ -634,9 +634,12 @@ function _decrypt {
   fi
 
   if [[ "$passphrase" ]]; then
-    params+=( --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename" )
-    echo -n "$passphrase" | $base "${params[@]}" 
-    # does -n fix issues we see on ubuntu/debian? no.
+    ##$base --quiet --batch --yes --no-tty --passphrase "$passphrase" "$encrypted_filename"
+    ##params+=( --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename" )
+    ##echo -n "$passphrase" | $base "${params[@]}" 
+    ## does -n fix issues we see on ubuntu/debian?
+    params+=( --batch --yes --no-tty --passphrase "$passphrase" "$encrypted_filename" )
+    $base "${params[@]}"
   else
     params+=( "$encrypted_filename" )
     $base "${params[@]}"

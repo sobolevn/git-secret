@@ -32,10 +32,8 @@ function changes {
   '
 
   for filename in $filenames; do
-    local decrypted
     local diff_result
 
-    local path # absolute path
     local normalized_path # relative to the .git dir
     local encrypted_filename
     normalized_path=$(_git_normalize_filename "$filename")
@@ -44,6 +42,8 @@ function changes {
     if [[ ! -f "$encrypted_filename" ]]; then
         _abort "cannot find encrypted version of file: $filename"
     fi
+
+    local path # absolute path
     if [[ ! -z "$normalized_path" ]]; then
       path=$(_append_root_path "$normalized_path")
     else
@@ -56,6 +56,7 @@ function changes {
     fi
 
     # Now we have all the data required:
+    local decrypted
     decrypted=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase")
 
     # Let's diff the result:
