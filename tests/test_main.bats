@@ -38,7 +38,7 @@ function teardown {
 
   # This must fail:
   run git secret usage
-  [ "$status" -eq 1 ]
+  [ "$status" -ne 0 ]
 
   # Dry run won't fail:
   run git secret --dry-run
