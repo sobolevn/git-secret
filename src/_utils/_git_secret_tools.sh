@@ -157,7 +157,7 @@ function _file_has_line {
   local key="$1" # required
   local filename="$2" # required
 
-  local contains
+  #local contains
   grep -qw "$key" "$filename"
   # 0 on contains, 1 for error.
   echo $?
@@ -636,7 +636,7 @@ function _decrypt {
   if [[ "$passphrase" ]]; then
     params+=( --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename" )
     echo -n "$passphrase" | $base "${params[@]}" 
-    # does -n fix issues we see on ubuntu/debian?
+    # does -n fix issues we see on ubuntu/debian? no.
   else
     params+=( "$encrypted_filename" )
     $base "${params[@]}"
