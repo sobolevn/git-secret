@@ -353,9 +353,9 @@ function _is_inside_git_tree {
 function _is_tracked_in_git {
   local filename="$1" # required
   local result
-  git ls-files --error-unmatch "$filename" >/dev/null 2>&1
+  result = $(git ls-files --error-unmatch "$filename" >/dev/null 2>&1; echo $?)
 
-  if [[ "$?" -eq 0 ]]; then
+  if [[ "$result" -eq 0 ]]; then
     echo "1"
   else
     echo "0"
