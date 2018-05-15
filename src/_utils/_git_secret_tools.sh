@@ -224,11 +224,10 @@ function _gawk_inplace {
 function _get_record_filename {
   # Returns 1st field from passed record
   local record="$1"
-  #local filename
-  #filename=$(echo "$record" | awk -F: '{print $1}')
+  local filename
+  filename=$(echo "$record" | awk -F: '{print $1}')
 
-  #echo "$filename"
-  echo "$record" | awk -F: '{print $1}'
+  echo "$filename"
 }
 
 
@@ -312,8 +311,8 @@ function _git_normalize_filename {
 
   local result
   #result=$(git ls-files --full-name -o "$filename")
-  git ls-files --full-name -o "$filename"
   #echo "$result"
+  git ls-files --full-name -o "$filename"
 }
 
 
@@ -621,22 +620,23 @@ function _decrypt {
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
   local base="$SECRETS_GPG_COMMAND"
+  # gpg [--homedir dir] [--options file] [options] command [args]
   local params=( --use-agent --decrypt --no-permission-warning --quiet )
 
-  if [[ "$write_to_file" -eq 1 ]]; then
-    params+=(-o "$filename")
+  if [[ "$homedir" ]]; then
+    params+=(--homedir="$homedir")
   fi
 
   if [[ "$force" -eq 1 ]]; then
     params+=(--yes)
   fi
 
-  if [[ "$homedir" ]]; then
-    params+=(--homedir "$homedir")
-  fi
-
   if [[ "$GPG_VER_21" -eq 1 ]]; then
     params+=(--pinentry-mode loopback)
+  fi
+
+  if [[ "$write_to_file" -eq 1 ]]; then
+    params+=(-o "$filename")
   fi
 
   if [[ "$passphrase" ]]; then
@@ -646,4 +646,5 @@ function _decrypt {
     params+=( "$encrypted_filename" )
     $base "${params[@]}"
   fi
+
 }
