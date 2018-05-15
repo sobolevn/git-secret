@@ -9,9 +9,10 @@ function __replace_in_file_osx {
 
 function __temp_file_osx {
   : "${TMPDIR:=/tmp}"
-  local filename
-  filename=$(mktemp -t _gitsecrets_XXX )
-  echo "$filename";
+  #local filename
+  #filename=$(mktemp -t _gitsecrets_XXX )
+  #echo "$filename";
+  mktemp -t _gitsecrets_XXX
 }
 
 

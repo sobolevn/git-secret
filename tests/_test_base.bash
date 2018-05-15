@@ -89,7 +89,7 @@ function install_fixture_key {
 
 
 function install_fixture_full_key {
-  local private_key="$BATS_TMPDIR/private-${1}.key"
+  local private_key="$BATS_TMPDIR/private-${1}.key" # /tmp/private-user1.key
   local gpgtest_prefix="$(get_gpgtest_prefix $1)"
   local gpgtest_import="$gpgtest_prefix $GPGTEST"
   local email
@@ -100,8 +100,7 @@ function install_fixture_full_key {
 
   \cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
-  bash -c "$gpgtest_import --allow-secret-key-import \
-    --import \"$private_key\"" > /dev/null 2>&1
+  $gpgtest_import --allow-secret-key-import --import "${private_key}" > /dev/null 2>&1
 
   # since 0.1.2 fingerprint is returned:
   fingerprint=$(get_gpg_fingerprint_by_email $email)

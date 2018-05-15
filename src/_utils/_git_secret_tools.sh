@@ -157,11 +157,10 @@ function _file_has_line {
   local key="$1" # required
   local filename="$2" # required
 
-  local contains
-  contains=$(grep -qw "$key" "$filename"; echo $?)
-
+  #local contains
+  grep -qw "$key" "$filename"
   # 0 on contains, 1 for error.
-  echo "$contains"
+  echo $?
 }
 
 
@@ -213,7 +212,8 @@ function _gawk_inplace {
 
   _temporary_file
 
-  bash -c "gawk ${parms}" > "$filename"
+  # below doesn't handle directories with spaces correctly
+  bash -c "gawk ${parms}" > "$filename" 
   mv "$filename" "$dest_file"
 }
 
@@ -234,10 +234,9 @@ function _get_record_filename {
 function _get_record_hash {
   # Returns 2nd field from passed record
   local record="$1"
-  local hash
-  hash=$(echo "$record" | awk -F: '{print $2}')
-
-  echo "$hash"
+  #local hash
+  #hash=$(echo "$record" | awk -F: '{print $2}')
+  echo "$record" | awk -F: '{print $2}'
 }
 
 
@@ -311,8 +310,9 @@ function _git_normalize_filename {
   local filename="$1" # required
 
   local result
-  result=$(git ls-files --full-name -o "$filename")
-  echo "$result"
+  #result=$(git ls-files --full-name -o "$filename")
+  #echo "$result"
+  git ls-files --full-name -o "$filename"
 }
 
 
@@ -345,16 +345,15 @@ function _add_ignored_file {
 
 function _is_inside_git_tree {
   # Checks if we are working inside the `git` tree.
-  local result
-  result=$(git rev-parse --is-inside-work-tree > /dev/null 2>&1; echo $?)
-
-  echo "$result"
+  git rev-parse --is-inside-work-tree > /dev/null 2>&1
+  # return value will be exit code
+  echo $?
 }
 
 function _is_tracked_in_git {
   local filename="$1" # required
   local result
-  result="$(git ls-files --error-unmatch "$filename" >/dev/null 2>&1; echo $?)"
+  result = $(git ls-files --error-unmatch "$filename" >/dev/null 2>&1; echo $?)
 
   if [[ "$result" -eq 0 ]]; then
     echo "1"
@@ -428,8 +427,9 @@ function _get_gpg_local {
   local homedir
   homedir=$(_get_secrets_dir_keys)
 
-  local gpg_local="$SECRETS_GPG_COMMAND --homedir=$homedir --no-permission-warning"
-  echo "$gpg_local"
+  #local gpg_local="$SECRETS_GPG_COMMAND --homedir $homedir --no-permission-warning"
+  #echo "$gpg_local"
+  echo "$SECRETS_GPG_COMMAND --homedir $homedir --no-permission-warning"
 }
 
 
@@ -463,13 +463,13 @@ function _find_and_clean_formated {
   local verbose=${2:-""} # can be empty or should be equal to "v"
   local message=${3:-"cleaning:"} # can be any string
 
-  if [[ ! -z "$verbose" ]]; then
+  if [[ "$verbose" ]]; then
     echo && echo "$message"
   fi
 
   _find_and_clean "$pattern" "$verbose"
 
-  if [[ ! -z "$verbose" ]]; then
+  if [[ "$verbose" ]]; then
     echo
   fi
 }
@@ -582,8 +582,9 @@ function _parse_keyring_users {
   local gpg_local
   gpg_local=$(_get_gpg_local)
 
-  result=$($gpg_local --list-public-keys --with-colon | sed -n "$sed_pattern")
-  echo "$result"
+  #result=$($gpg_local --list-public-keys --with-colon | sed -n "$sed_pattern")
+  #echo "$result"
+  $gpg_local --list-public-keys --with-colon | sed -n "$sed_pattern"
 }
 
 
@@ -618,28 +619,32 @@ function _decrypt {
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
-  local base="$SECRETS_GPG_COMMAND --use-agent --decrypt --no-permission-warning"
+  local base="$SECRETS_GPG_COMMAND"
+  # gpg [--homedir dir] [--options file] [options] command [args]
+  local params=( --use-agent --decrypt --no-permission-warning --quiet )
 
-  if [[ "$write_to_file" -eq 1 ]]; then
-    base="$base -o $filename"
+  if [[ "$homedir" ]]; then
+    params+=(--homedir="$homedir")
   fi
 
   if [[ "$force" -eq 1 ]]; then
-    base="$base --yes"
-  fi
-
-  if [[ ! -z "$homedir" ]]; then
-    base="$base --homedir=$homedir"
+    params+=(--yes)
   fi
 
   if [[ "$GPG_VER_21" -eq 1 ]]; then
-    base="$base --pinentry-mode loopback"
+    params+=(--pinentry-mode loopback)
   fi
 
-  if [[ ! -z "$passphrase" ]]; then
-    echo "$passphrase" | $base --quiet --batch --yes --no-tty --passphrase-fd 0 \
-      "$encrypted_filename"
-  else
-    $base --quiet "$encrypted_filename"
+  if [[ "$write_to_file" -eq 1 ]]; then
+    params+=(-o "$filename")
   fi
+
+  if [[ "$passphrase" ]]; then
+    params+=( --batch --yes --no-tty --passphrase "$passphrase" "$encrypted_filename" )
+    $base "${params[@]}"
+  else
+    params+=( "$encrypted_filename" )
+    $base "${params[@]}"
+  fi
+
 }
