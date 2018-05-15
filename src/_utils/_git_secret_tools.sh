@@ -640,10 +640,6 @@ function _decrypt {
   fi
 
   if [[ "$passphrase" ]]; then
-    ##$base --quiet --batch --yes --no-tty --passphrase "$passphrase" "$encrypted_filename"
-    ##params+=( --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename" )
-    ##echo -n "$passphrase" | $base "${params[@]}" 
-    ## does -n fix issues we see on ubuntu/debian?
     params+=( --batch --yes --no-tty --passphrase "$passphrase" "$encrypted_filename" )
     $base "${params[@]}"
   else
