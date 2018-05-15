@@ -27,11 +27,14 @@ function add {
 
   # Checking if all files in options are ignored:
   for item in "${items[@]}"; do
-    local normalized_path=$(_git_normalize_filename "$item") # relative to the .git dir
-    local path=$(_append_root_path "$normalized_path")       # absolute path
+    local path # absolute path
+    local normalized_path # relative to the .git dir
+    normalized_path=$(_git_normalize_filename "$item")
+    path=$(_append_root_path "$normalized_path")
 
     # check that the file is not tracked
-    local in_git=$(_is_tracked_in_git "$item")
+    local in_git
+    in_git=$(_is_tracked_in_git "$item")
     if [[ "$in_git" -ne 0  ]]; then
        _abort "file tracked in git, consider using 'git rm --cached $item'"
     fi
@@ -42,7 +45,8 @@ function add {
     fi
 
     # Checking that it is ignored:
-    local ignored=$(_check_ignore "$path")
+    local ignored
+    ignored=$(_check_ignore "$path")
 
     if [[ "$ignored" -ne 0 ]]; then
       # Collect unignored files:
@@ -54,7 +58,8 @@ function add {
 
   if [[ ! "${#not_ignored[@]}" -eq 0 ]]; then
     # And show them all at once.
-    local message="these files are not in .gitignore: $*"
+    local message
+    message="these files are not in .gitignore: $*"
 
     if [[ "$auto_ignore" -eq 0 ]]; then
       # This file is not ignored. user don't want it to be added automatically.
@@ -73,14 +78,18 @@ function add {
 
   # Adding files to path mappings:
 
-  local fsdb=$(_get_secrets_dir_paths_mapping)
+  local fsdb
+  fsdb=$(_get_secrets_dir_paths_mapping)
 
   for item in "${items[@]}"; do
-    local path=$(_git_normalize_filename "$item")
-    local key="$path"
+    local path
+    local key
+    path=$(_git_normalize_filename "$item")
+    key="$path"
 
     # Adding files into system, skipping duplicates.
-    local already_in=$(_fsdb_has_record "$key" "$fsdb")
+    local already_in
+    already_in=$(_fsdb_has_record "$key" "$fsdb")
     if [[ "$already_in" -eq 1 ]]; then
       echo "$key" >> "$fsdb"
     fi

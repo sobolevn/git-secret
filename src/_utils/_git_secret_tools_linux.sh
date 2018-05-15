@@ -8,7 +8,8 @@ function __replace_in_file_linux {
 
 
 function __temp_file_linux {
-  local filename=$(mktemp)
+  local filename
+  filename=$(mktemp)
   echo "$filename"
 }
 
