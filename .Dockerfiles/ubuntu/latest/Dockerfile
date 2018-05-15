@@ -13,6 +13,7 @@ RUN apt-get update \
 	openssh-server \
 	python-pip \
 	python2.7 \
+	rsync \
 	sudo \
 	systemd \
  && pip install --upgrade pip \
