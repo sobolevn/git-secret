@@ -28,8 +28,11 @@ function cat {
 
   for line in "$@"
   do
-    local filename=$(_get_record_filename "$line")
-    local path=$(_append_root_path "$filename")
+    local filename
+    local path
+
+    filename=$(_get_record_filename "$line")
+    path=$(_append_root_path "$filename")
 
     # The parameters are: filename, write-to-file, force, homedir, passphrase
     _decrypt "$path" "0" "0" "$homedir" "$passphrase"

@@ -463,13 +463,13 @@ function _find_and_clean_formated {
   local verbose=${2:-""} # can be empty or should be equal to "v"
   local message=${3:-"cleaning:"} # can be any string
 
-  if [[ ! -z "$verbose" ]]; then
+  if [[ "$verbose" ]]; then
     echo && echo "$message"
   fi
 
   _find_and_clean "$pattern" "$verbose"
 
-  if [[ ! -z "$verbose" ]]; then
+  if [[ "$verbose" ]]; then
     echo
   fi
 }
@@ -628,7 +628,7 @@ function _decrypt {
     base="$base --yes"
   fi
 
-  if [[ ! -z "$homedir" ]]; then
+  if [[ "$homedir" ]]; then
     base="$base --homedir=$homedir"
   fi
 
@@ -636,9 +636,8 @@ function _decrypt {
     base="$base --pinentry-mode loopback"
   fi
 
-  if [[ ! -z "$passphrase" ]]; then
-    echo "$passphrase" | $base --quiet --batch --yes --no-tty --passphrase-fd 0 \
-      "$encrypted_filename"
+  if [[ "$passphrase" ]]; then
+    $base --quiet --batch --yes --no-tty --passphrase "$passphrase" "$encrypted_filename"
   else
     $base --quiet "$encrypted_filename"
   fi
