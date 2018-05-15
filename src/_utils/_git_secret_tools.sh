@@ -348,13 +348,19 @@ function _is_inside_git_tree {
   # Checks if we are working inside the `git` tree.
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
   # return value will be exit code
+  echo $?
 }
 
 function _is_tracked_in_git {
   local filename="$1" # required
   local result
   git ls-files --error-unmatch "$filename" >/dev/null 2>&1
-  git rev-parse --is-inside-work-tree > /dev/null 2>&1
+
+  if [[ "$?" -eq 0 ]]; then
+    echo "1"
+  else
+    echo "0"
+  fi
 }
 
 
