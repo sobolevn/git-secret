@@ -36,7 +36,5 @@ What versions of software are you using?
 
 **`gpg` version:** (`gpg --version`) …
 
-**`git` version:** (`git --version`) …
-
 <!-- Love git-secret? Please consider supporting our collective:
 👉  https://opencollective.com/git-secret/donate -->
