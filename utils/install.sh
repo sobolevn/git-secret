@@ -5,11 +5,11 @@ set -e
 
 # Credit goes to:
 # https://github.com/bats-core/bats-core/blob/master/install.sh (with alterations)
-resolve_link() {
+function resolve_link {
   $(type -p greadlink readlink | head -n1) "$1"
 }
 
-abs_dirname() {
+function abs_dirname {
   local cwd
   cwd="$(pwd)"
   local path="$1"
