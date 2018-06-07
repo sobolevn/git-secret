@@ -10,6 +10,6 @@ set -e
 
 # We need to execute custom call to the Bintray API:
 curl -X POST \
-  --user "sobolevn:$BINTRAY_API_KEY" \
+  --user "consensussolutions:$BINTRAY_API_KEY" \
   -H "X-GPG-PASSPHRASE: $BINTRAY_GPG_PASS" \
-  "https://api.bintray.com/calc_metadata/sobolevn/$GITSECRET_DIST"
+  "https://api.bintray.com/calc_metadata/consensussolutions/git-secret"

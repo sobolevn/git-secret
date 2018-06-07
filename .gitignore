@@ -137,3 +137,4 @@ build/
 # Kithcne files
 Gemfile.lock
 .kitchen/
+bintray/
