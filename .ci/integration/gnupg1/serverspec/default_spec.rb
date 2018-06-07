@@ -24,10 +24,6 @@ describe 'git-secret::test' do
     it { should exist }
   end
 
-  describe file('/.git-secret_lint-passed') do
-    it { should exist }
-  end
-
   if host_inventory['platform'] == 'fedora' || host_inventory['platform'] == 'redhat'
     describe command('rpm --query --info git-secret') do
       its(:exit_status) { should eq 0 }
