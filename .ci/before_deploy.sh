@@ -12,8 +12,8 @@ else
   echo "£££ not rpm"
 fi
 
-# if not null GITSECRET_DIST and null KITCHEN_REGEXP
-if [[ ! -z "$GITSECRET_DIST" ]] && [[ -z "$KITCHEN_REGEXP" ]]; then
+# if not null GITSECRET_DIST
+if [[ ! -z "$GITSECRET_DIST" ]]; then
   echo "£££ make deploy-$GITSECRET_DIST"
   # When making a non-container build, this step will generate
   # proper manifest files:
