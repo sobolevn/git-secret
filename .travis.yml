@@ -95,6 +95,7 @@ before_deploy:
 
 deploy:
   - provider: bintray
+    skip_cleanup: true
     on:
       branch: master
       condition: "$GITSECRET_DIST == deb"
