@@ -2,6 +2,8 @@
 
 set -e
 
+echo "£££ deb-deploy.sh"
+
 # shellcheck disable=SC1090,SC1091
 source "${SECRET_PROJECT_ROOT}/utils/build-utils.sh"
 
@@ -34,3 +36,7 @@ echo "{ \
   }], \
   \"publish\": true \
 }" > "${SECRET_PROJECT_ROOT}/build/deb_descriptor.json"
+
+echo "£££ wrote ${SECRET_PROJECT_ROOT}/build/deb_descriptor.json"
+cat  ${SECRET_PROJECT_ROOT}/build/deb_descriptor.json
+

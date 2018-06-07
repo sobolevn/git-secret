@@ -2,6 +2,8 @@
 
 set -e
 
+echo "£££ rpm-deploy.sh"
+
 # shellcheck disable=SC1090,SC1091
 source "${SECRET_PROJECT_ROOT}/utils/build-utils.sh"
 
@@ -29,3 +31,6 @@ echo "{ \
   }], \
   \"publish\": true \
 }" > "${SECRET_PROJECT_ROOT}/build/rpm_descriptor.json"
+
+echo "£££ wrote ${SECRET_PROJECT_ROOT}/build/rpm_descriptor.json
+cat  ${SECRET_PROJECT_ROOT}/build/rpm_descriptor.json
