@@ -43,7 +43,7 @@ test: install-test clean build
 	@chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
-	"./utils/tests.sh" | cat
+	"./utils/tests.sh"
 
 #
 # Manuals:
