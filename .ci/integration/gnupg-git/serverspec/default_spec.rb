@@ -42,12 +42,12 @@ describe 'git-secret::test' do
     end
   end
 
-  describe command('man -w "git-secret"') do
-    its(:exit_status) { should eq 0 }
-  end
+  #describe command('man -w "git-secret"') do
+  #  its(:exit_status) { should eq 0 }
+  #end
 
-  describe command('man -w "git-secret-init"') do
-    its(:exit_status) { should eq 0 }
-  end
+  #describe command('man -w "git-secret-init"') do
+  #  its(:exit_status) { should eq 0 }
+  #end
 
 end
