@@ -60,6 +60,11 @@
       when:
         - ansible_os_family == "RedHat"
 
+    - name: Install rspec in /usr/local/bin for RedHat based distros
+      command: bash -lc "gem install -n /usr/local/bin rspec"
+      when:
+        - ansible_os_family == "RedHat"
+
     - name: Get GnuPG github api content
       uri:
         url: https://api.github.com/repos/gpg/gnupg/tags
