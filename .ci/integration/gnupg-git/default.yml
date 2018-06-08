@@ -48,7 +48,7 @@
         - ansible_os_family == "Debian"
 
     - name: Install gnupg build dependencies for RedHat based distros
-      command: bash -lc "yum --assumeyes install yum-utils && yum-builddep --assumeyes gnupg2"
+      command: bash -lc "dnf -y install 'dnf-command(builddep)' && dnf builddep -y gnupg2"
       when:
         - ansible_os_family == "RedHat"
 
