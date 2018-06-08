@@ -2,6 +2,12 @@ matrix:
   fast_finish: true
   include:
     - os: linux
+      env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
+    - os: linux
       env: KITCHEN_REGEXP="gnupg1-alpine-latest"
       services: docker
       sudo: required
@@ -63,12 +69,6 @@ matrix:
       rvm: 2.4
     - os: linux
       env: KITCHEN_REGEXP="gnupg-git-debian-latest"; GITSECRET_DIST="make"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.4
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
       services: docker
       sudo: required
       language: ruby
