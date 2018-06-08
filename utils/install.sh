@@ -45,7 +45,6 @@ cp "$SCRIPT_ROOT"/man/man7/git-secret.7 "$PREFIX"/share/man/man7/git-secret.7
 
 # fix broken symbolic link file
 if [ ! -L "$PREFIX"/bin/bats ]; then
-	local dir
     dir="$(readlink -e "$PREFIX")"
     rm -f "$dir"/bin/bats
     ln -s "$dir"/libexec/bats "$dir"/bin/bats
