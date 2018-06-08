@@ -8,9 +8,6 @@ source "${SECRET_PROJECT_ROOT}/utils/build-utils.sh"
 preinstall_files "-T"
 
 # Building .deb package:
-if [ -f /etc/dpkg/dpkg.cfg.d/excludes ]; then
-    rm /etc/dpkg/dpkg.cfg.d/excludes
-fi
 cd "$SCRIPT_DEST_DIR" && build_package "deb"
 
 # Cleaning up:
