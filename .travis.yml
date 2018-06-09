@@ -104,6 +104,7 @@ deploy:
     key: "$BINTRAY_API_KEY"
     passphrase: "$BINTRAY_GPG_PASS"
   - provider: bintray
+    skip_cleanup: true
     on:
       branch: master
       condition: "$GITSECRET_DIST == rpm"
