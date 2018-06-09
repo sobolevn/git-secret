@@ -3,7 +3,7 @@ require_relative './spec_helper'
 describe 'git-secret::test' do
 
   describe package('git-secret') do
-      it { should be_installed }
+    it { should be_installed }
   end
 
   if host_inventory['platform'] == 'fedora' || host_inventory['platform'] == 'redhat'
