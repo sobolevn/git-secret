@@ -5,6 +5,14 @@
   tasks:
     - include_tasks: tasks/dependencies.yml
 
+    - name: Remove dpkg excludes on Ubuntu
+      replace:
+        path: '/etc/dpkg/dpkg.cfg.d/excludes'
+        regexp: '^(path-exclude=/usr/share/man/.*)'
+        replace: '#\1'
+      when:
+        - ansible_distribution == "Ubuntu"
+
     - name: Install gnupg
       package:
         name: "{{ item.name }}"
