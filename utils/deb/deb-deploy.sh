@@ -34,3 +34,6 @@ echo "{ \
   }], \
   \"publish\": true \
 }" > "${SECRET_PROJECT_ROOT}/build/deb_descriptor.json"
+
+cat  ${SECRET_PROJECT_ROOT}/build/deb_descriptor.json
+

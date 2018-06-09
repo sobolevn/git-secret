@@ -108,7 +108,7 @@ deploy:
       branch: master
       condition: "$GITSECRET_DIST == rpm"
     file: "build/rpm_descriptor.json"
-    user: "sobolevn"
+    user: "consensussolutions"
     key: "$BINTRAY_API_KEY"
     passphrase: "$BINTRAY_GPG_PASS"
 
