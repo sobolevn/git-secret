@@ -30,6 +30,14 @@
         - ansible_distribution == "Ubuntu"
         - deb_src_check_result >= 1
 
+    - name: Remove dpkg excludes on Ubuntu
+      replace:
+        path: '/etc/dpkg/dpkg.cfg.d/excludes'
+        regexp: '^(path-exclude=/usr/share/man/.*)'
+        replace: '#\1'
+      when:
+        - ansible_distribution == "Ubuntu"
+
     - name: Enable Debian source repos
       replace:
         path: '/etc/apt/sources.list'
@@ -48,7 +56,12 @@
         - ansible_os_family == "Debian"
 
     - name: Install gnupg build dependencies for RedHat based distros
-      command: bash -lc "yum --assumeyes install yum-utils && yum-builddep --assumeyes gnupg2"
+      command: bash -lc "dnf -y install 'dnf-command(builddep)' && dnf builddep -y gnupg2"
+      when:
+        - ansible_os_family == "RedHat"
+
+    - name: Install rspec in /usr/local/bin for RedHat based distros
+      command: bash -lc "gem install -n /usr/local/bin rspec"
       when:
         - ansible_os_family == "RedHat"
 
