@@ -23,6 +23,13 @@ Only required if dealing with manuals, `gh-pages` or releases:
 
 - ruby, ruby-dev
 
+### Environment MacOS
+
+- install Docker for Mac
+- install Chef Developer Kit
+- install Homebrew
+- install ruby2.4 and kitchen dependencies with `brew install rbenv ruby-build rbenv-vars; rbenv install 2.4.4; rbenv rehash; rbenv global 2.4.4 ;gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec`
+
 ### Getting started
 
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
