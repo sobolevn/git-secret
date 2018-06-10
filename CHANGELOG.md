@@ -3,9 +3,10 @@
 ## Version 0.2.4
 
 - Added `git secret cat` feature (#141)
-- `git secret hide` checks for input files more carefully (#154)
-- Documentation and error message improvements (#144, #150, #126)
-- Fixed CI builds (#152)
+- `git secret hide` and `git secret changes` check for files more carefully (#153, #154)
+- Documentation and error message improvements (#126, #136, #144, #150)
+- Build and CI fixes (#152, #179, #186, #188, #189)
+- Migrate to `bats-core` bash testing framework
 
 ## Version 0.2.3
 
