@@ -28,7 +28,7 @@ function killperson {
   # Getting the local `gpg` command:
   local gpg_local
   gpg_local=$(_get_gpg_local)
-t
+
   for email in "${emails[@]}"; do
     $gpg_local --batch --yes --delete-key "$email"
       local exit_code=$?
