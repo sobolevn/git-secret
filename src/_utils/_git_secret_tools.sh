@@ -636,10 +636,17 @@ function _decrypt {
     base="$base --pinentry-mode loopback"
   fi
 
+  local exit_code
   if [[ ! -z "$passphrase" ]]; then
     echo "$passphrase" | $base --quiet --batch --yes --no-tty --passphrase-fd 0 \
       "$encrypted_filename"
+    exit_code=$?
   else
     $base --quiet "$encrypted_filename"
+    exit_code=$?
+  fi
+  if [[ "$exit_code" -ne 0 ]]; then
+    _abort "problem decrypting $filename with gpg: exit code $exit_code"
   fi
 }
+
