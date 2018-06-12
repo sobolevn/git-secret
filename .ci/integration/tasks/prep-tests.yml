@@ -24,7 +24,7 @@
 
 - name: Print gpg version
   debug:
-    msg: "Running test against {{ gpg_version.stdout_lines | first | string }}."
+    msg: "Running test againts {{ gpg_version.stdout_lines | first | string }}."
   changed_when: False
 
 - name: Copy git-secret src
