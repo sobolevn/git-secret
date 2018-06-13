@@ -553,7 +553,7 @@ function _user_required {
     # this might catch corner case where gpg --list-keys shows 
     # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds? 
     # See #136
-    _abort "problem listing public keys in gpg: exit code $exit_code"
+    _abort "problem listing public keys with gpg: exit code $exit_code"
   fi
   if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
@@ -636,10 +636,17 @@ function _decrypt {
     base="$base --pinentry-mode loopback"
   fi
 
+  local exit_code
   if [[ ! -z "$passphrase" ]]; then
     echo "$passphrase" | $base --quiet --batch --yes --no-tty --passphrase-fd 0 \
       "$encrypted_filename"
+    exit_code=$?
   else
     $base --quiet "$encrypted_filename"
+    exit_code=$?
+  fi
+  if [[ "$exit_code" -ne 0 ]]; then
+    _abort "problem decrypting file with gpg: exit code $exit_code: $filename"
   fi
 }
+

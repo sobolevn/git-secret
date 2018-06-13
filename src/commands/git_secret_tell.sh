@@ -11,6 +11,10 @@ function get_gpg_key_count {
   local gpg_local
   gpg_local=$(_get_gpg_local)
   $gpg_local --list-public-keys --with-colon | gawk "$AWK_GPG_KEY_CNT"
+  local exit_code=$?
+  if [[ "$exit_code" -ne 0 ]]; then
+    _abort "problem counting keys with gpg: exit code $exit_code"
+  fi
 }
 
 function tell {
@@ -68,12 +72,18 @@ function tell {
     # shellcheck disable=2154
     local keyfile="$filename"
 
+    local exit_code
     if [[ -z "$homedir" ]]; then
       $SECRETS_GPG_COMMAND --export -a "$email" > "$keyfile"
+      exit_code=$?
     else
       # It means that homedir is set as an extra argument via `-d`:
       $SECRETS_GPG_COMMAND --no-permission-warning --homedir="$homedir" \
         --export -a "$email" > "$keyfile"
+      exit_code=$?
+    fi
+    if [[ "$exit_code" -ne 0 ]]; then
+      _abort "problem exporting public key for '$email' with gpg: exit code $exit_code"
     fi
 
     if [[ ! -s "$keyfile" ]]; then
@@ -84,6 +94,10 @@ function tell {
     local gpg_local
     gpg_local=$(_get_gpg_local)
     $gpg_local --import "$keyfile" > /dev/null 2>&1
+    exit_code=$?
+    if [[ "$exit_code" -ne 0 ]]; then
+      _abort "problem importing public key for '$email' with gpg: exit code $exit_code"
+    fi
   done
 
   echo "done. ${emails[*]} added as someone who know(s) the secret."
