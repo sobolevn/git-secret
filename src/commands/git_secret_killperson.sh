@@ -33,7 +33,7 @@ function killperson {
     $gpg_local --batch --yes --delete-key "$email"
     local exit_code=$?
     if [[ "$exit_code" -ne 0 ]]; then
-      _abort "problem deleting key with gpg: exit code $exit_code"
+      _abort "problem deleting key for '$email' with gpg: exit code $exit_code"
     fi
   done
 

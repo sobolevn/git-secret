@@ -163,7 +163,7 @@ function hide {
         $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
       local exit_code=$?
       if [[ "$exit_code" -ne 0 ]]; then
-        _abort "problem encrypting file with gpg: exit code $exit_code"
+        _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
       fi
       # If -m option was provided, it will update unencrypted file hash
       local key="$filename"
