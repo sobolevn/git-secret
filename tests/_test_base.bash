@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # This file is following a name convention defined in:
-#      https://github.com/sstephenson/bats 
-#  and https://github.com/bats-core/bats-core
+# https://github.com/sstephenson/bats
 
 # shellcheck disable=1090
 source "$SECRET_PROJECT_ROOT/src/version.sh"

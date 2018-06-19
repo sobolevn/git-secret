@@ -14,7 +14,7 @@
 
 - name: Get bats
   git:
-    repo: 'https://github.com/bats-core/bats-core.git'
+    repo: 'https://github.com/sstephenson/bats.git'
     dest: /opt/bats
 
 - name: Install bats
