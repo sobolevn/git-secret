@@ -29,3 +29,5 @@ echo "{ \
   }], \
   \"publish\": true \
 }" > "${SECRET_PROJECT_ROOT}/build/rpm_descriptor.json"
+
+cat  ${SECRET_PROJECT_ROOT}/build/rpm_descriptor.json
