@@ -79,10 +79,11 @@ matrix:
       sudo: required
       language: ruby
       rvm: 2.4
-#    - os: osx
-#      env: GITSECRET_DIST="brew"
-#      sudo: false
-#      language: generic
+    - os: osx
+      env: GITSECRET_DIST="brew"
+      sudo: required
+      language: ruby
+      rvm: 2.4      
 
 before_script:
   - chmod +x ".ci/before_script.sh" && ".ci/before_script.sh"
