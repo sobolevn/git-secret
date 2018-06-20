@@ -107,7 +107,7 @@ build-apk: clean build install-fpm
 test-apk-ci: install-test build-apk
 	@chmod +x "./utils/apk/apk-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/apk/apk-ci.sh"
 
 .PHONY: deploy-apk
@@ -129,7 +129,7 @@ build-deb: clean build install-fpm
 test-deb-ci: install-test build-deb
 	@chmod +x "./utils/deb/deb-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/deb/deb-ci.sh"
 
 .PHONY: deploy-deb
@@ -151,7 +151,7 @@ build-rpm: clean build install-fpm
 test-rpm-ci: install-test build-rpm
 	@chmod +x "./utils/rpm/rpm-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/rpm/rpm-ci.sh"
 
 .PHONY: deploy-rpm
@@ -166,5 +166,5 @@ deploy-rpm: build-rpm
 test-make-ci: clean install-test
 	@chmod +x "./utils/make/make-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/make/make-ci.sh"
