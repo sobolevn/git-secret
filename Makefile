@@ -35,14 +35,16 @@ uninstall:
 
 .PHONY: install-test
 install-test:
-	@if [ ! -d "vendor/bats" ]; then \
-	git clone https://github.com/sstephenson/bats.git vendor/bats; fi
+	@if [ ! -d "vendor/bats-core" ]; then \
+	git clone https://github.com/bats-core/bats-core.git vendor/bats-core; \
+	cd vendor/bats-core && git checkout v1.0.2; \
+	fi
 
 .PHONY: test
 test: install-test clean build
 	@chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PWD}:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
 	"./utils/tests.sh"
 
 #
