@@ -12,17 +12,6 @@
     state: present
   with_items: "{{ test_dependencies }}"
 
-- name: Get bats
-  git:
-    repo: 'https://github.com/sstephenson/bats.git'
-    dest: /opt/bats
-
-- name: Install bats
-  file:
-    src: /opt/bats/libexec/bats
-    dest: /usr/bin/bats
-    state: link
-
 - name: Get ShellCheck
   get_url:
     url: https://storage.googleapis.com/shellcheck/shellcheck-latest.linux.x86_64.tar.xz
