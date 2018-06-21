@@ -19,7 +19,7 @@
 - Added more `gpg` version to test matrix (#99)
 - Dropped `git check-ignore`, using `git add --dry-run` instead to check for ignored files (#105,#38)
 - Added CentOS to test matrix (#38,#91)
-- All tested Linux platforms now use latest release of `shellchek`
+- All tested Linux platforms now use latest release of `shellcheck`
 - Added Alpine to test matrix, and apk is now built. (#75)
 
 ## Version 0.2.2
@@ -28,7 +28,7 @@
 - Now `git-secret` works from any place inside `git-tree` (#56)
 - Added `-d` option to the `hide` command: it deletes unencrypted files (#62)
 - Added new command `changes` to see the diff between the secret files (#64)
-- Fixed bug when `_user_required` was not working after reimporting keys (#74)
+- Fixed bug when `_user_required` was not working after re-importing keys (#74)
 - Now it is possible to provide multiple emails to the `killperson` command (#73)
 - Now it is possible to provide multiple emails to the `tell` command (#72)
 - Now every doc in this project refer to `git-secret.io` instead of old `gh-pages` website (#71)
@@ -36,7 +36,7 @@
 - Now "See also" sections in the `man` pages are clickable (#69)
 - Added "Manual" section to the manuals (#61)
 - Added `centos` container for `ci` testing (#38)
-- Tests are refactored. Added `clean` command tests, removed a lot of hardcoded things, moved tests execution from `./temp` folder to `/tmp`, added a lot of new check in old tests, and some new test cases (#52)
+- Tests are refactored. Added `clean` command tests, removed a lot of hard-coded things, moved tests execution from `./temp` folder to `/tmp`, added a lot of new check in old tests, and some new test cases (#52)
 - Refactored `hide` and `clean` commands to be shorter
 - `shellcheck` is now supported with `make lint`
 
@@ -51,7 +51,7 @@
 
 ## Version 0.2.0
 
-- Added `changes` command to see the difference between current version of the hidden files and the commited one
+- Added `changes` command to see the difference between current version of the hidden files and the committed one
 - Added `-f` option to the `reveal` command to remove prompts
 - Changed the way files were decrypted, now it is a separate function
 - Some bugs are fixed

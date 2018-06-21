@@ -1,5 +1,5 @@
 #!/bin/sh
-## Script is sepcifically for use on travis-ci
+## Script is specifically for use on travis-ci
 
 set -e
 

@@ -61,17 +61,17 @@ It basically looks like that:
 ### Continuous integration
 
 Local CI is done with the help [`test-kitchen`](http://kitchen.ci/). `test-kitchen` handles multiple test-suites on various platforms.
-`bundle exec kitchen list` will output the list of test suites to be run aginst supported platforms.
+`bundle exec kitchen list` will output the list of test suites to be run against supported platforms.
 
 Cloud CI is done with the help of `travis`. `travis` handles multiple environments:
 
 - `Docker`-based jobs or so-called 'integration tests', these tests create a local release, install it with the package manager and then run unit-tests and system checks
 - `OSX` jobs, which handle basic unit-tests on `OSX`
-- Native `travis` jobs, which handle basic unit-tests and stylechecks
+- Native `travis` jobs, which handle basic unit-tests and style checks
 
 ### Running local ci-tests
 
-1. Install requied gems with `bundle install`.
+1. Install required gems with `bundle install`.
 2. Run ci-tests with `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`
 
 ### Release process
