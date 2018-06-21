@@ -21,6 +21,6 @@ function clean {
 
   _user_required
 
-  # User should see properly formated output:
-  _find_and_clean_formated "*$SECRETS_EXTENSION" "$verbose"
+  # User should see properly formatted output:
+  _find_and_clean_formatted "*$SECRETS_EXTENSION" "$verbose"
 }

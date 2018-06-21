@@ -20,7 +20,7 @@ function _optional_clean {
   local verbose=${2:-""}
 
   if [[ $clean -eq 1 ]]; then
-    _find_and_clean_formated "*$SECRETS_EXTENSION" "$verbose"
+    _find_and_clean_formatted "*$SECRETS_EXTENSION" "$verbose"
   fi
 }
 
@@ -33,13 +33,13 @@ function _optional_delete {
     local path_mappings
     path_mappings=$(_get_secrets_dir_paths_mapping)
 
-    # We use custom formating here:
+    # We use custom formatting here:
     if [[ ! -z "$verbose" ]]; then
       echo && echo 'removing unencrypted files:'
     fi
 
     while read -r line; do
-      # So the formating would not be repeated several times here:
+      # So the formatting would not be repeated several times here:
       local filename
       filename=$(_get_record_filename "$line")
       _find_and_clean "*$filename" "$verbose"
@@ -144,7 +144,7 @@ function hide {
     fi
 
     local recipients
-    recipients=$(_get_recepients)
+    recipients=$(_get_recipients)
 
     local gpg_local
     gpg_local=$(_get_gpg_local)

@@ -83,7 +83,7 @@ AWK_GPG_VER_CHECK='
 }
 '
 
-# This is 1 for gpg vesion  2.1 or greater, otherwise 0
+# This is 1 for gpg version 2.1 or greater, otherwise 0
 GPG_VER_21="$(gpg --version | gawk "$AWK_GPG_VER_CHECK")"
 
 
@@ -329,7 +329,7 @@ function _maybe_create_gitignore {
 
 
 function _add_ignored_file {
-  # This function adds a line with the filename into the '.gitgnore' file.
+  # This function adds a line with the filename into the '.gitignore' file.
   # It also creates '.gitignore' if it's not there
 
   local filename="$1" # required
@@ -455,7 +455,7 @@ function _find_and_clean {
 }
 
 
-function _find_and_clean_formated {
+function _find_and_clean_formatted {
   # required:
   local pattern="$1" # can be any string pattern
 
@@ -596,9 +596,9 @@ function _get_users_in_keyring {
 }
 
 
-function _get_recepients {
+function _get_recipients {
   # This function is required to create an encrypted file for different users.
-  # These users are called 'recepients' in the `gpg` terms.
+  # These users are called 'recipients' in the `gpg` terms.
   # It basically just parses the `gpg` public keys
 
   _parse_keyring_users 's/.*<\(.*\)>.*/-r\1/p'
