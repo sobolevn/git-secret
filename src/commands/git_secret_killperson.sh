@@ -25,9 +25,10 @@ function killperson {
     _abort "at least one email is required for killperson."
   fi
 
+  # Getting the local git-secret `gpg` key directory:
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
   for email in "${emails[@]}"; do
-    local secrets_dir_keys
-    secrets_dir_keys=$(_get_secrets_dir_keys)
     $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --batch --yes --delete-key "$email"
     local exit_code=$?
     if [[ "$exit_code" -ne 0 ]]; then
