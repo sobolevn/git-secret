@@ -420,19 +420,6 @@ function _get_secrets_dir_paths_mapping {
 
 # Logic:
 
-function _get_gpg_local {
-  # This function is required to return proper `gpg` command.
-  # This function was created due to this bug:
-  # https://github.com/sobolevn/git-secret/issues/85
-
-  local homedir
-  homedir=$(_get_secrets_dir_keys)
-
-  local gpg_local="$SECRETS_GPG_COMMAND --homedir=$homedir --no-permission-warning"
-  echo "$gpg_local"
-}
-
-
 function _abort {
   local message="$1" # required
 
@@ -543,11 +530,11 @@ function _user_required {
     _abort "$error_message"
   fi
 
-  local gpg_local
-  gpg_local=$(_get_gpg_local)
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
 
   local keys_exist
-  keys_exist=$($gpg_local -n --list-keys)
+  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys)
   local exit_code=$?
   if [[ "$exit_code" -ne 0 ]]; then
     # this might catch corner case where gpg --list-keys shows 
@@ -579,10 +566,9 @@ function _parse_keyring_users {
 
   local result
 
-  local gpg_local
-  gpg_local=$(_get_gpg_local)
-
-  result=$($gpg_local --list-public-keys --with-colon | sed -n "$sed_pattern")
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
+  result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon | sed -n "$sed_pattern")
   echo "$result"
 }
 
@@ -618,31 +604,31 @@ function _decrypt {
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
-  local base="$SECRETS_GPG_COMMAND --use-agent --decrypt --no-permission-warning"
+  local args=( "--use-agent" "--decrypt" "--no-permission-warning" )
 
   if [[ "$write_to_file" -eq 1 ]]; then
-    base="$base -o $filename"
+    args+=( "-o" "$filename" )
   fi
 
   if [[ "$force" -eq 1 ]]; then
-    base="$base --yes"
+    args+=( "--yes" )
   fi
 
   if [[ ! -z "$homedir" ]]; then
-    base="$base --homedir=$homedir"
+    args+=( "--homedir" "$homedir" )
   fi
 
   if [[ "$GPG_VER_21" -eq 1 ]]; then
-    base="$base --pinentry-mode loopback"
+    args+=( "--pinentry-mode" "loopback" )
   fi
 
   local exit_code
   if [[ ! -z "$passphrase" ]]; then
-    echo "$passphrase" | $base --quiet --batch --yes --no-tty --passphrase-fd 0 \
+    echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --quiet --batch --yes --no-tty --passphrase-fd 0 \
       "$encrypted_filename"
     exit_code=$?
   else
-    $base --quiet "$encrypted_filename"
+    $SECRETS_GPG_COMMAND "${args[@]}" "--quiet" "$encrypted_filename"
     exit_code=$?
   fi
   if [[ "$exit_code" -ne 0 ]]; then

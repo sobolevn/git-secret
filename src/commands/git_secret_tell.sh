@@ -8,9 +8,9 @@ END { print cnt }
 '
 
 function get_gpg_key_count {
-  local gpg_local
-  gpg_local=$(_get_gpg_local)
-  $gpg_local --list-public-keys --with-colon | gawk "$AWK_GPG_KEY_CNT"
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
+  $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon | gawk "$AWK_GPG_KEY_CNT"
   local exit_code=$?
   if [[ "$exit_code" -ne 0 ]]; then
     _abort "problem counting keys with gpg: exit code $exit_code"
@@ -91,9 +91,9 @@ function tell {
     fi
 
     # Importing public key to the local keychain:
-    local gpg_local
-    gpg_local=$(_get_gpg_local)
-    $gpg_local --import "$keyfile" > /dev/null 2>&1
+    local secrets_dir_keys
+    secrets_dir_keys=$(_get_secrets_dir_keys)
+    $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" > /dev/null 2>&1
     exit_code=$?
     if [[ "$exit_code" -ne 0 ]]; then
       _abort "problem importing public key for '$email' with gpg: exit code $exit_code"

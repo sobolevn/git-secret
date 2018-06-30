@@ -146,9 +146,6 @@ function hide {
     local recipients
     recipients=$(_get_recipients)
 
-    local gpg_local
-    gpg_local=$(_get_gpg_local)
-
     local input_path
     local output_path
     input_path=$(_append_root_path "$filename")
@@ -159,7 +156,9 @@ function hide {
     # encrypt file only if required
     if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
       # shellcheck disable=2086
-      $gpg_local --use-agent --yes --trust-model=always --encrypt \
+      local secrets_dir_keys
+      secrets_dir_keys=$(_get_secrets_dir_keys)
+      $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
         $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
       local exit_code=$?
       if [[ "$exit_code" -ne 0 ]]; then
