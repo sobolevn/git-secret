@@ -24,7 +24,7 @@ function usage {
   echo "usage: git secret [--version] [$commands]"
   echo " 'git secret --version' will show version and exit"
   echo "See 'git secret [command] -h' for more info about commands and their options"
-  echo " add [filename.txt] - adds file to be hidden. optionally adds file to .gitignore"
+  echo " add [filename.txt] - adds file to be hidden, optionally adds file to .gitignore"
   echo " cat [filename.txt] - cats the decrypted contents of the named file to stdout"
   echo " changes [filename.secret] - indicates if the file has changed since checkin"
   echo " clean - deletes encrypted files"
