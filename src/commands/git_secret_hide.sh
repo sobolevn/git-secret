@@ -158,9 +158,10 @@ function hide {
 
     # encrypt file only if required
     if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
-      # shellcheck disable=2086
+      # we depend on $recipients being split on whitespace
+      # shellcheck disable=SC2086
       $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
-        "$recipients" -o "$output_path" "$input_path" > /dev/null 2>&1
+        $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
       local exit_code=$?
       if [[ "$exit_code" -ne 0 ]]; then
         _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
