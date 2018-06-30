@@ -632,7 +632,7 @@ function _decrypt {
     base="$base --homedir=$homedir"
   fi
 
-  if [[ "$GPG_VER_21" -eq 1 ]]; then
+  if [[ "$GPG_VER_21" -eq 0 ]]; then
     base="$base --pinentry-mode loopback"
   fi
 
