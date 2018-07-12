@@ -37,6 +37,33 @@ function teardown {
   [ -f "$encrypted_file" ]
 }
 
+@test "run 'hide' from inside subdirectory" {
+  # Preparations:
+  local root_dir='test_sub_dir'
+  mkdir -p "$root_dir"
+  local second_file="$root_dir/second_file.txt"
+  local second_content="some content"
+  set_state_secret_add "$second_file" "$second_content"
+
+  # Verify that the second file is there:
+  [ -f "$second_file" ]
+
+  # cd into the subdir
+  cd "$root_dir"
+
+  # Now it should hide 2 files:
+  run git secret hide
+  [ "$status" -eq 0 ]
+
+  # cd back
+  cd ".."
+
+  # It should be verbose:
+  #[[ "$output" == *"removing unencrypted files"* ]]
+  #[[ "$output" == *"$FILE_TO_HIDE"* ]]
+  #[[ "$output" == *"$second_file"* ]]
+}
+
 @test "run 'hide' with missing file" {
   # Preparations:
   local second_file="second_file.txt"
