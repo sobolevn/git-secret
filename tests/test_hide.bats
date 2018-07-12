@@ -57,11 +57,6 @@ function teardown {
 
   # cd back
   cd ".."
-
-  # It should be verbose:
-  #[[ "$output" == *"removing unencrypted files"* ]]
-  #[[ "$output" == *"$FILE_TO_HIDE"* ]]
-  #[[ "$output" == *"$second_file"* ]]
 }
 
 @test "run 'hide' with missing file" {
