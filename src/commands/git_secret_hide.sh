@@ -120,9 +120,6 @@ function hide {
   # make sure all the unencrypted files needed are present
   local to_hide=()
   while read -r record; do
-    local filename
-    filename=$(_get_record_filename "$record")
-
     to_hide+=("$record")  # add record to array
   done < "$path_mappings"
 
