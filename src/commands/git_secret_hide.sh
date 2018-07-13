@@ -120,12 +120,6 @@ function hide {
   # make sure all the unencrypted files needed are present
   local to_hide=()
   while read -r record; do
-    local filename
-    filename=$(_get_record_filename "$record")
-
-    if [[ ! -f "$filename" ]]; then
-      _abort "file not found: $filename"
-    fi
     to_hide+=("$record")  # add record to array
   done < "$path_mappings"
 
@@ -138,11 +132,6 @@ function hide {
     fsdb_file_hash=$(_get_record_hash "$record")
     encrypted_filename=$(_get_encrypted_filename "$filename")
 
-    # Checking that file is valid:
-    if [[ ! -f "$filename" ]]; then
-      _abort "file not found: $filename"
-    fi
-
     local recipients
     recipients=$(_get_recipients)
 
@@ -153,6 +142,11 @@ function hide {
     local output_path
     input_path=$(_append_root_path "$filename")
     output_path=$(_append_root_path "$encrypted_filename")
+
+    # Checking that file is valid:
+    if [[ ! -f "$input_path" ]]; then
+      _abort "file not found: $input_path"
+    fi
 
     file_hash=$(_get_file_hash "$input_path")
 
