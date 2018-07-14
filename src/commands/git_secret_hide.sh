@@ -74,7 +74,7 @@ function _optional_fsdb_update_hash {
 
   fsdb=$(_get_secrets_dir_paths_mapping)
 
-  _gawk_inplace -v key="$key" -v hash="$hash" "'$AWK_FSDB_UPDATE_HASH'" "$fsdb"
+  _gawk_inplace -v key="'$key'" -v hash="$hash" "'$AWK_FSDB_UPDATE_HASH'" "$fsdb"
 }
 
 
