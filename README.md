@@ -37,6 +37,7 @@ See the [installation section](http://git-secret.io/installation) for the detail
 - `git` since `1.8.3.1`
 - `gpg` since `gnupg 1.4` to `gnupg 2.X`
 - `sha256sum` since `8.21`
+- `cut` (any version)
 
 
 ## Contributing
