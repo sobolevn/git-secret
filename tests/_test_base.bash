@@ -33,9 +33,10 @@ GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warnin
 
 # Personal data:
 
-TEST_DEFAULT_USER="user1"
-TEST_SECOND_USER="user2" # shellcheck disable=2034
-TEST_ATTACKER_USER="attacker1" # shellcheck disable=2034
+# user3 created with '--quick-key-generate' and has only an email, no username.
+TEST_DEFAULT_USER="user3"
+TEST_SECOND_USER="user2"
+TEST_ATTACKER_USER="attacker1"
 
 function test_user_password {
   # It was set on key creation:

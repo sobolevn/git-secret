@@ -560,17 +560,6 @@ function _get_encrypted_filename {
 }
 
 
-function _parse_keyring_users {
-  # First argument must be a `sed` pattern
-  local sed_pattern="$1"
-
-  local result
-
-  local secrets_dir_keys
-  secrets_dir_keys=$(_get_secrets_dir_keys)
-  result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon | sed -n "$sed_pattern")
-  echo "$result"
-}
 
 
 function _get_users_in_keyring {
@@ -578,7 +567,13 @@ function _get_users_in_keyring {
   # `whoknows` command uses it internally.
   # It basically just parses the `gpg` public keys
 
-  _parse_keyring_users 's/.*<\(.*\)>.*/\1/p'
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
+    
+  local result
+  # pluck out 'uid' lines, fetch 10th field, extract part in <> if it exists (else leave alone)
+  result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon | grep ^uid: | cut -d: -f10 | sed 's/.*<\(.*\)>.*/\1/')
+  echo "$result"
 }
 
 
@@ -587,7 +582,9 @@ function _get_recipients {
   # These users are called 'recipients' in the `gpg` terms.
   # It basically just parses the `gpg` public keys
 
-  _parse_keyring_users 's/.*<\(.*\)>.*/-r\1/p'
+  local result
+  result=$(_get_users_in_keyring | sed 's/^/-r/')   # put -r before each user
+  echo "$result"
 }
 
 
