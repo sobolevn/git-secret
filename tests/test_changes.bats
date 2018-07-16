@@ -2,8 +2,8 @@
 
 load _test_base
 
-FILE_TO_HIDE="file_to_hide"
-SECOND_FILE_TO_HIDE="second_file_to_hide"
+FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
+SECOND_FILE_TO_HIDE="$TEST_SECOND_FILENAME"
 FILE_CONTENTS="hidden content юникод"
 
 FINGERPRINT=""
@@ -54,7 +54,7 @@ function teardown {
 
 @test "run 'changes' with hidden file missing" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  local encrypted_file=$(_get_encrypted_filename $FILE_TO_HIDE)
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   rm "$encrypted_file"
 
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"

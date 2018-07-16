@@ -2,7 +2,7 @@
 
 load _test_base
 
-FILE_TO_HIDE="file_to_hide"
+FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
 FILE_CONTENTS="hidden content юникод"
 
 
@@ -61,7 +61,7 @@ function teardown {
 
 @test "run 'hide' with missing file" {
   # Preparations:
-  local second_file="second_file.txt"
+  local second_file="$TEST_SECOND_FILENAME"
   local second_content="some content"
   set_state_secret_add "$second_file" "$second_content"
 
@@ -77,7 +77,7 @@ function teardown {
 
 @test "run 'hide' with multiple files" {
   # Preparations:
-  local second_file="second_file.txt"
+  local second_file="$TEST_SECOND_FILENAME"
   local second_content="some content"
   set_state_secret_add "$second_file" "$second_content"
 
@@ -183,7 +183,7 @@ function teardown {
   # Preparations:
   local root_dir='test_sub_dir'
   mkdir -p "$root_dir"
-  local second_file="$root_dir/second_file.txt"
+  local second_file="$root_dir/$TEST_SECOND_FILENAME"
   local second_content="some content"
   set_state_secret_add "$second_file" "$second_content"
 

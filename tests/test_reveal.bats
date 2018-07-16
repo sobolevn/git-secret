@@ -2,7 +2,7 @@
 
 load _test_base
 
-FILE_TO_HIDE="file_to_hide"
+FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
 FILE_CONTENTS="hidden content юникод"
 
 FINGERPRINT=""

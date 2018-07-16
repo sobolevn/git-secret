@@ -33,8 +33,6 @@ function remove {
     normalized_path=$(_git_normalize_filename "$item")
     path=$(_append_root_path "$normalized_path")
 
-    echo "$item -> $normalized_path -> $path"
-
     # Checking if file exists:
     if [[ ! -f "$path" ]]; then
       _abort "file not found: $item"

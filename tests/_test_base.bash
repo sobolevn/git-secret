@@ -38,6 +38,15 @@ TEST_DEFAULT_USER="user3"
 TEST_SECOND_USER="user2"
 TEST_ATTACKER_USER="attacker1"
 
+#TEST_DEFAULT_FILENAME="file_one"  # no spaces
+#TEST_SECOND_FILENAME="file_two"  # no spaces
+#TEST_THIRD_FILENAME="file_three"  # no spaces
+
+TEST_DEFAULT_FILENAME="space file" # has spaces
+TEST_SECOND_FILENAME="space file two" # has spaces
+TEST_THIRD_FILENAME="space file three"  # has spaces
+
+
 function test_user_password {
   # It was set on key creation:
   echo "${1}pass"
