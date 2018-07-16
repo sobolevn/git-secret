@@ -22,16 +22,16 @@ function changes {
 
   _user_required
 
-  local filenames="$*"
-  if [[ -z "$filenames" ]]; then
+  filenames=("$@")  # list of positional params. global.
+  if [[ ${#filenames[@]} -eq 0 ]]; then
     # Checking if no filenames are passed, show diff for all files.
-    filenames=$(_list_all_added_files)
+    _list_all_added_files    # this sets the array variable 'filenames'
   fi
 
   IFS='
   '
 
-  for filename in $filenames; do
+  for filename in "${filenames[@]}"; do
     local decrypted
     local diff_result
 

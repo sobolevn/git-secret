@@ -2,8 +2,8 @@
 
 load _test_base
 
-FIRST_FILE="file_to_hide1"
-SECOND_FILE="file_to_hide2"
+FIRST_FILE="$TEST_DEFAULT_FILENAME"
+SECOND_FILE="$TEST_SECOND_FILENAME"
 
 FOLDER="somedir"
 FILE_IN_FOLDER="${FOLDER}/file_to_hide3"

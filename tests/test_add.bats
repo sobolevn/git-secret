@@ -21,7 +21,7 @@ function teardown {
 
 @test "run 'add' normally" {
   # Preparations:
-  local filename="local_file"
+  local filename="$TEST_DEFAULT_FILENAME"
   echo "content" > "$filename"
   echo "$filename" > ".gitignore"
 
@@ -41,7 +41,7 @@ function teardown {
 
 
 @test "run 'add' for unignored file" {
-  local test_file='test_file'
+  local test_file="$TEST_DEFAULT_FILENAME"
   touch "$test_file"
   echo "content" > "$test_file"
 
@@ -53,7 +53,7 @@ function teardown {
 
 
 @test "run 'add' for unignored file with '-i'" {
-  local test_file='test_file.auto_ignore'
+  local test_file='test_file.auto_ignore'   # TODO - paramaterize filename
   touch "$test_file"
   echo "content" > "$test_file"
 
@@ -112,7 +112,7 @@ function teardown {
   local root='test_dir'
   local node="$root/node"
   local sibling="$root/sibling"
-  local test_file="$node/test_file"
+  local test_file="$node/$TEST_DEFAULT_FILENAME"
   local current_dir=$(pwd)
 
   mkdir -p "$node"
@@ -124,7 +124,7 @@ function teardown {
   cd "$sibling"
 
   # Testing:
-  run git secret add "../node/test_file"
+  run git secret add "../node/$TEST_DEFAULT_FILENAME"
   [ "$status" -eq 0 ]
   [[ "$output" == *"1 item(s) added."* ]]
 
@@ -143,7 +143,7 @@ function teardown {
 
 @test "run 'add' for file in subfolder" {
   # Preparations:
-  local test_file='test_file'
+  local test_file="$TEST_DEFAULT_FILENAME"
   local test_dir='test_dir'
 
   mkdir -p "$test_dir"
@@ -163,7 +163,7 @@ function teardown {
 
 @test "run 'add' twice for one file" {
   # Preparations:
-  local filename="local_file"
+  local filename="$TEST_DEFAULT_FILENAME"
   echo "content" > "$filename"
   echo "$filename" > ".gitignore"
 
@@ -187,11 +187,11 @@ function teardown {
 
 @test "run 'add' for multiple files" {
   # Preparations:
-  local filename1="local_file1"
+  local filename1="$TEST_DEFAULT_FILENAME"
   echo "content1" > "$filename1"
   echo "$filename1" > ".gitignore"
 
-  local filename2="local_file2"
+  local filename2="$TEST_SECOND_FILENAME"
   echo "content2" > "$filename2"
   echo "$filename2" >> ".gitignore"
 
