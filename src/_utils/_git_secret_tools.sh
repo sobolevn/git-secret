@@ -577,15 +577,11 @@ function _get_users_in_keyring {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
     
-  local result
   # pluck out 'uid' lines, fetch 10th field, extract part in <> if it exists (else leave alone)
-  # modern gpg's show email in 'uid:' lines
-  result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon | grep ^uid: | cut -d: -f10 | sed 's/.*<\(.*\)>.*/\1/')
+  # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines
+  local result
+  result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | cut -d: -f10 | sed 's/.*<\(.*\)>.*/\1/')
 
-  if [[ -z "$result" ]]; then
-    # older gpg's show email in 'pub:' lines
-    result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon | grep ^pub: | cut -d: -f10 | sed 's/.*<\(.*\)>.*/\1/')
-  fi
   echo "$result"
 }
 
