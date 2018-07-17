@@ -580,7 +580,7 @@ function _get_users_in_keyring {
   # pluck out 'uid' lines, fetch 10th field, extract part in <> if it exists (else leave alone)
   # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines
   local result
-  result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | cut -d: -f10 | sed 's/.*<\(.*\)>.*/\1/')
+  result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | gawk -F':' '{print $10;}' | sed 's/.*<\(.*\)>.*/\1/')
 
   echo "$result"
 }
