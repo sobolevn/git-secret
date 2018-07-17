@@ -90,6 +90,13 @@ if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
 fi
 ```
 
+#### About GnuPG
+
+Here are some links to gnupg documentation that might be useful for those working with git-secret:
+
+- [GnuPG PDF Documentation]: <https://www.gnupg.org/documentation/manuals/gnupg.pdf>
+- [GnuPG doc/DETAILS File]: <https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=doc/DETAILS>
+
 #### Travis releases
 
 When creating a commit inside `master` branch, `travis` on successful build will publish new `deb` and `rpm` packages to [`bintray`][bintray].
