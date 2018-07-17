@@ -567,9 +567,15 @@ function _get_encrypted_filename {
 }
 
 
+function _get_users_in_gpg_keyring {
+  local result
+  result=$($SECRETS_GPG_COMMAND --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | gawk -F':' '{print $10;}' | sed 's/.*<\(.*\)>.*/\1/')
+
+  echo "$result"
+}
 
 
-function _get_users_in_keyring {
+function _get_users_in_gitsecret_keyring {
   # This function is required to show the users in the keyring.
   # `whoknows` command uses it internally.
   # It basically just parses the `gpg` public keys
@@ -592,7 +598,7 @@ function _get_recipients {
   # It basically just parses the `gpg` public keys
 
   local result
-  result=$(_get_users_in_keyring | sed 's/^/-r/')   # put -r before each user
+  result=$(_get_users_in_gitsecret_keyring | sed 's/^/-r/')   # put -r before each user
   echo "$result"
 }
 
