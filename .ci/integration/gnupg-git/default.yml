@@ -90,6 +90,11 @@
       retries: 5
       delay: 10
 
+    - name: Make directory /usr/local/src/ for Alpine based distros
+      command: bash -lc "mkdir -p /usr/local/src/"
+      when:
+        - ansible_os_family == "Alpine"
+
     - name: Extract gnupg source tarball
       unarchive:
         src: /tmp/gnupg.tar.gz
