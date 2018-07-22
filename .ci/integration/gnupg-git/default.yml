@@ -65,12 +65,6 @@
       when:
         - ansible_os_family == "Alpine"
 
-    # here we ignore a none zero status code as the package is installed
-    - name: Install apk packaging dependencies for Alpine based distros
-      command: bash -lc "gem install etc || :"
-      when:
-        - ansible_os_family == "Alpine"
-
     - name: Install rspec in /usr/local/bin for RedHat based distros
       command: bash -lc "gem install -n /usr/local/bin rspec"
       when:
