@@ -61,7 +61,13 @@
         - ansible_os_family == "RedHat"
 
     - name: Install gnupg build dependencies for Alpine based distros
-      command: bash -lc "apk add gnutls-dev libksba-dev libgcrypt-dev libgpg-error-dev npth-dev zlib-dev libassuan-dev bzip2-dev sqlite-dev libusb-dev; gem install etc || :"
+      command: bash -lc "apk add gnutls-dev libksba-dev libgcrypt-dev libgpg-error-dev npth-dev zlib-dev libassuan-dev bzip2-dev sqlite-dev libusb-dev"
+      when:
+        - ansible_os_family == "Alpine"
+
+    # here we ignore a none zero status code as the package is installed
+    - name: Install apk packaging dependencies for Alpine based distros
+      command: bash -lc "gem install etc || :"
       when:
         - ansible_os_family == "Alpine"
 
