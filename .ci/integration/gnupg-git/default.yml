@@ -60,6 +60,11 @@
       when:
         - ansible_os_family == "RedHat"
 
+    - name: Install gnupg build dependencies for Alpine based distros
+      command: bash -lc "apk add gnutls-dev libksba-dev libgcrypt-dev libgpg-error-dev npth-dev zlib-dev libassuan-dev bzip2-dev sqlite-dev libusb-dev; gem install etc || :"
+      when:
+        - ansible_os_family == "Alpine"
+
     - name: Install rspec in /usr/local/bin for RedHat based distros
       command: bash -lc "gem install -n /usr/local/bin rspec"
       when:
@@ -136,6 +141,15 @@
     - name: Configure gnupg build
       command: bash -lc "cd {{ gpg_src_path }} && ./configure {{ gpg_build_config }}"
       changed_when: False
+
+    # gnupg on alpine is not detecting absence of fig2dev when this thread suggests it should: https://lists.gnupg.org/pipermail/gcrypt-devel/2013-December/002710.html
+    - name: Disable making docs on Alpine
+      lineinfile:
+        path: "{{ gpg_src_path }}/Makefile"
+        regexp: '^doc = doc$'
+        line: 'doc = '
+      when:
+        - ansible_os_family == "Alpine"
 
     - name: Compile gnupg src
       command: bash -lc "cd {{ gpg_src_path }} && make"
