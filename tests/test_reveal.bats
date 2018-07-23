@@ -62,6 +62,15 @@ function teardown {
   run git secret reveal -c -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]
+
+  local perm1
+  local perm2
+  perm1=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
+  perm2=$(ls -l "$FILE_TO_HIDE".secret | cut -d' ' -f1)
+  echo "# perm1: $perm1, perm2: $perm2" >&3
+
+  [ "$perm1" = "$perm2" ]
+
   [ -f "$FILE_TO_HIDE" ]
 }
 
