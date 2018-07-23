@@ -142,7 +142,7 @@
       command: bash -lc "cd {{ gpg_src_path }} && ./configure {{ gpg_build_config }}"
       changed_when: False
 
-    # gnupg on alpine is not detecting absence of fig2dev when this thread suggests it should: https://lists.gnupg.org/pipermail/gcrypt-devel/2013-December/002710.html
+    # disable gnupg doc build on alpine as it is not detecting an absence of graphical tools such as fig2dev on alpine
     - name: Disable making docs on Alpine
       lineinfile:
         path: "{{ gpg_src_path }}/Makefile"
