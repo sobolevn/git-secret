@@ -49,10 +49,15 @@ function reveal {
       _abort "cannot find decrypted version of file: $filename"
     fi
 
-    if [[ "$chmod" ]]; then
+    if [[ "$chmod" == 1 ]]; then
         local perms
-        perms=$(stat -f "%Op" "$filename")
-        chmod "$perms" "$path"
+	perms=$($SECRETS_OCTAL_PERMS_COMMAND "$filename")
+
+	echo "# octal_perms_command: $SECRETS_OCTAL_PERMS_COMMAND" >&3
+	echo "# filename is '$filename', path is '$path'" >&3
+	echo "# NOT running: chmod $perms $path" >&3
+
+        #chmod "$perms" "$path"
     fi
 
     counter=$((counter+1))
