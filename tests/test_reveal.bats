@@ -67,8 +67,8 @@ function teardown {
 
   [ "$status" -eq 0 ]
 
-  local perm1
-  local perm2
+  local secret_perm
+  local file_perm
   secret_perm=$(ls -l "$FILE_TO_HIDE".secret | cut -d' ' -f1)
   file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
   echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3
