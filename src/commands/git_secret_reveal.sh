@@ -50,10 +50,16 @@ function reveal {
     fi
 
     if [[ "$chmod" == 1 ]]; then
+      local secret_file
+      secret_file=$(_get_encrypted_filename "$path")
       local perms
-      perms=$($SECRETS_OCTAL_PERMS_COMMAND "$filename")
+      perms=$($SECRETS_OCTAL_PERMS_COMMAND "$secret_file")
 
-      chmod $perms "$path"
+      echo "# octal_perms_command: $SECRETS_OCTAL_PERMS_COMMAND" >&3
+      echo "# filename is '$filename', path is '$path'" >&3
+      echo "# running: chmod '$perms' '$path'" >&3
+
+      chmod "$perms" "$path"
     fi
 
     counter=$((counter+1))

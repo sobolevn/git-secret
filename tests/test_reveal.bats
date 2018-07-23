@@ -59,17 +59,21 @@ function teardown {
   rm "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
+
+  local secret_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  chmod o-rwx "$secret_file"
+
   run git secret reveal -c -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]
 
   local perm1
   local perm2
-  perm1=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
-  perm2=$(ls -l "$FILE_TO_HIDE".secret | cut -d' ' -f1)
-  echo "# perm1: $perm1, perm2: $perm2" >&3
+  secret_perm=$(ls -l "$FILE_TO_HIDE".secret | cut -d' ' -f1)
+  file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
+  echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3
 
-  [ "$perm1" = "$perm2" ]
+  [ "$secret_perm" = "$file_perm" ]
 
   [ -f "$FILE_TO_HIDE" ]
 }
