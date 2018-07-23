@@ -29,7 +29,7 @@
     state: present
     user_install: no
 
-# here we ignore a none zero status code as the package is installed
+# here we ignore a non-zero status code as the package is installed
 - name: Install apk packaging dependencies for Alpine based distros
   command: bash -lc "gem install etc || :"
   when:
