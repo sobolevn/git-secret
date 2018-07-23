@@ -205,11 +205,6 @@ function _unique_filename {
   echo "$result"
 }
 
-#function _get_octal_perms {
-#   local file=$1
-#   perms=$(stat -f "'%a'" "$filename")
-#}
-
 # Helper function
 
 
