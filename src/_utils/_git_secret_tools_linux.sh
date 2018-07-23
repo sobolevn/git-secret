@@ -18,7 +18,9 @@ function __sha256_linux {
 }
 
 function __get_octal_perms_linux {
-   local file=$1
-   perms=$(stat --format "'%a'" "$filename")
-   echo "$perms"
+  local filename
+  filename=$1
+  local perms
+  perms=$(stat --format "'%a'" "$filename")
+  echo "$perms"
 }
