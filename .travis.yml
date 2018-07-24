@@ -7,12 +7,12 @@ matrix:
       sudo: required
       language: ruby
       rvm: 2.4
-    #- os: linux
-    #  env: KITCHEN_REGEXP="gnupg1-alpine-latest"
-    #  services: docker
-    #  sudo: required
-    #  language: ruby
-    #  rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg1-alpine-latest"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-debian-latest"
       services: docker
@@ -37,12 +37,12 @@ matrix:
       sudo: required
       language: ruby
       rvm: 2.4
-    #- os: linux
-    #  env: KITCHEN_REGEXP="gnupg2-alpine-latest"
-    #  services: docker
-    #  sudo: required
-    #  language: ruby
-    #  rvm: 2.4
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg2-alpine-latest"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
     - os: linux
       env: KITCHEN_REGEXP="gnupg2-debian-latest"; GITSECRET_DIST="deb"
       services: docker
