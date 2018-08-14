@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Folders:
-_SECRETS_DIR=".gitsecret"
+_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}
 _SECRETS_DIR_KEYS="${_SECRETS_DIR}/keys"
 _SECRETS_DIR_PATHS="${_SECRETS_DIR}/paths"
 
