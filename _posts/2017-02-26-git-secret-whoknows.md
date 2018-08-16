@@ -14,7 +14,7 @@ git-secret-whoknows - prints email-labels for each key in the keyring.
 
 
 ## DESCRIPTION
-`git-secret-whokowns` prints list of email addresses which are used as labels for currently public keys added to the local keyring.
+`git-secret-whoknows` prints list of email addresses which are used as labels for currently public keys added to the local keyring.
 
 
 ## OPTIONS
