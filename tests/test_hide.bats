@@ -37,12 +37,12 @@ function teardown {
   [ -f "$encrypted_file" ]
 }
 
-@test "run 'hide' with '-C'" {
+@test "run 'hide' with '-P'" {
 
   # attempt to alter permissions on input file
   chmod o-rwx "$FILE_TO_HIDE"
 
-  run git secret hide -C
+  run git secret hide -P
 
   # Command must execute normally:
   [ "$status" -eq 0 ]

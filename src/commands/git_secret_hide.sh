@@ -80,18 +80,18 @@ function _optional_fsdb_update_hash {
 
 function hide {
   local clean=0
-  local chmod=0
+  local preserve=0
   local delete=0
   local fsdb_update_hash=0 # add checksum hashes to fsdb
   local verbose=''
 
   OPTIND=1
 
-  while getopts 'cCdmvh' opt; do
+  while getopts 'cPdmvh' opt; do
     case "$opt" in
       c) clean=1;;
 
-      C) chmod=1;;
+      P) preserve=1;;
 
       d) delete=1;;
 
@@ -164,7 +164,7 @@ function hide {
         _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
       fi
 
-      if [[ "$chmod" == 1 ]]; then
+      if [[ "$preserve" == 1 ]]; then
         local perms
         perms=$($SECRETS_OCTAL_PERMS_COMMAND "$input_path")
         chmod "$perms" "$output_path"
