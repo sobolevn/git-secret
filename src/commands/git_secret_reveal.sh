@@ -54,11 +54,6 @@ function reveal {
       secret_file=$(_get_encrypted_filename "$path")
       local perms
       perms=$($SECRETS_OCTAL_PERMS_COMMAND "$secret_file")
-
-      echo "# octal_perms_command: $SECRETS_OCTAL_PERMS_COMMAND" >&3
-      echo "# filename is '$filename', path is '$path'" >&3
-      echo "# running: chmod '$perms' '$path'" >&3
-
       chmod "$perms" "$path"
     fi
 

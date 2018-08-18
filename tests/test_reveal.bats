@@ -71,7 +71,9 @@ function teardown {
   local file_perm
   secret_perm=$(ls -l "$FILE_TO_HIDE".secret | cut -d' ' -f1)
   file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
-  echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3
+
+  # text sent to file descriptor 3 is 'diagnostic' (debug) output for devs
+  #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3    
 
   [ "$secret_perm" = "$file_perm" ]
 
