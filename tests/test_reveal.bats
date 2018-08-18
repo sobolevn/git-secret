@@ -55,7 +55,7 @@ function teardown {
 }
 
 
-@test "run 'reveal' with '-c'" {
+@test "run 'reveal' with '-C'" {
   rm "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
@@ -63,7 +63,7 @@ function teardown {
   local secret_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   chmod o-rwx "$secret_file"
 
-  run git secret reveal -c -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run git secret reveal -C -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]
 

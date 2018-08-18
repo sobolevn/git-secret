@@ -9,13 +9,13 @@ function reveal {
 
   OPTIND=1
 
-  while getopts 'chfd:p:' opt; do
+  while getopts 'hfCd:p:' opt; do
     case "$opt" in
       h) _show_manual_for 'reveal';;
 
       f) force=1;;
 
-      c) chmod=1;;
+      C) chmod=1;;
 
       p) passphrase=$OPTARG;;
 
