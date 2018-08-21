@@ -32,9 +32,37 @@ function teardown {
   [ "$status" -eq 0 ]
   [ "$output" = "done. all 1 files are hidden." ]
 
-  # New files should be crated:
+  # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
+}
+
+@test "run 'hide' with '-P'" {
+
+  # attempt to alter permissions on input file
+  chmod o-rwx "$FILE_TO_HIDE"
+
+  run git secret hide -P
+
+  # Command must execute normally:
+  [ "$status" -eq 0 ]
+  [ "$output" = "done. all 1 files are hidden." ]
+
+  # New files should be created:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [ -f "$encrypted_file" ]
+
+  # permissions should match. We don't have access to SECRETS_OCTAL_PERMS_COMMAND here
+  local secret_perm
+  local file_perm   
+  secret_perm=$(ls -l "$encrypted_file" | cut -d' ' -f1)    
+  file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
+
+  # text prefixed with '# ' and sent to file descriptor 3 is 'diagnostic' (debug) output for devs
+  #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3
+
+  [ "$secret_perm" = "$file_perm" ]
+
 }
 
 @test "run 'hide' from inside subdirectory" {
@@ -101,7 +129,7 @@ function teardown {
   [ "${lines[0]}" = "done. all 1 files are hidden." ]
   [ "${lines[1]}" = "cleaning up..." ]
 
-  # New files should be crated:
+  # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
 }
@@ -130,7 +158,7 @@ function teardown {
   # no changes should occur to path_mappings files
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
-  # New files should be crated:
+  # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
 }

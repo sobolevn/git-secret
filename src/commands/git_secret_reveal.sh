@@ -5,14 +5,17 @@ function reveal {
   local homedir=''
   local passphrase=''
   local force=0
+  local preserve=0
 
   OPTIND=1
 
-  while getopts 'hfd:p:' opt; do
+  while getopts 'hfPd:p:' opt; do
     case "$opt" in
       h) _show_manual_for 'reveal';;
 
       f) force=1;;
+
+      P) preserve=1;;
 
       p) passphrase=$OPTARG;;
 
@@ -44,6 +47,14 @@ function reveal {
 
     if [[ ! -f "$path" ]]; then
       _abort "cannot find decrypted version of file: $filename"
+    fi
+
+    if [[ "$preserve" == 1 ]]; then
+      local secret_file
+      secret_file=$(_get_encrypted_filename "$path")
+      local perms
+      perms=$($SECRETS_OCTAL_PERMS_COMMAND "$secret_file")
+      chmod "$perms" "$path"
     fi
 
     counter=$((counter+1))

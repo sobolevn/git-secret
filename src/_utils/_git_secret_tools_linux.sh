@@ -16,3 +16,11 @@ function __temp_file_linux {
 function __sha256_linux {
   sha256sum "$1"
 }
+
+function __get_octal_perms_linux {
+  local filename
+  filename=$1
+  local perms
+  perms=$(stat --format '%a' "$filename")
+  echo "$perms"
+}
