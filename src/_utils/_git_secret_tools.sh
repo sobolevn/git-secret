@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # Folders:
-_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}
+_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}   
+# if SECRETS_DIR env var is set, use that instead of .gitsecret
+# for full path to secrets dir, use _get_secrets_dir() from _git_secret_tools.sh
 _SECRETS_DIR_KEYS="${_SECRETS_DIR}/keys"
 _SECRETS_DIR_PATHS="${_SECRETS_DIR}/paths"
 
@@ -368,7 +370,7 @@ function _is_tracked_in_git {
 
 function _get_git_root_path {
   # We need this function to get the location of the `.git` folder,
-  # since `.gitsecret` must be on the same level.
+  # since `.gitsecret` (or value set by SECRETS_DIR env var) must be on the same level.
 
   local result
   result=$(git rev-parse --show-toplevel)
