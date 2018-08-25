@@ -7,6 +7,8 @@ set -e
 # Running all the bats-tests in a dir with spaces:
 cd "${SECRET_PROJECT_ROOT}"; rm -rf 'tempdir with spaces'; mkdir 'tempdir with spaces'; cd 'tempdir with spaces';
 
+export SECRETS_DIR=.gitsecret
+
 # bats expects diagnostic lines to be sent to fd 3, matching reges '^ #' (IE, like: `echo '# message here' >&3`)
 # bats ... 3>&1 shows diagnostic output when errors occur.
-SECRETS_DIR=.gitsecret-testdir bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
+bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
