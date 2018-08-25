@@ -14,6 +14,12 @@ function teardown {
 }
 
 
+@test "secrets dir env var set as expected" {
+  _TEST_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}   
+  [ "${_TEST_SECRETS_DIR}" = "${_SECRETS_DIR}" ]
+}
+
+
 @test "run 'init' without '.git'" {
   remove_git_repository
 
