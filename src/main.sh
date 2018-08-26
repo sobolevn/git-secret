@@ -10,7 +10,7 @@ function _check_setup {
     _abort "not in dir with git repo. Use 'git init' or 'git clone', then in repo use 'git secret init'"
   fi
 
-  # Checking if the '.gitsecret' is not ignored:
+  # Checking if the '.gitsecret' dir (or as set by SECRETS_DIR) is not ignored:
   _secrets_dir_is_not_ignored
 
   # Checking gpg setup:

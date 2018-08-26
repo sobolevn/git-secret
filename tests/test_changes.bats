@@ -96,8 +96,13 @@ function teardown {
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -eq 0 ]
 
+  #echo "# output is '$output'" >&3
+  #echo "# " >&3
+
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  #echo "# fullpath is $fullpath" >&3
+
   [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"+$new_content"* ]]
 
