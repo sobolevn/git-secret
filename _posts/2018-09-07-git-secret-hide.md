@@ -1,0 +1,47 @@
+---
+layout: post
+title:  'git-secret-hide'
+date:   2018-09-07 15:33:03 -0400
+permalink: git-secret-hide
+categories: command
+---
+git-secret-hide - encrypts all added files with the inner keyring.
+==================================================================
+
+## SYNOPSIS
+
+    git secret hide [-c] [-P] [-v] [-d] [-m]
+
+
+## DESCRIPTION
+`git-secret-hide` creates an encrypted version (typically called filename.txt.secret) 
+for each file added by `git-secret-add` command. 
+Now anyone enabled via 'git secret tell' can can decrypt these files. Under the hood,
+`git-secret` uses the keyring in .gitsecret/keys and their secret key to decrypt the files.
+
+It is possible to modify the names of the encrypted files by setting `SECRETS_EXTENSION` variable.
+
+(See [git-secret(7)](http://git-secret.io/git-secret) for information about renaming the .gitsecret
+folder using the SECRETS_DIR environment variable.
+
+
+## OPTIONS
+
+    -v  - verbose, shows extra information.
+    -c  - deletes encrypted files before creating new ones.
+    -P  - preserve permissions of unencrypted file in encrypted file.
+    -d  - deletes unencrypted files after encryption.
+    -m  - encrypt files only when modified.
+    -h  - shows help.
+
+
+## MANUAL
+
+Run `man git-secret-hide` to see this note.
+
+
+## SEE ALSO
+
+[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-tell(1)](http://git-secret.io/git-secret-tell), 
+[git-secret-add(1)](http://git-secret.io/git-secret-add), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal),  
+[git-secret-cat(1)](http://git-secret.io/git-secret-cat)
