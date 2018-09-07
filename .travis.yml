@@ -26,7 +26,7 @@ matrix:
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-ubuntu-latest"
+      env: KITCHEN_REGEXP="gnupg2-ubuntu-latest"
       services: docker
       sudo: required
       language: ruby
