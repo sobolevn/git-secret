@@ -8,7 +8,7 @@ if [[ "$GITSECRET_DIST" == "rpm" ]]; then
 fi
 
 # if not null GITSECRET_DIST
-if [[ ! -z "$GITSECRET_DIST" ]]; then
+if [[ -n "$GITSECRET_DIST" ]]; then
   # When making a non-container build, this step will generate
   # proper manifest files:
   make "deploy-$GITSECRET_DIST";
