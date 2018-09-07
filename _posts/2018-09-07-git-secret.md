@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret'
+date:   2018-09-07 15:33:03 -0400
+permalink: git-secret
+categories: usage
+---
 ## Usage: Setting up git-secret in a repository
 
 These steps cover the basic process of using `git-secret`:

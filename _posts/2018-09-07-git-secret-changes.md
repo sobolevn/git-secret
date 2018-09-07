@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-changes'
+date:   2018-09-07 15:33:03 -0400
+permalink: git-secret-changes
+categories: command
+---
 git-secret-changes - view diff of the hidden files.
 ===================================================
 

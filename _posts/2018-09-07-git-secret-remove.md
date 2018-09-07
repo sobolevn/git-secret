@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-remove'
+date:   2018-09-07 15:33:03 -0400
+permalink: git-secret-remove
+categories: command
+---
 git-secret-remove - removes files from index.
 =============================================
 

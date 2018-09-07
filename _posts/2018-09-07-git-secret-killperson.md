@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-killperson'
+date:   2018-09-07 15:33:03 -0400
+permalink: git-secret-killperson
+categories: command
+---
 git-secret-killperson - deletes key identified by an email from the inner keyring.
 ==================================================================================
 
