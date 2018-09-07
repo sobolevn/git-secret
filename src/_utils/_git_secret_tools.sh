@@ -454,13 +454,13 @@ function _find_and_clean_formatted {
   local verbose=${2:-""} # can be empty or should be equal to "v"
   local message=${3:-"cleaning:"} # can be any string
 
-  if [[ ! -z "$verbose" ]]; then
+  if [[ -n "$verbose" ]]; then
     echo && echo "$message"
   fi
 
   _find_and_clean "$pattern" "$verbose"
 
-  if [[ ! -z "$verbose" ]]; then
+  if [[ -n "$verbose" ]]; then
     echo
   fi
 }
@@ -623,7 +623,7 @@ function _decrypt {
     args+=( "--yes" )
   fi
 
-  if [[ ! -z "$homedir" ]]; then
+  if [[ -n "$homedir" ]]; then
     args+=( "--homedir" "$homedir" )
   fi
 
@@ -632,7 +632,7 @@ function _decrypt {
   fi
 
   local exit_code
-  if [[ ! -z "$passphrase" ]]; then
+  if [[ -n "$passphrase" ]]; then
     echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --quiet --batch --yes --no-tty --passphrase-fd 0 \
       "$encrypted_filename"
     exit_code=$?
