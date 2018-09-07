@@ -32,7 +32,7 @@ matrix:
       language: ruby
       rvm: 2.4
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-ubuntu-rolling"
+      env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"
       services: docker
       sudo: required
       language: ruby
