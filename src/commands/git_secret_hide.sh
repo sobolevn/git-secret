@@ -34,7 +34,7 @@ function _optional_delete {
     path_mappings=$(_get_secrets_dir_paths_mapping)
 
     # We use custom formatting here:
-    if [[ ! -z "$verbose" ]]; then
+    if [[ -n "$verbose" ]]; then
       echo && echo 'removing unencrypted files:'
     fi
 
@@ -45,7 +45,7 @@ function _optional_delete {
       _find_and_clean "*$filename" "$verbose"
     done < "$path_mappings"
 
-    if [[ ! -z "$verbose" ]]; then
+    if [[ -n "$verbose" ]]; then
       echo
     fi
   fi
