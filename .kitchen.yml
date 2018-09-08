@@ -130,8 +130,6 @@ suites:
     verifier:
       patterns:
         - roles/git-secret/.ci/integration/gnupg2/serverspec/*_spec.rb
-    excludes:
-      - ubuntu-latest
   - name: gnupg-git
     verifier:
       patterns:
