@@ -21,12 +21,17 @@ function __sha256_freebsd {
   # this is in a different location than osx
   /usr/local/bin/shasum -a256 "$1"
 }
+
 function __get_octal_perms_freebsd {
   local filename
   filename=$1
   local perms
-  perms=$(stat -f '%p' "$filename" | cut -b3-6)
-  # stat -f '%p' FILENAME on freebsd gives string like 100644. chmod on freebsd expects 0644.
-  # so we use 'cut' to strip of last four bytes of string.
+  perms=$(stat -f "%04OLp" "$filename")
+  # perms is a string like '0644'. 
+  # In the "%04OLp':
+  #   the '04' means 4 digits, 0 padded.  So we get 0644, not 644.
+  #   the 'O' means Octal.
+  #   the 'Lp' means 'low subfield of file type and permissions (st_mode).'
+  #     (without 'L' you get 6 digits like '100644'.)
   echo "$perms"
 }
