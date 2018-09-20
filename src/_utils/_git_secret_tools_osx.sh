@@ -23,5 +23,6 @@ function __get_octal_perms_osx {
   filename=$1
   local perms
   perms=$(stat -f '%p' "$filename")
+  # a string like '100644'
   echo "$perms"
 }

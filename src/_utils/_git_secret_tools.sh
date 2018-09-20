@@ -120,6 +120,10 @@ function _os_based {
       "$1_linux" "${@:2}"
     ;;
 
+    FreeBSD)
+      "$1_freebsd" "${@:2}"
+    ;;
+
     # TODO: add MS Windows support.
     # CYGWIN*|MINGW32*|MSYS*)
     #   $1_ms ${@:2}
