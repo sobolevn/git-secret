@@ -36,7 +36,7 @@ See the [installation section](http://git-secret.io/installation) for the detail
 - `gawk` since `4.0.2`
 - `git` since `1.8.3.1`
 - `gpg` since `gnupg 1.4` to `gnupg 2.X`
-- `sha256sum` since `8.21`
+- `sha256sum` since `8.21` (on freebsd and OSX `shasum` is used instead)
 
 
 ## Contributing
