@@ -39,7 +39,15 @@ function reveal {
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
   local counter=0
-  while read -r line; do
+  local to_show=( "$@" )
+
+  if [ ${#to_show[@]} -eq 0 ]; then
+    while read -r record; do
+      to_show+=("$record")  # add record to array
+    done < "$path_mappings"
+  fi
+
+  for line in "${to_show[@]}"; do
     local filename
     local path
     filename=$(_get_record_filename "$line")
