@@ -84,12 +84,15 @@ function hide {
   local delete=0
   local fsdb_update_hash=0 # add checksum hashes to fsdb
   local verbose=''
+  local force_continue=0
 
   OPTIND=1
 
-  while getopts 'cPdmvh' opt; do
+  while getopts 'cFPdmvh' opt; do
     case "$opt" in
       c) clean=1;;
+
+      F) force_continue=1;;
 
       P) preserve=1;;
 
@@ -161,7 +164,11 @@ function hide {
         $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
       local exit_code=$?
       if [[ "$exit_code" -ne 0 ]]; then
-        _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
+        if [[ $force_continue ]]; then
+          _warn "problem encrypting file with gpg, continuing anyway: exit code $exit_code: $filename"
+        else
+          _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
+        fi
       fi
 
       if [[ "$preserve" == 1 ]]; then

@@ -5,15 +5,18 @@ function reveal {
   local homedir=''
   local passphrase=''
   local force=0
+  local force_continue=0
   local preserve=0
 
   OPTIND=1
 
-  while getopts 'hfPd:p:' opt; do
+  while getopts 'hfFPd:p:' opt; do
     case "$opt" in
       h) _show_manual_for 'reveal';;
 
       f) force=1;;
+
+      F) force_continue=1;;
 
       P) preserve=1;;
 
@@ -46,7 +49,11 @@ function reveal {
     _decrypt "$path" "1" "$force" "$homedir" "$passphrase"
 
     if [[ ! -f "$path" ]]; then
-      _abort "cannot find decrypted version of file: $filename"
+      if [[ $force_continue ]]; then
+        _warn "cannot find decrypted version of file, continuing anyway: $filename"
+      else
+        _abort "cannot find decrypted version of file: $filename"
+      fi
     fi
 
     if [[ "$preserve" == 1 ]]; then
