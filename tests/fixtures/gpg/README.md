@@ -13,7 +13,10 @@
 
 * user4 was created with `gpg --gen-key`, using the name 'user4'
   and the email address user4@gitsecret.io. As the tests expect,
-  it has the passphrase 'user4pass'.  It is also set to expire on 2018-09-23.
+  it has the passphrase 'user4pass'.  
+
+  It is also set to expire on 2018-09-23. To make keys expire, I used the 
+  `gpg --edit-key user@email` command's `expiry` function.
 
   The public and private key for user4 were exported with
     `gpg --export --armor user4 > tests/fixtures/gpg/user4/public.key`

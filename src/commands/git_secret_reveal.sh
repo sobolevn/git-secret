@@ -41,9 +41,9 @@ function reveal {
     #echo "# EXPIRY: user $user, expiry '$expiry'" >&3
     if [[ -n "$expiry" ]]; then
       local expiry_date
-      expiry_date=$(echo "$expiry" | gawk '{ print strftime("%Y-%m-%d %H:%M:%S", $1); }')
-      #echo "# expiry date='$expiry_date'" >&3
-      _warn "warning: key for '$user' expires on '$expiry_date'"
+      expiry_date=$(echo "$expiry" | gawk '{ print strftime("%Y-%m-%d %H:%M:%S", $1); }')   
+      # we could use 'date' here but we already depend on gawk
+      _warn "key for '$user' expires on '$expiry_date'"
     fi
   done
   
