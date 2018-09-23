@@ -33,9 +33,10 @@ GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warnin
 
 # Personal data:
 
-# user3 created with '--quick-key-generate' and has only an email, no username.
-TEST_DEFAULT_USER="user3"
+TEST_DEFAULT_USER="user1"
 TEST_SECOND_USER="user2"
+TEST_NONAME_USER="user3"
+# TEST_NONAME_USER (user3) created with '--quick-key-generate' and has only an email, no username.
 TEST_EXPIRED_USER="user4"
 TEST_ATTACKER_USER="attacker1"
 
