@@ -596,8 +596,11 @@ function _get_user_key_expiry {
   # This function returns the user's key's expiry, as an epoch. 
   # It will return the empty string if there is no expiry date for the user's key
   local username="$1"
+  local line
+  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" ) #| grep ^sub:)
+  echo "# line: $line" >&3
   local expiry_epoch
-  expiry_epoch=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^sub: | cut -d: -f7)
+  expiry_epoch=$(echo "$line" | cut -d: -f7)
   echo "$expiry_epoch"
 }
 
