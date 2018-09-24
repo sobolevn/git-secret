@@ -12,9 +12,7 @@ function update_linux() {
 function install_ansible {
   bash .ci/ansible-setup.sh
   bundle install
-  # pyOpen, ndg-* and pyasn1 are for 'InsecurePlatformWarning' error
-  ~/.avm/v2.3/venv/bin/pip install netaddr ansible-lint   pyOpenSSL ndg-httpsclient pyasn1
-  ~/.avm/v2.5/venv/bin/pip install netaddr ansible-lint   pyOpenSSL ndg-httpsclient pyasn1
+  ~/.avm/v2.4/venv/bin/pip install netaddr ansible-lint
 }
 
 
@@ -26,6 +24,7 @@ if [[ "$GITSECRET_DIST" == "brew" ]]; then
     ln -s /usr/local/bin/gpg1 /usr/local/bin/gpg
   fi
   brew install gawk
+  brew install sha256sum
 fi
 
 # Linux:
