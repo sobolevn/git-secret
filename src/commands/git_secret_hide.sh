@@ -122,6 +122,8 @@ function hide {
 
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
+  local num_mappings
+  num_mappings=$(gawk 'END{print NR}' "$path_mappings")
 
   # make sure all the unencrypted files needed are present
   local to_hide=()
@@ -198,5 +200,5 @@ function hide {
   # after we have already hidden them.
   _optional_delete "$delete" "$verbose"
 
-  echo "done. $counter files are hidden."
+  echo "done. $counter of $num_mappings files are hidden."
 }
