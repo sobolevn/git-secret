@@ -435,6 +435,13 @@ function _abort {
   exit 1
 }
 
+# _warn() sends warnings to stdout so user sees them
+function _warn {
+  #local message="$1" # required
+
+  #echo "git-secret: warning: $message"
+}
+
 function _find_and_clean {
   # required:
   local pattern="$1" # can be any string pattern
