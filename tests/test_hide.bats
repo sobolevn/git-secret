@@ -79,6 +79,10 @@ function teardown {
   # cd into the subdir
   cd "$root_dir"
 
+  pwd
+
+  git secret list
+
   # Now it should hide 2 files:
   run git secret hide
   [ "$status" -eq 0 ]
@@ -204,6 +208,17 @@ function teardown {
   # It should be verbose:
   [[ "$output" == *"removing unencrypted files"* ]]
   [[ "$output" == *"$FILE_TO_HIDE"* ]]
+}
+
+@test "run 'hide' with '-f'" {
+  run git secret hide -f "$FILE_TO_HIDE"
+  [ "$status" -eq 0 ]
+
+  ls && pwd
+
+  # New files should be created:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [ -f "$encrypted_file" ]
 }
 
 
