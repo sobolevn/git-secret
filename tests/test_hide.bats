@@ -66,6 +66,11 @@ function teardown {
 }
 
 @test "run 'hide' from inside subdirectory" {
+
+  if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
+    skip "this test is skipped while 'git commmit'"
+  fi
+
   # Preparations:
   local root_dir='test_sub_dir'
   mkdir -p "$root_dir"
@@ -230,6 +235,42 @@ function teardown {
   [[ "$output" == *"removing unencrypted files"* ]]
   [[ "$output" == *"$FILE_TO_HIDE"* ]]
   [[ "$output" == *"$second_file"* ]]
+}
+
+
+@test "run 'hide' with '-f'" {
+  run git secret hide -f "$FILE_TO_HIDE"
+  [ "$status" -eq 0 ]
+
+  ls && pwd
+
+  # New files should be created:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [ -f "$encrypted_file" ]
+}
+
+@test "run 'hide' with '-f' multiple files" {
+   # Preparations:
+  local second_file="$TEST_SECOND_FILENAME"
+  local second_content="some content"
+  set_state_secret_add "$second_file" "$second_content"
+  
+  # Now it should hide 2 files:
+  run git secret hide -f "$FILE_TO_HIDE" -f "$second_file"
+  [ "$status" -eq 0 ]
+  [ "$output" = "done. all 2 files are hidden." ]
+
+  ls && pwd
+
+  # Cleaning up:
+  rm "$second_file"
+
+}
+
+
+@test "run 'hide' with '-f' invalid file" {
+  run git secret hide -f "invalid file"
+  [ "$status" -ne 0 ]
 }
 
 
