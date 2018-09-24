@@ -151,7 +151,9 @@ function hide {
 
     # Checking that file is valid:
     if [[ ! -f "$input_path" ]]; then
-      _abort "file not found: $input_path"
+      if [[ ! $force_continue ]]; then
+        _abort "file not found: $input_path"
+      fi
     fi
 
     file_hash=$(_get_file_hash "$input_path")
