@@ -57,7 +57,7 @@ function teardown {
   run git secret reveal -P -d "$TEST_GPG_HOMEDIR" -p "$password" -F
 
   [ "$status" -ne 0 ]
-  [ -f "$FILE_TO_HIDE" ]
+  #[ -f "$FILE_TO_HIDE" ]
 }
 
 
