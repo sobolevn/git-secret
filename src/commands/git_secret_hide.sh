@@ -84,10 +84,11 @@ function hide {
   local delete=0
   local fsdb_update_hash=0 # add checksum hashes to fsdb
   local verbose=''
+  local files=()
 
   OPTIND=1
 
-  while getopts 'cPdmvh' opt; do
+  while getopts 'cPdmf:vh' opt; do
     case "$opt" in
       c) clean=1;;
 
@@ -96,6 +97,8 @@ function hide {
       d) delete=1;;
 
       m) fsdb_update_hash=1;;
+
+      f) files+=("$OPTARG");;
 
       v) verbose='v';;
 
@@ -120,11 +123,33 @@ function hide {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
+  # Whether the file specified with "-f" was found
+  local file_found=0
+
   # make sure all the unencrypted files needed are present
   local to_hide=()
+  local mappings=()
+  # turn the mappings file into an array
   while read -r record; do
-    to_hide+=("$record")  # add record to array
+    mappings+=("$record")  # add record to array
   done < "$path_mappings"
+
+  if [ -z "$files" ]; then
+    # -f was not used. hide all files.
+    for mapping in "${mappings[@]}"; do
+      to_hide+=("$mapping")
+    done
+  else
+    # -f was used
+    for file in "${files[@]}"; do
+      # check that the file provided with -f is in the mappings
+      if [[ " ${mappings[@]} " =~ " ${file} " ]]; then
+        to_hide+=("$file")
+      else
+        _abort "file $file not found in mappings. have you added it with 'git secret add'?"
+      fi
+    done
+  fi
 
   local counter=0
   for record in "${to_hide[@]}"; do
