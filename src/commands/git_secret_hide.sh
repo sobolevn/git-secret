@@ -167,11 +167,13 @@ function hide {
           $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
         local exit_code=$?
         if [[ "$exit_code" -ne 0 ]]; then
-          if [[ $force_continue ]]; then
-            _warn "problem encrypting file with gpg, continuing anyway: exit code $exit_code: $filename"
-          else
-            _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
-          fi
+          # if gpg can't encrypt a file we asked it to, that's always an error
+          _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
+        fi
+        if [[ ! -f "$output_path" ]]; then
+          # this catches case where gpg doesn't complain in exit_code, but file is not encrypted
+          # which is always an error.
+          _abort "problem encrypting file with gpg: $filename"
         fi
   
         if [[ "$preserve" == 1 ]]; then
