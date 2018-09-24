@@ -30,22 +30,22 @@ function teardown {
   unset_current_state
 }
 
-@test "run 'reveal' with missing input file and -F" {
+#@test "run 'reveal' with missing input file and -F" {
+#  rm "$FILE_TO_HIDE"
+#
+#  local password=$(test_user_password "$TEST_DEFAULT_USER")
+#  run git secret reveal -F
+#
+#  [ "$status" -eq 0 ]
+#  #[ -f "$FILE_TO_HIDE" ]
+#}
+
+
+@test "run 'reveal -F' with missing input file" {
   rm "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret reveal -F
-
-  [ "$status" -eq 0 ]
-  [ -f "$FILE_TO_HIDE" ]
-}
-
-
-@test "run 'reveal' missing input file" {
-  rm "$FILE_TO_HIDE"
-
-  local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret reveal -F
+  run git secret reveal -P -d "$TEST_GPG_HOMEDIR" -p "$password" -F
 
   [ "$status" -ne 0 ]
   [ -f "$FILE_TO_HIDE" ]
