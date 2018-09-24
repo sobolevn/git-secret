@@ -154,7 +154,9 @@ function teardown {
   # compare
   [ "$status" -eq 0 ]
   [[ "${#lines[@]}" -eq 1 ]]
-  [ "$output" = "done. 1 files are hidden." ]
+  
+  # output says 0 files are hidden because checksum didn't change and we didn't need to hide it again.
+  [ "$output" = "done. 0 files are hidden." ]
   # no changes should occur to path_mappings files
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
