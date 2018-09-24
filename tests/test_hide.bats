@@ -2,7 +2,7 @@
 
 load _test_base
 
-FILE_TO_HIDE="file_to_hide"
+FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
 FILE_CONTENTS="hidden content юникод"
 
 
@@ -32,15 +32,85 @@ function teardown {
   [ "$status" -eq 0 ]
   [ "$output" = "done. all 1 files are hidden." ]
 
-  # New files should be crated:
+  # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
+}
+
+@test "run 'hide' with '-P'" {
+
+  # attempt to alter permissions on input file
+  chmod o-rwx "$FILE_TO_HIDE"
+
+  run git secret hide -P
+
+  # Command must execute normally:
+  [ "$status" -eq 0 ]
+  [ "$output" = "done. all 1 files are hidden." ]
+
+  # New files should be created:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [ -f "$encrypted_file" ]
+
+  # permissions should match. We don't have access to SECRETS_OCTAL_PERMS_COMMAND here
+  local secret_perm
+  local file_perm   
+  secret_perm=$(ls -l "$encrypted_file" | cut -d' ' -f1)    
+  file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
+
+  # text prefixed with '# ' and sent to file descriptor 3 is 'diagnostic' (debug) output for devs
+  #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3
+
+  [ "$secret_perm" = "$file_perm" ]
+
+}
+
+@test "run 'hide' from inside subdirectory" {
+
+  if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
+    skip "this test is skipped while 'git commmit'"
+  fi
+
+  # Preparations:
+  local root_dir='test_sub_dir'
+  mkdir -p "$root_dir"
+  local second_file="$root_dir/second_file.txt"
+  local second_content="some content"
+  set_state_secret_add "$second_file" "$second_content"
+
+  # Verify that the second file is there:
+  [ -f "$second_file" ]
+
+  # cd into the subdir
+  cd "$root_dir"
+
+  # Now it should hide 2 files:
+  run git secret hide
+  [ "$status" -eq 0 ]
+
+  # cd back
+  cd ".."
+}
+
+@test "run 'hide' with missing file" {
+  # Preparations:
+  local second_file="$TEST_SECOND_FILENAME"
+  local second_content="some content"
+  set_state_secret_add "$second_file" "$second_content"
+
+  # now remove the second file to cause failure
+  rm -f "$second_file"
+
+  # Now it should return an error because one file can't be found
+  run git secret hide
+  [ "$status" -ne 0 ]
+  [ "$output" != "done. all 2 files are hidden." ]
 }
 
 
 @test "run 'hide' with multiple files" {
   # Preparations:
-  local second_file="second_file.txt"
+  local second_file="$TEST_SECOND_FILENAME"
   local second_content="some content"
   set_state_secret_add "$second_file" "$second_content"
 
@@ -64,7 +134,7 @@ function teardown {
   [ "${lines[0]}" = "done. all 1 files are hidden." ]
   [ "${lines[1]}" = "cleaning up..." ]
 
-  # New files should be crated:
+  # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
 }
@@ -93,7 +163,7 @@ function teardown {
   # no changes should occur to path_mappings files
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
-  # New files should be crated:
+  # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
 }
@@ -146,7 +216,7 @@ function teardown {
   # Preparations:
   local root_dir='test_sub_dir'
   mkdir -p "$root_dir"
-  local second_file="$root_dir/second_file.txt"
+  local second_file="$root_dir/$TEST_SECOND_FILENAME"
   local second_content="some content"
   set_state_secret_add "$second_file" "$second_content"
 
@@ -165,6 +235,42 @@ function teardown {
   [[ "$output" == *"removing unencrypted files"* ]]
   [[ "$output" == *"$FILE_TO_HIDE"* ]]
   [[ "$output" == *"$second_file"* ]]
+}
+
+
+@test "run 'hide' with '-f'" {
+  run git secret hide -f "$FILE_TO_HIDE"
+  [ "$status" -eq 0 ]
+
+  ls && pwd
+
+  # New files should be created:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [ -f "$encrypted_file" ]
+}
+
+@test "run 'hide' with '-f' multiple files" {
+   # Preparations:
+  local second_file="$TEST_SECOND_FILENAME"
+  local second_content="some content"
+  set_state_secret_add "$second_file" "$second_content"
+  
+  # Now it should hide 2 files:
+  run git secret hide -f "$FILE_TO_HIDE" -f "$second_file"
+  [ "$status" -eq 0 ]
+  [ "$output" = "done. all 2 files are hidden." ]
+
+  ls && pwd
+
+  # Cleaning up:
+  rm "$second_file"
+
+}
+
+
+@test "run 'hide' with '-f' invalid file" {
+  run git secret hide -f "invalid file"
+  [ "$status" -ne 0 ]
 }
 
 

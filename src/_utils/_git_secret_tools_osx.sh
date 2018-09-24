@@ -13,3 +13,17 @@ function __temp_file_osx {
   filename=$(mktemp -t _gitsecrets_XXX )
   echo "$filename";
 }
+
+
+function __sha256_osx {
+  /usr/bin/shasum -a256 "$1"
+}
+
+function __get_octal_perms_osx {
+  local filename
+  filename=$1
+  local perms
+  perms=$(stat -f "%04OLp" "$filename")
+  # see _git_secret_tools_freebsd.sh for more about stat's format string
+  echo "$perms"
+}

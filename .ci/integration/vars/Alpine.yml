@@ -13,3 +13,6 @@ test_dependencies:
 build_tools:
   - make
   - tar
+  - autoconf
+  - automake
+  - gettext

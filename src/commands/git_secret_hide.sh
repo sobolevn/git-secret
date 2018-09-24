@@ -20,7 +20,7 @@ function _optional_clean {
   local verbose=${2:-""}
 
   if [[ $clean -eq 1 ]]; then
-    _find_and_clean_formated "*$SECRETS_EXTENSION" "$verbose"
+    _find_and_clean_formatted "*$SECRETS_EXTENSION" "$verbose"
   fi
 }
 
@@ -33,19 +33,19 @@ function _optional_delete {
     local path_mappings
     path_mappings=$(_get_secrets_dir_paths_mapping)
 
-    # We use custom formating here:
-    if [[ ! -z "$verbose" ]]; then
+    # We use custom formatting here:
+    if [[ -n "$verbose" ]]; then
       echo && echo 'removing unencrypted files:'
     fi
 
     while read -r line; do
-      # So the formating would not be repeated several times here:
+      # So the formatting would not be repeated several times here:
       local filename
       filename=$(_get_record_filename "$line")
       _find_and_clean "*$filename" "$verbose"
     done < "$path_mappings"
 
-    if [[ ! -z "$verbose" ]]; then
+    if [[ -n "$verbose" ]]; then
       echo
     fi
   fi
@@ -74,25 +74,31 @@ function _optional_fsdb_update_hash {
 
   fsdb=$(_get_secrets_dir_paths_mapping)
 
-  _gawk_inplace -v key="$key" -v hash="$hash" "'$AWK_FSDB_UPDATE_HASH'" "$fsdb"
+  _gawk_inplace -v key="'$key'" -v hash="$hash" "'$AWK_FSDB_UPDATE_HASH'" "$fsdb"
 }
 
 
 function hide {
   local clean=0
+  local preserve=0
   local delete=0
   local fsdb_update_hash=0 # add checksum hashes to fsdb
   local verbose=''
+  local files=()
 
   OPTIND=1
 
-  while getopts 'cdmvh' opt; do
+  while getopts 'cPdmf:vh' opt; do
     case "$opt" in
       c) clean=1;;
+
+      P) preserve=1;;
 
       d) delete=1;;
 
       m) fsdb_update_hash=1;;
+
+      f) files+=("$OPTARG");;
 
       v) verbose='v';;
 
@@ -117,8 +123,36 @@ function hide {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
-  local counter=0
+  # Whether the file specified with "-f" was found
+  local file_found=0
+
+  # make sure all the unencrypted files needed are present
+  local to_hide=()
+  local mappings=()
+  # turn the mappings file into an array
   while read -r record; do
+    mappings+=("$record")  # add record to array
+  done < "$path_mappings"
+
+  if [ -z "$files" ]; then
+    # -f was not used. hide all files.
+    for mapping in "${mappings[@]}"; do
+      to_hide+=("$mapping")
+    done
+  else
+    # -f was used
+    for file in "${files[@]}"; do
+      # check that the file provided with -f is in the mappings
+      if [[ " ${mappings[@]} " =~ " ${file} " ]]; then
+        to_hide+=("$file")
+      else
+        _abort "file $file not found in mappings. have you added it with 'git secret add'?"
+      fi
+    done
+  fi
+
+  local counter=0
+  for record in "${to_hide[@]}"; do
     local filename
     local fsdb_file_hash
     local encrypted_filename
@@ -127,23 +161,41 @@ function hide {
     encrypted_filename=$(_get_encrypted_filename "$filename")
 
     local recipients
-    recipients=$(_get_recepients)
+    recipients=$(_get_recipients)
 
-    local gpg_local
-    gpg_local=$(_get_gpg_local)
+    local secrets_dir_keys
+    secrets_dir_keys=$(_get_secrets_dir_keys)
 
     local input_path
     local output_path
     input_path=$(_append_root_path "$filename")
     output_path=$(_append_root_path "$encrypted_filename")
 
+    # Checking that file is valid:
+    if [[ ! -f "$input_path" ]]; then
+      _abort "file not found: $input_path"
+    fi
+
     file_hash=$(_get_file_hash "$input_path")
 
     # encrypt file only if required
     if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
-      # shellcheck disable=2086
-      $gpg_local --use-agent --yes --trust-model=always --encrypt \
+      # we depend on $recipients being split on whitespace
+      # shellcheck disable=SC2086
+      $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
         $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
+      local exit_code=$?
+      if [[ "$exit_code" -ne 0 ]]; then
+        _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
+      fi
+
+      if [[ "$preserve" == 1 ]]; then
+        local perms
+        perms=$($SECRETS_OCTAL_PERMS_COMMAND "$input_path")
+        chmod "$perms" "$output_path"
+      fi
+
+
       # If -m option was provided, it will update unencrypted file hash
       local key="$filename"
       local hash="$file_hash"
@@ -152,7 +204,7 @@ function hide {
         _optional_fsdb_update_hash "$key" "$hash"
     fi
     counter=$((counter+1))
-  done < "$path_mappings"
+  done
 
   # If -d option was provided, it would delete the source files
   # after we have already hidden them.

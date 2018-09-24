@@ -35,14 +35,15 @@ uninstall:
 
 .PHONY: install-test
 install-test:
-	@if [ ! -d "vendor/bats" ]; then \
-	git clone https://github.com/sstephenson/bats.git vendor/bats; fi
+	@if [ ! -d "vendor/bats-core" ]; then \
+	git clone --depth 1 -b v1.0.2 https://github.com/bats-core/bats-core.git vendor/bats-core; \
+	fi
 
 .PHONY: test
 test: install-test clean build
 	@chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PWD}:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
 	"./utils/tests.sh"
 
 #
@@ -105,7 +106,7 @@ build-apk: clean build install-fpm
 test-apk-ci: install-test build-apk
 	@chmod +x "./utils/apk/apk-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/apk/apk-ci.sh"
 
 .PHONY: deploy-apk
@@ -127,7 +128,7 @@ build-deb: clean build install-fpm
 test-deb-ci: install-test build-deb
 	@chmod +x "./utils/deb/deb-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/deb/deb-ci.sh"
 
 .PHONY: deploy-deb
@@ -149,7 +150,7 @@ build-rpm: clean build install-fpm
 test-rpm-ci: install-test build-rpm
 	@chmod +x "./utils/rpm/rpm-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/rpm/rpm-ci.sh"
 
 .PHONY: deploy-rpm
@@ -164,5 +165,5 @@ deploy-rpm: build-rpm
 test-make-ci: clean install-test
 	@chmod +x "./utils/make/make-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats/bin:${PATH}"; \
+	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/make/make-ci.sh"

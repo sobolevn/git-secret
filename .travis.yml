@@ -2,6 +2,12 @@ matrix:
   fast_finish: true
   include:
     - os: linux
+      env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.4
+    - os: linux
       env: KITCHEN_REGEXP="gnupg1-alpine-latest"
       services: docker
       sudo: required
@@ -78,11 +84,7 @@ matrix:
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.4
-#    - os: osx
-#      env: GITSECRET_DIST="brew"
-#      sudo: false
-#      language: generic
+      rvm: 2.4      
 
 before_script:
   - chmod +x ".ci/before_script.sh" && ".ci/before_script.sh"
@@ -95,17 +97,21 @@ before_deploy:
 
 deploy:
   - provider: bintray
+    skip_cleanup: true
     on:
-      branch: master
-      condition: "$GITSECRET_DIST == deb"
+      all_branches: true
+      tag: true
+      condition: "$TRAVIS_TAG =~ ^v.*$ && $GITSECRET_DIST == deb"
     file: "build/deb_descriptor.json"
     user: "sobolevn"
     key: "$BINTRAY_API_KEY"
     passphrase: "$BINTRAY_GPG_PASS"
   - provider: bintray
+    skip_cleanup: true
     on:
-      branch: master
-      condition: "$GITSECRET_DIST == rpm"
+      all_branches: true
+      tag: true
+      condition: "$TRAVIS_TAG =~ ^v.*$ && $GITSECRET_DIST == rpm"
     file: "build/rpm_descriptor.json"
     user: "sobolevn"
     key: "$BINTRAY_API_KEY"

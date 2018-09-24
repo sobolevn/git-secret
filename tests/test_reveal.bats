@@ -2,7 +2,7 @@
 
 load _test_base
 
-FILE_TO_HIDE="file_to_hide"
+FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
 FILE_CONTENTS="hidden content юникод"
 
 FINGERPRINT=""
@@ -54,6 +54,31 @@ function teardown {
   [ -f "$FILE_TO_HIDE" ]
 }
 
+
+@test "run 'reveal' with '-P'" {
+  rm "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+
+  local secret_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  chmod o-rwx "$secret_file"
+
+  run git secret reveal -P -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+
+  local secret_perm
+  local file_perm
+  secret_perm=$(ls -l "$FILE_TO_HIDE".secret | cut -d' ' -f1)
+  file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
+
+  # text prefixed with '# ' and sent to file descriptor 3 is 'diagnostic' (debug) output for devs
+  #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3    
+
+  [ "$secret_perm" = "$file_perm" ]
+
+  [ -f "$FILE_TO_HIDE" ]
+}
 
 @test "run 'reveal' with wrong password" {
   rm "$FILE_TO_HIDE"

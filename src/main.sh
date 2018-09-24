@@ -7,10 +7,10 @@ function _check_setup {
   local is_tree
   is_tree=$(_is_inside_git_tree)
   if [[ "$is_tree" -ne 0 ]]; then
-    _abort "repository is broken. try running 'git init' or 'git clone'."
+    _abort "not in dir with git repo. Use 'git init' or 'git clone', then in repo use 'git secret init'"
   fi
 
-  # Checking if the '.gitsecret' is not ignored:
+  # Checking if the '.gitsecret' dir (or as set by SECRETS_DIR) is not ignored:
   _secrets_dir_is_not_ignored
 
   # Checking gpg setup:
@@ -27,7 +27,7 @@ function _check_setup {
 
 
 function _incorrect_usage {
-  echo "$1"
+  echo "git-secret: abort: $1"
   usage
   exit "$2"
 }
