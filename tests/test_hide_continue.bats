@@ -28,36 +28,20 @@ function teardown {
 }
 
 @test "run 'hide -F' with missing input file" {
+  rm "$FILE_TO_HIDE2"
   run git secret hide -F
+  echo "# output of 'git secret hide -F' is: $output" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  [ "$output" = "done. all 2 files are hidden." ]
+  #[ "$output" = "done. all 1 files are hidden." ]
 
-  # New files should be created:
+  # this secret file should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
+
+  # secret file for missing file should not be created:
+  local encrypted_file2=$(_get_encrypted_filename "$FILE_TO_HIDE2")
+  [ ! -f "$encrypted_file2" ]
 }
-
-#@test "run 'reveal' with missing input file and -F" {
-#  rm "$FILE_TO_HIDE"
-#
-#  local password=$(test_user_password "$TEST_DEFAULT_USER")
-#  run git secret reveal -F
-#
-#  [ "$status" -eq 0 ]
-#  #[ -f "$FILE_TO_HIDE" ]
-#}
-
-
-@test "run 'reveal -F' with missing input file" {
-  rm "$FILE_TO_HIDE"
-
-  local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret reveal -P -d "$TEST_GPG_HOMEDIR" -p "$password" -F
-
-  [ "$status" -ne 0 ]
-  #[ -f "$FILE_TO_HIDE" ]
-}
-
 
