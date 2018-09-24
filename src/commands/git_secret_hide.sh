@@ -123,9 +123,6 @@ function hide {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
-  # Whether the file specified with "-f" was found
-  local file_found=0
-
   # make sure all the unencrypted files needed are present
   local to_hide=()
   local mappings=()
@@ -134,7 +131,7 @@ function hide {
     mappings+=("$record")  # add record to array
   done < "$path_mappings"
 
-  if [ -z "$files" ]; then
+  if [ -z "${files[0]}" ]; then
     # -f was not used. hide all files.
     for mapping in "${mappings[@]}"; do
       to_hide+=("$mapping")
@@ -143,7 +140,7 @@ function hide {
     # -f was used
     for file in "${files[@]}"; do
       # check that the file provided with -f is in the mappings
-      if [[ " ${mappings[@]} " =~ " ${file} " ]]; then
+      if [[ " ${mappings[@]} " =~  ${file}  ]]; then
         to_hide+=("$file")
       else
         _abort "file $file not found in mappings. have you added it with 'git secret add'?"
