@@ -34,7 +34,7 @@ function teardown {
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  #[ "$output" = "done. all 1 files are hidden." ]
+  #[ "$output" = "done. 1 files are hidden." ]
 
   # this secret file should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")

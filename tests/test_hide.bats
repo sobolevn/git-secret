@@ -30,7 +30,7 @@ function teardown {
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  [ "$output" = "done. all 1 files are hidden." ]
+  [ "$output" = "done. 1 files are hidden." ]
 
   # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
@@ -46,7 +46,7 @@ function teardown {
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  [ "$output" = "done. all 1 files are hidden." ]
+  [ "$output" = "done. 1 files are hidden." ]
 
   # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
@@ -99,7 +99,7 @@ function teardown {
   # Now it should return an error because one file can't be found
   run git secret hide
   [ "$status" -ne 0 ]
-  [ "$output" != "done. all 2 files are hidden." ]
+  [ "$output" != "done. 2 files are hidden." ]
 }
 
 
@@ -112,7 +112,7 @@ function teardown {
   # Now it should hide 2 files:
   run git secret hide
   [ "$status" -eq 0 ]
-  [ "$output" = "done. all 2 files are hidden." ]
+  [ "$output" = "done. 2 files are hidden." ]
 
   # Cleaning up:
   rm "$second_file"
@@ -126,7 +126,7 @@ function teardown {
   [ "$status" -eq 0 ]
   # git secret hide -m, use temp file so cleaning should take place
   [[ "${#lines[@]}" -eq 2 ]]
-  [ "${lines[0]}" = "done. all 1 files are hidden." ]
+  [ "${lines[0]}" = "done. 1 files are hidden." ]
   [ "${lines[1]}" = "cleaning up..." ]
 
   # New files should be created:
@@ -145,7 +145,7 @@ function teardown {
   [ "$status" -eq 0 ]
   # git secret hide -m, uses a temp file so cleaning should take place
   [[ "${#lines[@]}" -eq 2 ]]
-  [ "${lines[0]}" = "done. all 1 files are hidden." ]
+  [ "${lines[0]}" = "done. 1 files are hidden." ]
   [ "${lines[1]}" = "cleaning up..." ]
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
@@ -154,7 +154,7 @@ function teardown {
   # compare
   [ "$status" -eq 0 ]
   [[ "${#lines[@]}" -eq 1 ]]
-  [ "$output" = "done. all 1 files are hidden." ]
+  [ "$output" = "done. 1 files are hidden." ]
   # no changes should occur to path_mappings files
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
@@ -239,5 +239,5 @@ function teardown {
 
   run git secret hide
   [ "$status" -eq 0 ]
-  [ "$output" = "done. all 1 files are hidden." ]
+  [ "$output" = "done. 1 files are hidden." ]
 }
