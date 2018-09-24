@@ -140,7 +140,14 @@ function hide {
     # -f was used
     for file in "${files[@]}"; do
       # check that the file provided with -f is in the mappings
-      if [[ " ${mappings[@]} " =~  ${file}  ]]; then
+      local found=0
+      for mapping in "${mappings[@]}"; do
+        if [[ "$mapping" == "$file" ]] ; then
+          found=1
+        fi
+      done
+
+      if [ $found -eq 1 ]; then
         to_hide+=("$file")
       else
         _abort "file $file not found in mappings. have you added it with 'git secret add'?"
