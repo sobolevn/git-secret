@@ -151,48 +151,50 @@ function hide {
 
     # Checking that file is valid:
     if [[ ! -f "$input_path" ]]; then
-      if [[ ! $force_continue ]]; then
+      if [[ $force_continue -eq 0 ]]; then
         _abort "file not found: $input_path"
+      else
+        _warn "file not found, continuing anyway: $input_path"
       fi
-    fi
-
-    file_hash=$(_get_file_hash "$input_path")
-
-    # encrypt file only if required
-    if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
-      # we depend on $recipients being split on whitespace
-      # shellcheck disable=SC2086
-      $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
-        $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
-      local exit_code=$?
-      if [[ "$exit_code" -ne 0 ]]; then
-        if [[ $force_continue ]]; then
-          _warn "problem encrypting file with gpg, continuing anyway: exit code $exit_code: $filename"
-        else
-          _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
+    else
+      file_hash=$(_get_file_hash "$input_path")
+  
+      # encrypt file only if required
+      if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
+        # we depend on $recipients being split on whitespace
+        # shellcheck disable=SC2086
+        $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
+          $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
+        local exit_code=$?
+        if [[ "$exit_code" -ne 0 ]]; then
+          if [[ $force_continue ]]; then
+            _warn "problem encrypting file with gpg, continuing anyway: exit code $exit_code: $filename"
+          else
+            _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
+          fi
         fi
+  
+        if [[ "$preserve" == 1 ]]; then
+          local perms
+          perms=$($SECRETS_OCTAL_PERMS_COMMAND "$input_path")
+          chmod "$perms" "$output_path"
+        fi
+  
+  
+        # If -m option was provided, it will update unencrypted file hash
+        local key="$filename"
+        local hash="$file_hash"
+        # Update file hash if required in fsdb
+        [[ "$fsdb_update_hash" -gt 0 ]] && \
+          _optional_fsdb_update_hash "$key" "$hash"
+        counter=$((counter+1))
       fi
-
-      if [[ "$preserve" == 1 ]]; then
-        local perms
-        perms=$($SECRETS_OCTAL_PERMS_COMMAND "$input_path")
-        chmod "$perms" "$output_path"
-      fi
-
-
-      # If -m option was provided, it will update unencrypted file hash
-      local key="$filename"
-      local hash="$file_hash"
-      # Update file hash if required in fsdb
-      [[ "$fsdb_update_hash" -gt 0 ]] && \
-        _optional_fsdb_update_hash "$key" "$hash"
     fi
-    counter=$((counter+1))
   done
 
   # If -d option was provided, it would delete the source files
   # after we have already hidden them.
   _optional_delete "$delete" "$verbose"
 
-  echo "done. all $counter files are hidden."
+  echo "done. $counter files are hidden."
 }
