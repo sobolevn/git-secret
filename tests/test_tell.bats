@@ -96,7 +96,7 @@ function teardown {
 
 
 @test "run 'tell' with '-m'" {
-  email=$(test_user_email $TEST_DEFAULT_USER)
+  local email="$TEST_DEFAULT_USER"
 
   git_set_config_email "$email"
   run git secret tell -d "$TEST_GPG_HOMEDIR" -m

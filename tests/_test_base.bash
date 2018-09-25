@@ -54,11 +54,6 @@ function test_user_password {
 }
 
 
-function test_user_email {
-  # we require the use of email as username
-  echo "${1}"
-}
-
 
 # GPG:
 
@@ -107,7 +102,7 @@ function install_fixture_full_key {
   local fp
   local fingerprint
 
-  email=$(test_user_email "$1")
+  email="$1"
 
   \cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
@@ -128,14 +123,14 @@ function install_fixture_full_key {
 function uninstall_fixture_key {
   local email
 
-  email=$(test_user_email "$1")
+  email="$1"
   $GPGTEST --yes --delete-key "$email" > /dev/null 2>&1
 }
 
 
 function uninstall_fixture_full_key {
   local email
-  email=$(test_user_email "$1")
+  email="$1"
 
   local fingerprint="$2"
   if [[ -z "$fingerprint" ]]; then
@@ -204,7 +199,7 @@ function set_state_secret_init {
 function set_state_secret_tell {
   local email
 
-  email=$(test_user_email "$1")
+  email="$1"
   git secret tell -d "$TEST_GPG_HOMEDIR" "$email" > /dev/null 2>&1
 }
 

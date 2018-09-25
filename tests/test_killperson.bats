@@ -43,7 +43,7 @@ function teardown {
 
 
 @test "run 'killperson' with email" {
-  local email=$(test_user_email "$TEST_DEFAULT_USER")
+  local email="$TEST_DEFAULT_USER"
 
   run git secret killperson "$email"
   [ "$status" -eq 0 ]
@@ -62,8 +62,8 @@ function teardown {
   install_fixture_key "$TEST_SECOND_USER"
   set_state_secret_tell "$TEST_SECOND_USER"
 
-  local default_email=$(test_user_email "$TEST_DEFAULT_USER")
-  local second_email=$(test_user_email "$TEST_SECOND_USER")
+  local default_email="$TEST_DEFAULT_USER"
+  local second_email="$TEST_SECOND_USER"
 
   run git secret killperson "$default_email" "$second_email"
   [ "$status" -eq 0 ]

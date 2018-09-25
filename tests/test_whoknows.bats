@@ -61,8 +61,8 @@ function teardown {
 
 @test "run 'whoknows' without any users" {
   # Preparations, removing users:
-  local email1=$(test_user_email "$TEST_DEFAULT_USER")
-  local email2=$(test_user_email "$TEST_SECOND_USER")
+  local email1="$TEST_DEFAULT_USER"
+  local email2="$TEST_SECOND_USER"
   git secret killperson "$email1" "$email2"
 
   # Now whoknows should raise an error: there are no users.
