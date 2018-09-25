@@ -64,6 +64,8 @@ function tell {
     _abort "you must provide at least one email address."
   fi
 
+  _assert_keychain_contains_emails "$homedir" "${emails[@]}"
+
   local start_key_cnt
   start_key_cnt=$(get_gpg_key_count)
   for email in "${emails[@]}"; do
