@@ -17,6 +17,17 @@ function teardown {
   unset_current_state
 }
 
+@test "run 'tell' on substring of emails" {
+  run git secret tell -d "$TEST_GPG_HOMEDIR" user
+  # this should give an error because there is no user named 'user', 
+  # even though there are users with the substring 'user'.
+  # See issue https://github.com/sobolevn/git-secret/issues/176 
+  [ "$status" -eq 1 ]
+
+  run git secret whoknows 
+  [ "$status" -eq 1 ]   # should error when there are no users told
+  
+}
 
 @test "fail on no users" {
   run _user_required
