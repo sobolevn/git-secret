@@ -568,6 +568,25 @@ function _user_required {
   fi
 }
 
+function _assert_keychain_contains_emails {
+  local homedir=$1
+  local emails=$2
+
+  local gpg_uids
+  gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
+  for email in "${emails[@]}"; do
+    local email_ok=0
+    for uid in $gpg_uids; do
+        if [[ "$uid" == "$email" ]]; then
+            email_ok=1
+        fi
+    done
+    if [[ $email_ok -eq 0 ]]; then
+      _abort "email not found in gpg keyring: $email"
+    fi
+  done
+}
+
 
 function _get_raw_filename {
   echo "$(dirname "$1")/$(basename "$1" "$SECRETS_EXTENSION")" | sed -e 's#^\./##'
@@ -581,9 +600,20 @@ function _get_encrypted_filename {
 }
 
 
+function _get_users_in_gpg_keyring {
+  local homedir=$1
+  local result
+  local args=()
+  if [[ -n "$homedir" ]]; then
+    args+=( "--homedir" "$homedir" )
+  fi
+  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | gawk -F':' '{print $10;}' | sed 's/.*<\(.*\)>.*/\1/')
+
+  echo "$result"
+}
 
 
-function _get_users_in_keyring {
+function _get_users_in_gitsecret_keyring {
   # This function is required to show the users in the keyring.
   # `whoknows` command uses it internally.
   # It basically just parses the `gpg` public keys
@@ -622,7 +652,7 @@ function _get_recipients {
   # It basically just parses the `gpg` public keys
 
   local result
-  result=$(_get_users_in_keyring | sed 's/^/-r/')   # put -r before each user
+  result=$(_get_users_in_gitsecret_keyring | sed 's/^/-r/')   # put -r before each user
   echo "$result"
 }
 

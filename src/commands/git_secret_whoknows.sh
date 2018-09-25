@@ -21,6 +21,6 @@ function whoknows {
   local keys
 
   # Getting the users from gpg:
-  keys=$(_get_users_in_keyring)
+  keys=$(_get_users_in_gitsecret_keyring)
   echo "$keys"
 }

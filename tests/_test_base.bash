@@ -33,12 +33,13 @@ GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warnin
 
 # Personal data:
 
-TEST_DEFAULT_USER="user1"
-TEST_SECOND_USER="user2"
-TEST_NONAME_USER="user3"
+
+TEST_DEFAULT_USER="user1@gitsecret.io"
+TEST_SECOND_USER="user2@gitsecret.io"
+TEST_NONAME_USER="user3@gitsecret.io"
 # TEST_NONAME_USER (user3) created with '--quick-key-generate' and has only an email, no username.
-TEST_EXPIRED_USER="user4"
-TEST_ATTACKER_USER="attacker1"
+TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2017-09-24
+TEST_ATTACKER_USER="attacker1@gitsecret.io"
 
 #TEST_DEFAULT_FILENAME="file_one"  # no spaces
 #TEST_SECOND_FILENAME="file_two"  # no spaces
@@ -50,15 +51,11 @@ TEST_THIRD_FILENAME="space file three"  # has spaces
 
 
 function test_user_password {
-  # It was set on key creation:
-  echo "${1}pass"
+  # Password for 'user3@gitsecret.io' is 'user3pass'
+  # As it was set on key creation. 
+  echo "$1" | sed -e 's/@.*/pass/' 
 }
 
-
-function test_user_email {
-  # It was set on key creation:
-  echo "${1}@gitsecret.io"
-}
 
 
 # GPG:
@@ -108,7 +105,7 @@ function install_fixture_full_key {
   local fp
   local fingerprint
 
-  email=$(test_user_email "$1")
+  email="$1"
 
   \cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
@@ -129,14 +126,14 @@ function install_fixture_full_key {
 function uninstall_fixture_key {
   local email
 
-  email=$(test_user_email "$1")
+  email="$1"
   $GPGTEST --yes --delete-key "$email" > /dev/null 2>&1
 }
 
 
 function uninstall_fixture_full_key {
   local email
-  email=$(test_user_email "$1")
+  email="$1"
 
   local fingerprint="$2"
   if [[ -z "$fingerprint" ]]; then
@@ -205,7 +202,7 @@ function set_state_secret_init {
 function set_state_secret_tell {
   local email
 
-  email=$(test_user_email "$1")
+  email="$1"
   git secret tell -d "$TEST_GPG_HOMEDIR" "$email" > /dev/null 2>&1
 }
 
