@@ -24,10 +24,25 @@ function killperson {
   if [[ ${#emails[@]} -eq 0 ]]; then
     _abort "at least one email is required for killperson."
   fi
-
   # Getting the local git-secret `gpg` key directory:
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
+
+  # TODO: this block is duplicated in git_secret_tell.sh and should be factored
+  local gpg_uids
+  gpg_uids=$(_get_users_in_gpg_keyring "$secrets_dir_keys")
+  for email in "${emails[@]}"; do
+    local email_ok=0
+    for uid in $gpg_uids; do
+        if [[ "$uid" == "$email" ]]; then
+            email_ok=1
+        fi
+    done
+    if [[ "$email_ok" == 0 ]]; then
+      _abort "email not found in gpg keyring: $email"
+    fi
+  done
+
   for email in "${emails[@]}"; do
     $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --batch --yes --delete-key "$email"
     local exit_code=$?

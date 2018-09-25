@@ -64,9 +64,9 @@ function tell {
     _abort "you must provide at least one email address."
   fi
 
+  # TODO: this block is duplicated in git_secret_killperson.sh and should be factored
   local gpg_uids
   gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
-
   for email in "${emails[@]}"; do
     local email_ok=0
     for uid in $gpg_uids; do
