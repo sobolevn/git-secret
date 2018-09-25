@@ -25,16 +25,20 @@ function teardown {
 }
 
 
-@test "run 'killperson' with key name" {
-  run git secret killperson "$TEST_DEFAULT_USER"
+@test "run 'killperson' with short name" {
+  local name
+  name=$(echo "$TEST_DEFAULT_USER" | sed -e 's/@.*//')
+
+  # killperson must use full email, not short name
+  run git secret killperson "$name"
+  [ "$status" -eq 1 ]
+
+  # Then whoknows will be ok because user3@gitsecret.io still knows
+  run git secret whoknows
   [ "$status" -eq 0 ]
 
   # Testing output:
   [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
-
-  # Then whoknows must return an error with status code 1:
-  run git secret whoknows
-  [ "$status" -eq 1 ]
 }
 
 
