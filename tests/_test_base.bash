@@ -34,9 +34,9 @@ GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warnin
 # Personal data:
 
 # user3 created with '--quick-key-generate' and has only an email, no username.
-TEST_DEFAULT_USER="user3"
-TEST_SECOND_USER="user2"
-TEST_ATTACKER_USER="attacker1"
+TEST_DEFAULT_USER="user3@gitsecret.io"
+TEST_SECOND_USER="user2@gitsecret.io"
+TEST_ATTACKER_USER="attacker1@gitsecret.io"
 
 #TEST_DEFAULT_FILENAME="file_one"  # no spaces
 #TEST_SECOND_FILENAME="file_two"  # no spaces
@@ -48,14 +48,15 @@ TEST_THIRD_FILENAME="space file three"  # has spaces
 
 
 function test_user_password {
-  # It was set on key creation:
-  echo "${1}pass"
+  # Password for 'user3@gitsecret.io' is 'user3pass'
+  # As it was set on key creation. 
+  echo "$1" | sed -e 's/@.*/pass/' 
 }
 
 
 function test_user_email {
-  # It was set on key creation:
-  echo "${1}@gitsecret.io"
+  # we require the use of email as username
+  echo "${1}"
 }
 
 
