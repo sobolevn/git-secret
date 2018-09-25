@@ -64,20 +64,7 @@ function tell {
     _abort "you must provide at least one email address."
   fi
 
-  # TODO: this block is duplicated in git_secret_killperson.sh and should be factored
-  local gpg_uids
-  gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
-  for email in "${emails[@]}"; do
-    local email_ok=0
-    for uid in $gpg_uids; do
-        if [[ "$uid" == "$email" ]]; then
-            email_ok=1
-        fi
-    done
-    if [[ "$email_ok" == 0 ]]; then
-      _abort "email not found in gpg keyring: $email"
-    fi
-  done
+  $(_assert_keychain_contains_emails "$homedir" $emails)
 
   local start_key_cnt
   start_key_cnt=$(get_gpg_key_count)

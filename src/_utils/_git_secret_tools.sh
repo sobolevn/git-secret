@@ -561,6 +561,25 @@ function _user_required {
   fi
 }
 
+function _assert_keychain_contains_emails {
+  local homedir=$1
+  local emails=$2
+
+  local gpg_uids
+  gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
+  for email in "${emails[@]}"; do
+    local email_ok=0
+    for uid in $gpg_uids; do
+        if [[ "$uid" == "$email" ]]; then
+            email_ok=1
+        fi
+    done
+    if [[ $email_ok -eq 0 ]]; then
+      _abort "email not found in gpg keyring: $email"
+    fi
+  done
+}
+
 
 function _get_raw_filename {
   echo "$(dirname "$1")/$(basename "$1" "$SECRETS_EXTENSION")" | sed -e 's#^\./##'
