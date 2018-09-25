@@ -28,7 +28,7 @@ function killperson {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
-  $(_assert_keychain_contains_emails "$secrets_dir_keys" $emails)
+  _assert_keychain_contains_emails "$secrets_dir_keys" "${emails[@]}"
 
   for email in "${emails[@]}"; do
     $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --batch --yes --delete-key "$email"
