@@ -33,7 +33,7 @@ function reveal {
   # Command logic:
 
   local users
-  users=$(_get_users_in_keyring)
+  users=$(_get_users_in_gpg_keyring)
   local user
   for user in "${users[@]}"; do
     local expiry
