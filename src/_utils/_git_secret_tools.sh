@@ -601,34 +601,39 @@ function _get_encrypted_filename {
 
 
 function _get_users_in_gpg_keyring {
+  # This function is required to show the users in the keyring.
+  # `whoknows` command uses it internally.
+  # It basically just parses the `gpg` public keys
   local homedir=$1
   local result
   local args=()
   if [[ -n "$homedir" ]]; then
     args+=( "--homedir" "$homedir" )
   fi
-  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | gawk -F':' '{print $10;}' | sed 's/.*<\(.*\)>.*/\1/')
+
+  # pluck out 'uid' lines, fetch 10th field, extract part in <> if it exists (else leave alone)
+  # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines
+  # sed at the end is to extract email from <>. (If there's no <>, then the line is just an email address anyway.)
+  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | cut -d: -f10 | sed 's/.*<\(.*\)>.*/\1/')
 
   echo "$result"
 }
 
 
 function _get_users_in_gitsecret_keyring {
-  # This function is required to show the users in the keyring.
-  # `whoknows` command uses it internally.
-  # It basically just parses the `gpg` public keys
-
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
     
-  # pluck out 'uid' lines, fetch 10th field, extract part in <> if it exists (else leave alone)
-  # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines
   local result
-  result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | cut -d: -f10 | sed 's/.*<\(.*\)>.*/\1/')
+  result=$(_get_users_in_gpg_keyring "$secrets_dir_keys")
 
   echo "$result"
 }
 
+# note: this has the same 'username matching' issue described in 
+# https://github.com/sobolevn/git-secret/issues/268
+# where it will match emails that have other emails as substrings.
+# we need to use fingerprints for a unique key id with gpg.
 function _get_user_key_expiry {
   # This function returns the user's key's expiry, as an epoch. 
   # It will return the empty string if there is no expiry date for the user's key
