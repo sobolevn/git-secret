@@ -28,4 +28,15 @@ function teardown {
   # that's 'Sun Sep 23 19:24:05 2018'
 }
 
+@test "test 'hide' using expired key" {
+  FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
+  FILE_CONTENTS="hidden content юникод"
+  set_state_secret_add "$FILE_TO_HIDE" "$FILE_CONTENTS"
+
+  run git secret hide 
+  #echo "# output of hide: $output" >&3
+  #echo "# status of hide: $status" >&3
+  [ $status -ne 0 ] # we expect failure here. Actual code is 2
+}
+
 
