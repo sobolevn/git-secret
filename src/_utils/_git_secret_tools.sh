@@ -12,8 +12,14 @@ _SECRETS_DIR_KEYS_MAPPING="${_SECRETS_DIR_KEYS}/mapping.cfg"
 _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
+_SECRETS_DIR_SETTINGS="${_SECRETS_DIR_PATHS}/settings.cfg"
 
-: "${SECRETS_EXTENSION:=".secret"}"
+if [ -z "${SECRETS_EXTENSION+x}" ]; then
+  if [ -f "$_SECRETS_DIR_SETTINGS" ]; then
+    . <(grep '^SECRETS_EXTENSION\+="\.[A-Za-z0-9]\+"$' "$_SECRETS_DIR_SETTINGS")
+  fi
+  : "${SECRETS_EXTENSION:=".secret"}"
+fi
 
 # Commands:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
