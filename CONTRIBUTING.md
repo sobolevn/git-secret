@@ -93,8 +93,8 @@ fi
 
 Here are some links to gnupg documentation that might be useful for those working with git-secret:
 
-- [GnuPG PDF Documentation]: <https://www.gnupg.org/documentation/manuals/gnupg.pdf>
-- [GnuPG doc/DETAILS File]: <https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=doc/DETAILS>
+- [GnuPG PDF Documentation](https://www.gnupg.org/documentation/manuals/gnupg.pdf)
+- [GnuPG doc/DETAILS File](https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=doc/DETAILS)
 
 #### Travis releases
 
