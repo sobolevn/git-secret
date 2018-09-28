@@ -49,14 +49,13 @@ Only required if dealing with manuals, `gh-pages` or releases:
 
 ### Branches
 
-We have three long-live branches: `master`, `develop` and `gh-pages` for static site.
+We have two long-live branches: `master` and `gh-pages` for static web site.
 
-It basically looks like that:
+It basically looks like this:
 
-> `your-branch` -> `develop` -> `master`
+> `your-branch` -> `master`
 
 - `master` branch is protected. So only fully tested code goes there. It is also used to create a new `git` tag and a `github` release
-- `develop` is where the development is done and the branch you should send your pull-requests to
 
 ### Continuous integration
 
