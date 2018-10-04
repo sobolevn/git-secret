@@ -45,18 +45,17 @@ Only required if dealing with manuals, `gh-pages` or releases:
 4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`
 5. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`, make sure you write a good message, which will explain your work
 6. When running `git commit` the tests will run automatically, your commit will be canceled if they fail
-7. Push to your repository, make a pull-request against `develop` branch. Please, make sure you have **one** commit per pull-request, it will be merge into one anyways
+7. Push to your repository, make a pull-request against `master` branch. Please, make sure you have **one** commit per pull-request, it will be merge into one anyways
 
 ### Branches
 
-We have three long-live branches: `master`, `develop` and `gh-pages` for static site.
+We have two long-live branches: `master` and `gh-pages` for static web site.
 
-It basically looks like that:
+It basically looks like this:
 
-> `your-branch` -> `develop` -> `master`
+> `your-branch` -> `master`
 
 - `master` branch is protected. So only fully tested code goes there. It is also used to create a new `git` tag and a `github` release
-- `develop` is where the development is done and the branch you should send your pull-requests to
 
 ### Continuous integration
 
@@ -94,8 +93,8 @@ fi
 
 Here are some links to gnupg documentation that might be useful for those working with git-secret:
 
-- [GnuPG PDF Documentation]: <https://www.gnupg.org/documentation/manuals/gnupg.pdf>
-- [GnuPG doc/DETAILS File]: <https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=doc/DETAILS>
+- [GnuPG PDF Documentation](https://www.gnupg.org/documentation/manuals/gnupg.pdf)
+- [GnuPG doc/DETAILS File](https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=doc/DETAILS)
 
 #### Travis releases
 
