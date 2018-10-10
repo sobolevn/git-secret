@@ -71,7 +71,7 @@ function tell {
   for email in "${emails[@]}"; do
     # This file will be removed automatically:
     _temporary_file  # note, that `_temporary_file` will export `filename` var.
-    
+    # shellcheck disable=2154
     local keyfile="$filename"
 
     local exit_code
