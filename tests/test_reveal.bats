@@ -115,7 +115,7 @@ function teardown {
 
   run git secret reveal -F -d "$TEST_GPG_HOMEDIR" -p "$password"
 
-  echo "# status is $status" >&3
+  #echo "# status is $status" >&3
 
   # This should return a status code of 1 also.  Not sure how to test that we don't die early
   [ "$status" -eq 0 ]
