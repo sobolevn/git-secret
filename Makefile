@@ -5,7 +5,7 @@ PREFIX?="/usr"
 # Building:
 #
 
-git-secret: src/version.sh src/_utils/* src/commands/* src/main.sh
+git-secret: src/version.sh src/_utils/*.sh src/commands/*.sh src/main.sh
 	@cat $^ > "$@"; \
 	chmod +x git-secret; sync
 
