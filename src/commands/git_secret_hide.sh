@@ -167,7 +167,7 @@ function hide {
         local exit_code=$?
         if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
           # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
-          _warn_or_abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code"
+          _warn_or_abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code" "$force_continue"
         fi
   
         if [[ "$preserve" == 1 ]] && [[ -f "$output_path" ]]; then
