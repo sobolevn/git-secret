@@ -453,8 +453,7 @@ function _warn_or_abort {
   if [[ "$error_ok" -eq "0" ]]; then
     if [[ "$exit_code" -eq "0" ]]; then 
       # if caller sends an exit_code of 0, we change it to 1 before aborting. 
-      # Message is left unchanged.
-      exit_code = 1
+      exit_code=1
     fi
     _abort "$message" "$exit_code"
   else
