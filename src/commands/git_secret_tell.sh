@@ -95,7 +95,7 @@ function tell {
     # Importing public key to the local keychain:
     local secrets_dir_keys
     secrets_dir_keys=$(_get_secrets_dir_keys)
-    $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile"
+    $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" > /dev/null 2>&1
     exit_code=$?
     if [[ "$exit_code" -ne 0 ]]; then
       _abort "problem importing public key for '$email' with gpg: exit code $exit_code"

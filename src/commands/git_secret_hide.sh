@@ -163,7 +163,7 @@ function hide {
         # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2086
         $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
-          $recipients -o "$output_path" "$input_path"
+          $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
         local exit_code=$?
         if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
           # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
