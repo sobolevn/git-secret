@@ -57,11 +57,7 @@ function reveal {
     _decrypt "$path" "1" "$force" "$homedir" "$passphrase" "$force_continue"
 
     if [[ ! -f "$path" ]]; then
-      if [[ "$force_continue" -eq "0" ]]; then
-        _abort "cannot find decrypted version of file: $filename" "2"
-      else
-        _warn "cannot find decrypted version of file, continuing anyway: $filename"
-      fi
+      _warn_or_abort "cannot find decrypted version of file: $filename" "2" "$force_continue"
     else
       counter=$((counter+1))
       local secret_file

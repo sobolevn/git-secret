@@ -444,6 +444,24 @@ function _warn {
   >&2 echo "git-secret: warning: $message"
 }
 
+# _warn_or_abort "$error_message" "$exit_code" "$error_ok"
+function _warn_or_abort {
+  local message="$1"            # required
+  local exit_code=${2:-"1"}     # defaults to 1
+  local error_ok=${3:-0}        # can be 0 or 1
+
+  if [[ "$error_ok" -eq "0" ]]; then
+    if [[ "$exit_code" -eq "0" ]]; then 
+      # if caller sends an exit_code of 0, we change it to 1 before aborting. 
+      # Message is left unchanged.
+      exit_code = 1
+    fi
+    _abort "$message" "$exit_code"
+  else
+    _warn "$message" "$exit_code"
+  fi
+}
+
 function _find_and_clean {
   # required:
   local pattern="$1" # can be any string pattern

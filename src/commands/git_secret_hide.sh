@@ -154,11 +154,7 @@ function hide {
     # Checking that file is valid:
     if [[ ! -f "$input_path" ]]; then
       # this catches the case where some decrypted files don't exist
-      if [[ "$force_continue" -eq "0" ]]; then
-        _abort "file not found: $input_path"
-      else
-        _warn "file not found, continuing anyway: $input_path"
-      fi
+      _warn_or_abort "file not found: $input_path" "1" "$force_continue"
     else
       file_hash=$(_get_file_hash "$input_path")
   
@@ -169,20 +165,9 @@ function hide {
         $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
           $recipients -o "$output_path" "$input_path"
         local exit_code=$?
-        if [[ "$exit_code" -ne 0 ]]; then
+        if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
           # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
-          if [[ $force_continue -eq 0 ]]; then
-            _abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code"
-          else
-            _warn "problem encrypting file with gpg: exit code $exit_code: $filename" 
-          fi
-        elif [[ ! -f "$output_path" ]]; then
-          # also catches case where gpg doesn't complain in exit_code, but file is not encrypted
-          if [[ $force_continue -eq 0 ]]; then
-            _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
-          else
-            _warn "problem encrypting file with gpg: exit code $exit_code: $filename" 
-          fi
+          _warn_or_abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code"
         fi
   
         if [[ "$preserve" == 1 ]] && [[ -f "$output_path" ]]; then
