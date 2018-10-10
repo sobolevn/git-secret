@@ -30,7 +30,8 @@ function teardown {
 @test "run 'hide -F' with missing input file" {
   mv "$FILE_TO_HIDE2" "$FILE_TO_HIDE2.was"
   run git secret hide -F
-  echo "# output of 'git secret hide -F' is: $output" >&3
+
+  #echo "# output of 'git secret hide -F' is: $output" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
