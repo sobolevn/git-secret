@@ -153,7 +153,8 @@ function hide {
 
     # Checking that file is valid:
     if [[ ! -f "$input_path" ]]; then
-      if [[ $force_continue -eq 0 ]]; then
+      # this catches the case where some decrypted files don't exist
+      if [[ "$force_continue" -eq "0" ]]; then
         _abort "file not found: $input_path"
       else
         _warn "file not found, continuing anyway: $input_path"
@@ -169,16 +170,24 @@ function hide {
           $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
         local exit_code=$?
         if [[ "$exit_code" -ne 0 ]]; then
-          # if gpg can't encrypt a file we asked it to, that's always an error
-          _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
+          # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode
+          if [[ $force_continue -eq 0 ]]; then
+            _abort "problem encrypting file with gpg: exit code $exit_code: $filename" "2"
+          else
+            _warn "problem encrypting file with gpg: exit code $exit_code: $filename" 
+          fi
         fi
         if [[ ! -f "$output_path" ]]; then
           # this catches case where gpg doesn't complain in exit_code, but file is not encrypted
           # which is always an error.
-          _abort "problem encrypting file with gpg: $filename"
+          if [[ $force_continue -eq 0 ]]; then
+            _abort "problem encrypting file with gpg: $filename" "2"
+          else
+            _warn "problem encrypting file with gpg: $filename" 
+          fi
         fi
   
-        if [[ "$preserve" == 1 ]]; then
+        if [[ "$preserve" == 1 ]] && [[ -f "$output_path" ]]; then
           local perms
           perms=$($SECRETS_OCTAL_PERMS_COMMAND "$input_path")
           chmod "$perms" "$output_path"

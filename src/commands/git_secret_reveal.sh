@@ -4,8 +4,8 @@
 function reveal {
   local homedir=''
   local passphrase=''
-  local force=0
-  local force_continue=0
+  local force=0             # this means 'clobber without warning'
+  local force_continue=0    # this means 'continue if we have decryption errors'
   local preserve=0
 
   OPTIND=1
@@ -53,27 +53,27 @@ function reveal {
     filename=$(_get_record_filename "$line")
     path=$(_append_root_path "$filename")
 
-    # The parameters are: filename, write-to-file, force, homedir, passphrase
-    _decrypt "$path" "1" "$force" "$homedir" "$passphrase"
+    # The parameters are: filename, write-to-file, force, homedir, passphrase, error_ok
+    _decrypt "$path" "1" "$force" "$homedir" "$passphrase" "$force_continue"
 
     if [[ ! -f "$path" ]]; then
-      if [[ $force_continue ]]; then
-        _warn "cannot find decrypted version of file, continuing anyway: $filename"
+      if [[ "$force_continue" -eq "0" ]]; then
+        _abort "cannot find decrypted version of file: $filename" "2"
       else
-        _abort "cannot find decrypted version of file: $filename"
+        _warn "cannot find decrypted version of file, continuing anyway: $filename"
       fi
-    fi
-
-    if [[ "$preserve" == 1 ]]; then
+    else
+      counter=$((counter+1))
       local secret_file
       secret_file=$(_get_encrypted_filename "$path")
-      local perms
-      perms=$($SECRETS_OCTAL_PERMS_COMMAND "$secret_file")
-      chmod "$perms" "$path"
+      if [[ "$preserve" == 1 ]] && [[ -f "$secret_file" ]]; then
+        local perms
+        perms=$($SECRETS_OCTAL_PERMS_COMMAND "$secret_file")
+        chmod "$perms" "$path"
+      fi
     fi
-
-    counter=$((counter+1))
+  
   done < "$path_mappings"
 
-  echo "done. all $counter files are revealed."
+  echo "done. $counter of ${#to_show[@]} files are revealed."
 }
