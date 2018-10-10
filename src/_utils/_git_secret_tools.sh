@@ -685,9 +685,11 @@ function _decrypt {
     $SECRETS_GPG_COMMAND "${args[@]}" "--quiet" "$encrypted_filename"
     exit_code=$?
   fi
+  # note that according to https://github.com/sobolevn/git-secret/issues/238 , 
+  # it's possible for gpg to return a 0 exit code but not have decrypted the file
   #echo "# gpg exit code: $exit_code, error_ok: $error_ok" >&3
   if [[ "$exit_code" -ne "0" ]]; then
-    local msg="problem decrypting file with gpg: exit code $exit_code: $filename (error_ok: $error_ok)"
+    local msg="problem decrypting file with gpg: exit code $exit_code: $filename"
     if [[ "$error_ok" -eq "0" ]]; then
       _abort "$msg" "$exit_code"
     else
