@@ -170,20 +170,18 @@ function hide {
           $recipients -o "$output_path" "$input_path"
         local exit_code=$?
         if [[ "$exit_code" -ne 0 ]]; then
-          # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode
+          # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
           if [[ $force_continue -eq 0 ]]; then
-            _abort "problem encrypting file with gpg: exit code $exit_code: $filename" "2"
+            _abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code"
           else
             _warn "problem encrypting file with gpg: exit code $exit_code: $filename" 
           fi
-        fi
-        if [[ ! -f "$output_path" ]]; then
-          # this catches case where gpg doesn't complain in exit_code, but file is not encrypted
-          # which is always an error.
+        elif [[ ! -f "$output_path" ]]; then
+          # also catches case where gpg doesn't complain in exit_code, but file is not encrypted
           if [[ $force_continue -eq 0 ]]; then
-            _abort "problem encrypting file with gpg: $filename" "2"
+            _abort "problem encrypting file with gpg: exit code $exit_code: $filename"
           else
-            _warn "problem encrypting file with gpg: $filename" 
+            _warn "problem encrypting file with gpg: exit code $exit_code: $filename" 
           fi
         fi
   
@@ -192,7 +190,7 @@ function hide {
           perms=$($SECRETS_OCTAL_PERMS_COMMAND "$input_path")
           chmod "$perms" "$output_path"
         fi
-  
+
   
         # If -m option was provided, it will update unencrypted file hash
         local key="$filename"
