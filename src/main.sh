@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+# we don't use set -e, it messes up hide -F and reveal -F error handling
 
 function _check_setup {
   # Checking git and secret-plugin setup:

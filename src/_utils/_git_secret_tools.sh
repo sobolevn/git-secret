@@ -184,6 +184,7 @@ function _delete_line {
 
 
 # this sets the global variable 'filename'
+# currently this function is only used by 'hide'
 function _temporary_file {
   # This function creates temporary file
   # which will be removed on system exit.
@@ -430,9 +431,34 @@ function _get_secrets_dir_paths_mapping {
 
 function _abort {
   local message="$1" # required
+  local exit_code=${2:-"1"}     # defaults to 1
 
   >&2 echo "git-secret: abort: $message"
-  exit 1
+  exit "$exit_code"
+}
+
+# _warn() sends warnings to stdout so user sees them
+function _warn {
+  local message="$1" # required
+
+  >&2 echo "git-secret: warning: $message"
+}
+
+# _warn_or_abort "$error_message" "$exit_code" "$error_ok"
+function _warn_or_abort {
+  local message="$1"            # required
+  local exit_code=${2:-"1"}     # defaults to 1
+  local error_ok=${3:-0}        # can be 0 or 1
+
+  if [[ "$error_ok" -eq "0" ]]; then
+    if [[ "$exit_code" -eq "0" ]]; then 
+      # if caller sends an exit_code of 0, we change it to 1 before aborting. 
+      exit_code=1
+    fi
+    _abort "$message" "$exit_code"
+  else
+    _warn "$message" "$exit_code"
+  fi
 }
 
 # _warn() sends warnings to stdout so user sees them
@@ -671,6 +697,7 @@ function _decrypt {
   local force=${3:-0} # can be 0 or 1
   local homedir=${4:-""}
   local passphrase=${5:-""}
+  local error_ok=${6:-0} # can be 0 or 1
 
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
@@ -693,6 +720,7 @@ function _decrypt {
     args+=( "--pinentry-mode" "loopback" )
   fi
 
+  #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
     echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --quiet --batch --yes --no-tty --passphrase-fd 0 \
@@ -702,8 +730,16 @@ function _decrypt {
     $SECRETS_GPG_COMMAND "${args[@]}" "--quiet" "$encrypted_filename"
     exit_code=$?
   fi
-  if [[ "$exit_code" -ne 0 ]]; then
-    _abort "problem decrypting file with gpg: exit code $exit_code: $filename"
+  # note that according to https://github.com/sobolevn/git-secret/issues/238 , 
+  # it's possible for gpg to return a 0 exit code but not have decrypted the file
+  #echo "# gpg exit code: $exit_code, error_ok: $error_ok" >&3
+  if [[ "$exit_code" -ne "0" ]]; then
+    local msg="problem decrypting file with gpg: exit code $exit_code: $filename"
+    if [[ "$error_ok" -eq "0" ]]; then
+      _abort "$msg" "$exit_code"
+    else
+      _warn "$msg"
+    fi
   fi
 }
 

@@ -4,16 +4,19 @@
 function reveal {
   local homedir=''
   local passphrase=''
-  local force=0
+  local force=0             # this means 'clobber without warning'
+  local force_continue=0    # this means 'continue if we have decryption errors'
   local preserve=0
 
   OPTIND=1
 
-  while getopts 'hfPd:p:' opt; do
+  while getopts 'hfFPd:p:' opt; do
     case "$opt" in
       h) _show_manual_for 'reveal';;
 
       f) force=1;;
+
+      F) force_continue=1;;
 
       P) preserve=1;;
 
@@ -52,29 +55,37 @@ function reveal {
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
   local counter=0
-  while read -r line; do
+  local to_show=( "$@" )
+
+  if [ ${#to_show[@]} -eq 0 ]; then
+    while read -r record; do
+      to_show+=("$record")  # add record to array
+    done < "$path_mappings"
+  fi
+
+  for line in "${to_show[@]}"; do
     local filename
     local path
     filename=$(_get_record_filename "$line")
     path=$(_append_root_path "$filename")
 
-    # The parameters are: filename, write-to-file, force, homedir, passphrase
-    _decrypt "$path" "1" "$force" "$homedir" "$passphrase"
+    # The parameters are: filename, write-to-file, force, homedir, passphrase, error_ok
+    _decrypt "$path" "1" "$force" "$homedir" "$passphrase" "$force_continue"
 
     if [[ ! -f "$path" ]]; then
-      _abort "cannot find decrypted version of file: $filename"
-    fi
-
-    if [[ "$preserve" == 1 ]]; then
+      _warn_or_abort "cannot find decrypted version of file: $filename" "2" "$force_continue"
+    else
+      counter=$((counter+1))
       local secret_file
       secret_file=$(_get_encrypted_filename "$path")
-      local perms
-      perms=$($SECRETS_OCTAL_PERMS_COMMAND "$secret_file")
-      chmod "$perms" "$path"
+      if [[ "$preserve" == 1 ]] && [[ -f "$secret_file" ]]; then
+        local perms
+        perms=$($SECRETS_OCTAL_PERMS_COMMAND "$secret_file")
+        chmod "$perms" "$path"
+      fi
     fi
-
-    counter=$((counter+1))
+  
   done < "$path_mappings"
 
-  echo "done. all $counter files are revealed."
+  echo "done. $counter of ${#to_show[@]} files are revealed."
 }
