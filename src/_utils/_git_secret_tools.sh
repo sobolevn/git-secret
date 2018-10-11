@@ -735,11 +735,7 @@ function _decrypt {
   #echo "# gpg exit code: $exit_code, error_ok: $error_ok" >&3
   if [[ "$exit_code" -ne "0" ]]; then
     local msg="problem decrypting file with gpg: exit code $exit_code: $filename"
-    if [[ "$error_ok" -eq "0" ]]; then
-      _abort "$msg" "$exit_code"
-    else
-      _warn "$msg"
-    fi
+    _warn_or_abort "$msg" "$exit_code" "$error_ok"
   fi
 }
 
