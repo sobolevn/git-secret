@@ -1,5 +1,21 @@
 # Changelog
 
+## Version 0.2.5
+
+- Documentation improvements throughout (#254)
+- Accept gpg keys without names associated (#227)
+- Fix issues with spaces in paths/filenames (#226, #135)
+- Fix issue when hide used in subdir of repo (#230)
+- Require keys to be specified by email (#267)
+- Disallow 'git secret tell' or 'killperson' with emails that are not in keychain (also #267)
+- Fixed bugs and improved error messages (#174, #150)
+- Allow user to specify name of secret dir at runtime using SECRETS_DIR env var (#247, #250)
+- Improve documentation regarding operation with different versions of GPG (#274, #182)
+- Issue error message when unable to hide a secret (#202)
+- Add -P option (preserve permissions) to reveal and hide (#172)
+- Add -F option (force, changing some errors to warnings) to hide and reveal (#253)
+- Add support for FreeBSD (#244)
+
 ## Version 0.2.4
 
 - Added `git secret cat` feature (#141)
