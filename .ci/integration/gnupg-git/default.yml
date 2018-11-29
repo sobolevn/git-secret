@@ -151,6 +151,16 @@
       when:
         - ansible_os_family == "Alpine"
 
+    # disable gnupg doc build on Ubuntu-Rolling because it won't build
+    # ( See https://travis-ci.org/sobolevn/git-secret/jobs/439870332 )
+    - name: Disable making docs on Ubuntu-Rolling
+      lineinfile:
+        path: "{{ gpg_src_path }}/Makefile"
+        regexp: '^doc = doc$'
+        line: 'doc = '
+      when:
+        - ansible_distribution == "Ubuntu"
+
     - name: Compile gnupg src
       command: bash -lc "cd {{ gpg_src_path }} && make"
       changed_when: False

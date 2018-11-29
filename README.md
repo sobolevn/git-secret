@@ -55,7 +55,7 @@ If your secret file holds more data than just a single password these
 precautions should not be necessary, but could be followed for greater
 security.
 
-If you found any security related issues, please do not enclose it in public. Send an email to `security@wemake.services`
+If you found any security related issues, please do not disclose it in public. Send an email to `security@wemake.services`
 
 
 ## Changelog
