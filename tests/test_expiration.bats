@@ -22,8 +22,11 @@ function teardown {
   set_state_secret_add "$FILE_TO_HIDE" "$FILE_CONTENTS"
 
   run git secret hide 
+
   #echo "# output of hide: $output" >&3
+    # output should look like 'abort: problem encrypting file with gpg: exit code 2: space file'
   #echo "# status of hide: $status" >&3
+
   [ $status -ne 0 ] # we expect failure here. Actual code is 2
 }
 
