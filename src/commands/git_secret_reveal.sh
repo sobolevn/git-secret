@@ -35,22 +35,6 @@ function reveal {
 
   # Command logic:
 
-  local users
-  users=$(_get_users_in_gpg_keyring)
-  local user
-  for user in "${users[@]}"; do
-    local expiry
-    expiry=$(_get_user_key_expiry "$user")
-    #echo "# EXPIRY: user $user, expiry '$expiry'" >&3
-    if [[ -n "$expiry" ]]; then
-      local expiry_date
-      expiry_date=$(echo "$expiry" | gawk '{ print strftime("%Y-%m-%d %H:%M:%S", $1); }')   
-      # we could use 'date' here but we already depend on gawk
-      _warn "key for '$user' expires on '$expiry_date'"
-    fi
-  done
-  
-
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
 

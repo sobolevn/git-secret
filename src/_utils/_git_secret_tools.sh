@@ -656,26 +656,6 @@ function _get_users_in_gitsecret_keyring {
   echo "$result"
 }
 
-# note: this has the same 'username matching' issue described in 
-# https://github.com/sobolevn/git-secret/issues/268
-# where it will match emails that have other emails as substrings.
-# we need to use fingerprints for a unique key id with gpg.
-function _get_user_key_expiry {
-  # This function returns the user's key's expiry, as an epoch. 
-  # It will return the empty string if there is no expiry date for the user's key
-  local username="$1"
-  local line
-
-  local secrets_dir_keys
-  secrets_dir_keys=$(_get_secrets_dir_keys)
-
-  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub:)
-
-  local expiry_epoch
-  expiry_epoch=$(echo "$line" | cut -d: -f7)
-  echo "$expiry_epoch"
-}
-
 
 function _get_recipients {
   # This function is required to create an encrypted file for different users.

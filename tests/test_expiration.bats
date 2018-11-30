@@ -16,18 +16,6 @@ function teardown {
   unset_current_state
 }
 
-@test "test fetching user key expiration date" {
-  local expiry
-  expiry=$(_get_user_key_expiry "$TEST_EXPIRED_USER")
-  if [[ $expiry = '' ]]; then
-    expiry='never'
-  fi
-
-  echo "# expiry of user '$TEST_EXPIRED_USER': $expiry" >&3
-  [ "$expiry" -eq  "1537745045" ]
-  # that's 'Sun Sep 23 19:24:05 2018'
-}
-
 @test "test 'hide' using expired key" {
   FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
   FILE_CONTENTS="hidden content юникод"
