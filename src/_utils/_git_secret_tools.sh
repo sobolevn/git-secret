@@ -461,13 +461,6 @@ function _warn_or_abort {
   fi
 }
 
-# _warn() sends warnings to stdout so user sees them
-function _warn {
-  local message="$1" # required
-
-  echo "git-secret: warning: $message"
-}
-
 function _find_and_clean {
   # required:
   local pattern="$1" # can be any string pattern
@@ -627,7 +620,7 @@ function _get_encrypted_filename {
 
 
 function _get_users_in_gpg_keyring {
-  # show the users in the keyring.
+  # show the users in the gpg keyring.
   # `whoknows` command uses it internally.
   # parses the `gpg` public keys
   local homedir=$1
@@ -647,6 +640,7 @@ function _get_users_in_gpg_keyring {
 
 
 function _get_users_in_gitsecret_keyring {
+  # show the users in the gitsecret keyring.
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
     
