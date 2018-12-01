@@ -620,30 +620,32 @@ function _get_encrypted_filename {
 
 
 function _get_users_in_gpg_keyring {
+  # show the users in the gpg keyring.
+  # `whoknows` command uses it internally.
+  # parses the `gpg` public keys
   local homedir=$1
   local result
   local args=()
   if [[ -n "$homedir" ]]; then
     args+=( "--homedir" "$homedir" )
   fi
-  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | gawk -F':' '{print $10;}' | sed 's/.*<\(.*\)>.*/\1/')
+
+  # pluck out 'uid' lines, fetch 10th field, extract part in <> if it exists (else leave alone).
+  # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
+  # sed at the end is to extract email from <>. (If there's no <>, then the line is just an email address anyway.)
+  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | cut -d: -f10 | sed 's/.*<\(.*\)>.*/\1/')
 
   echo "$result"
 }
 
 
 function _get_users_in_gitsecret_keyring {
-  # This function is required to show the users in the keyring.
-  # `whoknows` command uses it internally.
-  # It basically just parses the `gpg` public keys
-
+  # show the users in the gitsecret keyring.
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
     
-  # pluck out 'uid' lines, fetch 10th field, extract part in <> if it exists (else leave alone)
-  # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines
   local result
-  result=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | grep ^uid: | gawk -F':' '{print $10;}' | sed 's/.*<\(.*\)>.*/\1/')
+  result=$(_get_users_in_gpg_keyring "$secrets_dir_keys")
 
   echo "$result"
 }
@@ -707,11 +709,7 @@ function _decrypt {
   #echo "# gpg exit code: $exit_code, error_ok: $error_ok" >&3
   if [[ "$exit_code" -ne "0" ]]; then
     local msg="problem decrypting file with gpg: exit code $exit_code: $filename"
-    if [[ "$error_ok" -eq "0" ]]; then
-      _abort "$msg" "$exit_code"
-    else
-      _warn "$msg"
-    fi
+    _warn_or_abort "$msg" "$exit_code" "$error_ok"
   fi
 }
 

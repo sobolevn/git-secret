@@ -33,9 +33,16 @@ GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warnin
 
 # Personal data:
 
-# user3 created with '--quick-key-generate' and has only an email, no username.
-TEST_DEFAULT_USER="user3@gitsecret.io"
+# these two are 'normal' keys
+TEST_DEFAULT_USER="user1@gitsecret.io"
 TEST_SECOND_USER="user2@gitsecret.io"
+
+# TEST_NONAME_USER (user3) created with '--quick-key-generate' and has only an email, no username.
+TEST_NONAME_USER="user3@gitsecret.io"
+
+# TEST_EXPIRED_USER (user4) has expired
+TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
+
 TEST_ATTACKER_USER="attacker1@gitsecret.io"
 
 #TEST_DEFAULT_FILENAME="file_one"  # no spaces

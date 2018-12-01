@@ -2,13 +2,15 @@
 
 ## {{Next Version}}
 
+- Add tests for expired gpg keys, and gpg keys with only emails (#276)
+- Fix 'hide' to only count actually hidden files as hidden (#280)
 - Accept gpg key with no name, only an email (#227)
 - Fix issues with spaces in paths/filenames (#226, #135)
 - Fix issue when 'hide' used in subdir of repo (#230)
 - Require keys to be specified by email, as documented (#267)
 - Disallow 'git secret tell' or 'killperson' with emails that are not in keychain (also #267)
 - Fixed bugs and improved error messages (#174)
-- Allow user to specify name of secret dir at runtime using SECRETS_DIR env var (#247, #250)
+- Allow user to specify name of secret dir at runtime using SECRETS_DIR env var, and test (#247, #250)
 - Improve documentation regarding operation with different versions of GPG (#274, #182)
 - Issue error message when unable to hide a secret (#202)
 - Add -P option (preserve permissions) to reveal and hide (#172)
