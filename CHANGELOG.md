@@ -1,5 +1,9 @@
 # Changelog
 
+## {{Next Version}}
+
+- Add tests for expired gpg keys, and gpg keys with only emails.
+
 ## Version 0.2.4
 
 - Added `git secret cat` feature (#141)
