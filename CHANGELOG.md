@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.2.5
+## {{Next Version}}
 
 - Accept gpg key with no name, only an email (#227)
 - Fix issues with spaces in paths/filenames (#226, #135)
