@@ -169,11 +169,13 @@ function hide {
           # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
           _warn_or_abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code" "$force_continue"
         fi
-  
-        if [[ "$preserve" == 1 ]] && [[ -f "$output_path" ]]; then
-          local perms
-          perms=$($SECRETS_OCTAL_PERMS_COMMAND "$input_path")
-          chmod "$perms" "$output_path"
+        if [[ -f "$output_path" ]]; then
+          counter=$((counter+1))
+          if [[ "$preserve" == 1 ]]; then
+            local perms
+            perms=$($SECRETS_OCTAL_PERMS_COMMAND "$input_path")
+            chmod "$perms" "$output_path"
+          fi
         fi
 
   
@@ -183,7 +185,6 @@ function hide {
         # Update file hash if required in fsdb
         [[ "$fsdb_update_hash" -gt 0 ]] && \
           _optional_fsdb_update_hash "$key" "$hash"
-        counter=$((counter+1))
       fi
     fi
   done
