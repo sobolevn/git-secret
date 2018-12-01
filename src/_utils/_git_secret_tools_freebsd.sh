@@ -35,3 +35,15 @@ function __get_octal_perms_freebsd {
   #     (without 'L' you get 6 digits like '100644'.)
   echo "$perms"
 }
+
+function __epoch_to_date_freebsd {
+  local epoch=$1;
+  if [ -z "$epoch" ]; then
+    echo ''
+  else
+    local cmd="/bin/date +%F -r $epoch"
+    local datetime
+    datetime=$($cmd)
+    echo "$datetime"
+  fi
+}
