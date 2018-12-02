@@ -36,7 +36,7 @@ function __epoch_to_date_osx {
     #date -r 234234234 +"%Y-%m-%d"
     local cmd="/bin/date -r $epoch +'%Y-%m-%d'"
     local datetime
-    datetime=$($cmd)
+    datetime=$("$cmd")
     echo "$datetime"
   fi
 }
