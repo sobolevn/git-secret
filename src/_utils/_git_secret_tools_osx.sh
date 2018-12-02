@@ -33,7 +33,8 @@ function __epoch_to_date_osx {
   if [ -z "$epoch" ]; then
     echo ''
   else
-    local cmd="/bin/date +%F -r $epoch"
+    #date -r 234234234 +"%Y-%m-%d"
+    local cmd="/bin/date -r $epoch +'%Y-%m-%d'"
     local datetime
     datetime=$($cmd)
     echo "$datetime"
