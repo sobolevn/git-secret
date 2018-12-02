@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+export TZ="GMT"
+
 load _test_base
 
 function setup {
@@ -43,7 +45,7 @@ function teardown {
   #echo "# status of hide: $status" >&3
 
   # Now test the output, both users should be present:
-  [[ "$output" == *"$TEST_EXPIRED_USER"* ]]
+  [[ "$output" == *"$TEST_EXPIRED_USER (expires: 2018-09-23)"* ]]
 }
 
 
@@ -59,8 +61,8 @@ function teardown {
   echo >&3
 
   # Now test the output, both users should be present:
-  [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
-  [[ "$output" == *"$TEST_EXPIRED_USER"* ]]
+  [[ "$output" == *"$TEST_DEFAULT_USER (expires: never)"* ]]
+  [[ "$output" == *"$TEST_EXPIRED_USER (expires: 2018-09-23)"* ]]
 
   uninstall_fixture_key "$TEST_DEFAULT_USER"
 }
