@@ -160,11 +160,17 @@ function hide {
   
       # encrypt file only if required
       if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
+
+        set +e   # disable 'set -e' so we can capture exit_code
+
         # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2086
         $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
           $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
         local exit_code=$?
+
+        set -e  # re-enable set -e
+
         if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
           # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
           _warn_or_abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code" "$force_continue"
@@ -177,7 +183,6 @@ function hide {
             chmod "$perms" "$output_path"
           fi
         fi
-
   
         # If -m option was provided, it will update unencrypted file hash
         local key="$filename"

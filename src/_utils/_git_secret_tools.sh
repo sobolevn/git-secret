@@ -716,6 +716,8 @@ function _decrypt {
     args+=( "--pinentry-mode" "loopback" )
   fi
 
+  set +e   # disable 'set -e' so we can capture exit_code
+
   #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
@@ -726,6 +728,9 @@ function _decrypt {
     $SECRETS_GPG_COMMAND "${args[@]}" "--quiet" "$encrypted_filename"
     exit_code=$?
   fi
+
+  set -e  # re-enable set -e
+
   # note that according to https://github.com/sobolevn/git-secret/issues/238 , 
   # it's possible for gpg to return a 0 exit code but not have decrypted the file
   #echo "# gpg exit code: $exit_code, error_ok: $error_ok" >&3
