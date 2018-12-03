@@ -31,7 +31,7 @@ function __epoch_to_date_linux {
   if [ -z "$epoch" ]; then
     echo ''
   else
-    local cmd="/bin/date +%F -d @$epoch"
+    local cmd="date +%F -d @$epoch"
     local datetime
     datetime=$($cmd)
     echo "$datetime"
