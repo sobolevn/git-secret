@@ -27,3 +27,16 @@ function __get_octal_perms_osx {
   # see _git_secret_tools_freebsd.sh for more about stat's format string
   echo "$perms"
 }
+
+function __epoch_to_date_osx {
+  local epoch=$1;
+  if [ -z "$epoch" ]; then
+    echo ''
+  else
+    #date -r 234234234 +"%Y-%m-%d"
+    local datetime
+    datetime=$(date -r "$epoch" +'%Y-%m-%d')
+    echo "$datetime"
+  fi
+}
+
