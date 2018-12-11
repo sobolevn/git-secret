@@ -31,6 +31,19 @@ function teardown {
   [[ "$output" == *"$TEST_SECOND_USER"* ]]
 }
 
+@test "run 'whoknows -l'" {
+  run git secret whoknows -l
+  [ "$status" -eq 0 ]
+
+  echo "# output of 'whoknows -l: $output" >&3
+  echo >&3
+    # output should look like 'abort: problem encrypting file with gpg: exit code 2: space file'
+  #echo "# status of hide: $status" >&3
+
+  # Now test the output, both users should be present and without expiration
+  [[ "$output" == *"$TEST_DEFAULT_USER (expires: never)"* ]]
+  [[ "$output" == *"$TEST_SECOND_USER (expires: never)"* ]]
+}
 
 @test "run 'whoknows' in subfolder" {
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then

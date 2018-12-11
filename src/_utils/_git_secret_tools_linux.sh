@@ -25,3 +25,15 @@ function __get_octal_perms_linux {
   # a string like '0644'
   echo "$perms"
 }
+
+function __epoch_to_date_linux {
+  local epoch=$1;
+  if [ -z "$epoch" ]; then
+    echo ''
+  else
+    local cmd="date +%F -d @$epoch"
+    local datetime
+    datetime=$($cmd)
+    echo "$datetime"
+  fi
+}

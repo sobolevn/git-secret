@@ -19,6 +19,7 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 : "${SECRETS_GPG_COMMAND:="gpg"}"
 : "${SECRETS_CHECKSUM_COMMAND:="_os_based __sha256"}"
 : "${SECRETS_OCTAL_PERMS_COMMAND:="_os_based __get_octal_perms"}"
+: "${SECRETS_EPOCH_TO_DATE:="_os_based __epoch_to_date"}"
 
 
 # AWK scripts:
@@ -587,6 +588,27 @@ function _user_required {
   fi
 }
 
+# note: this has the same 'username matching' issue described in 
+# https://github.com/sobolevn/git-secret/issues/268
+# where it will match emails that have other emails as substrings.
+# we need to use fingerprints for a unique key id with gpg.
+function _get_user_key_expiry {
+  # This function returns the user's key's expiry, as an epoch. 
+  # It will return the empty string if there is no expiry date for the user's key
+  local username="$1"
+  local line
+
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
+
+  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub:)
+
+  local expiry_epoch
+  expiry_epoch=$(echo "$line" | cut -d: -f7)
+  echo "$expiry_epoch"
+}
+
+
 function _assert_keychain_contains_emails {
   local homedir=$1
   local emails=$2
@@ -694,6 +716,8 @@ function _decrypt {
     args+=( "--pinentry-mode" "loopback" )
   fi
 
+  set +e   # disable 'set -e' so we can capture exit_code
+
   #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
@@ -704,6 +728,9 @@ function _decrypt {
     $SECRETS_GPG_COMMAND "${args[@]}" "--quiet" "$encrypted_filename"
     exit_code=$?
   fi
+
+  set -e  # re-enable set -e
+
   # note that according to https://github.com/sobolevn/git-secret/issues/238 , 
   # it's possible for gpg to return a 0 exit code but not have decrypted the file
   #echo "# gpg exit code: $exit_code, error_ok: $error_ok" >&3
