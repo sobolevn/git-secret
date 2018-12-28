@@ -59,7 +59,7 @@ function changes {
     decrypted=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase")
 
     # Let's diff the result:
-    diff_result=$(diff -u <(echo "$decrypted") "$path") || true
+    diff_result=$(diff -u <(echo -n "$decrypted") "$path") || true
     # There was a bug in the previous version, since `diff` returns
     # exit code `1` when the files are different.
     echo "changes in ${path}:"
