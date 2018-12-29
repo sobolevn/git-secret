@@ -29,6 +29,17 @@ function teardown {
   unset_current_state
 }
 
+@test "run 'changes' with no file changed" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+
+  echo "# output is '$output'" | sed 's/^/# /' >&3
+  echo "# " >&3
+
+  [ "$status" -eq 0 ]
+  [ "$output"  == "changes in /tmp/space file:" ]
+}
+
 
 @test "run 'changes' with one file changed" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
@@ -38,10 +49,19 @@ function teardown {
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -eq 0 ]
 
+  echo "# output is '$output'" | sed 's/^/# /' >&3
+  echo "# " >&3
+
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
   [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"hidden content юникод"* ]]
   [[ "$output" == *"+$new_content"* ]]
+
+  local num_lines=$(echo "$output" | wc -l)
+  echo "# num lines is $num_lines" >&3
+  [[ "num_lines" -eq 6 ]]
+
 }
 
 @test "run 'changes' with source file missing" {

@@ -62,6 +62,25 @@ function changes {
     diff_result=$(diff -u <(echo "$decrypted") "$path") || true
     # There was a bug in the previous version, since `diff` returns
     # exit code `1` when the files are different.
+
+    # if we use echo -n above, then we get an 8 line diff:
+        #  changes in /tmp/space file:                                                                                                                                                                         1/7
+        # --- /dev/fd/63    2018-12-29 07:42:43.335908084 -0500
+        # +++ "/tmp/space file"    2018-12-29 07:42:43.293909389 -0500
+        # @@ -1 +1,2 @@
+        # -hidden content юникод
+        # \ No newline at end of file
+        # +hidden content юникод
+        # +new content
+
+    # if we use 'echo' above, then we get a 6 line diff:
+        # changes in /tmp/space file:                                                                                                                                                                         1/7
+        # --- /dev/fd/63    2018-12-29 07:43:53.323735486 -0500
+        # +++ "/tmp/space file"    2018-12-29 07:43:53.282736757 -0500
+        # @@ -1 +1,2 @@
+        # hidden content юникод
+        # +new content
+
     echo "changes in ${path}:"
     echo "${diff_result}"
   done
