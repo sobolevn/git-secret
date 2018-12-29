@@ -29,12 +29,11 @@ function teardown {
   unset_current_state
 }
 
-@test "run 'changes' with no file changed" {
+@test "run 'changes' on one file with no file changed" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
 
-  echo "# output is '$output'" | sed 's/^/# /' >&3
-  echo "# " >&3
+  echo "$output" | sed 's/^/# output: /' >&3
 
   [ "$status" -eq 0 ]
   [ "$output"  == "changes in /tmp/space file:" ]
@@ -49,8 +48,7 @@ function teardown {
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -eq 0 ]
 
-  echo "# output is '$output'" | sed 's/^/# /' >&3
-  echo "# " >&3
+  echo "$output" | sed 's/^/# output: /' >&3
 
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
@@ -98,11 +96,22 @@ function teardown {
 }
 
 
-@test "run 'changes' without changes" {
+@test "run 'changes' on two files with no file changed" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
 
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  echo "$output" | sed 's/^/# output: /' >&3
+
   [ "$status" -eq 0 ]
+
+  local num_lines=$(echo "$output" | wc -l)
+  echo "# num lines is $num_lines" >&3
+  [[ "num_lines" -eq 3 ]]
+
+  #[ "$output"  == "changes in *(?)/space file:" ]
+  # on OSX this gets created in a file like 
+  # /private/var/folders/ab/wv4_9xx56hh9k3tebrhdzvwg90000gn/W/space file
 }
 
 
