@@ -110,11 +110,12 @@ function teardown {
 
   local num_lines=$(echo "$output" | wc -l)
   echo "# num lines is $num_lines" >&3
-  [[ "num_lines" -eq 3 ]]
-
-  #[ "$output"  == "changes in *(?)/space file:" ]
-  # on OSX this gets created in a file like 
-  # /private/var/folders/ab/wv4_9xx56hh9k3tebrhdzvwg90000gn/W/space file
+  [[ "num_lines" -eq 3 ]]   
+        # should this be two lines instead of three? 
+        # Why the blank second line? we see: 
+        #   output: changes in /tmp/space file:
+        #   output:
+        #   output: changes in /tmp/space file two:
 }
 
 
