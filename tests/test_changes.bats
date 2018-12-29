@@ -33,12 +33,12 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
 
-  echo "$output" | sed 's/^/# output: /' >&3
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
-  echo "# num lines is $num_lines" >&3
+  echo "# '$BATS_TEST_DESCRIPTION': num lines is $num_lines" >&3
   [[ "num_lines" -eq 1 ]]
 }
 
@@ -51,7 +51,7 @@ function teardown {
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -eq 0 ]
 
-  echo "$output" | sed 's/^/# output: /' >&3
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
@@ -60,7 +60,7 @@ function teardown {
   [[ "$output" == *"+$new_content"* ]]
 
   local num_lines=$(echo "$output" | wc -l)
-  echo "# num lines is $num_lines" >&3
+  echo "# '$BATS_TEST_DESCRIPTION': num lines is $num_lines" >&3
   [[ "num_lines" -eq 6 ]]
 
 }
@@ -104,12 +104,12 @@ function teardown {
 
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
 
-  echo "$output" | sed 's/^/# output: /' >&3
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
-  echo "# num lines is $num_lines" >&3
+  echo "# '$BATS_TEST_DESCRIPTION': num lines is $num_lines" >&3
   [[ "num_lines" -eq 3 ]]   
         # should this be two lines instead of three? 
         # Why the blank second line? we see: 
