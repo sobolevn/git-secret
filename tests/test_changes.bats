@@ -36,7 +36,10 @@ function teardown {
   echo "$output" | sed 's/^/# output: /' >&3
 
   [ "$status" -eq 0 ]
-  [ "$output"  == "changes in /tmp/space file:" ]
+
+  local num_lines=$(echo "$output" | wc -l)
+  echo "# num lines is $num_lines" >&3
+  [[ "num_lines" -eq 1 ]]
 }
 
 
