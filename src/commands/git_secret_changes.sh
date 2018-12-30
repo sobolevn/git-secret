@@ -57,10 +57,12 @@ function changes {
 
     # Now we have all the data required:
     decrypted=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase")
+    # note that the $() construct strips trailing newlines! See #291
 
+    #echo "# path is $path" >&3
     # Let's diff the result:
     diff_result=$(diff -u <(echo "$decrypted") "$path") || true
-    # There was a bug in the previous version, since `diff` returns
+    # we have the '|| true' because `diff` returns 
     # exit code `1` when the files are different.
 
     # if we use echo -n above, then we get an 8 line diff:
