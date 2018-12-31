@@ -110,12 +110,7 @@ function teardown {
 
   local num_lines=$(echo "$output" | wc -l)
   echo "# '$BATS_TEST_DESCRIPTION': num lines is $num_lines" >&3
-  [[ "num_lines" -eq 3 ]]   
-        # should this be two lines instead of three? 
-        # Why the blank second line? we see: 
-        #   output: changes in /tmp/space file:
-        #   output:
-        #   output: changes in /tmp/space file two:
+  [[ "num_lines" -eq 2 ]]   
 }
 
 
