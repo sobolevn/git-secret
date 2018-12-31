@@ -56,13 +56,19 @@ function changes {
     fi
 
     # Now we have all the data required:
-    decrypted=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase")
-    # note that the $() construct strips trailing newlines! See #291
+    # now do a three-step because the $() construct strips trailing newlines! See #291
+    local decrypted_x
+    local exit_code
+    local decrypted
+    decrypted_x=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase"; echo x$?)
+    exit_code=${decrypted_x##*x}
+    echo "# exit code is $exit_code" >&3
+    decrypted="${decrypted_x%x*}"
 
 
     echo "changes in ${path}:"
     # diff the result:
     # we have the '|| true' because `diff` returns error if files differ.
-    diff -u <(echo "$decrypted") "$path" || true
+    diff -u <(echo -n "$decrypted") "$path" || true
   done
 }
