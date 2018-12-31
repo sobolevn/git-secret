@@ -220,6 +220,15 @@ function set_state_secret_add {
   git secret add "$filename" > /dev/null 2>&1
 }
 
+function set_state_secret_add_without_newline {
+  local filename="$1"
+  local content="$2"
+  echo -n "$content" > "$filename"      # we do not add a newline
+  echo "$filename" >> ".gitignore"
+
+  git secret add "$filename" > /dev/null 2>&1
+}
+
 
 function set_state_secret_hide {
   git secret hide > /dev/null 2>&1

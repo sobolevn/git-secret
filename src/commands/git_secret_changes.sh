@@ -32,9 +32,6 @@ function changes {
   '
 
   for filename in "${filenames[@]}"; do
-    local decrypted
-    local diff_result
-
     local path # absolute path
     local normalized_path # relative to the .git dir
     local encrypted_filename
@@ -55,14 +52,13 @@ function changes {
         _abort "file not found. Consider using 'git secret reveal': $filename"
     fi
 
-    # Now we have all the data required:
-    # now do a three-step because the $() construct strips trailing newlines! See #291
+    # Now we have all the data required to do the last encryption and compare results:
+    # now do a three-step to preserve trailing newlines from the $() construct. See #291
     local decrypted_x
     local exit_code
     local decrypted
     decrypted_x=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase"; echo x$?)
     exit_code=${decrypted_x##*x}
-    echo "# exit code is $exit_code" >&3
     decrypted="${decrypted_x%x*}"
 
 

@@ -4,6 +4,8 @@ load _test_base
 
 FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
 SECOND_FILE_TO_HIDE="$TEST_SECOND_FILENAME"
+THIRD_FILE_TO_HIDE="$TEST_THIRD_FILENAME"
+FILE_NON_EXISTANT="NO-SUCH-FILE"
 FILE_CONTENTS="hidden content юникод"
 
 FINGERPRINT=""
@@ -160,4 +162,25 @@ function teardown {
   local second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
   [[ "$output" == *"changes in $second_path"* ]]
   [[ "$output" == *"+$second_new_content"* ]]
+}
+
+@test "run 'changes' on file that does not exist" {
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_NON_EXISTANT"
+  [ "$status" -ne 0 ]
+  #echo "# $BATS_TEST_DESCRIPTION: output is '$output'" >&3
+}
+
+@test "run 'changes' on one file without newlines" {
+  set_state_secret_add_without_newline "$THIRD_FILE_TO_HIDE" "$FILE_CONTENTS"
+  set_state_secret_hide
+
+  echo -n "$FILE_CONTENTS" > "$THIRD_FILE_TO_HIDE"  # no newline
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$THIRD_FILE_TO_HIDE"
+
+  local num_lines=$(echo "$output" | wc -l)
+    
+  [ "$status" -eq 0 ]
+  [[ "num_lines" -eq 1 ]]
 }
