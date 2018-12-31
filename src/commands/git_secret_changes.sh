@@ -53,12 +53,12 @@ function changes {
     fi
 
     # Now we have all the data required to do the last encryption and compare results:
-    # now do a three-step to preserve trailing newlines from the $() construct. See #291
+    # now do a three-step to protect trailing newlines from the $() construct.
     local decrypted_x
-    local exit_code
+    local exit_code_ignored
     local decrypted
     decrypted_x=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase"; echo x$?)
-    exit_code=${decrypted_x##*x}
+    exit_code_ignored=${decrypted_x##*x}    # if _decrypt has an error it will _abort()
     decrypted="${decrypted_x%x*}"
 
 
