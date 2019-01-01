@@ -35,12 +35,9 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
 
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
-
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
-  echo "# '$BATS_TEST_DESCRIPTION': num lines is $num_lines" >&3
   [[ "num_lines" -eq 1 ]]
 }
 
@@ -53,8 +50,6 @@ function teardown {
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -eq 0 ]
 
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
-
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
   [[ "$output" == *"changes in $fullpath"* ]]
@@ -62,7 +57,6 @@ function teardown {
   [[ "$output" == *"+$new_content"* ]]
 
   local num_lines=$(echo "$output" | wc -l)
-  echo "# '$BATS_TEST_DESCRIPTION': num lines is $num_lines" >&3
   [[ "num_lines" -eq 6 ]]
 
 }
@@ -106,12 +100,10 @@ function teardown {
 
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
 
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
-  echo "# '$BATS_TEST_DESCRIPTION': num lines is $num_lines" >&3
   [[ "num_lines" -eq 2 ]]   
 }
 
@@ -126,12 +118,8 @@ function teardown {
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -eq 0 ]
 
-  #echo "# output is '$output'" >&3
-  #echo "# " >&3
-
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
-  #echo "# fullpath is $fullpath" >&3
 
   [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"+$new_content"* ]]
@@ -167,20 +155,16 @@ function teardown {
 @test "run 'changes' on file that does not exist" {
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_NON_EXISTANT"
   [ "$status" -ne 0 ]
-  #echo "# $BATS_TEST_DESCRIPTION: output is '$output'" >&3
 }
 
 @test "run 'changes' on one file without newlines" {
   set_state_secret_add_without_newline "$THIRD_FILE_TO_HIDE" "$FILE_CONTENTS"
   set_state_secret_hide
 
-  echo -n "$FILE_CONTENTS" > "$THIRD_FILE_TO_HIDE"  # no newline
-
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$THIRD_FILE_TO_HIDE"
+  [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
-    
-  [ "$status" -eq 0 ]
-  [[ "num_lines" -eq 1 ]]
+  [[ "$num_lines" -eq 1 ]]
 }

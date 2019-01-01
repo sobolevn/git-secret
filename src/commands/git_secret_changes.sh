@@ -53,18 +53,17 @@ function changes {
     fi
 
     # Now we have all the data required to do the last encryption and compare results:
-    # now do a three-step to protect trailing newlines from the $() construct.
+    # now do a two-step to protect trailing newlines from the $() construct.
     local decrypted_x
-    local exit_code_ignored
     local decrypted
     decrypted_x=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase"; echo x$?)
     decrypted="${decrypted_x%x*}"
-    #exit_code=${decrypted_x##*x}  # exit code ignored, if _decrypt errors it will _abort()
+    # we ignore the exit code because _decrypt will _abort if appropriate.
 
 
     echo "changes in ${path}:"
     # diff the result:
-    # we have the '|| true' because `diff` returns error if files differ.
+    # we have the '|| true' because `diff` returns error code if files differ.
     diff -u <(echo -n "$decrypted") "$path" || true
   done
 }
