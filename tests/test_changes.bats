@@ -38,7 +38,7 @@ function teardown {
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
-  [[ "num_lines" -eq 1 ]]
+  [[ "$num_lines" -eq 1 ]]
 }
 
 
@@ -57,7 +57,7 @@ function teardown {
   [[ "$output" == *"+$new_content"* ]]
 
   local num_lines=$(echo "$output" | wc -l)
-  [[ "num_lines" -eq 6 ]]
+  [[ "$num_lines" -eq 6 ]]
 
 }
 
@@ -104,7 +104,7 @@ function teardown {
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
-  [[ "num_lines" -eq 2 ]]   
+  [[ "$num_lines" -eq 2 ]]   
 }
 
 
