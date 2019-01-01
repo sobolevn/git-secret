@@ -4,6 +4,8 @@ load _test_base
 
 FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
 SECOND_FILE_TO_HIDE="$TEST_SECOND_FILENAME"
+THIRD_FILE_TO_HIDE="$TEST_THIRD_FILENAME"
+FILE_NON_EXISTANT="NO-SUCH-FILE"
 FILE_CONTENTS="hidden content юникод"
 
 FINGERPRINT=""
@@ -29,6 +31,16 @@ function teardown {
   unset_current_state
 }
 
+@test "run 'changes' on one file with no file changed" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+
+  [ "$status" -eq 0 ]
+
+  local num_lines=$(echo "$output" | wc -l)
+  [[ "$num_lines" -eq 1 ]]
+}
+
 
 @test "run 'changes' with one file changed" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
@@ -41,7 +53,12 @@ function teardown {
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
   [[ "$output" == *"changes in $fullpath"* ]]
+  [[ "$output" == *"hidden content юникод"* ]]
   [[ "$output" == *"+$new_content"* ]]
+
+  local num_lines=$(echo "$output" | wc -l)
+  [[ "$num_lines" -eq 6 ]]
+
 }
 
 @test "run 'changes' with source file missing" {
@@ -78,11 +95,16 @@ function teardown {
 }
 
 
-@test "run 'changes' without changes" {
+@test "run 'changes' on two files with no file changed" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
 
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+
   [ "$status" -eq 0 ]
+
+  local num_lines=$(echo "$output" | wc -l)
+  [[ "$num_lines" -eq 2 ]]   
 }
 
 
@@ -96,12 +118,8 @@ function teardown {
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -eq 0 ]
 
-  #echo "# output is '$output'" >&3
-  #echo "# " >&3
-
   # Testing that output has both filename and changes:
   local fullpath=$(_append_root_path "$FILE_TO_HIDE")
-  #echo "# fullpath is $fullpath" >&3
 
   [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"+$new_content"* ]]
@@ -132,4 +150,21 @@ function teardown {
   local second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
   [[ "$output" == *"changes in $second_path"* ]]
   [[ "$output" == *"+$second_new_content"* ]]
+}
+
+@test "run 'changes' on file that does not exist" {
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_NON_EXISTANT"
+  [ "$status" -ne 0 ]
+}
+
+@test "run 'changes' on one file without newlines" {
+  set_state_secret_add_without_newline "$THIRD_FILE_TO_HIDE" "$FILE_CONTENTS"
+  set_state_secret_hide
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$THIRD_FILE_TO_HIDE"
+  [ "$status" -eq 0 ]
+
+  local num_lines=$(echo "$output" | wc -l)
+  [[ "$num_lines" -eq 1 ]]
 }

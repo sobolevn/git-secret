@@ -32,9 +32,6 @@ function changes {
   '
 
   for filename in "${filenames[@]}"; do
-    local decrypted
-    local diff_result
-
     local path # absolute path
     local normalized_path # relative to the .git dir
     local encrypted_filename
@@ -55,14 +52,18 @@ function changes {
         _abort "file not found. Consider using 'git secret reveal': $filename"
     fi
 
-    # Now we have all the data required:
-    decrypted=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase")
+    # Now we have all the data required to do the last encryption and compare results:
+    # now do a two-step to protect trailing newlines from the $() construct.
+    local decrypted_x
+    local decrypted
+    decrypted_x=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase"; echo x$?)
+    decrypted="${decrypted_x%x*}"
+    # we ignore the exit code because _decrypt will _abort if appropriate.
 
-    # Let's diff the result:
-    diff_result=$(diff -u <(echo "$decrypted") "$path") || true
-    # There was a bug in the previous version, since `diff` returns
-    # exit code `1` when the files are different.
+
     echo "changes in ${path}:"
-    echo "${diff_result}"
+    # diff the result:
+    # we have the '|| true' because `diff` returns error code if files differ.
+    diff -u <(echo -n "$decrypted") "$path" || true
   done
 }

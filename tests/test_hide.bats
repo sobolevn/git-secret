@@ -28,7 +28,7 @@ function teardown {
 @test "run 'hide' normally" {
   run git secret hide
 
-  #echo "# run hide normally: output: $output" >&3
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
@@ -46,7 +46,7 @@ function teardown {
 
   run git secret hide -P
 
-  #echo "# run hide with -P: output: $output" >&3
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
@@ -63,7 +63,7 @@ function teardown {
   file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
 
   # text prefixed with '# ' and sent to file descriptor 3 is 'diagnostic' (debug) output for devs
-  #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3
+  #echo "# '$BATS_TEST_DESCRIPTION': $secret_perm, file_perm: $file_perm" >&3
 
   [ "$secret_perm" = "$file_perm" ]
 
@@ -115,7 +115,7 @@ function teardown {
 
   # Now it should hide 2 files:
   run git secret hide
-  #echo "# run hide with multiple files: output: $output" >&3
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
   [ "$status" -eq 0 ]
   [ "$output" = "done. 2 of 2 files are hidden." ]
 
@@ -145,7 +145,7 @@ function teardown {
   path_mappings=$(_get_secrets_dir_paths_mapping)
   run git secret hide -m
 
-  #echo "# run hide with -m twice: output: $output" >&3
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]

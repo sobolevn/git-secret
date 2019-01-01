@@ -738,5 +738,7 @@ function _decrypt {
     local msg="problem decrypting file with gpg: exit code $exit_code: $filename"
     _warn_or_abort "$msg" "$exit_code" "$error_ok"
   fi
+
+  # at this point the file should be written to disk or output to stdout
 }
 

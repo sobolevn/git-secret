@@ -214,7 +214,16 @@ function set_state_secret_tell {
 function set_state_secret_add {
   local filename="$1"
   local content="$2"
-  echo "$content" > "$filename"
+  echo "$content" > "$filename"      # we add a newline
+  echo "$filename" >> ".gitignore"
+
+  git secret add "$filename" > /dev/null 2>&1
+}
+
+function set_state_secret_add_without_newline {
+  local filename="$1"
+  local content="$2"
+  echo -n "$content" > "$filename"      # we do not add a newline
   echo "$filename" >> ".gitignore"
 
   git secret add "$filename" > /dev/null 2>&1

@@ -33,7 +33,6 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # $output is the output from 'git secret cat' above
-  # note that currently content may differ by a newline
   [ "$FILE_CONTENTS" == "$output" ]
 }
 

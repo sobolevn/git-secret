@@ -35,10 +35,9 @@ function teardown {
   run git secret whoknows -l
   [ "$status" -eq 0 ]
 
-  echo "# output of 'whoknows -l: $output" >&3
-  echo >&3
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
     # output should look like 'abort: problem encrypting file with gpg: exit code 2: space file'
-  #echo "# status of hide: $status" >&3
+  #echo "# '$BATS_TEST_DESCRIPTION' status: $status" >&3
 
   # Now test the output, both users should be present and without expiration
   [[ "$output" == *"$TEST_DEFAULT_USER (expires: never)"* ]]
