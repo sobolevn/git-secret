@@ -1,6 +1,6 @@
 # Changelog
 
-## {{Next Version}}
+## Version 0.2.5
 
 - Fix issues with spaces in paths and filenames (#226, #135)
 - Fix issue when 'hide' used in subdir of repo (#230)
