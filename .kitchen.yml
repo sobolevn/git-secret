@@ -136,8 +136,6 @@ suites:
     verifier:
       patterns:
         - roles/git-secret/.ci/integration/gnupg-git/serverspec/*_spec.rb
-      bundler_path: '/usr/local/bin'
-      rspec_path: '/usr/local/bin'
     excludes:
       - ubuntu-latest
       - centos-latest
