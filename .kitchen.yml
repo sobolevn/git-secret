@@ -131,12 +131,11 @@ suites:
       patterns:
         - roles/git-secret/.ci/integration/gnupg2/serverspec/*_spec.rb
     excludes:
-      - ubuntu-latest
+      - centos-latest
   - name: gnupg-git
     verifier:
       patterns:
         - roles/git-secret/.ci/integration/gnupg-git/serverspec/*_spec.rb
     excludes:
-      - ubuntu-latest
       - centos-latest
       - alpine-latest
