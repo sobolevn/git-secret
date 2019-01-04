@@ -69,6 +69,23 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 <a href="graphs/contributors"><img src="https://opencollective.com/git-secret/contributors.svg?width=890" /></a>
 
 
+## Packagers
+
+Thanks also to all the people and groups who package git-secret to be easier to install on particular OSes or distributions!
+
+Here are some packagings of git-secret that we're aware of:
+
+- https://pkgs.alpinelinux.org/package/edge/testing/x86/git-secret
+- https://aur.archlinux.org/packages/git-secret/
+- https://packages.ubuntu.com/bionic/git-secret
+- https://packages.debian.org/sid/git-secret
+
+Such packages are considered 'downstream' because the git-secret code 'flows' from the git-secret repository 
+to the various rpm/deb/dpkg/etc packages that are created for specific OSes and distributions.
+
+We have also added notes specifically for packagers in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
 ## Backers
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/git-secret#backer)]
