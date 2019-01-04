@@ -4,12 +4,6 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
       env: KITCHEN_REGEXP="gnupg1-alpine-latest"
       services: docker
       sudo: required
@@ -45,12 +39,14 @@ matrix:
       sudo: required
       language: ruby
       rvm: 2.6
+    # distribute deb on this successful test
     - os: linux
       env: KITCHEN_REGEXP="gnupg2-debian-latest"; GITSECRET_DIST="deb"
       services: docker
       sudo: required
       language: ruby
       rvm: 2.6
+    # distribute rpm on this successful test
     - os: linux
       env: KITCHEN_REGEXP="gnupg2-fedora-latest"; GITSECRET_DIST="rpm"
       services: docker
@@ -58,7 +54,7 @@ matrix:
       language: ruby
       rvm: 2.6
     - os: linux
-      env: KITCHEN_REGEXP="gnupg2-centos-latest"
+      env: KITCHEN_REGEXP="gnupg2-ubuntu-latest"
       services: docker
       sudo: required
       language: ruby
@@ -70,7 +66,19 @@ matrix:
       language: ruby
       rvm: 2.6
     - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-debian-latest"; GITSECRET_DIST="make"
+      env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.6
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg-git-debian-latest";
+      services: docker
+      sudo: required
+      language: ruby
+      rvm: 2.6
+    - os: linux
+      env: KITCHEN_REGEXP="gnupg-git-ubuntu-latest"
       services: docker
       sudo: required
       language: ruby

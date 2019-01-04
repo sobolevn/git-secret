@@ -70,52 +70,32 @@
       when:
         - ansible_os_family == "RedHat"
 
-    - name: Get GnuPG github api content
-      uri:
-        url: https://api.github.com/repos/gpg/gnupg/tags
-        method: GET
-        return_content: yes
-        body_format: json
-      register: gnupg_tags
-
-    - name: Set url for latest gnupg release source
-      set_fact:
-        gnupg_tarball_url: >-
-          {{
-            gnupg_tags.json |
-            selectattr('name','match','gnupg-2.*') |
-            map(attribute='tarball_url') | first
-          }}
-
-    - name: Download latest release of gnupg source
-      get_url:
-        url: "{{ gnupg_tarball_url }}"
-        dest: /tmp/gnupg.tar.gz
-        force: yes
-      retries: 5
-      delay: 10
-
     - name: Make directory /usr/local/src/ for Alpine based distros
       command: bash -lc "mkdir -p /usr/local/src/"
       when:
         - ansible_os_family == "Alpine"
 
-    - name: Extract gnupg source tarball
-      unarchive:
-        src: /tmp/gnupg.tar.gz
-        dest: /usr/local/src/
-
-    - name: Find gnupg src directory
-      find:
-        paths: /usr/local/src
-        patterns: "gpg-gnupg*"
-        file_type: directory
-        recurse: no
-      register: found_gpg_src
-
     - name: Set gnupg src directory
       set_fact:
-        gpg_src_path: "{{ found_gpg_src.files | map(attribute='path') | first }}"
+        gpg_src_path: /usr/local/src/gpg-gnupg
+
+    - name: Get GnuPG from github
+      git:
+        repo: 'https://github.com/gpg/gnupg.git'
+        dest: "{{ gpg_src_path }}"
+        update: true
+
+    - name: get latest tag name
+      shell: "git describe --tags `git rev-list --tags --max-count=1`"
+      args:
+        chdir: "{{ gpg_src_path }}"
+      register: latest_tag
+
+    - name: Checkout latest tag
+      git:
+        repo: 'https://github.com/gpg/gnupg.git'
+        dest: "{{ gpg_src_path }}"
+        version: "{{ latest_tag.stdout }}"
 
     - name: Run gnupg autogen
       command: bash -lc "cd {{ gpg_src_path }} && ./autogen.sh "
