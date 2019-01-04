@@ -124,3 +124,4 @@ suites:
     excludes:
       - centos-latest
       - alpine-latest
+      - debian-latest

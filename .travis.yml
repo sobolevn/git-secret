@@ -72,12 +72,6 @@ matrix:
       language: ruby
       rvm: 2.6
     - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-debian-latest";
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
       env: KITCHEN_REGEXP="gnupg-git-ubuntu-latest"
       services: docker
       sudo: required
