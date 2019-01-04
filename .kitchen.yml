@@ -25,6 +25,19 @@ transport:
   max_ssh_sessions: 3
 
 platforms:
+  - name: alpine-latest
+    driver_config:
+      run_command: /sbin/init
+      dockerfile: .Dockerfiles/alpine/latest/Dockerfile
+      platform: alpine
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+      run_options:
+        tmpfs:
+          - /run
+          - /run/lock
+
   - name: debian-latest
     driver_config:
       run_command: /lib/systemd/systemd
@@ -45,21 +58,6 @@ platforms:
       run_command: /lib/systemd/systemd
       dockerfile: .Dockerfiles/fedora/latest/Dockerfile
       platform: fedora
-      cap_add:
-        - SYS_ADMIN
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
-      run_options:
-        tmpfs:
-          - /run
-          - /run/lock
-
-  - name: centos-latest
-    driver_config:
-      run_command: /lib/systemd/systemd
-      dockerfile: .Dockerfiles/centos/latest/Dockerfile
-      platform: centos
       cap_add:
         - SYS_ADMIN
       volume:
@@ -100,19 +98,6 @@ platforms:
           - /run
           - /run/lock
 
-  - name: alpine-latest
-    driver_config:
-      run_command: /sbin/init
-      dockerfile: .Dockerfiles/alpine/latest/Dockerfile
-      platform: alpine
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
-      run_options:
-        tmpfs:
-          - /run
-          - /run/lock
-
 verifier:
   name: serverspec
   sudo_path: true
@@ -131,14 +116,12 @@ suites:
       patterns:
         - roles/git-secret/.ci/integration/gnupg2/serverspec/*_spec.rb
     excludes:
-      - ubuntu-latest
+      - centos-latest
   - name: gnupg-git
     verifier:
       patterns:
         - roles/git-secret/.ci/integration/gnupg-git/serverspec/*_spec.rb
-      bundler_path: '/usr/local/bin'
-      rspec_path: '/usr/local/bin'
     excludes:
-      - ubuntu-latest
       - centos-latest
       - alpine-latest
+      - debian-latest
