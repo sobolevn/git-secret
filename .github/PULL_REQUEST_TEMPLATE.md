@@ -1,8 +1,8 @@
 <!-- Thanks for sending a pull request!
 
 Here's how it's done:
-0. If you are planing a large feature, please, discuss it first in the separate issue
-1. Make sure that you open your pull-request to the `develop` branch (master branch is protected anyways)
+0. If you are planning a large feature, please, discuss it first in a separate issue
+1. Make sure that you open your pull request against the `master` branch
 2. Make sure that tests pass
 3. Make sure that your code has the same style
 
