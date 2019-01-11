@@ -7,14 +7,10 @@ set -e
 # What version of avm setup to use
 echo "Setting up Ansible Version Manager"
 AVM_VERSION="v1.0.0"
-## Install Ansible 2.3.1 using pip and label it 'v2.3'
-export ANSIBLE_VERSIONS_0="2.3.1.0"
-export INSTALL_TYPE_0="pip"
-export ANSIBLE_LABEL_0="v2.3"
 ## Install Ansible 2.5.X using pip and label it 'v2.5'
-export ANSIBLE_VERSIONS_1="2.5.0.0"
-export INSTALL_TYPE_1="pip"
-export ANSIBLE_LABEL_1="v2.5"
+export ANSIBLE_VERSIONS_0="2.5.0.0"
+export INSTALL_TYPE_0="pip"
+export ANSIBLE_LABEL_0="v2.5"
 # Whats the default version
 export ANSIBLE_DEFAULT_VERSION="v2.5"
 
