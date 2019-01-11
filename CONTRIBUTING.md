@@ -98,7 +98,7 @@ Here are some links to gnupg documentation that might be useful for those workin
 
 #### Travis releases
 
-After you commit a tag that matches the patterm '^v.*$' and travis succeeds, Travis should publish new `deb` and `rpm` packages to [`bintray`][bintray].
+After you commit a tag that matches the pattern '^v.*$' and travis succeeds, Travis should publish new `deb` and `rpm` packages to [`bintray`][bintray].
 
 If you wish to override a previous release (*be careful*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`
 
