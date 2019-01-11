@@ -11,7 +11,6 @@ function update_linux() {
 function install_ansible {
   bash .ci/ansible-setup.sh
   # pyOpen, ndg-* and pyasn1 are for 'InsecurePlatformWarning' error
-  ~/.avm/v2.3/venv/bin/pip install netaddr ansible-lint   pyOpenSSL ndg-httpsclient pyasn1
   ~/.avm/v2.5/venv/bin/pip install netaddr ansible-lint   pyOpenSSL ndg-httpsclient pyasn1
 }
 
