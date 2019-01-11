@@ -66,7 +66,7 @@ If you found any security related issues, please do not disclose it in public. S
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="graphs/contributors"><img src="https://opencollective.com/git-secret/contributors.svg?width=890" /></a>
+<a href="https://github.com/sobolevn/git-secret/graphs/contributors"><img src="https://opencollective.com/git-secret/contributors.svg?width=890" /></a>
 
 
 ## Packagers
