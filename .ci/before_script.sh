@@ -17,19 +17,14 @@ function install_ansible {
 
 # Mac:
 if [[ "$GITSECRET_DIST" == "brew" ]]; then
-  gnupg_installed="$(brew list | grep -c "gnupg")"
+  brew update 
 
-  # double 'brew install' is temporary workaround for #305:
-  #   'Error: HOMEBREW_LOGS was not exported!'
-  #   Please don't worry, you likely hit a bug auto-updating from an old version.
-  #   Rerun your command, everything is up-to-date and fine now.'
-  [[ "$gnupg_installed" -ge 1 ]] || brew install gnupg || brew install gnupg
+  gnupg_installed="$(brew list | grep -c "gnupg")"
+  [[ "$gnupg_installed" -ge 1 ]] || brew install gnupg
   if [[ -f "/usr/local/bin/gpg1" ]]; then
     ln -s /usr/local/bin/gpg1 /usr/local/bin/gpg
   fi
-
-  brew install gawk || brew install gawk
-  # temporary workaround for #305 above. 
+  brew install gawk
 fi
 
 # Linux:
