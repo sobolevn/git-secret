@@ -98,7 +98,7 @@ Here are some links to gnupg documentation that might be useful for those workin
 
 #### Travis releases
 
-When creating a commit inside `master` branch, `travis` on successful build will publish new `deb` and `rpm` packages to [`bintray`][bintray].
+After you commit a tag that matches the pattern '^v.*$' and the tests succeed, Travis should publish new `deb` and `rpm` packages to [`bintray`][bintray].
 
 If you wish to override a previous release (*be careful*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`
 
@@ -117,6 +117,21 @@ Releases to `brew` are made manually.
 [bintray]: https://bintray.com/sobolevn
 [Dockerhub]: https://hub.docker.com/r/sobolevn/git-secret/
 
+### Downstream Packages
+
+There are several distibutions and packaging systems that may already have git-secret packaged for your distribution (although sometimes their versions are not the most current, and we recommend all users upgrade to 0.2.5 or above). 
+
+### Notes to Downstream Packagers (Those who make packages for specific OSes/distributions)
+
+First of all, thank you for packaging git-secret for your platform! We appreciate it.
+
+We also would like to welcome you to collaborate or discuss any issues, ideas or thoughts you have about 
+git-secret by submitting issue report (which can also be feature requests) or pull requests via the git repo at 
+[git-secret on github](https://github.com/sobolevn/git-secret) 
+
+Please let us know if there are any changes you'd like to see to the source, 
+packaging, testing, documentation, or other aspect of git-secret. 
+We look forward to hearing from you.
 
 ## Financial contributions
 
