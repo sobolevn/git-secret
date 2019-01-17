@@ -1,6 +1,6 @@
 # git-secret
 
-[![Backers on Open Collective](https://opencollective.com/git-secret/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/git-secret/sponsors/badge.svg)](#sponsors) [![Build Status](https://img.shields.io/travis/sobolevn/git-secret/master.svg)](https://travis-ci.org/sobolevn/git-secret) [![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](http://braumeister.org/formula/git-secret) [![Bintray deb](https://img.shields.io/bintray/v/sobolevn/deb/git-secret.svg)](https://bintray.com/sobolevn/deb/git-secret/view)
+[![Backers on Open Collective](https://opencollective.com/git-secret/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/git-secret/sponsors/badge.svg)](#sponsors) [![Build Status](https://img.shields.io/travis/sobolevn/git-secret/master.svg)](https://travis-ci.org/sobolevn/git-secret) [![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](https://formulae.brew.sh/formula/git-secret) [![Bintray deb](https://img.shields.io/bintray/v/sobolevn/deb/git-secret.svg)](https://bintray.com/sobolevn/deb/git-secret/view)
 
 [![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](http://git-secret.io/)
 
