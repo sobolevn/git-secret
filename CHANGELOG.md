@@ -1,7 +1,13 @@
 # Changelog
 
+## {{Next Version}}
+
+- Fix link to homebrew's git-secret in README.md (#310)
+- Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
+
 ## Version 0.2.5
 
+- Added notes about packages and for package maintainers (#281)
 - Fix issues with spaces in paths and filenames (#226, #135)
 - Fix issue when 'hide' used in subdir of repo (#230)
 - Fix issues in 'changes' with trailing newlines (#291)
