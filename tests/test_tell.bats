@@ -18,26 +18,18 @@ function teardown {
 }
 
 @test "run 'tell' with '-v'" {
-  # Preparations:
-  git_set_config_email "" # now it should not allow to add yourself
-
   run git secret tell -d "$TEST_GPG_HOMEDIR" -v "$TEST_DEFAULT_USER"
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   [[ "$output" == *"created"* ]]
-
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
-
   [[ "$output" == *"gpg:"* ]]
   [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
   [ "$status" -eq 0 ]
 }
 
 @test "run 'tell' without '-v'" {
-  # Preparations:
-  git_set_config_email "" # now it should not allow to add yourself
-
   run git secret tell -d "$TEST_GPG_HOMEDIR"  "$TEST_DEFAULT_USER"
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   [[ "$output" != *"imported:"* ]]
   [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
