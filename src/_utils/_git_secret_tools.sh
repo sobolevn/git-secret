@@ -173,16 +173,6 @@ function _file_has_line {
 }
 
 
-function _delete_line {
-  local escaped_path
-  # shellcheck disable=2001
-  escaped_path=$(echo "$1" | sed -e 's/[\/&]/\\&/g') # required
-
-  local line="$2" # required
-
-  sed -i.bak "/$escaped_path/d" "$line"
-}
-
 
 # this sets the global variable 'filename'
 # currently this function is only used by 'hide'
@@ -194,24 +184,6 @@ function _temporary_file {
   trap 'echo "cleaning up..."; rm -f "$filename";' EXIT
 }
 
-
-function _unique_filename {
-  # First parameter is base-path, second is filename,
-  # third is optional extension.
-  local n=0
-  local base_path="$1"
-  local result="$2"
-
-  while true; do
-    if [[ ! -f "$base_path/$result" ]]; then
-      break
-    fi
-
-    n=$(( n + 1 ))
-    result="${2}-${n}" # calling to the original "$2"
-  done
-  echo "$result"
-}
 
 # Helper function
 
@@ -629,9 +601,6 @@ function _assert_keychain_contains_emails {
 }
 
 
-function _get_raw_filename {
-  echo "$(dirname "$1")/$(basename "$1" "$SECRETS_EXTENSION")" | sed -e 's#^\./##'
-}
 
 
 function _get_encrypted_filename {

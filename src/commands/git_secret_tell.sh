@@ -21,13 +21,16 @@ function tell {
   local emails
   local self_email=0
   local homedir
+  local verbose=0
 
   # A POSIX variable
   # Reset in case getopts has been used previously in the shell.
   OPTIND=1
 
-  while getopts "hmd:" opt; do
+  while getopts "vhmd:" opt; do
     case "$opt" in
+      v) verbose=1;;
+
       h) _show_manual_for "tell";;
 
       m) self_email=1;;
@@ -95,7 +98,13 @@ function tell {
     # Importing public key to the local keychain:
     local secrets_dir_keys
     secrets_dir_keys=$(_get_secrets_dir_keys)
-    $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" > /dev/null 2>&1
+
+    local args=( --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" )
+    if [[ "$verbose" -ne 0 ]]; then
+      $SECRETS_GPG_COMMAND "${args[@]}"
+    else
+      $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1
+    fi
     exit_code=$?
     if [[ "$exit_code" -ne 0 ]]; then
       _abort "problem importing public key for '$email' with gpg: exit code $exit_code"
