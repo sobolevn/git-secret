@@ -145,7 +145,7 @@ function teardown {
   path_mappings=$(_get_secrets_dir_paths_mapping)
   run git secret hide -m
 
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
