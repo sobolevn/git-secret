@@ -4,6 +4,8 @@ load _test_base
 
 FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
 FILE_CONTENTS="hidden content юникод"
+FILE_CONTENTS_UPDATED="hidden content юникод\na_new_line"
+FILE_CONTENTS_CONFLICTS="hidden content юникод\n<<<<<<< file-on-disk\na_new_line\n=======\n>>>>>>> file-from-secret"
 
 FINGERPRINT=""
 
@@ -73,7 +75,7 @@ function teardown {
   file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
 
   # text prefixed with '# ' and sent to file descriptor 3 is 'diagnostic' (debug) output for devs
-  #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3    
+  #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3
 
   [ "$secret_perm" = "$file_perm" ]
 
@@ -166,4 +168,86 @@ function teardown {
 
   # Cleaning up:
   uninstall_fixture_full_key "$TEST_SECOND_USER" "$second_fingerprint"
+}
+
+
+@test "run 'reveal' with '-s' and no local file" {
+  rm -f "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ -f "$FILE_TO_HIDE" ]
+
+  cmp -s "$FILE_TO_HIDE" <(echo "$FILE_CONTENTS")
+}
+
+
+@test "run 'reveal' with '-s' and local file with same content" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ -f "$FILE_TO_HIDE" ]
+
+  cmp -s "$FILE_TO_HIDE" <(echo "$FILE_CONTENTS")
+}
+
+
+@test "run 'reveal' with '-s' and local file with different content" {
+  echo -en "${FILE_CONTENTS_UPDATED}" > "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ "$output" = "done. 1 of 1 files are revealed (1 merged)." ]
+  [ -f "$FILE_TO_HIDE" ]
+
+  cmp "$FILE_TO_HIDE" <(echo -e "$FILE_CONTENTS_CONFLICTS")
+}
+
+
+@test "run 'reveal' with '-s' twice and local file with same content" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ "$output" = "done. 1 of 1 files are revealed (0 merged)." ]
+  [ -f "$FILE_TO_HIDE" ]
+
+  cmp "$FILE_TO_HIDE" <(echo "$FILE_CONTENTS")
+
+  run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ "$output" = "done. 1 of 1 files are revealed (0 merged)." ]
+  [ -f "$FILE_TO_HIDE" ]
+
+  cmp "$FILE_TO_HIDE" <(echo "$FILE_CONTENTS")
+}
+
+
+@test "run 'reveal' with '-s' twice and local file with different content" {
+  echo -en "${FILE_CONTENTS_UPDATED}" > "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ "$output" = "done. 1 of 1 files are revealed (1 merged)." ]
+  [ -f "$FILE_TO_HIDE" ]
+
+  cmp "$FILE_TO_HIDE" <(echo -e "$FILE_CONTENTS_CONFLICTS")
+
+  run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -ne 0 ]
+  [ "${lines[0]}" = "Conflicts were found in the following file(s):" ]
+  [[ "${lines[1]}" == *"$FILE_TO_HIDE"* ]]
+  [ "${lines[2]}" = "Resolve conflicts before continuing. Aborting." ]
+  [ -f "$FILE_TO_HIDE" ]
+
+  cmp "$FILE_TO_HIDE" <(echo -e "$FILE_CONTENTS_CONFLICTS")
 }

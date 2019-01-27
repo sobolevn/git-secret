@@ -85,10 +85,11 @@ function hide {
   local fsdb_update_hash=0 # add checksum hashes to fsdb
   local verbose=''
   local force_continue=0
+  local safe=0
 
   OPTIND=1
 
-  while getopts 'cFPdmvh' opt; do
+  while getopts 'cFPdmvhs' opt; do
     case "$opt" in
       c) clean=1;;
 
@@ -101,6 +102,9 @@ function hide {
       m) fsdb_update_hash=1;;
 
       v) verbose='v';;
+
+      # safe overrides other flags and sets fsdb_update_hash and delete
+      s) safe=1; fsdb_update_hash=1; delete=1;;
 
       h) _show_manual_for 'hide';;
 
@@ -130,6 +134,8 @@ function hide {
   while read -r record; do
     to_hide+=("$record")  # add record to array
   done < "$path_mappings"
+
+  [[ ${safe} -eq 1 ]] && _check_if_plaintexts_have_conflicts "${to_hide[@]}"
 
   local counter=0
   for record in "${to_hide[@]}"; do

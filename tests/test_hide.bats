@@ -4,6 +4,8 @@ load _test_base
 
 FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
 FILE_CONTENTS="hidden content юникод"
+FILE_CONTENTS_UPDATED="hidden content юникод\na_new_line"
+FILE_CONTENTS_CONFLICTS="hidden content юникод\n<<<<<<< file-on-disk\na_new_line\n=======\n>>>>>>> file-from-secret"
 
 
 function setup {
@@ -145,7 +147,7 @@ function teardown {
   path_mappings=$(_get_secrets_dir_paths_mapping)
   run git secret hide -m
 
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
@@ -248,4 +250,44 @@ function teardown {
   run git secret hide
   [ "$status" -eq 0 ]
   [ "$output" = "done. 1 of 1 files are hidden." ]
+}
+
+
+@test "run 'hide' with '-s'" {
+  run git secret hide -s
+
+  # Command must execute normally:
+  [[ "$status" -eq 0 ]]
+  [[ "${#lines[@]}" -eq 2 ]]
+  [[ "${lines[0]}" = "done. 1 of 1 files are hidden." ]]
+  [[ "${lines[1]}" = "cleaning up..." ]]
+
+  # New files should be created:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [[ -f "$encrypted_file" ]]
+
+  # File must be removed:
+  [[ ! -f "$FILE_TO_HIDE" ]]
+}
+
+
+@test "run 'hide' with '-s' and file with conflicts" {
+  echo -en "${FILE_CONTENTS_CONFLICTS}" > "$FILE_TO_HIDE"
+
+  run git secret hide -s
+
+  # Command should return an error:
+  [ "$status" -ne 0 ]
+
+  [ "${#lines[@]}" -eq 3 ]
+  [ "${lines[0]}" = "Conflicts were found in the following file(s):" ]
+  [[ "${lines[1]}" == *"$FILE_TO_HIDE"* ]]
+  [ "${lines[2]}" = "Resolve conflicts before continuing. Aborting." ]
+
+  # New files should NOT be created:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [[ ! -f "$encrypted_file" ]]
+
+  # File must still be there:
+  [[ -f "$FILE_TO_HIDE" ]]
 }

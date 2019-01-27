@@ -144,8 +144,9 @@ Anyone can file an expense. If the expense makes sense for the development of th
 
 ### Contributors
 
-Thank you to all the people who have already contributed to git-secret!
-<a href="graphs/contributors"><img src="https://opencollective.com/git-secret/contributors.svg?width=890" /></a>
+Thank you to all the people who have already contributed 
+to git-secret via commits to our git repository!
+<a href="http://github.com/sobolevn/git-secret/graphs/contributors"><img src="https://opencollective.com/git-secret/contributors.svg?width=890" /></a>
 
 
 ### Backers

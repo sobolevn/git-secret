@@ -2,12 +2,15 @@
 
 function changes {
   local passphrase=""
+  local git=0
 
   OPTIND=1
 
-  while getopts 'hd:p:' opt; do
+  while getopts 'hgd:p:' opt; do
     case "$opt" in
       h) _show_manual_for 'changes';;
+
+      g) git=1;;
 
       p) passphrase=$OPTARG;;
 
@@ -30,6 +33,8 @@ function changes {
 
   IFS='
   '
+
+  _check_if_plaintexts_have_conflicts "${filenames[@]}";
 
   for filename in "${filenames[@]}"; do
     local path # absolute path
@@ -60,10 +65,28 @@ function changes {
     decrypted="${decrypted_x%x*}"
     # we ignore the exit code because _decrypt will _abort if appropriate.
 
+    if [[ 1 -eq $git ]]; then
+      _check_if_busybox_diff
+      # We output a merged text where the diffs are surrounded by git-style conflicts
+      diff_x=$(
+        diff -D AAAAAAA "${path}" <(echo -n "$decrypted") | \
+        sed -e $'s/#ifndef AAAAAAA/<<<<<<< file-on-disk/g' | \
+        sed -e $'s/#endif \/\* ! AAAAAAA \*\//=======\\\n>>>>>>> file-from-secret/g' | \
 
-    echo "changes in ${path}:"
-    # diff the result:
-    # we have the '|| true' because `diff` returns error code if files differ.
-    diff -u <(echo -n "$decrypted") "$path" || true
+        sed -e $'s/#else \/\* AAAAAAA \*\//=======/g' | \
+
+        sed -e $'s/#ifdef AAAAAAA/<<<<<<< file-on-disk\\\n=======/g' | \
+        sed -e $'s/#endif \/\* AAAAAAA \*\//>>>>>>> file-from-secret/g';
+        echo x$?
+        );
+
+      diff="${diff_x%x*}"
+      printf "%s" "${diff}"
+    else
+      echo "changes in ${path}:"
+      # diff the result:
+      # we have the '|| true' because `diff` returns error code if files differ.
+      diff -u <(echo -n "$decrypted") "$path" || true
+    fi
   done
 }

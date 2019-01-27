@@ -53,6 +53,26 @@ TEST_DEFAULT_FILENAME="space file" # has spaces
 TEST_SECOND_FILENAME="space file two" # has spaces
 TEST_THIRD_FILENAME="space file three"  # has spaces
 
+# Prints the content of the output variable.
+# Empty lines are preserved.
+# Usage: debug_output
+function debug_output {
+  # both variables are inherited from the test
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output:/" >&3
+}
+
+# Prints the content of lines variable.
+# NOTE: empty strings (lines) are not preserved, and are not printed out
+# in this function. Nevertheless, this is the actual content of $lines
+# which can be used in tests like [ "$lines[1] = "something" ].
+# Usage: debug_lines
+function debug_lines {
+  # both variables are inherited from the test
+  for line in "${lines[@]}"; do
+    echo -e "${line}" | sed "s/^/# '$BATS_TEST_DESCRIPTION' line:/" >&3
+  done
+}
+
 
 function test_user_password {
   # Password for 'user3@gitsecret.io' is 'user3pass'
