@@ -26,7 +26,7 @@ function teardown {
   run git secret hide   
   # this will fail, because we're using an expired key
 
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
     # output will look like 'abort: problem encrypting file with gpg: exit code 2: space file'
   #echo "# status of hide: $status" >&3
 
@@ -39,7 +39,7 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # diag output for bats-core
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
   # output should look like 'abort: problem encrypting file with gpg: exit code 2: space file'
   
   #echo "# $BATS_TEST_DESCRIPTION: $status" >&3
@@ -57,7 +57,7 @@ function teardown {
   run git secret whoknows -l
   [ "$status" -eq 0 ]
 
-  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Now test the output, both users should be present:
   [[ "$output" == *"$TEST_DEFAULT_USER (expires: never)"* ]]
