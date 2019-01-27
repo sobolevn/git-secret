@@ -4,6 +4,7 @@
 
 - Fix link to homebrew's git-secret in README.md (#310)
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
+- Remove un-needed redirection in 'reveal' (#325)
 - Remove unused functions from _git_secret_tools.sh
 
 ## Version 0.2.5
