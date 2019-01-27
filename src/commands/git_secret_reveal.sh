@@ -69,7 +69,7 @@ function reveal {
       fi
     fi
   
-  done < "$path_mappings"
+  done
 
   echo "done. $counter of ${#to_show[@]} files are revealed."
 }
