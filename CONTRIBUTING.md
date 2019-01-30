@@ -32,20 +32,40 @@ Only required if dealing with manuals, `gh-pages` or releases:
 
 ### Environment CentOS/RedHat (in development)
 
-- yum group install 'Development Tools'
-- yum install rubygem-bundler openssl-devel readline-devel zlib-devel docker
-- set up docker for use as a normal user. You may have to change group ownership of /var/run/docker.sock
+All steps should be performed as normal non-root user unless 'sudo' shown.
+
+- sudo yum group install 'Development Tools'
+- sudo yum install rubygem-bundler openssl-devel readline-devel zlib-devel docker
+- set up docker for use as a normal user. You may have to put yourself in a special group, 
+  and/or use sudo to change group ownership of /var/run/docker.sock
  -- see https://docs.docker.com/install/linux/linux-postinstall/ for more
-- install rvm, adjusting PATH and loading rvm init script as needed in your dotfiles
-- install ruby 2.4 with 'rbenv install 2.4.5' and 'rbenv local 2.4.5'
+- install rvm, see https://rvm.io/rvm/install
+- change your dotfiles to add to $PATH and setup the rbenv environmentscript as shown during rvm install
+- install ruby 2.4 with 'rbenv install 2.4.4' and 'rbenv local 2.4.4'
 - gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec
+
+### Basic Kitchen Use
+
+You should now be able to see the available kitchen test configurations for git-secret using:
+
+- kitchen list
+
+Git-secret kitchen test configurations have names like 'gnupg2-ubuntu-latest' and 'gnupg-git-ubuntu-rolling'.
+
+to run a particular test, use the command
+
+- bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"  configuration-name-here
+
+Using the command `kitchen` by itself will show you several of the capabilities it has.
+You can read more about Test Kitchen at <https://github.com/test-kitchen/test-kitchen/blob/master/README.md>
+and <https://kitchen.ci>
 
 ### Getting started
 
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
 2. Fork and clone your repository: `git clone https://github.com/${YOUR_NAME}/git-secret.git`
 3. Make sure that everything works on the current platform by running `make test`
-4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
+4. [Run local CI tests](#running-local-ci-tests) to verify functionality on all tested platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`. Follow the command with a configuration name (as shown above) 
 
 ### Development Process
 
