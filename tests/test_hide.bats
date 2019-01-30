@@ -69,11 +69,14 @@ function teardown {
 
 }
 
+# this test fails in our git hooks for some reason--
+# git rev-parse --inside-work-tree (used by _is_inside_git_tree) 
+# indicates we're not in a git repo
 @test "run 'hide' from inside subdirectory" {
   # Preparations:
-  local root_dir='test_sub_dir'
-  mkdir -p "$root_dir"
-  local second_file="$root_dir/second_file.txt"
+  local sub_dir='test_sub_dir'
+  mkdir -p "$sub_dir"
+  local second_file="$sub_dir/second_file.txt"
   local second_content="some content"
   set_state_secret_add "$second_file" "$second_content"
 
@@ -81,14 +84,22 @@ function teardown {
   [ -f "$second_file" ]
 
   # cd into the subdir
-  cd "$root_dir"
+  cd "$sub_dir"
+
+  run pwd
+  [[ "$output" == *"$sub_dir"* ]]
+
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' cd output: /" >&3
 
   # Now it should hide 2 files:
   run git secret hide
+
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' hide output: /" >&3
+
   [ "$status" -eq 0 ]
 
-  # cd back
-  cd ".."
+  cd ..
+
 }
 
 @test "run 'hide' with missing file" {
@@ -217,9 +228,9 @@ function teardown {
 
 @test "run 'hide' with '-d' and '-v' and files in subdirectories" {
   # Preparations:
-  local root_dir='test_sub_dir'
-  mkdir -p "$root_dir"
-  local second_file="$root_dir/$TEST_SECOND_FILENAME"
+  local sub_dir='test_sub_dir'
+  mkdir -p "$sub_dir"
+  local second_file="$sub_dir/$TEST_SECOND_FILENAME"
   local second_content="some content"
   set_state_secret_add "$second_file" "$second_content"
 
