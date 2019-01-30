@@ -23,17 +23,21 @@
     warn: no
     creates: /usr/bin/shellcheck
 
-- name: Install rake
-  gem:
-    name: rake
-    state: present
-    user_install: no
+#- name: Install rake
+#  gem:
+#    name: rake
+#    state: present
+#    user_install: no
+#
+#- name: Install fpm
+#  gem:
+#    name: fpm
+#    state: present
+#    user_install: no
+#
+- name: Install rake and fpm
+  command: bash -lc "gem install rake fpm"
 
-- name: Install fpm
-  gem:
-    name: fpm
-    state: present
-    user_install: no
 
 # here the package is installed but a non-zero status code is returned that we ignore
 - name: Install apk packaging dependencies for Alpine based distros
