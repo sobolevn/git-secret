@@ -39,9 +39,8 @@
 #    user_install: no
 
 # so we install rake and fpm together at once with gem.
-# Alpine needs rdoc
-- name: Install rake, rdoc, and fpm
-  command: bash -lc "gem install rake rdoc fpm"
+- name: Install rake and fpm
+  command: bash -lc "gem install rake fpm --no-document"
 
 # here the package is installed but a non-zero status code is returned that we ignore
 - name: Install apk packaging dependencies for Alpine based distros
