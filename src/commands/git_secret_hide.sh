@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# no change
-
 # shellcheck disable=2016
 AWK_FSDB_UPDATE_HASH='
 BEGIN { FS=":"; OFS=":"; }
