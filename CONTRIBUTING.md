@@ -30,6 +30,16 @@ Only required if dealing with manuals, `gh-pages` or releases:
 - install Homebrew
 - install ruby2.4 and kitchen dependencies with `brew install rbenv ruby-build rbenv-vars; rbenv install 2.4.4; rbenv rehash; rbenv global 2.4.4 ;gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec`
 
+### Environment CentOS/RedHat (in development)
+
+- yum group install 'Development Tools'
+- yum install rubygem-bundler openssl-devel readline-devel zlib-devel docker
+- set up docker for use as a normal user. You may have to change group ownership of /var/run/docker.sock
+ -- see https://docs.docker.com/install/linux/linux-postinstall/ for more
+- install rvm, adjusting PATH and loading rvm init script as needed in your dotfiles
+- install ruby 2.4 with 'rbenv install 2.4.5' and 'rbenv local 2.4.5'
+- gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec
+
 ### Getting started
 
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
