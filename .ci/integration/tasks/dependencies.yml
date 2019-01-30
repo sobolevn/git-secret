@@ -23,6 +23,12 @@
     warn: no
     creates: /usr/bin/shellcheck
 
+- name: Install rake
+  gem:
+    name: rake
+    state: present
+    user_install: no
+
 - name: Install fpm
   gem:
     name: fpm
@@ -34,3 +40,4 @@
   command: bash -lc "gem install etc || :"
   when:
     - ansible_os_family == "Alpine"
+
