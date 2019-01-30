@@ -23,21 +23,8 @@
     warn: no
     creates: /usr/bin/shellcheck
 
-#  We gave up on using gem: to install fpm and rake 
+#  We don't use gem: to install fpm and rake 
 #  because we were getting errors installing fpm. See #339
-
-#- name: Install rake
-#  gem:
-#    name: rake
-#    state: present
-#    user_install: no
-#
-#- name: Install fpm
-#  gem:
-#    name: fpm
-#    state: present
-#    user_install: no
-
 # so we install rake and fpm together at once with gem.
 - name: Install rake and fpm
   command: bash -lc "gem install rake fpm --no-document"
