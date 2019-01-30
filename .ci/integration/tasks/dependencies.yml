@@ -23,6 +23,9 @@
     warn: no
     creates: /usr/bin/shellcheck
 
+#  We gave up on using gem: to install fpm and rake 
+#  because we were getting errors installing fpm. See #339
+
 #- name: Install rake
 #  gem:
 #    name: rake
@@ -34,10 +37,11 @@
 #    name: fpm
 #    state: present
 #    user_install: no
-#
-- name: Install rake and fpm
-  command: bash -lc "gem install rake fpm"
 
+# so we install rake and fpm together at once with gem.
+# Alpine needs rdoc
+- name: Install rake, rdoc, and fpm
+  command: bash -lc "gem install rake rdoc fpm"
 
 # here the package is installed but a non-zero status code is returned that we ignore
 - name: Install apk packaging dependencies for Alpine based distros
