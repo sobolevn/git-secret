@@ -256,6 +256,8 @@ function teardown {
 @test "run 'hide' with '-s'" {
   run git secret hide -s
 
+  debug_output
+
   # Command must execute normally:
   [[ "$status" -eq 0 ]]
   [[ "${#lines[@]}" -eq 2 ]]
@@ -276,6 +278,7 @@ function teardown {
 
   run git secret hide -s
 
+  debug_output
   # Command should return an error:
   [ "$status" -ne 0 ]
 

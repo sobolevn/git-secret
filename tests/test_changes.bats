@@ -100,6 +100,7 @@ function teardown {
 
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
 
+  debug_output
 
   [ "$status" -eq 0 ]
 
@@ -173,6 +174,8 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret changes -g -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
 
+  debug_output
+
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
@@ -185,7 +188,10 @@ function teardown {
   echo -en "$FILE_CONTENTS_UPDATED" > "$FILE_TO_HIDE"
   run git secret changes -g -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
 
+  debug_output
+
   [ "$status" -eq 0 ]
 
+  # is echo guaranteed to have a -e option? OSX 'man echo' doesn't show a -e option.
   cmp <(echo -en "$output") <(echo -en "$FILE_CONTENTS_CONFLICTS")
 }

@@ -69,7 +69,7 @@ function debug_output {
 function debug_lines {
   # both variables are inherited from the test
   for line in "${lines[@]}"; do
-    echo -e "${line}" | sed "s/^/# '$BATS_TEST_DESCRIPTION' line:/" >&3
+    echo "${line}" | sed "s/^/# '$BATS_TEST_DESCRIPTION' line:/" >&3
   done
 }
 

@@ -177,6 +177,8 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
 
+  debug_output
+
   [ "$status" -eq 0 ]
   [ -f "$FILE_TO_HIDE" ]
 
@@ -187,6 +189,8 @@ function teardown {
 @test "run 'reveal' with '-s' and local file with same content" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  debug_output
 
   [ "$status" -eq 0 ]
   [ -f "$FILE_TO_HIDE" ]
@@ -201,6 +205,8 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
 
+  debug_output
+
   [ "$status" -eq 0 ]
   [ "$output" = "done. 1 of 1 files are revealed (1 merged)." ]
   [ -f "$FILE_TO_HIDE" ]
@@ -213,6 +219,8 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
 
+  debug_output
+
   [ "$status" -eq 0 ]
   [ "$output" = "done. 1 of 1 files are revealed (0 merged)." ]
   [ -f "$FILE_TO_HIDE" ]
@@ -220,6 +228,8 @@ function teardown {
   cmp "$FILE_TO_HIDE" <(echo "$FILE_CONTENTS")
 
   run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  debug_output
 
   [ "$status" -eq 0 ]
   [ "$output" = "done. 1 of 1 files are revealed (0 merged)." ]
@@ -235,6 +245,8 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
 
+  debug_output
+
   [ "$status" -eq 0 ]
   [ "$output" = "done. 1 of 1 files are revealed (1 merged)." ]
   [ -f "$FILE_TO_HIDE" ]
@@ -242,6 +254,8 @@ function teardown {
   cmp "$FILE_TO_HIDE" <(echo -e "$FILE_CONTENTS_CONFLICTS")
 
   run git secret reveal -s -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  debug_output
 
   [ "$status" -ne 0 ]
   [ "${lines[0]}" = "Conflicts were found in the following file(s):" ]
