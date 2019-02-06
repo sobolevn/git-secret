@@ -9,7 +9,7 @@ if [[ "$BRANCH_NAME" != '(no branch)' ]]; then
 
   # Set marker, that we running tests from `git commit`,
   # so some tests will be skipped. It is done, because `git rev-parse`
-  # is not working when running from pre-commit hook.
+  # is not working when running from pre-commit hook. See #334
   export BATS_RUNNING_FROM_GIT=1
 
   # Run tests:
