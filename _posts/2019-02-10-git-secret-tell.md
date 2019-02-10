@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-tell'
+date:   2019-02-10 14:53:17 -0500
+permalink: git-secret-tell
+categories: command
+---
 git-secret-tell - adds a person, who can access private data.
 ===============================================================
 

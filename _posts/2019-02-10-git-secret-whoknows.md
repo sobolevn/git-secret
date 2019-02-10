@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-whoknows'
+date:   2019-02-10 14:53:17 -0500
+permalink: git-secret-whoknows
+categories: command
+---
 git-secret-whoknows - prints email-labels for each key in the keyring.
 ======================================================================
 

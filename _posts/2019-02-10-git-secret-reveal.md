@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-reveal'
+date:   2019-02-10 14:53:17 -0500
+permalink: git-secret-reveal
+categories: command
+---
 git-secret-reveal - decrypts all added files.
 =============================================
 
