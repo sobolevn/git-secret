@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-clean'
+date:   2019-02-10 15:21:28 -0500
+permalink: git-secret-clean
+categories: command
+---
 git-secret-clean - removes all the hidden files.
 ================================================
 

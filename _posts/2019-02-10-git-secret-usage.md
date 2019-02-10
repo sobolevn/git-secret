@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-usage'
+date:   2019-02-10 15:21:28 -0500
+permalink: git-secret-usage
+categories: command
+---
 git-secret-usage - prints all the available commands.
 =====================================================
 
