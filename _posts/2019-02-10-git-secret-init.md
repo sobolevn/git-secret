@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-init'
+date:   2019-02-10 15:21:28 -0500
+permalink: git-secret-init
+categories: command
+---
 git-secret-init - initializes git-secret repository.
 ====================================================
 

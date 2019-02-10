@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-add'
+date:   2019-02-10 15:21:28 -0500
+permalink: git-secret-add
+categories: command
+---
 git-secret-add - starts to track added files.
 =============================================
 
