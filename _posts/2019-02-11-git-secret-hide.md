@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret-hide'
+date:   2019-02-11 09:26:41 -0500
+permalink: git-secret-hide
+categories: command
+---
 git-secret-hide - encrypts all added files with the inner keyring.
 ==================================================================
 
