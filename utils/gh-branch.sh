@@ -8,7 +8,7 @@ function update_gh_branch {
 
   branch_name=$(git branch | grep '\*' | sed 's/* //')
 
-  git checkout 'dist/gh-pages'
+  git checkout 'gh-pages'
   make
 
   git add '_posts'
