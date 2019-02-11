@@ -6,56 +6,79 @@ Your contributions are always welcome!
 
 ### Environment
 
-Before starting make sure you have:
+For development with `git-secret` you should have these tools:
 
 - git
 - bash
 - bundler
-- docker
 - gawk
-- gnupg (or gnupg2)
+- gnupg (or gnupg2), see below if not packaged by your distribution/OS (i.e. OSX)
 - ruby
-- sha256sum
+- sha256sum  (on freebsd and OSX `shasum` is used instead)
 - [shellcheck](https://github.com/koalaman/shellcheck)
+
+To test `git-secret` using test-kitchen, you will also need:
+
+- docker
 - test-kitchen
 
-Only required if dealing with manuals, `gh-pages` or releases:
+These are only required if dealing with manuals, `gh-pages` or releases:
 
 - ruby, ruby-dev
 
 ### Environment MacOS
 
-- install Docker for Mac
-- install Chef Developer Kit
 - install Homebrew
-- install ruby2.4 and kitchen dependencies with `brew install rbenv ruby-build rbenv-vars; rbenv install 2.4.4; rbenv rehash; rbenv global 2.4.4 ;gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec`
+- install gnupg2 with `brew install gnupg2`
+
+#### For docker/test-kitchen
+- install Docker for Mac
+- install Chef Developer Kit (?)
+- install ruby2.4 and kitchen dependencies with 
+
+  brew install rbenv ruby-build rbenv-vars; 
+  rbenv install 2.4.4; rbenv rehash; rbenv global 2.4.4;
+  gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec;
 
 ### Getting started
 
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
+
 2. Fork and clone your repository: `git clone https://github.com/${YOUR_NAME}/git-secret.git`
+
 3. Make sure that everything works on the current platform by running `make test`
+
 4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
 
 ### Development Process
 
-1. Firstly, you will need to setup development hooks with `make install-hooks`
-2. Make changes to the files that need to be changed
-3. When making changes to any files inside `src/` you will need to rebuild the binary `git-secret` with `make clean && make build` command
+1. Firstly, you should need to setup development git hooks with `make install-hooks`
+This will copy the git-secret development hooks from utils/hooks into .git/hooks/pre-commit and .git/hooks/post-commit
+
+2. Make changes to the git secret files that need to be changed
+
+3. When making changes to any files inside `src/`, for changes to take effect you will need to rebuild the `git-secret` script with `make clean && make build`
+
 4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`
-5. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`, make sure you write a good message, which will explain your work
+
+5. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`. Write a good commit message which explains your work
+
 6. When running `git commit` the tests will run automatically, your commit will be canceled if they fail
-7. Push to your repository, make a pull-request against `master` branch. Please, make sure you have **one** commit per pull-request, it will be merge into one anyways
+
+7. Push to your repository, make a pull-request against `master` branch. It is ideal to have**one** commit per pull-request, 
+but if accepted the PR will likely be merged into one commit anyway.
 
 ### Branches
 
-We have two long-live branches: `master` and `gh-pages` for static web site.
+We have two long-live branches: `master` and `gh-pages`.
 
-It basically looks like this:
+Development PRs are merged like this:
 
 > `your-branch` -> `master`
 
-- `master` branch is protected. So only fully tested code goes there. It is also used to create a new `git` tag and a `github` release
+- `master` branch is protected, so only fully tested code goes there. It is also used to create a new `git` tag and a `github` release
+
+The `gh-pages` branch is used for the pages at `git-secret.io`. See 'Release Process' below.
 
 ### Continuous integration
 
@@ -77,11 +100,13 @@ Cloud CI is done with the help of `travis`. `travis` handles multiple environmen
 
 The release process is defined in the `git`-hooks and `.travis.yml`.
 
-When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) it will trigger two main events.
+When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) the hooks will trigger three events.
 
-Firstly, new manuals will be created and added to the current commit with `make build-man` on `pre-commit` hook.
+- the test suite will be run locally
 
-Secondly, after the commit is successfully created it will also trigger `make build-gh-pages` target on `post-commit` hook, which will push new manuals to the [git-secret site][git-secret-site]. And the new `git` tag will be automatically created if the version is changed:
+- new manuals will be created and added to the current commit with `make build-man` on `pre-commit` hook.
+
+- after the commit is successfully created it will also trigger `make build-gh-pages` target on `post-commit` hook, which will push new manuals to the [git-secret site][git-secret-site]. And the new `git` tag will be automatically created if the version is changed:
 
 ```bash
 if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
@@ -98,7 +123,7 @@ Here are some links to gnupg documentation that might be useful for those workin
 
 #### Travis releases
 
-After you commit a tag that matches the pattern '^v.*$' and the tests succeed, Travis should publish new `deb` and `rpm` packages to [`bintray`][bintray].
+After you commit a tag that matches the pattern '^v.*$' and the tests succeed, Travis will publish new `deb` and `rpm` packages to [`bintray`][bintray].
 
 If you wish to override a previous release (*be careful*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`
 
