@@ -7,7 +7,8 @@ SECOND_FILE_TO_HIDE="$TEST_SECOND_FILENAME"
 THIRD_FILE_TO_HIDE="$TEST_THIRD_FILENAME"
 FILE_NON_EXISTANT="NO-SUCH-FILE"
 FILE_CONTENTS="hidden content юникод"
-
+FILE_CONTENTS_UPDATED="hidden content юникод\na_new_line"
+FILE_CONTENTS_CONFLICTS="hidden content юникод\n<<<<<<< file-on-disk\na_new_line\n=======\n>>>>>>> file-from-secret"
 FINGERPRINT=""
 
 
@@ -58,7 +59,6 @@ function teardown {
 
   local num_lines=$(echo "$output" | wc -l)
   [[ "$num_lines" -eq 6 ]]
-
 }
 
 @test "run 'changes' with source file missing" {
@@ -104,7 +104,7 @@ function teardown {
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
-  [[ "$num_lines" -eq 2 ]]   
+  [[ "$num_lines" -eq 2 ]]
 }
 
 
@@ -167,4 +167,27 @@ function teardown {
 
   local num_lines=$(echo "$output" | wc -l)
   [[ "$num_lines" -eq 1 ]]
+}
+
+@test "run 'changes' with '-g' on one file with no changes" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret changes -g -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+
+  [ "$status" -eq 0 ]
+
+  local num_lines=$(echo "$output" | wc -l)
+  # The output, when the content hasn't changed, is the full file content
+  [[ "$num_lines" -eq 1 ]]
+  [[ "$output" == "$FILE_CONTENTS" ]]
+}
+
+
+@test "run 'changes' with '-g' with one file changed" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  echo -en "$FILE_CONTENTS_UPDATED" > "$FILE_TO_HIDE"
+  run git secret changes -g -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+
+  [ "$status" -eq 0 ]
+
+  cmp <(echo -en "$output") <(echo -en "$FILE_CONTENTS_CONFLICTS")
 }

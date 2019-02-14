@@ -711,3 +711,62 @@ function _decrypt {
   # at this point the file should be written to disk or output to stdout
 }
 
+# usage: _check_if_plaintexts_have_conflicts FULL_PATH_TO_FILE1 FULL_PATH_TO_FILE2 ...
+#    ie: _check_if_plaintexts_have_conflicts $file1 $file2 /full/path/to/the/file3
+#    ie: _check_if_plaintexts_have_conflicts "${to_show[@]}"
+# (checks if a list of file have conflicts. If there are one or more conflict,
+# it terminates the execution with an error message)
+function _check_if_plaintexts_have_conflicts {
+  # required:
+  local to_show=("${@}")
+
+  local conflicting=()
+
+  for line in "${to_show[@]}"; do
+    local filename
+    local path
+
+    filename=$(_get_record_filename "$line")
+    path=$(_append_root_path "$filename")
+
+    if [[ -f "$path" ]]; then
+      local has_conflict
+      has_conflict=$(_check_if_plaintext_has_conflicts "${path}")
+      if [[ "1" == "${has_conflict}" ]]; then
+        conflicting+=("${path}");
+      fi
+    fi
+  done
+
+  if [[ ${#conflicting[@]} -gt 0 ]]; then
+      echo -e "Conflicts were found in the following file(s):\n"
+      printf '%s\n' "${conflicting[@]}"
+      echo -e "\nResolve conflicts before continuing. Aborting."
+      exit 1
+  fi
+}
+
+# usage: _check_if_plaintext_has_conflicts FULL_PATH_TO_FILE
+#    ie: _check_if_plaintext_has_conflicts /full/path/to/the/file
+#    ie: _check_if_plaintext_has_conflicts "$file"
+# (checks if a single file contains conflicts)
+# Returns 1 on conflicts, otherwise 0
+function _check_if_plaintext_has_conflicts {
+  local path="${1}"
+  set +e
+  if grep -E "^<<<<<<< file-on-disk$|^>>>>>>> file-from-secret$" "${path}" > /dev/null; then
+    echo 1
+  else
+    echo 0;
+  fi
+  set -e
+}
+
+# usage: check_if_busybox_diff
+# diff -D is not supported by diff applet
+function _check_if_busybox_diff {
+  if diff 2>&1 | grep BusyBox > /dev/null; then
+    local msg="diff -D is not supported by BusyBox diff applet. Please install diffutils (very likely via apk add diffutils)"
+    _abort "$msg"
+  fi
+}
