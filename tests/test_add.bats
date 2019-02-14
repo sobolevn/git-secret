@@ -72,7 +72,8 @@ function teardown {
   # https://github.com/sobolevn/git-secret/issues/85 task 1
 
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
-    skip "this test is skipped while 'git commmit'"
+    # See #334 for more about this
+    skip "this test is skipped while 'git commit'"
   fi
 
   # Preparations:
@@ -105,7 +106,7 @@ function teardown {
 
 @test "run 'add' for relative path" {
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
-    skip "this test is skipped while 'git commmit'"
+    skip "this test is skipped while 'git commit'. See #334"
   fi
 
   # Prepations:
@@ -142,6 +143,11 @@ function teardown {
 
 
 @test "run 'add' for file in subfolder" {
+  if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
+    # See #334 for more about this
+    skip "this test is skipped while 'git commit'"
+  fi
+
   # Preparations:
   local test_file="$TEST_DEFAULT_FILENAME"
   local test_dir='test_dir'

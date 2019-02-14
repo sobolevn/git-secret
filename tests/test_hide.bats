@@ -72,6 +72,12 @@ function teardown {
 }
 
 @test "run 'hide' from inside subdirectory" {
+
+  if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
+    # See #334 for more about this
+    skip "this test is skipped while 'git commit'"
+  fi
+
   # Preparations:
   local root_dir='test_sub_dir'
   mkdir -p "$root_dir"

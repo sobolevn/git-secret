@@ -46,7 +46,7 @@ function teardown {
 
 @test "run 'whoknows' in subfolder" {
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
-    skip "this test is skipped while 'git commmit'"
+    skip "this test is skipped while 'git commit'. See #334"
   fi
 
   # Preparations:
