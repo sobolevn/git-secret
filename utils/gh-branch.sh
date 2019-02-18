@@ -11,7 +11,7 @@ function update_gh_branch {
   git checkout 'gh-pages'
   make
 
-  git add '_posts'
+  git add --all '_posts'
   git commit -m 'documentation update'
   git checkout "$branch_name"
 }
