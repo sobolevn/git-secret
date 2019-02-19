@@ -74,6 +74,7 @@ function init {
   local random_seed_file
   random_seed_file=".gitsecret/keys/random_seed"
   gitignore_add_pattern "$random_seed_file"
+  gitignore_add_pattern "!*$SECRETS_EXTENSION"
 
   # TODO: git attributes to view diffs
 }
