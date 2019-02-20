@@ -88,6 +88,7 @@ AWK_GPG_VER_CHECK='
 '
 
 MARKER_FILE_ON_DISK="<<<<<<< file-on-disk"
+# shellcheck disable=2034
 MARKER_SEPARATOR="======="
 MARKER_CONTENT_FROM_SECRET=">>>>>>> content-from-secret"
 
