@@ -52,7 +52,7 @@ function changes {
       # Path was already normalized
       path=$(_append_root_path "$filename")
     fi
-    
+
     if [[ ! -f "$path" ]]; then
         _abort "file not found. Consider using 'git secret reveal': $filename"
     fi
@@ -66,22 +66,7 @@ function changes {
     # we ignore the exit code because _decrypt will _abort if appropriate.
 
     if [[ 1 -eq $git ]]; then
-      _check_if_busybox_diff
-      # We output a merged text where the diffs are surrounded by git-style conflicts
-      diff_x=$(
-        diff -D AAAAAAA "${path}" <(echo -n "$decrypted") | \
-        sed -e $'s/#ifndef AAAAAAA/<<<<<<< file-on-disk/g' | \
-        sed -e $'s/#endif \/\* ! AAAAAAA \*\//=======\\\n>>>>>>> file-from-secret/g' | \
-
-        sed -e $'s/#else \/\* AAAAAAA \*\//=======/g' | \
-
-        sed -e $'s/#ifdef AAAAAAA/<<<<<<< file-on-disk\\\n=======/g' | \
-        sed -e $'s/#endif \/\* AAAAAAA \*\//>>>>>>> file-from-secret/g';
-        echo x$?
-        );
-
-      diff="${diff_x%x*}"
-      printf "%s" "${diff}"
+      git_style_diff "$path" "$decrypted"
     else
       echo "changes in ${path}:"
       # diff the result:
@@ -89,4 +74,53 @@ function changes {
       diff -u <(echo -n "$decrypted") "$path" || true
     fi
   done
+}
+
+# Usage: git_style_diff "$path_file_on_disk" "$decrypted_content"
+# Outputs a changes as git style conflicts
+function git_style_diff {
+  local path="$1"
+  local decrypted="$2"
+
+  _check_if_busybox_diff
+
+  # Allow errors here
+  set +e
+  # We generate a random 16 char pattern, to avoid possible conflicts
+  # with content of the plaintext file
+  PATTERN=$(base64 < /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 16)
+
+  IF_NDEF="#ifndef ${PATTERN}"
+  END_NDEF="#endif /\* ! ${PATTERN} \*/"
+  ELSE="#else /\* ${PATTERN} \*/"
+  IF_DEF="#ifdef ${PATTERN}"
+  END_DEF="#endif /\* ${PATTERN} \*/"
+
+  # One liner to replace the output of diff -D
+  # Check man diff for more info
+  # We use "_" as sed command separator, to avoid escaping "/"
+  # and we use multiline commands to insert a new line, therefore the indentation
+  # should not be changed
+  diff_x=$(
+    diff -D "${PATTERN}" "${path}" <(echo -n "$decrypted") | \
+
+    # Replace if_ndef branch
+    sed -e $"s_${IF_NDEF}_${MARKER_FILE_ON_DISK}_g" | \
+    sed -e $"s_${END_NDEF}_${MARKER_SEPARATOR}\\
+${MARKER_CONTENT_FROM_SECRET}_g" | \
+
+    # Replace else
+    sed -e $"s_${ELSE}_${MARKER_SEPARATOR}_g" | \
+
+    # Replace if_def branch
+    sed -e $"s_${IF_DEF}_${MARKER_FILE_ON_DISK}\\
+${MARKER_SEPARATOR}_g" | \
+    sed -e $"s_${END_DEF}_${MARKER_CONTENT_FROM_SECRET}_g";
+    echo x$?
+  );
+  # No more errors allowed
+  set -e
+
+  diff="${diff_x%x*}"
+  printf "%s" "${diff}"
 }

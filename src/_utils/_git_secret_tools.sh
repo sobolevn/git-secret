@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Folders:
-_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}   
+_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}
 # if SECRETS_DIR env var is set, use that instead of .gitsecret
 # for full path to secrets dir, use _get_secrets_dir() from _git_secret_tools.sh
 _SECRETS_DIR_KEYS="${_SECRETS_DIR}/keys"
@@ -87,6 +87,10 @@ AWK_GPG_VER_CHECK='
 }
 '
 
+MARKER_FILE_ON_DISK="<<<<<<< file-on-disk"
+MARKER_SEPARATOR="======="
+MARKER_CONTENT_FROM_SECRET=">>>>>>> content-from-secret"
+
 # This is 1 for gpg version 2.1 or greater, otherwise 0
 GPG_VER_21="$(gpg --version | gawk "$AWK_GPG_VER_CHECK")"
 
@@ -116,7 +120,7 @@ function _os_based {
     Linux)
       "$1_linux" "${@:2}"
     ;;
-	
+
     MINGW*)
       "$1_linux" "${@:2}"
     ;;
@@ -424,8 +428,8 @@ function _warn_or_abort {
   local error_ok=${3:-0}        # can be 0 or 1
 
   if [[ "$error_ok" -eq "0" ]]; then
-    if [[ "$exit_code" -eq "0" ]]; then 
-      # if caller sends an exit_code of 0, we change it to 1 before aborting. 
+    if [[ "$exit_code" -eq "0" ]]; then
+      # if caller sends an exit_code of 0, we change it to 1 before aborting.
       exit_code=1
     fi
     _abort "$message" "$exit_code"
@@ -469,7 +473,7 @@ function _find_and_clean_formatted {
 }
 
 
-# this sets the global array variable 'filenames' 
+# this sets the global array variable 'filenames'
 function _list_all_added_files {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
@@ -550,8 +554,8 @@ function _user_required {
   keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys)
   local exit_code=$?
   if [[ "$exit_code" -ne 0 ]]; then
-    # this might catch corner case where gpg --list-keys shows 
-    # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds? 
+    # this might catch corner case where gpg --list-keys shows
+    # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds?
     # See #136
     _abort "problem listing public keys with gpg: exit code $exit_code"
   fi
@@ -560,12 +564,12 @@ function _user_required {
   fi
 }
 
-# note: this has the same 'username matching' issue described in 
+# note: this has the same 'username matching' issue described in
 # https://github.com/sobolevn/git-secret/issues/268
 # where it will match emails that have other emails as substrings.
 # we need to use fingerprints for a unique key id with gpg.
 function _get_user_key_expiry {
-  # This function returns the user's key's expiry, as an epoch. 
+  # This function returns the user's key's expiry, as an epoch.
   # It will return the empty string if there is no expiry date for the user's key
   local username="$1"
   local line
@@ -634,7 +638,7 @@ function _get_users_in_gitsecret_keyring {
   # show the users in the gitsecret keyring.
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
-    
+
   local result
   result=$(_get_users_in_gpg_keyring "$secrets_dir_keys")
 
@@ -700,7 +704,7 @@ function _decrypt {
 
   set -e  # re-enable set -e
 
-  # note that according to https://github.com/sobolevn/git-secret/issues/238 , 
+  # note that according to https://github.com/sobolevn/git-secret/issues/238 ,
   # it's possible for gpg to return a 0 exit code but not have decrypted the file
   #echo "# gpg exit code: $exit_code, error_ok: $error_ok" >&3
   if [[ "$exit_code" -ne "0" ]]; then
@@ -733,7 +737,7 @@ function _check_if_plaintexts_have_conflicts {
       local has_conflict
       has_conflict=$(_check_if_plaintext_has_conflicts "${path}")
       if [[ "1" == "${has_conflict}" ]]; then
-        conflicting+=("${path}");
+        conflicting+=("${path}")
       fi
     fi
   done
@@ -754,10 +758,10 @@ function _check_if_plaintexts_have_conflicts {
 function _check_if_plaintext_has_conflicts {
   local path="${1}"
   set +e
-  if grep -E "^<<<<<<< file-on-disk$|^>>>>>>> file-from-secret$" "${path}" > /dev/null; then
+  if grep -E "^${MARKER_FILE_ON_DISK}$|^${MARKER_CONTENT_FROM_SECRET}$" "${path}" > /dev/null; then
     echo 1
   else
-    echo 0;
+    echo 0
   fi
   set -e
 }

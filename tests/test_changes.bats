@@ -8,7 +8,7 @@ THIRD_FILE_TO_HIDE="$TEST_THIRD_FILENAME"
 FILE_NON_EXISTANT="NO-SUCH-FILE"
 FILE_CONTENTS="hidden content юникод"
 FILE_CONTENTS_UPDATED="hidden content юникод\na_new_line"
-FILE_CONTENTS_CONFLICTS="hidden content юникод\n<<<<<<< file-on-disk\na_new_line\n=======\n>>>>>>> file-from-secret"
+FILE_CONTENTS_CONFLICTS="hidden content юникод\n<<<<<<< file-on-disk\na_new_line\n=======\n>>>>>>> content-from-secret"
 FINGERPRINT=""
 
 
