@@ -12,9 +12,9 @@ For development with `git-secret` you should have these tools:
 - bash
 - bundler
 - gawk
-- gnupg (or gnupg2), see below if not packaged by your distribution/OS (i.e. OSX)
+- gnupg (or gnupg2), see below if not packaged by your distribution/OS (i.e. MacOS)
 - ruby
-- sha256sum  (on freebsd and OSX `shasum` is used instead)
+- sha256sum  (on freebsd and MacOS `shasum` is used instead)
 - [shellcheck](https://github.com/koalaman/shellcheck)
 
 To test `git-secret` using test-kitchen, you will also need:
@@ -88,7 +88,7 @@ Local CI is done with the help [`test-kitchen`](http://kitchen.ci/). `test-kitch
 Cloud CI is done with the help of `travis`. `travis` handles multiple environments:
 
 - `Docker`-based jobs or so-called 'integration tests', these tests create a local release, install it with the package manager and then run unit-tests and system checks
-- `OSX` jobs, which handle basic unit-tests on `OSX`
+- `OSX` jobs, which handle basic unit-tests on `MacOS` (Travis still calls MacOS 'OSX')
 - Native `travis` jobs, which handle basic unit-tests and style checks
 
 ### Running local ci-tests

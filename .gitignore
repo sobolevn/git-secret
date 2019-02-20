@@ -29,7 +29,7 @@ $RECYCLE.BIN/
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
-#####=== OSX ===#####
+#####=== MacOS ===#####
 .DS_Store
 .AppleDouble
 .LSOverride
