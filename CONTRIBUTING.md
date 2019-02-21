@@ -65,7 +65,7 @@ not necessities for releasing code, so balancing these four ideals _perfectly_ i
 
 ### Writing PRs
 
-If you're planning a large change to git-secret (for example, a lot of lines/characters of diffs, affecting multiple commands, 
+If you're planning a large change to `git-secret` (for example, a lot of lines/characters of diffs, affecting multiple commands, 
 changing/adding a lot of behavior, or adding multiple command-line options), it's best to discuss the changes in an Issue first. 
 Also it's often best to implement larger or complex changes as a series of planned-out, smaller PRs, 
 each making a small set of specific changes. This facilitates discussions of implementation, which often come to light
