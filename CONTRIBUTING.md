@@ -18,6 +18,7 @@ Before starting make sure you have:
 - sha256sum
 - [shellcheck](https://github.com/koalaman/shellcheck)
 - test-kitchen
+- aspell, to check your changes for spelling errors
 
 Only required if dealing with manuals, `gh-pages` or releases:
 
@@ -82,10 +83,12 @@ lean heavily on git and widely-used unix command features instead of re-implemen
 1. Firstly, you will need to setup development hooks with `make install-hooks`
 2. Make changes to the files that need to be changed
 3. When making changes to any files inside `src/` you will need to rebuild the binary `git-secret` with `make clean && make build` command
-4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`
+4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`. 
+   You should also your changes for spelling errors using 'aspell -c filename'.
 5. Add an entry to CHANGELOG.md, referring to the related issue # if appropriate
 6. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`, make sure you write a good message, which will explain your work
-7. When running `git commit` the tests will run automatically, your commit will be canceled if they fail
+7. When running `git commit` the tests will run automatically, your commit will be canceled if they fail. 
+   You can run the tests manually with `make clean build test`.
 8. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request; 
 otherwise PRs will probably be `squashed` into one commit when merged.
 
