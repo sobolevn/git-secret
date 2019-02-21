@@ -5,7 +5,7 @@ load _test_base
 FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
 SECOND_FILE_TO_HIDE="$TEST_SECOND_FILENAME"
 THIRD_FILE_TO_HIDE="$TEST_THIRD_FILENAME"
-FILE_NON_EXISTANT="NO-SUCH-FILE"
+FILE_NON_EXISTENT="NO-SUCH-FILE"
 FILE_CONTENTS="hidden content юникод"
 
 FINGERPRINT=""
@@ -153,7 +153,7 @@ function teardown {
 }
 
 @test "run 'changes' on file that does not exist" {
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_NON_EXISTANT"
+  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_NON_EXISTENT"
   [ "$status" -ne 0 ]
 }
 
