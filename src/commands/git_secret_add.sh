@@ -54,7 +54,7 @@ function add {
     fi
   done
 
-  # Are there any unignored files?
+  # Are there any un-ignored files?
 
   if [[ ! "${#not_ignored[@]}" -eq 0 ]]; then
     # And show them all at once.

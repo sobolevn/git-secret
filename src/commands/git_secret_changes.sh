@@ -22,7 +22,7 @@ function changes {
 
   _user_required
 
-  filenames=("$@")  # list of positional params. global.
+  filenames=("$@")  # list of positional parameters. global.
   if [[ ${#filenames[@]} -eq 0 ]]; then
     # Checking if no filenames are passed, show diff for all files.
     _list_all_added_files    # this sets the array variable 'filenames'
