@@ -6,7 +6,7 @@ Here's how it's done:
 1. Make sure that you open your pull request against the `master` branch
 2. Make sure that your code has the same style as the surrounding code and git-secret in general
 3. Make sure your code passes using `shellcheck` with `make lint`
-4. You can also spellcheck your code using 'aspell -c {filename}'
+4. You can also spell check your code using 'aspell -c {filename}'
 5. If you are adding or changing features, please add tests that cover the new behavior (in addition to the unchanged behavior if appropriate)
 6. Make sure that all tests pass
 7. Add an entry to CHANGELOG.md explaining the change briefly and, if appropriate, referring to the related issue #
