@@ -37,6 +37,32 @@ Only required if dealing with manuals, `gh-pages` or releases:
 3. Make sure that everything works on the current platform by running `make test`
 4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
 
+### Code style
+
+New features and changes should aim to be as clear, concise, simple, and consistent
+
+1. clear: make it as obvious as possible what the code is doing
+ 
+2. concise: your PR should be as few characters (not just lines) of changes as _reasonable_. 
+   However, generally choose clarity over being concise.  
+   Clarity and conciseness can be in conflict with each other. But
+   it's more important for the code to be understandable than for it to be small.
+   Therefore favor writing clear code over making shorter diffs in your PRs.
+ 
+3. simple: this dovetails with the previous two items. 
+   git-secret is a security product, so it's best to have the code be easy to understand.
+   This also aids future development and helps minimize bugs.
+
+4. consistent: Write code that is consistent with the surrounding code and the rest of the git-secret code base.
+   Every code base has its own conventions and style that develop and accrete over time.
+
+   Consistency also means that the inputs and outputs of git-secret should be as consistent as reasonable
+   with related unix and git tools, and follow the 'rule of least surprise'. 
+   This is also known as the principle of least astonishment: <https://en.wikipedia.org/wiki/Principle_of_least_astonishment>
+
+We think it's good to clarify our thinking about how git-secret should be written.  Of course, these are philosophical goals, 
+not necessities for releasing code, so balancing these four ideals _perfectly_ is impossible.
+
 ### Development Process
 
 1. Firstly, you will need to setup development hooks with `make install-hooks`
@@ -45,13 +71,14 @@ Only required if dealing with manuals, `gh-pages` or releases:
 4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`
 5. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`, make sure you write a good message, which will explain your work
 6. When running `git commit` the tests will run automatically, your commit will be canceled if they fail
-7. Push to your repository, make a pull-request against `master` branch. Please, make sure you have **one** commit per pull-request, it will be merge into one anyways
+7. Push to your repository, make a pull-request against `master` branch. It's ideal to have one commit per pull-request; 
+otherwise PRs will probably be `squashed` into one commit when merged.
 
 ### Branches
 
-We have two long-live branches: `master` and `gh-pages` for static web site.
+We have two long-live branches: `master` for the git-secret code and man pages, and `gh-pages` for the static web site.
 
-It basically looks like this:
+Development looks like this:
 
 > `your-branch` -> `master`
 
