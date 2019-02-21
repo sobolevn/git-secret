@@ -70,13 +70,13 @@ function teardown {
 }
 
 
-@test "run 'init' with '.gitsecret' already inited" {
+@test "run 'init' with '.gitsecret' already initialized" {
   local secrets_dir
   secrets_dir=$(_get_secrets_dir)
 
   mkdir "$secrets_dir"
 
   run git secret init
-  [ "$output" = "git-secret: abort: already inited." ]
+  [ "$output" = "git-secret: abort: already initialized." ]
   [ "$status" -eq 1 ]
 }

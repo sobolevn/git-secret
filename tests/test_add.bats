@@ -53,7 +53,7 @@ function teardown {
 
 
 @test "run 'add' for unignored file with '-i'" {
-  local test_file='test_file.auto_ignore'   # TODO - paramaterize filename
+  local test_file='test_file.auto_ignore'   # TODO - parameterize filename
   touch "$test_file"
   echo "content" > "$test_file"
 
@@ -67,7 +67,7 @@ function teardown {
 }
 
 
-@test "run 'add' for unignored file with '-i' in subfolder" {
+@test "run 'add' for un-ignored file with '-i' in subfolder" {
   # This test covers this issue:
   # https://github.com/sobolevn/git-secret/issues/85 task 1
 
@@ -109,7 +109,7 @@ function teardown {
     skip "this test is skipped while 'git commit'. See #334"
   fi
 
-  # Prepations:
+  # Preparations:
   local root='test_dir'
   local node="$root/node"
   local sibling="$root/sibling"
