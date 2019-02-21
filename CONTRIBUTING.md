@@ -72,7 +72,7 @@ each making a small set of specific changes. This facilitates discussions of imp
 only after seeing the actual code used to perform a task.
 
 As mentioned above, we seek to be consistent with surrounding git and unix tools, so when writing changes to git-secret,
-think about The input, output, and command-line options that similar unix commands use.
+think about the input, output, and command-line options that similar unix commands use.
 
 Our favor toward traditional unix and git command-style inputs and outputs can also mean it's appropriate to 
 lean heavily on git and widely-used unix command features instead of re-implementing them in code.
