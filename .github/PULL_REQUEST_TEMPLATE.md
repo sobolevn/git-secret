@@ -1,7 +1,8 @@
 <!-- Thanks for sending a pull request!
 
 Here's how it's done:
-0. If you are planning a large feature, please, discuss it first in a separate issue
+0. If you are planning a large feature, please, discuss it first in a separate issue.
+   See also CONTRIBUTING.md if you haven't already.
 1. Make sure that you open your pull request against the `master` branch
 2. Make sure that your code has the same style as the surrounding code and git-secret in general
 3. If you are adding or changing features, please add tests that cover the new behavior (in addition to the unchanged behavior if appropriate)

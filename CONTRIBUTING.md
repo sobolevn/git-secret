@@ -57,11 +57,25 @@ New features and changes should aim to be as clear, concise, simple, and consist
    Every code base has its own conventions and style that develop and accrete over time.
 
    Consistency also means that the inputs and outputs of git-secret should be as consistent as reasonable
-   with related unix and git tools, and follow the 'rule of least surprise'. 
-   This is also known as the principle of least astonishment: <https://en.wikipedia.org/wiki/Principle_of_least_astonishment>
+   with related unix and git tools, and follow the 'rule of least surprise', 
+   also known as the 'principle of least astonishment': <https://en.wikipedia.org/wiki/Principle_of_least_astonishment>
 
-We think it's good to clarify our thinking about how git-secret should be written.  Of course, these are philosophical goals, 
-not necessities for releasing code, so balancing these four ideals _perfectly_ is impossible.
+We wrote this to clarify our thinking about how git-secret should be written.  Of course, these are philosophical goals, 
+not necessities for releasing code, so balancing these four ideals _perfectly_ is both unwarranted and impossible.
+
+### Writing PRs
+
+If you're planning a large change to git-secret (for example, a lot of lines/characters of diffs, affecting multiple commands, 
+changing/adding a lot of behavior, or adding multiple command-line options), it's best to discuss the changes in an Issue first. 
+Also it's often best to implement larger or complex changes as a series of planned-out, smaller PRs, 
+each making a small set of specific changes. This facilitates discussions of implementation, which often come to light
+only after seeing the actual code used to perform a task.
+
+As mentioned above, we seek to be consistent with surrounding git and unix tools, so when writing changes to git-secret,
+think about The input, output, and command-line options that similar unix commands use.
+
+Our favor toward traditional unix and git command-style inputs and outputs can also mean it's appropriate to 
+lean heavily on git and widely-used unix command features instead of re-implementing them in code.
 
 ### Development Process
 
