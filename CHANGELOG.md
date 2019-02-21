@@ -7,6 +7,12 @@
 - Remove diagnostic output from test results (#324)
 - Remove un-needed redirection in 'reveal' (#325)
 - Remove unused functions from _git_secret_tools.sh
+- Add -v 'verbose' option to 'tell', showing gpg output (#320)
+- Fix link to current contributors in CONTRIBUTING.md (#331)
+- Fix tests when running from git hooks (#334)
+- Fix typo, remove temp directory in utils/tests.sh (#347)
+- Update git-secret.io, fix utils/gh-branch.sh to use 'git all --add' (#344)
+- Change 'init' to never ignore .secret files (#362)
 - Spelling fixes
 
 ## Version 0.2.5
