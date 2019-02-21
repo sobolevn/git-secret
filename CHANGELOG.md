@@ -7,6 +7,7 @@
 - Remove diagnostic output from test results (#324)
 - Remove un-needed redirection in 'reveal' (#325)
 - Remove unused functions from _git_secret_tools.sh
+- Spelling fixes
 
 ## Version 0.2.5
 
@@ -65,7 +66,7 @@
 - Now installation section is removed from main `man` file (#70)
 - Now "See also" sections in the `man` pages are clickable (#69)
 - Added "Manual" section to the manuals (#61)
-- Added `centos` container for `ci` testing (#38)
+- Added `CentOS` container for `ci` testing (#38)
 - Tests are refactored. Added `clean` command tests, removed a lot of hard-coded things, moved tests execution from `./temp` folder to `/tmp`, added a lot of new check in old tests, and some new test cases (#52)
 - Refactored `hide` and `clean` commands to be shorter
 - `shellcheck` is now supported with `make lint`

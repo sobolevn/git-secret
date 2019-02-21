@@ -40,7 +40,7 @@ function teardown {
 }
 
 
-@test "run 'add' for un-ignored file" {
+@test "run 'add' for unignored file" {
   local test_file="$TEST_DEFAULT_FILENAME"
   touch "$test_file"
   echo "content" > "$test_file"
@@ -52,7 +52,7 @@ function teardown {
 }
 
 
-@test "run 'add' for un-ignored file with '-i'" {
+@test "run 'add' for unignored file with '-i'" {
   local test_file='test_file.auto_ignore'   # TODO - parameterize filename
   touch "$test_file"
   echo "content" > "$test_file"
