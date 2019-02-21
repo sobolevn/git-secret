@@ -44,7 +44,7 @@ function tell {
   shift $((OPTIND-1))
   [ "$1" = "--" ] && shift
 
-  # Validates that application is inited:
+  # Validates that application is initialized:
   _secrets_dir_exists
 
   # Command logic:

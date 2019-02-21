@@ -133,7 +133,7 @@ Releases to `brew` are made manually.
 
 #### Dockerhub releases
 
-[`Dockerhub`][Dockerhub] contains `Docker` images with different OS'es used for testing. It is updated via a `github` webhook on commit into `master`.
+[`Dockerhub`][Dockerhub] contains `Docker` images with different OSes used for testing. It is updated via a `github` webhook on commit into `master`.
 
 [tracker]: https://github.com/sobolevn/git-secret/issues
 [help-wanted]: https://github.com/sobolevn/git-secret/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22
@@ -144,7 +144,7 @@ Releases to `brew` are made manually.
 
 ### Downstream Packages
 
-There are several distibutions and packaging systems that may already have git-secret packaged for your distribution (although sometimes their versions are not the most current, and we recommend all users upgrade to 0.2.5 or above). 
+There are several distributions and packaging systems that may already have git-secret packaged for your distribution (although sometimes their versions are not the most current, and we recommend all users upgrade to 0.2.5 or above). 
 
 ### Notes to Downstream Packagers (Those who make packages for specific OSes/distributions)
 
