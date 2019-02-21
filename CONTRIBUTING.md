@@ -86,10 +86,11 @@ lean heavily on git and widely-used unix command features instead of re-implemen
 4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`. 
    You should also your changes for spelling errors using 'aspell -c filename'.
 5. Add an entry to CHANGELOG.md, referring to the related issue # if appropriate
-6. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`, make sure you write a good message, which will explain your work
-7. When running `git commit` the tests will run automatically, your commit will be canceled if they fail. 
+6. Change the .ronn file(s) in man*/man to document your changes if appropriate
+7. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`, make sure you write a good message, which will explain your work
+8. When running `git commit` the tests will run automatically, your commit will be canceled if they fail. 
    You can run the tests manually with `make clean build test`.
-8. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request; 
+9. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request; 
 otherwise PRs will probably be `squashed` into one commit when merged.
 
 ### Branches
