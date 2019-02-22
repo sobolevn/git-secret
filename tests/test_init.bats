@@ -33,6 +33,8 @@ function teardown {
   [ "$status" -eq 0 ]
 
   [[ -d "${_SECRETS_DIR}" ]]
+  echo ${_SECRETS_DIR}/* | sed "s/^/# '$BATS_TEST_DESCRIPTION' contents of secrets dir: /" >&3
+  cat .gitignore | sed "s/^/# '$BATS_TEST_DESCRIPTION' contents of .gitignore: /" >&3
 }
 
 
