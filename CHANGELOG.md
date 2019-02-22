@@ -15,6 +15,7 @@
 - Change 'init' to never ignore .secret files (#362)
 - Add text explaining git-secret Style Guide and Development Philosophy
 - Spelling fixes
+- Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
 
 ## Version 0.2.5
 
