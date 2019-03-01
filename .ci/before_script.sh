@@ -29,7 +29,7 @@ fi
 
 # Mac:
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  choco install gawk gnupg-modern
+  choco install gawk gnupg-modern make
 fi
 
 # Linux:
