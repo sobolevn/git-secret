@@ -351,7 +351,7 @@ function _get_git_root_path {
   # since `.gitsecret` (or value set by SECRETS_DIR env var) must be on the same level.
 
   local result
-  result=$(git rev-parse --show-toplevel)
+  result=$(git rev-parse --show-toplevel | sed 's#^\([a-zA-Z]\):/#/\1/#')
   echo "$result"
 }
 
