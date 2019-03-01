@@ -18,6 +18,7 @@ Before starting make sure you have:
 - sha256sum
 - [shellcheck](https://github.com/koalaman/shellcheck)
 - test-kitchen
+- aspell, to check your changes for spelling errors
 
 Only required if dealing with manuals, `gh-pages` or releases:
 
@@ -37,21 +38,66 @@ Only required if dealing with manuals, `gh-pages` or releases:
 3. Make sure that everything works on the current platform by running `make test`
 4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
 
+### Code style
+
+New features and changes should aim to be as clear, concise, simple, and consistent
+
+1. clear: make it as obvious as possible what the code is doing
+ 
+2. concise: your PR should be as few characters (not just lines) of changes as _reasonable_. 
+   However, generally choose clarity over being concise.  
+   Clarity and conciseness can be in conflict with each other. But
+   it's more important for the code to be understandable than for it to be small.
+   Therefore favor writing clear code over making shorter diffs in your PRs.
+ 
+3. simple: this dovetails with the previous two items. 
+   git-secret is a security product, so it's best to have the code be easy to understand.
+   This also aids future development and helps minimize bugs.
+
+4. consistent: Write code that is consistent with the surrounding code and the rest of the git-secret code base.
+   Every code base has its own conventions and style that develop and accrete over time.
+
+   Consistency also means that the inputs and outputs of git-secret should be as consistent as reasonable
+   with related unix and git tools, and follow the 'rule of least surprise', 
+   also known as the 'principle of least astonishment': <https://en.wikipedia.org/wiki/Principle_of_least_astonishment>
+
+We wrote this to clarify our thinking about how git-secret should be written.  Of course, these are philosophical goals, 
+not necessities for releasing code, so balancing these four ideals _perfectly_ is both unwarranted and impossible.
+
+### Writing PRs
+
+If you're planning a large change to `git-secret` (for example, a lot of lines/characters of diffs, affecting multiple commands, 
+changing/adding a lot of behavior, or adding multiple command-line options), it's best to discuss the changes in an Issue first. 
+Also it's often best to implement larger or complex changes as a series of planned-out, smaller PRs, 
+each making a small set of specific changes. This facilitates discussions of implementation, which often come to light
+only after seeing the actual code used to perform a task.
+
+As mentioned above, we seek to be consistent with surrounding git and unix tools, so when writing changes to git-secret,
+think about the input, output, and command-line options that similar unix commands use.
+
+Our favor toward traditional unix and git command-style inputs and outputs can also mean it's appropriate to 
+lean heavily on git and widely-used unix command features instead of re-implementing them in code.
+
 ### Development Process
 
 1. Firstly, you will need to setup development hooks with `make install-hooks`
 2. Make changes to the files that need to be changed
 3. When making changes to any files inside `src/` you will need to rebuild the binary `git-secret` with `make clean && make build` command
-4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`
-5. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`, make sure you write a good message, which will explain your work
-6. When running `git commit` the tests will run automatically, your commit will be canceled if they fail
-7. Push to your repository, make a pull-request against `master` branch. Please, make sure you have **one** commit per pull-request, it will be merge into one anyways
+4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`. 
+   You should also your changes for spelling errors using 'aspell -c filename'.
+5. Add an entry to CHANGELOG.md, referring to the related issue # if appropriate
+6. Change the .ronn file(s) in man*/man to document your changes if appropriate
+7. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`, make sure you write a good message, which will explain your work
+8. When running `git commit` the tests will run automatically, your commit will be canceled if they fail. 
+   You can run the tests manually with `make clean build test`.
+9. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request; 
+otherwise PRs will probably be `squashed` into one commit when merged.
 
 ### Branches
 
-We have two long-live branches: `master` and `gh-pages` for static web site.
+We have two long-live branches: `master` for the git-secret code and man pages, and `gh-pages` for the static web site.
 
-It basically looks like this:
+Development looks like this:
 
 > `your-branch` -> `master`
 
@@ -108,7 +154,7 @@ Releases to `brew` are made manually.
 
 #### Dockerhub releases
 
-[`Dockerhub`][Dockerhub] contains `Docker` images with different OS'es used for testing. It is updated via a `github` webhook on commit into `master`.
+[`Dockerhub`][Dockerhub] contains `Docker` images with different OSes used for testing. It is updated via a `github` webhook on commit into `master`.
 
 [tracker]: https://github.com/sobolevn/git-secret/issues
 [help-wanted]: https://github.com/sobolevn/git-secret/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22
@@ -119,7 +165,7 @@ Releases to `brew` are made manually.
 
 ### Downstream Packages
 
-There are several distibutions and packaging systems that may already have git-secret packaged for your distribution (although sometimes their versions are not the most current, and we recommend all users upgrade to 0.2.5 or above). 
+There are several distributions and packaging systems that may already have git-secret packaged for your distribution (although sometimes their versions are not the most current, and we recommend all users upgrade to 0.2.5 or above). 
 
 ### Notes to Downstream Packagers (Those who make packages for specific OSes/distributions)
 

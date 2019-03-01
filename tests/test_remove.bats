@@ -86,13 +86,13 @@ function _has_line {
   # There was a bug with `sed` an slashes:
   # see https://github.com/sobolevn/git-secret/issues/23
 
-  # Prepartions:
+  # Preparations:
   local folder="somedir"
   local file_in_folder="$folder/$TEST_THIRD_FILENAME"
 
   mkdir -p "$folder"
   set_state_secret_add "$file_in_folder" "somecontent3"
-  set_state_secret_hide # runing hide again to hide new data
+  set_state_secret_hide # running hide again to hide new data
 
   # Now it should remove filename with slashes from the mapping:
   run git secret remove "$file_in_folder"

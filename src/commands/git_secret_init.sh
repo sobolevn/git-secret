@@ -58,7 +58,7 @@ function init {
   git_secret_dir=$(_get_secrets_dir)
 
   if [[ -d "$git_secret_dir" ]]; then
-    _abort 'already inited.'
+    _abort 'already initialized.'
   fi
 
   # Check if it is ignored:

@@ -124,7 +124,7 @@ function teardown {
 
 
 @test "run 'tell' with '-m' (empty email)" {
-  # Prepartions:
+  # Preparations:
   git_set_config_email "" # now it should not allow to add yourself
 
   run git secret tell -d "$TEST_GPG_HOMEDIR" -m
@@ -136,7 +136,7 @@ function teardown {
   # Preparations:
   install_fixture_key "$TEST_SECOND_USER"
 
-  # Testing the command iteself:
+  # Testing the command itself:
   run git secret tell -d "$TEST_GPG_HOMEDIR" \
     "$TEST_DEFAULT_USER" "$TEST_SECOND_USER"
 
