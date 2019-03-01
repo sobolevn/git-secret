@@ -1,5 +1,3 @@
-#!/bin/bash
-
 #!/usr/bin/env bash
 
 # `SECRET_PROJECT_ROOT` must be set before running the script.
