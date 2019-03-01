@@ -29,15 +29,7 @@ fi
 
 # Windows
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  choco install gawk gnupg-modern make msys2 -y
-  # msys2 provides bash and "is a software distro and building platform for Windows."
-
-  # refreshenv
-  # run refreshenv because choco says:
-  #  "Environment Vars (like PATH) have changed. Close/reopen your shell to
-  #  see the changes (or in powershell/cmd.exe just type `refreshenv`).
-  # BUT when you run it, travis errors with:
-  #  .ci/before_script.sh: line 35: refreshenv: command not found
+  choco install gawk gnupg-modern make bash -y
 
   echo -n "location of bash: "
   which bash || true
