@@ -29,8 +29,7 @@ fi
 
 # Mac:
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  which git
-  choco install gnupg-modern
+  choco install gawk gnupg-modern
 fi
 
 # Linux:

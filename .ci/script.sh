@@ -13,7 +13,7 @@ function run_kitchen_tests {
 }
 
 # Local builds:
-if [[ "$GITSECRET_DIST" == "brew" ]]; then
+if [[ "$GITSECRET_DIST" == "brew" ]] || [[ "$GITSECRET_DIST" == "windows" ]]; then
   # Only running `make test` on standard (non-docker) build,
   # since it is called inside the docker container anyway.
   make test
