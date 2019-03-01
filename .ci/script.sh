@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+# above changed from 'bash' to 'sh' for windows
 
 set -e
 
