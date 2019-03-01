@@ -29,7 +29,7 @@ fi
 
 # Windows
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  choco install gawk gnupg-modern make bash -y
+  choco install msys2 gawk gnupg-modern make -y
 
   echo -n "location of bash: "
   which bash || true
