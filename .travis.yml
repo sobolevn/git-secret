@@ -96,7 +96,9 @@ matrix:
 
 before_install:
   - gem update --system
-  - #gem install bundler
+  - gem install bundler
+    if: dist != 'windows'
+    # if we run 'gem install bundler' on travis/windows we get conflict error
 
 before_script:
   - chmod +x ".ci/before_script.sh" && ".ci/before_script.sh"
