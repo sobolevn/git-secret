@@ -27,6 +27,12 @@ if [[ "$GITSECRET_DIST" == "brew" ]]; then
   brew install gawk
 fi
 
+# Mac:
+if [[ "$GITSECRET_DIST" == "windows" ]]; then
+  which git
+  choco install gnupg-modern
+fi
+
 # Linux:
 if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
   update_linux

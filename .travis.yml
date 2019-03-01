@@ -3,6 +3,11 @@ dist: xenial
 matrix:
   fast_finish: true
   include:
+    - os: windows
+      sudo: required
+      language: sh
+      env: GITSECRET_DIST="windows"
+      #rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-alpine-latest"
       services: docker
@@ -88,10 +93,6 @@ matrix:
       sudo: required
       language: ruby
       rvm: 2.6
-    - os: windows
-      sudo: required
-      #language: ruby
-      #rvm: 2.6
 
 before_install:
   - gem update --system
