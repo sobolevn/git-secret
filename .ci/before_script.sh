@@ -29,7 +29,8 @@ fi
 
 # Mac:
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  choco install gawk gnupg-modern make
+  choco install gawk gnupg-modern make msys2 
+  # msys2 provides bash and "is a software distro and building platform for Windows."
 fi
 
 # Linux:
