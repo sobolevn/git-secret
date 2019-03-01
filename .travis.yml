@@ -95,8 +95,7 @@ matrix:
       rvm: 2.6
 
 before_install:
-  - gem update --system
-  - if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then gem install bundler; fi
+  - if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then gem update --system && gem install bundler; fi
 
 before_script:
   - chmod +x ".ci/before_script.sh" && ".ci/before_script.sh"
