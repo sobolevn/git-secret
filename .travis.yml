@@ -90,8 +90,8 @@ matrix:
       rvm: 2.6
     - os: windows
       sudo: required
-      language: ruby
-      rvm: 2.6
+      #language: ruby
+      #rvm: 2.6
 
 before_install:
   - gem update --system
