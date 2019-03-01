@@ -27,7 +27,7 @@ if [[ "$GITSECRET_DIST" == "brew" ]]; then
   brew install gawk
 fi
 
-# Mac:
+# Windows
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
   choco install gawk gnupg-modern make msys2 
   # msys2 provides bash and "is a software distro and building platform for Windows."
