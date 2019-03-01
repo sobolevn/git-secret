@@ -96,8 +96,7 @@ matrix:
 
 before_install:
   - gem update --system
-  - bundle update --bundler
-    # above works on windows while 'gem install bundler' does not
+  - gem install bundler
 
 before_script:
   - chmod +x ".ci/before_script.sh" && ".ci/before_script.sh"
