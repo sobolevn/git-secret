@@ -29,7 +29,7 @@ fi
 
 # Windows
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  choco install gawk gnupg-modern make msys2 
+  choco install gawk gnupg-modern make msys2 -y
   # msys2 provides bash and "is a software distro and building platform for Windows."
 
   # refreshenv
@@ -44,6 +44,9 @@ if [[ "$GITSECRET_DIST" == "windows" ]]; then
 
   echo -n "location of env: "
   which env || true
+
+  echo -n "output of env bash: "
+  env bash || true
 fi
 
 # Linux:

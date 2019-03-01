@@ -1,4 +1,4 @@
-#!bash
+#!/usr/bin/env bash
 
 # `SECRET_PROJECT_ROOT` must be set before running the script.
 
@@ -8,6 +8,9 @@ set -e
 cd "${SECRET_PROJECT_ROOT}"; rm -rf 'tempdir with spaces'; mkdir 'tempdir with spaces'; cd 'tempdir with spaces';
 
 export SECRETS_DIR=.gitsecret-testdir
+
+echo -n 'which bats: '
+which bats || true
 
 # bats expects diagnostic lines to be sent to fd 3, matching regex '^ #' (IE, like: `echo '# message here' >&3`)
 # bats ... 3>&1 shows diagnostic output when errors occur.
