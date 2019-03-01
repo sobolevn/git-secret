@@ -36,9 +36,6 @@ if [[ "$GITSECRET_DIST" == "windows" ]]; then
 
   echo -n "location of env: "
   which env || true
-
-  echo -n "output of env bash: "
-  env bash || true
 fi
 
 # Linux:
