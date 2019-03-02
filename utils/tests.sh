@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo "In utils/tests.sh"
-
 # `SECRET_PROJECT_ROOT` must be set before running the script.
 
 set -e
