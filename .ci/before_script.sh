@@ -28,9 +28,10 @@ if [[ "$GITSECRET_DIST" == "brew" ]]; then
 fi
 
 # Windows
+# msys2 needed for rm?
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  #choco install gawk gnupg-modern make -y
-  choco install make -y
+  choco install msys2 gawk gnupg-modern make -y
+  #choco install make -y
 
   echo -n "location of bash: "
   which bash || true
