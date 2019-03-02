@@ -39,17 +39,16 @@ install-test:
 	git clone --depth 1 -b v1.0.2 https://github.com/bats-core/bats-core.git vendor/bats-core; \
 	fi
 
-GITSECRET_PWD_NOW := $(shell cygpath -w "${PWD}")
-
 .PHONY: test
 test: install-test clean build
+	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
+		GITSECRET_PWD_NOW := $(shell cygpath -w "${PWD}") \
+	fi; \
 	chmod +x "./utils/tests.sh"; sync; \
 	command -v bash; \
 	command -v bats; \
 	command -v env; \
 	command -v cygpath; \
-	cygpath -w "${PWD}"; \
-	echo "${GITSECRET_PWD_NOW}"; \
 	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
 		export PATH="${GITSECRET_PWD_NOW}\vendor\bats-core\bin;${GITSECRET_PWD_NOW};${PATH}"; \
 	else \
