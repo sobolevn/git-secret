@@ -44,13 +44,15 @@ test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
-		export PATH="${PWD}\vendor\bats-core\bin;${PWD};${PATH}"; \
+		export GITSECRET_PWD_NOW=$(script cygpath -w "${PWD}"); \
+		export PATH="${GITSECRET_PWD_NOW}\vendor\bats-core\bin;${GITSECRET_PWD_NOW};${PATH}"; \
 	else \
 		export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
 	fi; \
 	command -v bash; \
 	command -v bats; \
 	command -v env; \
+	command -v cygpath; \
 	./utils/tests.sh
 	
 
