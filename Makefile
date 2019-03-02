@@ -40,13 +40,13 @@ install-test:
 	fi
 
 # TODO: For PATH below, there has to be a better way to choose (slash/backslash 
-# TODO: and) ':' or ';' as a delimiter at runtime. Current code is a hack.
+# TODO: and) ':' or ';' as a delimiter at runtime. Current code is a hack; should find 'good' solution
 .PHONY: test
 test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
-		GITSECRET_WIN_PATHS=$(echo "${PWD}/vendor/bats-core/bin;${PATH}" | sed -e 's/[/]/\\/g'); \
+		export GITSECRET_WIN_PATHS=$(echo "${PWD}/vendor/bats-core/bin;${PWD}" | sed -e 's/[/]/\\/g'); \
 		export PATH="${GITSECRET_WIN_PATHS};${PATH}"; \
 	else \
 		export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
