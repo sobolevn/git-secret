@@ -41,7 +41,7 @@ install-test:
 
 .PHONY: test
 test: install-test clean build
-	@chmod +x "./utils/tests.sh"; sync; \
+	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
 	bash ./utils/tests.sh
