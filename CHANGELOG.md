@@ -14,6 +14,7 @@
 - Update git-secret.io, fix utils/gh-branch.sh to use 'git all --add' (#344)
 - Change 'init' to never ignore .secret files (#362)
 - Add text explaining git-secret Style Guide and Development Philosophy
+- Upgrade bats-core to v1.1.0
 - Spelling fixes
 
 ## Version 0.2.5
