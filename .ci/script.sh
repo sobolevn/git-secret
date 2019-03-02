@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "In .ci/script.sh"
+
 set -e
 
 function run_kitchen_tests {
