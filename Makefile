@@ -83,7 +83,7 @@ develop: clean build install-hooks
 
 .PHONY: lint
 lint:
-	@find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
+	@find src utils tests -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
 
 #
 # Packaging:
