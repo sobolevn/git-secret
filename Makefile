@@ -46,12 +46,14 @@ test: install-test clean build
 	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
 		(export GITSECRET_PWD_NOW="$(shell cygpath -w '${PWD}')"; \
 		echo "in Makefile: GITSECRET_PWD_NOW is: ${GITSECRET_PWD_NOW}"; \
-		export PATH="${GITSECRET_PWD_NOW}\vendor\bats-core\bin;${GITSECRET_PWD_NOW};${PATH}"); \
+		export PATH="${GITSECRET_PWD_NOW}\vendor\bats-core\bin;${GITSECRET_PWD_NOW};${PATH}"; \
+		echo "in Makefile: PATH is: ${PATH}"; \
+		./utils/tests.sh ); \
 	else \
 		export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
-	fi; \
-	echo "in Makefile: PATH is: ${PATH}"; \
-	"./utils/tests.sh"
+		echo "in Makefile: PATH is: ${PATH}"; \
+		./utils/tests.sh; \
+	fi; 
 	
 
 #
