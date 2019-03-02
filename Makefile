@@ -49,12 +49,14 @@ test: install-test clean build
 	command -v env; \
 	command -v cygpath; \
 	cygpath -w "${PWD}"; \
-	echo ${GITSECRET_PWD_NOW}; \
+	echo "${GITSECRET_PWD_NOW}"; \
 	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
 		export PATH="${GITSECRET_PWD_NOW}\vendor\bats-core\bin;${GITSECRET_PWD_NOW};${PATH}"; \
 	else \
 		export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
 	fi; \
+	command -v bash; \
+	command -v bats; \
 	./utils/tests.sh
 	
 
