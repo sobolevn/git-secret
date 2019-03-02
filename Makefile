@@ -43,9 +43,12 @@ install-test:
 test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
-	which bash; \
-	bash ./utils/tests.sh
+	command -v bash; \
+	./utils/tests.sh
+	
+	# for testing, remove this line from above
+	#export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
+	# should cause 'can't find bats' or other file in this dir
 
 #
 # Manuals:
