@@ -39,14 +39,21 @@ install-test:
 	git clone --depth 1 -b v1.0.2 https://github.com/bats-core/bats-core.git vendor/bats-core; \
 	fi
 
-# TODO: for PATH below, there has to be a better way to choose : or ; as a delimiter at runtime
+# TODO: For PATH below, there has to be a better way to choose (slash/backslash 
+# TODO: and) ':' or ';' as a delimiter at runtime. Current code is a hack.
 .PHONY: test
 test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	if [[ "${GITSECRET_DIST}" == "windows" ]]; then export PATH="${PWD}/vendor/bats-core/bin;${PWD};${PATH}"; \
-	else export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; fi; \
+	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
+		GITSECRET_WIN_PATHS=$(echo "${PWD}/vendor/bats-core/bin;${PATH}" | sed -e 's/[/]/\\/g'); \
+		export PATH="${GITSECRET_WIN_PATHS};${PATH}"; \
+	else \
+		export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
+	fi; \
 	command -v bash; \
+	command -v bats; \
+	command -v env; \
 	./utils/tests.sh
 	
 
