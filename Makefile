@@ -39,16 +39,13 @@ install-test:
 	git clone --depth 1 -b v1.0.2 https://github.com/bats-core/bats-core.git vendor/bats-core; \
 	fi
 
-#GITSECRET_WIN_PATHS := $(echo "${PWD}/vendor/bats-core/bin;${PWD}" | sed -e 's/[/]/\\/g')
-#GITSECRET_WIN_PATHS := $(shell echo "${PWD}/vendor/bats-core/bin;${PWD}" | sed -e 's/[/]/\\/g')
-GITSECRET_WIN_PATHS := $(echo "${PWD}/vendor/bats-core/bin;${PWD}")
-# TODO: For PATH below, there has to be a better way to choose (slash/backslash 
-# TODO: and) ':' or ';' as a delimiter at runtime. Current code is a hack; should find 'good' solution
 .PHONY: test
 test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	if [[ "${GITSECRET_DIST}" != "windows" ]]; then \
+	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
+		export PATH="${PWD}\vendor\bats-core\bin;${PWD};${PATH}"; \
+	else \
 		export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
 	fi; \
 	command -v bash; \
