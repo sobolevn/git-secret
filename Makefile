@@ -39,16 +39,16 @@ install-test:
 	git clone --depth 1 -b v1.0.2 https://github.com/bats-core/bats-core.git vendor/bats-core; \
 	fi
 
+# TODO: for PATH below, there has to be a better way to choose : or ; as a delimiter at runtime
 .PHONY: test
 test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
+	if [[ "$GITSECRET_DIST" == "windows" ]]; then export PATH="${PWD}/vendor/bats-core/bin;${PWD};${PATH}"; \
+	else export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; fi; \
 	command -v bash; \
 	./utils/tests.sh
 	
-	# for testing, remove this line from above
-	#export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
-	# should cause 'can't find bats' or other file in this dir
 
 #
 # Manuals:
