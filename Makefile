@@ -44,7 +44,7 @@ install-test:
 test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	if [[ "$GITSECRET_DIST" == "windows" ]]; then export PATH="${PWD}/vendor/bats-core/bin;${PWD};${PATH}"; \
+	if [[ "${GITSECRET_DIST}" == "windows" ]]; then export PATH="${PWD}/vendor/bats-core/bin;${PWD};${PATH}"; \
 	else export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; fi; \
 	command -v bash; \
 	./utils/tests.sh
