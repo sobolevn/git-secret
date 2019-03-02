@@ -57,7 +57,7 @@ test: install-test clean build
 	fi; \
 	command -v bash; \
 	command -v bats; \
-	bash ./utils/tests.sh
+	/usr/bin/bash ./utils/tests.sh
 	
 
 #
