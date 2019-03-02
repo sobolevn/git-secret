@@ -48,9 +48,7 @@ GITSECRET_WIN_PATHS := $(echo "${PWD}/vendor/bats-core/bin;${PWD}")
 test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
-	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
-		export PATH="${GITSECRET_WIN_PATHS};${PATH}"; \
-	else \
+	if [[ "${GITSECRET_DIST}" != "windows" ]]; then \
 		export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
 	fi; \
 	command -v bash; \
