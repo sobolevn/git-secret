@@ -44,6 +44,7 @@ test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
+	which bash; \
 	bash ./utils/tests.sh
 
 #
