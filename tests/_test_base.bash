@@ -3,7 +3,9 @@
 # This file is following a name convention defined in:
 # https://github.com/bats-core/bats-core
 
+# shellcheck disable=SC1090
 source "$SECRET_PROJECT_ROOT/src/version.sh"
+# shellcheck disable=SC1090
 source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 
 # Constants:
@@ -62,7 +64,8 @@ function test_user_password {
 # GPG:
 
 function stop_gpg_agent {
-  local username=$(id -u -n)
+  local username
+  username=$(id -u -n)
   ps -wx -U "$username" | gawk \
     '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
     > /dev/null 2>&1
@@ -101,10 +104,10 @@ function install_fixture_key {
 
 function install_fixture_full_key {
   local private_key="$BATS_TMPDIR/private-${1}.key"
-  local gpgtest_prefix=$(get_gpgtest_prefix "$1")
+  local gpgtest_prefix
+  gpgtest_prefix=$(get_gpgtest_prefix "$1") 
   local gpgtest_import="$gpgtest_prefix $GPGTEST"
   local email
-  local fp
   local fingerprint
 
   email="$1"
