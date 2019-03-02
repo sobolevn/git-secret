@@ -36,7 +36,7 @@ uninstall:
 .PHONY: install-test
 install-test:
 	@if [ ! -d "vendor/bats-core" ]; then \
-	git clone --depth 1 -b v1.0.2 https://github.com/bats-core/bats-core.git vendor/bats-core; \
+	git clone --depth 1 -b v1.1.0 https://github.com/bats-core/bats-core.git vendor/bats-core; \
 	fi
 
 .PHONY: test
