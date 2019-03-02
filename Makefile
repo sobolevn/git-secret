@@ -44,7 +44,9 @@ test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
-		GITSECRET_PWD_NOW="$(shell cygpath -w '${PWD}')" export PATH="${GITSECRET_PWD_NOW}\vendor\bats-core\bin;${GITSECRET_PWD_NOW};${PATH}"; \
+		(export GITSECRET_PWD_NOW="$(shell cygpath -w '${PWD}')"; \
+		echo "in Makefile: GITSECRET_PWD_NOW is: ${GITSECRET_PWD_NOW}"; \
+		export PATH="${GITSECRET_PWD_NOW}\vendor\bats-core\bin;${GITSECRET_PWD_NOW};${PATH}"); \
 	else \
 		export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
 	fi; \
