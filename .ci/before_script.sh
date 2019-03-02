@@ -28,15 +28,8 @@ if [[ "$GITSECRET_DIST" == "brew" ]]; then
 fi
 
 # Windows
-# msys2 needed for rm?
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  choco install wsl gawk gnupg-modern make -y
-
-  echo -n "before_script.sh: location of bash: "
-  which bash || true
-
-  echo -n "before_script.sh: location of env: "
-  which env || true
+  choco install wsl-ubuntu-1804 gawk gnupg-modern make -y
 fi
 
 # Linux:
