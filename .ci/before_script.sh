@@ -30,13 +30,12 @@ fi
 # Windows
 # msys2 needed for rm?
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  choco install msys2 gawk gnupg-modern make -y
-  #choco install make -y
+  choco install wsl gawk gnupg-modern make -y
 
-  echo -n "location of bash: "
+  echo -n "before_script.sh: location of bash: "
   which bash || true
 
-  echo -n "location of env: "
+  echo -n "before_script.sh: location of env: "
   which env || true
 fi
 
