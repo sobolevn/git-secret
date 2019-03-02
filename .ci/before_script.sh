@@ -29,7 +29,7 @@ fi
 
 # Windows
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  choco install wsl-ubuntu-1804 gawk gnupg-modern make -y
+  choco install gawk gnupg-modern make -y
 fi
 
 # Linux:
