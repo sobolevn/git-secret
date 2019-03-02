@@ -48,7 +48,6 @@ test: install-test clean build
 	command -v bash; \
 	command -v bats; \
 	command -v env; \
-	command -v cygpath; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
 		export PATH="${GITSECRET_PWD_NOW}\vendor\bats-core\bin;${GITSECRET_PWD_NOW};${PATH}"; \
