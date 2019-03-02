@@ -42,17 +42,17 @@ install-test:
 .PHONY: test
 test: install-test clean build
 	chmod +x "./utils/tests.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
+	command -v bash; \
+	command -v bats; \
+	command -v env; \
+	command -v cygpath; \
+	script cygpath -w "${PWD}; \
 	if [[ "${GITSECRET_DIST}" == "windows" ]]; then \
 		export GITSECRET_PWD_NOW=$(script cygpath -w "${PWD}"); \
 		export PATH="${GITSECRET_PWD_NOW}\vendor\bats-core\bin;${GITSECRET_PWD_NOW};${PATH}"; \
 	else \
 		export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
 	fi; \
-	command -v bash; \
-	command -v bats; \
-	command -v env; \
-	command -v cygpath; \
 	./utils/tests.sh
 	
 
