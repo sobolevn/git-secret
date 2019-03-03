@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+!/usr/bin/env bash
 
 # This file is following a name convention defined in:
 # https://github.com/bats-core/bats-core
@@ -35,21 +35,21 @@ GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warnin
 # Personal data:
 
 # these two are 'normal' keys
-local TEST_DEFAULT_USER="user1@gitsecret.io"
-local TEST_SECOND_USER="user2@gitsecret.io"
+export TEST_DEFAULT_USER="user1@gitsecret.io"
+export TEST_SECOND_USER="user2@gitsecret.io"
 
 # TEST_NONAME_USER (user3) created with '--quick-key-generate' and has only an email, no username.
-local TEST_NONAME_USER="user3@gitsecret.io"
+export TEST_NONAME_USER="user3@gitsecret.io"
 
 # TEST_EXPIRED_USER (user4) has expired
-local TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
+export TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
 
-local TEST_ATTACKER_USER="attacker1@gitsecret.io"
+export TEST_ATTACKER_USER="attacker1@gitsecret.io"
 
 
-local TEST_DEFAULT_FILENAME="space file" # has spaces
-local TEST_SECOND_FILENAME="space file two" # has spaces
-local TEST_THIRD_FILENAME="space file three"  # has spaces
+export TEST_DEFAULT_FILENAME="space file" # has spaces
+export TEST_SECOND_FILENAME="space file two" # has spaces
+export TEST_THIRD_FILENAME="space file three"  # has spaces
 
 
 function test_user_password {
