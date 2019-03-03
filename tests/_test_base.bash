@@ -75,7 +75,7 @@ function stop_gpg_agent {
 function get_gpgtest_prefix {
   if [[ $GPG_VER_21 -eq 1  ]]; then
     # shellcheck disable=SC2086
-    echo "echo $(test_user_password \"$1\") | "
+    echo "echo \"$(test_user_password $1)\" | "
   else
     echo ""
   fi
