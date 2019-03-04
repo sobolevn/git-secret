@@ -77,7 +77,7 @@ function stop_gpg_agent {
 
   if [[ -n "$ps_output" ]]; then
     # shellcheck disable=SC2001
-    echo "$ps_output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+    echo "$ps_output" | sed "s/^/# 'stop_gpg_agent():' output: /" >&3
     echo "$ps_output" | cut -f2 | xargs kill
   fi
 }
