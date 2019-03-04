@@ -39,12 +39,12 @@ install-test:
 	git clone --depth 1 -b v1.1.0 https://github.com/bats-core/bats-core.git vendor/bats-core; \
 	fi
 
+# The $(shell echo $${PWD}) construct is to access *nix paths under windows
+# Under git for windows '$PATH' is set to windows paths, e.g. C:\Something
+# Using a sub-shell we get the raw *nix paths, e.g. /c/Something
 .PHONY: test
 test: install-test clean build
 	@chmod +x "./utils/tests.sh"; sync; \
-	# Under git for windows '$PATH' is set to windows paths, e.g. C:\Something; \
-	# Using a sub-shell we get the *nix paths, e.g. /c/Something; \
-	# Sub-shell works for *nix as well; \
 	export SECRET_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
 	"./utils/tests.sh"
