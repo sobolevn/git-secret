@@ -13,7 +13,7 @@ function cat {
 
       p) passphrase=$OPTARG;;
 
-      d) homedir=$OPTARG;;
+      d) homedir=$(_clean_path $OPTARG);;
 
       *) _invalid_option_for 'cat';;
     esac
