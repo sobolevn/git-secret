@@ -17,6 +17,7 @@
 - Upgrade bats-core to v1.1.0
 - Spelling fixes
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
+- Use Shellcheck on tests/ files, changes for Shellcheck in tests/ (#368)
 
 ## Version 0.2.5
 
