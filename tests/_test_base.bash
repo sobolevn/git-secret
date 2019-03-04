@@ -3,9 +3,9 @@
 # This file is following a name convention defined in:
 # https://github.com/bats-core/bats-core
 
-# shellcheck disable=1090
+# shellcheck disable=SC1090
 source "$SECRET_PROJECT_ROOT/src/version.sh"
-# shellcheck disable=1090
+# shellcheck disable=SC1090
 source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 
 # Constants:
@@ -13,6 +13,7 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
+# shellcheck disable=SC2016
 AWK_GPG_GET_FP='
 BEGIN { OFS=":"; FS=":"; }
 {
@@ -40,29 +41,27 @@ fi
 # Personal data:
 
 # these two are 'normal' keys
-TEST_DEFAULT_USER="user1@gitsecret.io"
-TEST_SECOND_USER="user2@gitsecret.io"
+export TEST_DEFAULT_USER="user1@gitsecret.io"
+export TEST_SECOND_USER="user2@gitsecret.io"
 
 # TEST_NONAME_USER (user3) created with '--quick-key-generate' and has only an email, no username.
-TEST_NONAME_USER="user3@gitsecret.io"
+export TEST_NONAME_USER="user3@gitsecret.io"
 
 # TEST_EXPIRED_USER (user4) has expired
-TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
+export TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
 
-TEST_ATTACKER_USER="attacker1@gitsecret.io"
+export TEST_ATTACKER_USER="attacker1@gitsecret.io"
 
-#TEST_DEFAULT_FILENAME="file_one"  # no spaces
-#TEST_SECOND_FILENAME="file_two"  # no spaces
-#TEST_THIRD_FILENAME="file_three"  # no spaces
 
-TEST_DEFAULT_FILENAME="space file" # has spaces
-TEST_SECOND_FILENAME="space file two" # has spaces
-TEST_THIRD_FILENAME="space file three"  # has spaces
+export TEST_DEFAULT_FILENAME="space file" # has spaces
+export TEST_SECOND_FILENAME="space file two" # has spaces
+export TEST_THIRD_FILENAME="space file three"  # has spaces
 
 
 function test_user_password {
   # Password for 'user3@gitsecret.io' is 'user3pass'
   # As it was set on key creation. 
+  # shellcheck disable=SC2001
   echo "$1" | sed -e 's/@.*/pass/' 
 }
 
@@ -80,6 +79,7 @@ function stop_gpg_agent {
 
 function get_gpgtest_prefix {
   if [[ $GPG_VER_21 -eq 1  ]]; then
+    # shellcheck disable=SC2086
     echo "echo \"$(test_user_password $1)\" | "
   else
     echo ""
@@ -93,7 +93,7 @@ function get_gpg_fingerprint_by_email {
 
   fingerprint=$($GPGTEST --with-fingerprint \
                          --with-colon \
-                         --list-secret-key $email | gawk "$AWK_GPG_GET_FP")
+                         --list-secret-key "$email" | gawk "$AWK_GPG_GET_FP")
   echo "$fingerprint"
 }
 
@@ -101,7 +101,7 @@ function get_gpg_fingerprint_by_email {
 function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
 
-  \cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
+  cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
   $GPGTEST --import "$public_key" > /dev/null 2>&1
   rm -f "$public_key"
 }
@@ -109,21 +109,21 @@ function install_fixture_key {
 
 function install_fixture_full_key {
   local private_key="$BATS_TMPDIR/private-${1}.key"
-  local gpgtest_prefix="$(get_gpgtest_prefix $1)"
+  local gpgtest_prefix
+  gpgtest_prefix=$(get_gpgtest_prefix "$1") 
   local gpgtest_import="$gpgtest_prefix $GPGTEST"
   local email
-  local fp
   local fingerprint
 
   email="$1"
 
-  \cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
+  cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
   bash -c "$gpgtest_import --allow-secret-key-import \
     --import \"$private_key\"" > /dev/null 2>&1
 
   # since 0.1.2 fingerprint is returned:
-  fingerprint=$(get_gpg_fingerprint_by_email $email)
+  fingerprint=$(get_gpg_fingerprint_by_email "$email")
 
   install_fixture_key "$1"
 
