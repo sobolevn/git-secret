@@ -32,9 +32,9 @@ GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warnin
 
 # Platform stuff:
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-PS_CMD="ps -l -u";
+  PS_CMD="ps -l -u";
 else
-PS_CMD="ps -wx -U";
+  PS_CMD="ps -wx -U";
 fi
 
 # Personal data:
