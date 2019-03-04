@@ -64,12 +64,22 @@ function test_user_password {
 # GPG:
 
 function stop_gpg_agent {
+  # It would be nice to use gpgconf --kill gpg-agent here, 
+  # but it's not supported on CentOS7's gpg (GnuPG) 2.0.22.
+  # So we use a regular kill. kill -9 not necessary
+
   local username
   username=$(id -u -n)
-  ps -wx -U "$username" | gawk \
-    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("gpgconf --kill gpg-agent") } }' 
-#\
-#    > /dev/null 2>&1
+  local ps_output
+  # shellcheck disable=SC2009
+  ps_output=$(ps -wx -U "$username" | grep '/gpg-agent --homedir/' | grep -v grep)
+  # we could use 'pgrep' above
+
+  if [[ -n "$ps_output" ]]; then
+    # shellcheck disable=SC2001
+    echo "$ps_output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+    echo "$ps_output" | cut -f2 | xargs kill
+  fi
 }
 
 
