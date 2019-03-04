@@ -67,7 +67,7 @@ function stop_gpg_agent {
   local username
   username=$(id -u -n)
   ps -wx -U "$username" | gawk \
-    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
+    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' \
     > /dev/null 2>&1
 }
 
