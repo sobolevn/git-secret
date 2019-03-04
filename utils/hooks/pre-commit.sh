@@ -11,6 +11,9 @@ if [[ "$BRANCH_NAME" != '(no branch)' ]]; then
   # so some tests will be skipped. It is done, because `git rev-parse`
   # is not working when running from pre-commit hook. See #334
   export BATS_RUNNING_FROM_GIT=1
+  if [[ "$(uname -s)" == MINGW* ]]; then
+    export GITSECRET_DIST="windows"
+  fi
 
   # Run tests:
   make test
