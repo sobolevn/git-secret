@@ -30,6 +30,12 @@ BEGIN { OFS=":"; FS=":"; }
 # This command is used with absolute homedir set and disabled warnings:
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
 
+# Platform stuff:
+if [[ "$GITSECRET_DIST" == "windows" ]]; then
+PS_CMD="ps -l -u";
+else
+PS_CMD="ps -wx -U";
+fi
 
 # Personal data:
 
@@ -66,8 +72,8 @@ function test_user_password {
 
 function stop_gpg_agent {
   local username=$(id -u -n)
-  ps -wx -U "$username" | gawk \
-    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
+  ${PS_CMD} "$username" | gawk \
+    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("echo -9 "$1) } }' \
     > /dev/null 2>&1
 }
 
