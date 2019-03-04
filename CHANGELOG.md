@@ -16,6 +16,7 @@
 - Add text explaining git-secret Style Guide and Development Philosophy
 - Upgrade bats-core to v1.1.0
 - Spelling fixes
+- Use Shellcheck on tests/ files, changes for Shellcheck in tests/ (#368)
 
 ## Version 0.2.5
 
