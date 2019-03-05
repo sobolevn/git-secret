@@ -82,7 +82,7 @@
 
 ## Version 0.2.1
 
-- Now everything is tested inside the `docker`-containers and `OSX` images on `travis`.
+- Now everything is tested inside the `docker`-containers and `OSX` (MacOS) images on `travis`.
 - Added autodeploy to `bintray` in `.travis.yml`.
 - Added `.ci/` folder for continuous integration, refactored `utils/` folder.
 - Added `CONTRIBUTING.md` and `LICENSE.md`.
