@@ -126,7 +126,6 @@ _site/
 git-secret
 
 # Temporary packages:
-vendor/
 temp/
 
 # Packaging:
