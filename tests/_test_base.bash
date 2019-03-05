@@ -214,7 +214,8 @@ function set_state_secret_tell {
   local email
 
   email="$1"
-  git secret tell -d "$TEST_GPG_HOMEDIR" "$email" > /dev/null 2>&1
+  git secret tell -v -d "$TEST_GPG_HOMEDIR" "$email"
+  # > /dev/null 2>&1
 }
 
 
