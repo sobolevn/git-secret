@@ -14,7 +14,7 @@
 - Update git-secret.io, fix utils/gh-branch.sh to use 'git all --add' (#344)
 - Change 'init' to never ignore .secret files (#362)
 - Add text explaining git-secret Style Guide and Development Philosophy
-- Upgrade bats-core to v1.1.0
+- Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
 - Spelling fixes
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
 - Use Shellcheck on tests/ files, changes for Shellcheck in tests/ (#368)
