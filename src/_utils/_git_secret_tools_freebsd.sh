@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# support for freebsd. Mostly the same as OSX.
+# support for freebsd. Mostly the same as MacOS.
 
 
 # shellcheck disable=1117
@@ -18,7 +18,7 @@ function __temp_file_freebsd {
 
 
 function __sha256_freebsd {
-  # this is in a different location than osx
+  # this is in a different location than MacOS
   /usr/local/bin/shasum -a256 "$1"
 }
 
