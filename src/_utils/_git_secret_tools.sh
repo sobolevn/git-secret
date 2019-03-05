@@ -141,7 +141,7 @@ function _os_based {
 
 function _clean_path {
   # This function transforms windows paths to *nix paths
-  echo $1 | sed 's#^\([a-zA-Z]\):/#/\1/#'
+  echo "$1" | sed 's#^\([a-zA-Z]\):/#/\1/#'
 }
 
 function _set_config {
@@ -356,7 +356,7 @@ function _get_git_root_path {
   # since `.gitsecret` (or value set by SECRETS_DIR env var) must be on the same level.
 
   local result
-  result=$(_clean_path `git rev-parse --show-toplevel`)
+  result=$(_clean_path "$(git rev-parse --show-toplevel)")
   echo "$result"
 }
 
