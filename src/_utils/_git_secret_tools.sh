@@ -88,7 +88,7 @@ AWK_GPG_VER_CHECK='
 '
 
 # This is 1 for gpg version 2.1 or greater, otherwise 0
-GPG_VER_21="$(gpg --version | gawk "$AWK_GPG_VER_CHECK")"
+GPG_VER_21="$($SECRETS_GPG_COMMAND --version | gawk "$AWK_GPG_VER_CHECK")"
 
 
 # Bash:
