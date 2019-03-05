@@ -70,7 +70,8 @@ function test_user_password {
 # GPG:
 
 function stop_gpg_agent {
-  local username=$(id -u -n)
+  local username
+  username=$(id -u -n)
   ${PS_CMD} "$username" | gawk \
     '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
     > /dev/null 2>&1
