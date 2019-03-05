@@ -33,17 +33,11 @@ uninstall:
 # Testing:
 #
 
-.PHONY: install-test
-install-test:
-	@if [ ! -d "vendor/bats-core" ]; then \
-	git clone --depth 1 -b v1.1.0 https://github.com/bats-core/bats-core.git vendor/bats-core; \
-	fi
-
 # The $(shell echo $${PWD}) construct is to access *nix paths under windows
 # Under git for windows '$PATH' is set to windows paths, e.g. C:\Something
 # Using a sub-shell we get the raw *nix paths, e.g. /c/Something
 .PHONY: test
-test: install-test clean build
+test: clean build
 	@chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
@@ -107,7 +101,7 @@ build-apk: clean build install-fpm
 	"./utils/apk/apk-build.sh"
 
 .PHONY: test-apk-ci
-test-apk-ci: install-test build-apk
+test-apk-ci: build-apk
 	@chmod +x "./utils/apk/apk-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
@@ -129,7 +123,7 @@ build-deb: clean build install-fpm
 	"./utils/deb/deb-build.sh"
 
 .PHONY: test-deb-ci
-test-deb-ci: install-test build-deb
+test-deb-ci: build-deb
 	@chmod +x "./utils/deb/deb-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
@@ -151,7 +145,7 @@ build-rpm: clean build install-fpm
 	"./utils/rpm/rpm-build.sh"
 
 .PHONY: test-rpm-ci
-test-rpm-ci: install-test build-rpm
+test-rpm-ci: build-rpm
 	@chmod +x "./utils/rpm/rpm-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
@@ -166,7 +160,7 @@ deploy-rpm: build-rpm
 # make:
 
 .PHONY: test-make-ci
-test-make-ci: clean install-test
+test-make-ci: clean 
 	@chmod +x "./utils/make/make-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
