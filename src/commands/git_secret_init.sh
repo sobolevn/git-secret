@@ -72,7 +72,7 @@ function init {
   echo "'$git_secret_dir/' created."
 
   local random_seed_file
-  random_seed_file=".gitsecret/keys/random_seed"
+  random_seed_file="${_SECRETS_DIR}/keys/random_seed"
   gitignore_add_pattern "$random_seed_file"
   gitignore_add_pattern "!*$SECRETS_EXTENSION"
 
