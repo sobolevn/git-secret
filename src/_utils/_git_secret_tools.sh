@@ -141,6 +141,7 @@ function _os_based {
 
 function _clean_path {
   # This function transforms windows paths to *nix paths
+  # shellcheck disable=SC2001
   echo "$1" | sed 's#^\([a-zA-Z]\):/#/\1/#'
 }
 
