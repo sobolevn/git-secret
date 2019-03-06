@@ -2,6 +2,7 @@
 
 ## {{Next Version}}
 
+- Support SECRETS_VERBOSE env var to enable verbosity (#323)
 - Fix link to homebrew's git-secret in README.md (#310)
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
 - Remove diagnostic output from test results (#324)
