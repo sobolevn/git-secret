@@ -108,6 +108,8 @@ function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
 
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
+  mkdir -p "$TEST_GPG_HOMEDIR"
+
   $GPGTEST --import "$public_key" > /dev/null 2>&1
   rm -f "$public_key"
 }
@@ -203,7 +205,6 @@ function set_state_initial {
   cd "$BATS_TMPDIR" || exit 1
   rm -rf "${BATS_TMPDIR:?}/*"
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
-    mkdir "$TEST_GPG_HOMEDIR"
     gpgconf --kill gpg-agent
     source <(gpg-agent --daemon --homedir="$TEST_GPG_HOMEDIR")
   fi
