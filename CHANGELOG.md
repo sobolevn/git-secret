@@ -20,6 +20,7 @@
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
 - Use SECRETS_GPG_COMMAND env var in gpg version check (#389)
 - Use Shellcheck on tests/ files, changes for Shellcheck in tests/ (#368)
+- Add header to git-secret.7 man page, for debian and doc improvement (#386)
 
 ## Version 0.2.5
 
