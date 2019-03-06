@@ -30,6 +30,7 @@ BEGIN { OFS=":"; FS=":"; }
 
 # This command is used with absolute homedir set and disabled warnings:
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
+export GNUPGHOME="$TEST_GPG_HOMEDIR"
 
 # Platform stuff:
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
@@ -197,10 +198,6 @@ function remove_git_repository {
 function set_state_initial {
   cd "$BATS_TMPDIR" || exit 1
   rm -rf "${BATS_TMPDIR:?}/*"
-  if [[ "$GITSECRET_DIST" == "windows" ]]; then
-    kill -9 gpg-agent
-    source <(gpg-agent --daemon)
-  fi
 }
 
 
