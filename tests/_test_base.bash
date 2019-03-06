@@ -11,7 +11,11 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 # Constants:
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
-TEST_GPG_HOMEDIR="$BATS_TMPDIR"
+if [[ "$GITSECRET_DIST" == "windows" ]]; then
+  TEST_GPG_HOMEDIR="/dev/shm/gpg-agent"
+else
+  TEST_GPG_HOMEDIR="$BATS_TMPDIR"
+fi
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
@@ -199,6 +203,7 @@ function set_state_initial {
   cd "$BATS_TMPDIR" || exit 1
   rm -rf "${BATS_TMPDIR:?}/*"
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
+    mkdir "$TEST_GPG_HOMEDIR"
     gpgconf --kill gpg-agent
     source <(gpg-agent --daemon --homedir="$TEST_GPG_HOMEDIR")
   fi
