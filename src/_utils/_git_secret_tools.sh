@@ -12,6 +12,7 @@ _SECRETS_DIR_KEYS_MAPPING="${_SECRETS_DIR_KEYS}/mapping.cfg"
 _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
+# shellcheck disable=SC2034
 _SECRETS_VERBOSE=${SECRETS_VERBOSE:-""}
 # _SECRETS_VERBOSE is expected to be empty or '1'. 
 # Empty means 'off', any other value means 'on'.
