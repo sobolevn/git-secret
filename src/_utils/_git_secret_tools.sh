@@ -12,6 +12,10 @@ _SECRETS_DIR_KEYS_MAPPING="${_SECRETS_DIR_KEYS}/mapping.cfg"
 _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
+_SECRETS_VERBOSE=${SECRETS_VERBOSE:-""}
+# _SECRETS_VERBOSE is expected to be empty or '1'. 
+# Empty means 'off', any other value means 'on'.
+
 
 : "${SECRETS_EXTENSION:=".secret"}"
 
@@ -434,28 +438,35 @@ function _warn_or_abort {
   fi
 }
 
+# Does not use _SECRETS_VERBOSE
 function _find_and_clean {
   # required:
   local pattern="$1" # can be any string pattern
 
   # optional:
-  local verbose=${2:-""} # can be empty or should be equal to "v"
+  local verbose=${2:-""} # can be empty or 1
+  local verbose_opt=''
+  if [[ -n "$verbose" ]]; then
+    verbose_opt='v';
+  fi
 
   local root
   root=$(_get_git_root_path)
 
   # shellcheck disable=2086
-  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose
+  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose_opt
 }
 
 
+# Does not use _SECRETS_VERBOSE
 function _find_and_clean_formatted {
   # required:
   local pattern="$1" # can be any string pattern
 
   # optional:
-  local verbose=${2:-""} # can be empty or should be equal to "v"
+  local verbose=${2:-""} # can be empty or 1
   local message=${3:-"cleaning:"} # can be any string
+  local verbose_opt=''
 
   if [[ -n "$verbose" ]]; then
     echo && echo "$message"

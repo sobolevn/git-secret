@@ -15,6 +15,7 @@ BEGIN { FS=":"; OFS=":"; }
 }
 '
 
+# Does not use _SECRETS_VERBOSE
 function _optional_clean {
   local clean="$1"
   local verbose=${2:-""}
@@ -25,6 +26,7 @@ function _optional_clean {
 }
 
 
+# Does not use _SECRETS_VERBOSE
 function _optional_delete {
   local delete="$1"
   local verbose=${2:-""}
@@ -83,7 +85,6 @@ function hide {
   local preserve=0
   local delete=0
   local fsdb_update_hash=0 # add checksum hashes to fsdb
-  local verbose=''
   local force_continue=0
 
   OPTIND=1
@@ -100,7 +101,7 @@ function hide {
 
       m) fsdb_update_hash=1;;
 
-      v) verbose='v';;
+      v) _SECRETS_VERBOSE=1;;
 
       h) _show_manual_for 'hide';;
 
@@ -116,7 +117,7 @@ function hide {
 
   # If -c option was provided, it would clean the hidden files
   # before creating new ones.
-  _optional_clean "$clean" "$verbose"
+  _optional_clean "$clean" "$_SECRETS_VERBOSE"
 
   # Encrypting files:
 
@@ -196,7 +197,7 @@ function hide {
 
   # If -d option was provided, it would delete the source files
   # after we have already hidden them.
-  _optional_delete "$delete" "$verbose"
+  _optional_delete "$delete" "$_SECRETS_VERBOSE"
 
   echo "done. $counter of $num_mappings files are hidden."
 }
