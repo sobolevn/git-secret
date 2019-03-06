@@ -198,7 +198,7 @@ function set_state_initial {
   cd "$BATS_TMPDIR" || exit 1
   rm -rf "${BATS_TMPDIR:?}/*"
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
-    gpg-agent --daemon
+    printf '%%Assuan%%\nsocket=/dev/shm/S.gpg-agent\n' > ~/.gnupg/S.gpg-agent
   fi
 }
 
