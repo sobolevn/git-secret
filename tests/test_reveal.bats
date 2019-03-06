@@ -69,7 +69,7 @@ function teardown {
 
   local secret_perm
   local file_perm
-  secret_perm=$(ls -l "$FILE_TO_HIDE".secret | cut -d' ' -f1)
+  secret_perm=$(ls -l "$FILE_TO_HIDE$SECRETS_EXTENSION" | cut -d' ' -f1)
   file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
 
   # text prefixed with '# ' and sent to file descriptor 3 is 'diagnostic' (debug) output for devs

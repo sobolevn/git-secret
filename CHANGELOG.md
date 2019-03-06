@@ -16,6 +16,8 @@
 - Add text explaining git-secret Style Guide and Development Philosophy
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
 - Spelling fixes
+- Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
+- Use SECRETS_GPG_COMMAND env var in gpg version check (#389)
 - Use Shellcheck on tests/ files, changes for Shellcheck in tests/ (#368)
 
 ## Version 0.2.5
