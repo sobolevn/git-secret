@@ -2,13 +2,12 @@
 
 
 function clean {
-  local verbose=''
-
   OPTIND=1
 
+  # shellcheck disable=2034
   while getopts 'vh' opt; do
     case "$opt" in
-      v) verbose="v";;
+      v) _SECRETS_VERBOSE=1;;
 
       h) _show_manual_for 'clean';;
 
@@ -22,5 +21,5 @@ function clean {
   _user_required
 
   # User should see properly formatted output:
-  _find_and_clean_formatted "*$SECRETS_EXTENSION" "$verbose"
+  _find_and_clean_formatted "*$SECRETS_EXTENSION"
 }

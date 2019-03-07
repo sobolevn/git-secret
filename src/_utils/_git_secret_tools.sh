@@ -13,6 +13,14 @@ _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 
+# _SECRETS_VERBOSE is expected to be empty or '1'. 
+# Empty means 'off', any other value means 'on'.
+# shellcheck disable=SC2153
+if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
+    # shellcheck disable=SC2034
+    _SECRETS_VERBOSE='1'
+fi
+
 : "${SECRETS_EXTENSION:=".secret"}"
 
 # Commands:
@@ -438,14 +446,16 @@ function _find_and_clean {
   # required:
   local pattern="$1" # can be any string pattern
 
-  # optional:
-  local verbose=${2:-""} # can be empty or should be equal to "v"
+  local verbose_opt=''
+  if [[ -n "$_SECRETS_VERBOSE" ]]; then
+    verbose_opt='v';
+  fi
 
   local root
   root=$(_get_git_root_path)
 
   # shellcheck disable=2086
-  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose
+  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose_opt
 }
 
 
@@ -453,17 +463,13 @@ function _find_and_clean_formatted {
   # required:
   local pattern="$1" # can be any string pattern
 
-  # optional:
-  local verbose=${2:-""} # can be empty or should be equal to "v"
-  local message=${3:-"cleaning:"} # can be any string
-
-  if [[ -n "$verbose" ]]; then
-    echo && echo "$message"
+  if [[ -n "$_SECRETS_VERBOSE" ]]; then
+    echo && echo "cleaning:"
   fi
 
-  _find_and_clean "$pattern" "$verbose"
+  _find_and_clean "$pattern"
 
-  if [[ -n "$verbose" ]]; then
+  if [[ -n "$_SECRETS_VERBOSE" ]]; then
     echo
   fi
 }
@@ -685,16 +691,20 @@ function _decrypt {
     args+=( "--pinentry-mode" "loopback" )
   fi
 
+  if [[ -z "$_SECRETS_VERBOSE" ]]; then
+    args+=( "--quiet" )
+  fi
+
   set +e   # disable 'set -e' so we can capture exit_code
 
   #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
-    echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --quiet --batch --yes --no-tty --passphrase-fd 0 \
+    echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 0 \
       "$encrypted_filename"
     exit_code=$?
   else
-    $SECRETS_GPG_COMMAND "${args[@]}" "--quiet" "$encrypted_filename"
+    $SECRETS_GPG_COMMAND "${args[@]}" "$encrypted_filename"
     exit_code=$?
   fi
 
