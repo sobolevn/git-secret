@@ -12,7 +12,7 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  export TEST_GPG_HOMEDIR="/c/Users/travis/AppData/Local/Temp/.gitsecret-testdir/gpg-dir"
+  export TEST_GPG_HOMEDIR="$(cygpath.exe -w /tmp | sed -e 's#\(\([a-zA-Z]\):\)#/\L\2#' -e 's#\\#/#g')"
 else
   export TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 fi
