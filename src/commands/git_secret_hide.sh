@@ -166,8 +166,13 @@ function hide {
 
         # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2086
-        $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
-          $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
+        if [[ -n "$_SECRETS_VERBOSE" ]]; then
+            $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
+              $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
+        else 
+            $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
+              $recipients -o "$output_path" "$input_path"
+        fi
         local exit_code=$?
 
         set -e  # re-enable set -e
