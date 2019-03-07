@@ -100,6 +100,8 @@ function tell {
     secrets_dir_keys=$(_get_secrets_dir_keys)
 
     local args=( --homedir "$secrets_dir_keys" --verbose --import "$keyfile" )
+    # Just checking if there's a running agent
+    echo $(ps aux | grep 'gpg') 1>&2
     if [[ "$verbose" -ne 0 ]]; then
       $SECRETS_GPG_COMMAND "${args[@]}"
     else
