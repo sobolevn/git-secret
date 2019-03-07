@@ -439,15 +439,12 @@ function _warn_or_abort {
   fi
 }
 
-# Does not use _SECRETS_VERBOSE
 function _find_and_clean {
   # required:
   local pattern="$1" # can be any string pattern
 
-  # optional:
-  local verbose=${2:-""} # can be empty or 1
   local verbose_opt=''
-  if [[ -n "$verbose" ]]; then
+  if [[ -n "$_SECRETS_VERBOSE" ]]; then
     verbose_opt='v';
   fi
 
@@ -459,23 +456,17 @@ function _find_and_clean {
 }
 
 
-# Does not use _SECRETS_VERBOSE
 function _find_and_clean_formatted {
   # required:
   local pattern="$1" # can be any string pattern
 
-  # optional:
-  local verbose=${2:-""} # can be empty or 1
-  local message=${3:-"cleaning:"} # can be any string
-  local verbose_opt=''
-
-  if [[ -n "$verbose" ]]; then
-    echo && echo "$message"
+  if [[ -n "$_SECRETS_VERBOSE" ]]; then
+    echo && echo "cleaning:"
   fi
 
-  _find_and_clean "$pattern" "$verbose"
+  _find_and_clean "$pattern"
 
-  if [[ -n "$verbose" ]]; then
+  if [[ -n "$_SECRETS_VERBOSE" ]]; then
     echo
   fi
 }
