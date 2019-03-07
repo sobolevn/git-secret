@@ -21,7 +21,6 @@ if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
     _SECRETS_VERBOSE='1'
 fi
 
-
 : "${SECRETS_EXTENSION:=".secret"}"
 
 # Commands:
