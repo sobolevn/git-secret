@@ -42,8 +42,6 @@ function teardown {
 @test "run 'hide' normally with SECRETS_VERBOSE=1" {
   SECRETS_VERBOSE=1 run git secret hide
 
- echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
-
   # Command must execute normally. 
   [ "$status" -eq 0 ]
   [[ "$output" == "done. 1 of 1 files are hidden." ]]
