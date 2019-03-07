@@ -11,11 +11,7 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 # Constants:
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
-if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  export TEST_GPG_HOMEDIR="$(cygpath.exe -w /tmp | sed -e 's#\(\([a-zA-Z]\):\)#/\L\2#' -e 's#\\#/#g')"
-else
-  export TEST_GPG_HOMEDIR="$BATS_TMPDIR"
-fi
+TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
