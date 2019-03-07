@@ -66,9 +66,9 @@ function stop_gpg_agent {
   local username
   username=$(id -u -n)
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
-    ps -l -u "$username" | gawk \
-      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
-      > /dev/null 2>&1
+    if [ -f "${BATS_TMPDIR}/gpg-agent.pid" ]; then
+      kill "$(< \"${BATS_TMPDIR}/gpg-agent.pid\")"
+    fi
   else
     ps -wx -U "$username" | gawk \
       '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
@@ -194,8 +194,18 @@ function remove_git_repository {
 # Git Secret:
 
 function set_state_initial {
+  if [[ "$GITSECRET_DIST" == "windows" ]]; then
+    if [ -f "${BATS_TMPDIR}/gpg-agent.pid" ]; then
+      kill "$(< \"${BATS_TMPDIR}/gpg-agent.pid\")" >/dev/null 2>&1
+    fi
+  fi
   cd "$BATS_TMPDIR" || exit 1
   rm -rf "${BATS_TMPDIR:?}/*"
+  if [[ "$GITSECRET_DIST" == "windows" ]]; then
+    gpg-agent --homedir "${TEST_GPG_HOMEDIR}" --daemon -v 2>&1 >/dev/null |\
+    grep -m1 started | sed 's#.*\[\([0-9]*\)\].*#\1#' \
+    > "${BATS_TMPDIR}/gpg-agent.pid"
+  fi
 }
 
 
