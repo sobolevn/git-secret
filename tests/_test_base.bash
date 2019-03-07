@@ -32,12 +32,6 @@ BEGIN { OFS=":"; FS=":"; }
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
 export GNUPGHOME="$TEST_GPG_HOMEDIR"
 
-# Platform stuff:
-if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  PS_CMD="ps -l -u";
-else
-  PS_CMD="ps -wx -U";
-fi
 
 # Personal data:
 
@@ -74,10 +68,11 @@ function stop_gpg_agent {
   local username
   username=$(id -u -n)
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
-    ${PS_CMD} "$username" | gawk \
-      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' 1>&2
+    ps -l -u "$username" | gawk \
+      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
+      > /dev/null 2>&1
   else
-    ${PS_CMD} "$username" | gawk \
+    ps -wx -U "$username" | gawk \
       '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill -9 "$1) } }' \
       > /dev/null 2>&1
   fi
