@@ -26,7 +26,6 @@ function tell {
   # A POSIX variable
   # Reset in case getopts has been used previously in the shell.
   OPTIND=1
-  echo "${@}" 1>&2
 
   while getopts "vhmd:" opt; do
     case "$opt" in
@@ -100,11 +99,7 @@ function tell {
     local secrets_dir_keys
     secrets_dir_keys=$(_get_secrets_dir_keys)
 
-    local args=( --homedir "$secrets_dir_keys" --verbose --import "$keyfile" )
-    # Just checking if there's a running agent
-    echo "$(ps aux | grep 'gpg')" 1>&2
-    # What is our command?
-    echo "${SECRETS_GPG_COMMAND}" "${args[@]}" 1>&2
+    local args=( --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" )
     if [[ "$verbose" -ne 0 ]]; then
       $SECRETS_GPG_COMMAND "${args[@]}"
     else
