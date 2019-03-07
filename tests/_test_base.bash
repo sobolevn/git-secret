@@ -12,9 +12,9 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  TEST_GPG_HOMEDIR="/dev/shm/gpg-agent"
+  export TEST_GPG_HOMEDIR="/dev/shm/gpg-agent"
 else
-  TEST_GPG_HOMEDIR="$BATS_TMPDIR"
+  export TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 fi
 
 # shellcheck disable=SC2016
