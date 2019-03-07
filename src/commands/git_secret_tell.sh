@@ -99,7 +99,7 @@ function tell {
     local secrets_dir_keys
     secrets_dir_keys=$(_get_secrets_dir_keys)
 
-    local args=( --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" )
+    local args=( --homedir "$secrets_dir_keys" --verbose --import "$keyfile" )
     if [[ "$verbose" -ne 0 ]]; then
       $SECRETS_GPG_COMMAND "${args[@]}"
     else
