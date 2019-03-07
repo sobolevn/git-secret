@@ -166,7 +166,6 @@ function hide {
 
         set +e   # disable 'set -e' so we can capture exit_code
 
-        # shellcheck disable=SC2086
         if [[ -n "$_SECRETS_VERBOSE" ]]; then
           $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1
         else 
