@@ -3,12 +3,13 @@
 ## {{Next Version}}
 
 - Support SECRETS_VERBOSE env var to enable verbosity (#323)
+- Use gpg without --quiet when decrypting in verbose mode (#394)
+- Add -v 'verbose' option to 'tell', showing gpg output (#320)
 - Fix link to homebrew's git-secret in README.md (#310)
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
 - Remove diagnostic output from test results (#324)
 - Remove un-needed redirection in 'reveal' (#325)
 - Remove unused functions from _git_secret_tools.sh
-- Add -v 'verbose' option to 'tell', showing gpg output (#320)
 - Fix link to current contributors in CONTRIBUTING.md (#331)
 - Fix tests when running from git hooks (#334)
 - Fix typo, remove temp directory in utils/tests.sh (#347)
