@@ -697,16 +697,20 @@ function _decrypt {
     args+=( "--pinentry-mode" "loopback" )
   fi
 
+  if [[ -z "$_SECRETS_VERBOSE" ]]; then
+    args+=( "--quiet" )
+  fi
+
   set +e   # disable 'set -e' so we can capture exit_code
 
   #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
-    echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --quiet --batch --yes --no-tty --passphrase-fd 0 \
+    echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 0 \
       "$encrypted_filename"
     exit_code=$?
   else
-    $SECRETS_GPG_COMMAND "${args[@]}" "--quiet" "$encrypted_filename"
+    $SECRETS_GPG_COMMAND "${args[@]}" "$encrypted_filename"
     exit_code=$?
   fi
 
