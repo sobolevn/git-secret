@@ -30,8 +30,6 @@ BEGIN { OFS=":"; FS=":"; }
 
 # This command is used with absolute homedir set and disabled warnings:
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
-export GNUPGHOME="$TEST_GPG_HOMEDIR"
-
 
 # Personal data:
 
