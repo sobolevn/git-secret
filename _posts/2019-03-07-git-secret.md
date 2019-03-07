@@ -1,10 +1,13 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2019-02-11 10:53:39 -0500
+date:   2019-03-07 18:29:07 -0500
 permalink: git-secret
 categories: usage
 ---
+git-secret - bash tool to store private data inside a git repo.
+=============================================
+
 ## Usage: Setting up git-secret in a repository
 
 These steps cover the basic process of using `git-secret`:

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-init'
-date:   2019-02-11 10:53:39 -0500
+date:   2019-03-07 18:29:07 -0500
 permalink: git-secret-init
 categories: command
 ---
@@ -17,8 +17,14 @@ git-secret-init - initializes git-secret repository.
 `git-secret-init` should be run inside a `git` repo to set up the .gitsecret directory and initialize the repo for git-secret.
 Until repository is initialized with `git secret init`, all other `git-secret` commands are unavailable.
 
+If a .gitsecret directory already exists, `git-secret-init` exits without making any changes.
+Otherwise, a .gitsecret directory is created with appropriate sub-directories,
+and patterns to ignore git-secret's `random_seed_file`
+and not ignore `.secret` files are added to `.gitignore`.  
+
 (See [git-secret(7)](http://git-secret.io/git-secret) for information about renaming the .gitsecret
-folder using the SECRETS_DIR environment variable.
+folder with the SECRETS_DIR environment variable, and changing the extension git-secret uses for secret files
+with the SECRETS_EXTENSION environment variable.
 
 
 ## OPTIONS
