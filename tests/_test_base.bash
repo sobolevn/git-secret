@@ -206,7 +206,7 @@ function set_state_initial {
   rm -rf "${BATS_TMPDIR:?}/*"
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
     gpgconf --kill gpg-agent
-    source <(gpg-agent --daemon --homedir="$TEST_GPG_HOMEDIR")
+    source <(gpg-agent --daemon --verbose --homedir="$TEST_GPG_HOMEDIR")
   fi
 }
 
