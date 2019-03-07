@@ -158,8 +158,10 @@ function hide {
       # encrypt file only if required
       if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
+        local args=( --homedir "$secrets_dir_keys" --no-permission-warning --use-agent --yes "--trust-model=always" --encrypt )
+
         # we depend on $recipients being split on whitespace
-        local args=( --homedir "$secrets_dir_keys" --no-permission-warning --use-agent --yes --trust-model=always --encrypt )
+        # shellcheck disable=SC2206
         args+=(  $recipients -o "$output_path" "$input_path" )
 
         set +e   # disable 'set -e' so we can capture exit_code
