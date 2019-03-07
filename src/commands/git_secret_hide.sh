@@ -158,16 +158,17 @@ function hide {
       # encrypt file only if required
       if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
+        # we depend on $recipients being split on whitespace
+        local args=( --homedir "$secrets_dir_keys" --no-permission-warning --use-agent --yes --trust-model=always --encrypt )
+        args+=(  $recipients -o "$output_path" "$input_path" )
+
         set +e   # disable 'set -e' so we can capture exit_code
 
-        # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2086
         if [[ -n "$_SECRETS_VERBOSE" ]]; then
-            $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
-              $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
+          $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1
         else 
-            $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
-              $recipients -o "$output_path" "$input_path"
+          $SECRETS_GPG_COMMAND "${args[@]}" 
         fi
         local exit_code=$?
 
