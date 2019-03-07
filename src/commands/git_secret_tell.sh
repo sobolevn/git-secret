@@ -101,7 +101,9 @@ function tell {
 
     local args=( --homedir "$secrets_dir_keys" --verbose --import "$keyfile" )
     # Just checking if there's a running agent
-    echo $(ps aux | grep 'gpg') 1>&2
+    echo "$(ps aux | grep 'gpg')" 1>&2
+    # What is our command?
+    echo "${SECRETS_GPG_COMMAND}" "${args[@]}" 1>&2
     if [[ "$verbose" -ne 0 ]]; then
       $SECRETS_GPG_COMMAND "${args[@]}"
     else
