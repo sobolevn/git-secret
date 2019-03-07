@@ -12,7 +12,7 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  export TEST_GPG_HOMEDIR="/dev/shm/gpg-agent"
+  export TEST_GPG_HOMEDIR="/c/Users/travis/AppData/Local/Temp/.gitsecret-testdir/gpg-dir"
 else
   export TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 fi
