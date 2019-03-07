@@ -36,7 +36,7 @@ function teardown {
   [ "$FILE_CONTENTS" == "$output" ]
 }
 
-@test "run 'cat' with password argument SECRETS_VERBOSE=1" {
+@test "run 'cat' with password argument and SECRETS_VERBOSE=1" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   SECRETS_VERBOSE=1 run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE" 
 
