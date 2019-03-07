@@ -72,13 +72,8 @@ function _secret_files_exists {
   run git secret clean 
   [ "$status" -eq 0 ]
 
-  local first_filename=$(_get_encrypted_filename "$FIRST_FILE")
-  local second_filename=$(_get_encrypted_filename "$SECOND_FILE")
-
   # Output must be verbose:
   [[ "$output" == *"cleaning"* ]]
-  [[ "$output" == *"$first_filename"* ]]
-  [[ "$output" == *"$second_filename"* ]]
 }
 
 # this test is like above, but sets SECRETS_VERBOSE env var to 0
