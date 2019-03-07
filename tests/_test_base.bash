@@ -198,13 +198,6 @@ function remove_git_repository {
 function set_state_initial {
   cd "$BATS_TMPDIR" || exit 1
   rm -rf "${BATS_TMPDIR:?}/*"
-  if [[ "$GITSECRET_DIST" == "windows" ]]; then
-    mkdir "$TEST_GPG_HOMEDIR"
-    gpgconf --kill gpg-agent
-    echo "gpg-agent --daemon --verbose --homedir=$TEST_GPG_HOMEDIR" 1>&2
-    gpg-agent --daemon --verbose --homedir="$TEST_GPG_HOMEDIR"
-    ls -l "$TEST_GPG_HOMEDIR" 1>&2
-  fi
 }
 
 
