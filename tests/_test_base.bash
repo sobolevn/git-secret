@@ -207,6 +207,7 @@ function set_state_initial {
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
     gpgconf --kill gpg-agent
     source <(gpg-agent --daemon --verbose --homedir="$TEST_GPG_HOMEDIR")
+    ls -l "$TEST_GPG_HOMEDIR" 1>&2
   fi
 }
 
