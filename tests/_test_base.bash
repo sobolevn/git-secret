@@ -210,6 +210,7 @@ function set_state_initial {
   rm -rf "${BATS_TMPDIR:?}/*"
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
     gpgconf --kill gpg-agent
+    echo "gpg-agent --daemon --verbose --homedir=$TEST_GPG_HOMEDIR" 1>&2
     gpg-agent --daemon --verbose --homedir="$TEST_GPG_HOMEDIR"
     ls -l "$TEST_GPG_HOMEDIR" 1>&2
   fi
@@ -230,6 +231,7 @@ function set_state_secret_tell {
   local email
 
   email="$1"
+  echo "git secret tell -v -d $TEST_GPG_HOMEDIR $email" 1>&2
   git secret tell -v -d "$TEST_GPG_HOMEDIR" "$email" 1>&2
   # > /dev/null 2>&1
 }
