@@ -29,7 +29,7 @@ fi
 
 # Windows
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
-  choco install gawk gnupg-modern make -y
+  choco install gawk make -y
 fi
 
 # Linux:
