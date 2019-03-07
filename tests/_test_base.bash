@@ -67,7 +67,7 @@ function stop_gpg_agent {
   username=$(id -u -n)
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
     if [ -f "${BATS_TMPDIR}/gpg-agent.pid" ]; then
-      kill "$(< \"${BATS_TMPDIR}/gpg-agent.pid\")"
+      kill "$(< "${BATS_TMPDIR}/gpg-agent.pid")"
     fi
   else
     ps -wx -U "$username" | gawk \
@@ -196,7 +196,7 @@ function remove_git_repository {
 function set_state_initial {
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
     if [ -f "${BATS_TMPDIR}/gpg-agent.pid" ]; then
-      kill "$(< \"${BATS_TMPDIR}/gpg-agent.pid\")" >/dev/null 2>&1
+      kill "$(< "${BATS_TMPDIR}/gpg-agent.pid")" >/dev/null 2>&1
     fi
   fi
   cd "$BATS_TMPDIR" || exit 1
