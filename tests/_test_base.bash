@@ -194,8 +194,11 @@ function remove_git_repository {
 
 function set_state_initial {
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
-    [ -f "${BATS_TMPDIR}/gpg-agent.pid" ] && \
+    if [ -f "${BATS_TMPDIR}/gpg-agent.pid" ]; then
+      cat "${BATS_TMPDIR}/gpg-agent.pid" 1>&2
+      ps aux | grep gpg 1>&2
       kill "$(< "${BATS_TMPDIR}/gpg-agent.pid")"
+    fi
   fi
   cd "$BATS_TMPDIR" || exit 1
   rm -rf "${BATS_TMPDIR:?}/*"
