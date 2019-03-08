@@ -7,7 +7,6 @@ matrix:
       sudo: required
       language: sh
       env: GITSECRET_DIST="windows"
-      #rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-alpine-latest"
       services: docker
