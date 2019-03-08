@@ -21,7 +21,6 @@ function tell {
   local emails
   local self_email=0
   local homedir
-  local verbose=0
 
   # A POSIX variable
   # Reset in case getopts has been used previously in the shell.
@@ -29,7 +28,7 @@ function tell {
 
   while getopts "vhmd:" opt; do
     case "$opt" in
-      v) verbose=1;;
+      v) _SECRETS_VERBOSE=1;;
 
       h) _show_manual_for "tell";;
 
@@ -100,10 +99,10 @@ function tell {
     secrets_dir_keys=$(_get_secrets_dir_keys)
 
     local args=( --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" )
-    if [[ "$verbose" -ne 0 ]]; then
-      $SECRETS_GPG_COMMAND "${args[@]}"
-    else
+    if [[ -z "$_SECRETS_VERBOSE" ]]; then
       $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1
+    else
+      $SECRETS_GPG_COMMAND "${args[@]}"
     fi
     exit_code=$?
     if [[ "$exit_code" -ne 0 ]]; then

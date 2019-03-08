@@ -17,24 +17,22 @@ BEGIN { FS=":"; OFS=":"; }
 
 function _optional_clean {
   local clean="$1"
-  local verbose=${2:-""}
 
   if [[ $clean -eq 1 ]]; then
-    _find_and_clean_formatted "*$SECRETS_EXTENSION" "$verbose"
+    _find_and_clean_formatted "*$SECRETS_EXTENSION"
   fi
 }
 
 
 function _optional_delete {
   local delete="$1"
-  local verbose=${2:-""}
 
   if [[ $delete -eq 1 ]]; then
     local path_mappings
     path_mappings=$(_get_secrets_dir_paths_mapping)
 
     # We use custom formatting here:
-    if [[ -n "$verbose" ]]; then
+    if [[ -n "$_SECRETS_VERBOSE" ]]; then
       echo && echo 'removing unencrypted files:'
     fi
 
@@ -42,10 +40,10 @@ function _optional_delete {
       # So the formatting would not be repeated several times here:
       local filename
       filename=$(_get_record_filename "$line")
-      _find_and_clean "*$filename" "$verbose"
+      _find_and_clean "*$filename"
     done < "$path_mappings"
 
-    if [[ -n "$verbose" ]]; then
+    if [[ -n "$_SECRETS_VERBOSE" ]]; then
       echo
     fi
   fi
@@ -83,7 +81,6 @@ function hide {
   local preserve=0
   local delete=0
   local fsdb_update_hash=0 # add checksum hashes to fsdb
-  local verbose=''
   local force_continue=0
 
   OPTIND=1
@@ -100,7 +97,7 @@ function hide {
 
       m) fsdb_update_hash=1;;
 
-      v) verbose='v';;
+      v) _SECRETS_VERBOSE=1;;
 
       h) _show_manual_for 'hide';;
 
@@ -116,7 +113,7 @@ function hide {
 
   # If -c option was provided, it would clean the hidden files
   # before creating new ones.
-  _optional_clean "$clean" "$verbose"
+  _optional_clean "$clean"
 
   # Encrypting files:
 
@@ -161,12 +158,20 @@ function hide {
       # encrypt file only if required
       if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
-        set +e   # disable 'set -e' so we can capture exit_code
+        local args=( --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes "--trust-model=always" --encrypt )
 
         # we depend on $recipients being split on whitespace
-        # shellcheck disable=SC2086
-        $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes --trust-model=always --encrypt \
-          $recipients -o "$output_path" "$input_path" > /dev/null 2>&1
+        # shellcheck disable=SC2206
+        args+=( $recipients -o "$output_path" "$input_path" )
+
+        set +e   # disable 'set -e' so we can capture exit_code
+
+        if [[ -n "$_SECRETS_VERBOSE" ]]; then
+          # on at least some platforms, this doesn't output anything unless there's a warning or error
+          $SECRETS_GPG_COMMAND "${args[@]}"
+        else 
+          $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1
+        fi
         local exit_code=$?
 
         set -e  # re-enable set -e
@@ -196,7 +201,7 @@ function hide {
 
   # If -d option was provided, it would delete the source files
   # after we have already hidden them.
-  _optional_delete "$delete" "$verbose"
+  _optional_delete "$delete"
 
   echo "done. $counter of $num_mappings files are hidden."
 }
