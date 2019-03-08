@@ -66,9 +66,16 @@ function test_user_password {
 function stop_gpg_agent {
   local username
   username=$(id -u -n)
-  ps -wx -U "$username" | gawk \
-    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' \
-    > /dev/null 2>&1
+  local pid=$(pgrep -U joshr -x gpg-agent)
+  if [[ -n $pid ]] && [[ $pid -gt 0 ]]; then
+    #set +e
+    pkill -U "$username" -x gpg-agent
+    #set -e
+    #local exit_code=$?
+    #if [[ $exit_code -ne 0 ]]; then 
+    #  _abort "got error killing gpg-agent pid $pid" "$exit_code" 
+    #fi
+  fi
 }
 
 

@@ -5,6 +5,7 @@
 - Support SECRETS_VERBOSE env var to enable verbosity (#323)
 - Document SECRETS_VERBOSE and improve env var docs (#396)
 - Use gpg without --quiet when decrypting in verbose mode (#394)
+- Use pkill to stop test gpg-agent subprocess, not kill (#376)
 - Add -v 'verbose' option to 'tell', showing gpg output (#320)
 - Fix link to homebrew's git-secret in README.md (#310)
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
