@@ -68,7 +68,8 @@ function stop_gpg_agent {
   username=$(id -u -n)
   local pids
   pids=$( ps -wx -U "$username" | gawk '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { print $1 } }' )
-  echo "# examining pids $pids" >&3
+
+  echo "pids: $pids" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
 
   # quoting ${pids[@]} breaks code
   # shellcheck disable=SC2068
