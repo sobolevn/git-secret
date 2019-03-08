@@ -69,14 +69,20 @@ function stop_gpg_agent {
   local pid
   pid=$(pgrep -U "$username" -x gpg-agent)
 
+  # diagnostic output
   # shellcheck disable=SC2001
   echo "$pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION' gpg-agent pid: /" >&3
 
-  if [[ -n "$pid" ]] && [ "$pid" -gt 0 ]; then
+  if [[ -n "$pid" ]]; then
 
-    #diagnostic output
+    # shellcheck disable=SC2001
+    echo "$pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION' killing pid(s): /" >&3
 
-    kill "$pid"
+    # if this gets multiple pids, it's logically wrong but kill will accept it
+
+    # we want $pid to be whitespace split below
+    # shellcheck disable=SC2086
+    kill $pid
   fi
 }
 
