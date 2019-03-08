@@ -66,10 +66,21 @@ function test_user_password {
 function stop_gpg_agent {
   local username
   username=$(id -u -n)
-  echo "# here $username" >&3
   local pids
-  pids=$( ps -wx -U "$username" | gawk '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { print \"$1\" } }')
-  echo "# pids $pids" >&3
+  pids=$( ps -wx -U "$username" | gawk '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { print $1 } }' )
+  echo "# examining pids $pids" >&3
+
+  # quoting ${pids[@]} breaks code
+  # shellcheck disable=SC2068
+  for pid in ${pids[@]}; do
+    local processes
+    processes=$( ps -p "$pid" -v )
+    echo "processes for $pid: $processes" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    echo "killing $pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    kill "$pid"
+  done
+
+
 }
 
 
