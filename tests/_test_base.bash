@@ -66,9 +66,10 @@ function test_user_password {
 function stop_gpg_agent {
   local username
   username=$(id -u -n)
-  ps -wx -U "$username" | gawk \
-    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' \
-    > /dev/null 2>&1
+  echo "# here $username" >&3
+  local pids
+  pids=$( ps -wx -U "$username" | gawk '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { print \"$1\" } }')
+  echo "# pids $pids" >&3
 }
 
 
