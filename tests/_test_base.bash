@@ -68,7 +68,7 @@ function stop_gpg_agent {
   username=$(id -u -n)
   local pid
   pid=$(pgrep -U "$username" -x gpg-agent)
-  if [[ -n $pid ]] && [[ $pid -gt 0 ]]; then
+  if [[ -n $pid ]] && [ $pid -gt 0 ]; then
     kill "$pid"
   fi
 }
