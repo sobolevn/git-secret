@@ -196,7 +196,7 @@ function set_state_initial {
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
     if [ -f "${BATS_TMPDIR}/gpg-agent.pid" ]; then
       ls -l "${BATS_TMPDIR}/gpg-agent.pid"
-      cat "${BATS_TMPDIR}/gpg-agent.pid" >&2
+      echo "$(< "${BATS_TMPDIR}/gpg-agent.pid")"
       ps aux | grep gpg 1>&2
       kill "$(< "${BATS_TMPDIR}/gpg-agent.pid")"
     fi
