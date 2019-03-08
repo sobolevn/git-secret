@@ -122,4 +122,13 @@
 
 ## Version 0.1.0
 
-- Feature: Initial release
+- Feature: Implementation of git secret add
+- Feature: Implementation of git secret clean, with -v option
+- Feature: Implementation of git secret hide, with -c 'clean' and -v option
+- Feature: Implementation of git secret init
+- Feature: Implementation of git secret killperson
+- Feature: Implementation of git secret list
+- Feature: Implementation of git secret remove, with -c option
+- Feature: Implementation of git secret reveal, with -d homedir and -p passphrase options
+- Feature: Implementation of git secret tell, with -m email and -d homedir options
+- Feature: Implementation of git secret usage
