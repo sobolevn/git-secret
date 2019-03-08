@@ -70,7 +70,7 @@ function stop_gpg_agent {
   pid=$(pgrep -U "$username" -x gpg-agent)
   echo "$pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION' gpg-agent pid: /" >&3
 
-  if [[ -n $pid ]] && [ $pid -gt 0 ]; then
+  if [[ -n "$pid" ]] && [ "$pid" -gt 0 ]; then
     kill "$pid"
   fi
 }
