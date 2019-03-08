@@ -3,6 +3,7 @@
 ## {{Next Version}}
 
 - Support SECRETS_VERBOSE env var to enable verbosity (#323)
+- Document SECRETS_VERBOSE and improve env var docs (#396)
 - Use gpg without --quiet when decrypting in verbose mode (#394)
 - Add -v 'verbose' option to 'tell', showing gpg output (#320)
 - Fix link to homebrew's git-secret in README.md (#310)
