@@ -67,8 +67,12 @@ function stop_gpg_agent {
   local username
   username=$(id -u -n)
   local pid
-  pid=$(pgrep -U "$username" -x gpg-agent)
+  pid=$(pgrep -U "$username" -f "gpg-agent --homedir.*$homedir" )
   if [[ -n "$pid" ]]; then
+
+    # shellcheck disable=SC2001
+    echo "$pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION' killing pid(s): /" >&3
+
     # we want $pid to be whitespace split below, so don't quote
     # shellcheck disable=SC2086
     kill $pid
