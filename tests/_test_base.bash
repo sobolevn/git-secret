@@ -78,8 +78,6 @@ function stop_gpg_agent {
     # shellcheck disable=SC2001
     echo "$pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION' killing pid(s): /" >&3
 
-    # if this gets multiple pids, it's logically wrong but kill will accept it
-
     # we want $pid to be whitespace split below
     # shellcheck disable=SC2086
     kill $pid
