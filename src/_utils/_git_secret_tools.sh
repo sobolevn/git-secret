@@ -446,6 +446,8 @@ function _find_and_clean {
   # required:
   local pattern="$1" # can be any string pattern
 
+  echo "running find on pattern $pattern" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+
   local verbose_opt=''
   if [[ -n "$_SECRETS_VERBOSE" ]]; then
     verbose_opt='v';

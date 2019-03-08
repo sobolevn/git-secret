@@ -19,6 +19,6 @@ function teardown {
 
 @test "show environment variables" {
   printenv | sort | sed "s/^/# '$BATS_TEST_DESCRIPTION' printenv output: /" >&3
-  [ 1 ]
+  [ 0 ] # force failure
 }
 
