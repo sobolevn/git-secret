@@ -69,7 +69,7 @@ function stop_gpg_agent {
   local pid=$(pgrep -U joshr -x gpg-agent)
   if [[ -n $pid ]] && [[ $pid -gt 0 ]]; then
     #set +e
-    pkill -U "$username" -x gpg-agent
+    kill $pid
     #set -e
     #local exit_code=$?
     #if [[ $exit_code -ne 0 ]]; then 
