@@ -67,7 +67,7 @@ function stop_gpg_agent {
   local username
   username=$(id -u -n)
   local pid
-  pid=$(pgrep -U "$username" -f "gpg-agent --homedir.*$TEST_GPG_HOMEDIR" )
+  pid=$(pgrep -U "$username" -f "gpg-agent --homedir.*$TEST_GPG_HOMEDIR")
   if [[ -n "$pid" ]]; then
 
     # shellcheck disable=SC2001
