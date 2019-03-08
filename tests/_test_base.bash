@@ -69,9 +69,9 @@ function stop_gpg_agent {
   local pid
   pid=$(pgrep -U "$username" -x gpg-agent)
 
+  # shellcheck disable=SC2001
   echo "$pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION' gpg-agent pid: /" >&3
 
-  # shellcheck disable=SC2001
   if [[ -n "$pid" ]] && [ "$pid" -gt 0 ]; then
 
     #diagnostic output
