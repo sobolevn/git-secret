@@ -6,7 +6,6 @@
 
 - Support SECRETS_VERBOSE env var to enable verbosity (#323)
 - Use gpg without --quiet when decrypting in verbose mode (#394)
-- Use pgrep and kill to stop test gpg-agent subprocess (#376)
 - Add -v 'verbose' option to 'tell', showing gpg output (#320)
 - Change 'init' to never ignore .secret files (#362)
 
@@ -32,6 +31,7 @@
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
 - Add text explaining git-secret Style Guide and Development Philosophy
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
+- Use pgrep and kill to stop test gpg-agent subprocess (#376)
 
 ## Version 0.2.5
 
