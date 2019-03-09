@@ -66,10 +66,10 @@ function test_user_password {
 function stop_gpg_agent {
   local username
   username=$(id -u -n)
+
+  # pids as fetched from ps/gawk/regex
   local pids
   pids=$( ps -wx -U "$username" | gawk '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { print $1 } }' )
-
-  echo "pids: $pids" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
 
   # quoting ${pids[@]} breaks code
   # shellcheck disable=SC2068
@@ -77,11 +77,22 @@ function stop_gpg_agent {
     local processes
     processes=$( ps -p "$pid" -v )
     echo "processes for $pid: $processes" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
-    echo "killing $pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
-    kill "$pid"
+    echo "ps+gawk+regex found: $pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    #kill "$pid"
   done
 
+  # pids2 as fetched from pgrep
+  local pids2
+  pids2=$(pgrep -U "$username" -f "gpg-agent --homedir.*$TEST_GPG_HOMEDIR")
+  if [[ -n "$pids2" ]]; then
 
+    # shellcheck disable=SC2001
+    echo "$pids2" | sed "s/^/# '$BATS_TEST_DESCRIPTION' pgrep found pid(s): /" >&3
+
+    # we want $pid to be whitespace split below, so don't quote
+    # shellcheck disable=SC2086
+    kill $pids2
+  fi
 }
 
 
