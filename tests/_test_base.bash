@@ -68,7 +68,7 @@ function stop_gpg_agent {
   username=$(id -u -n)
 
   # pids as fetched from ps/gawk/regex
-  local pids
+  local ps_pids
   ps_pids=$( ps -wx -U "$username" | gawk '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { print $1 } }' )
 
   # pgrep_pids as fetched from pgrep
