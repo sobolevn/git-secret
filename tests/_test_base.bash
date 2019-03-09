@@ -69,31 +69,32 @@ function stop_gpg_agent {
 
   # pids as fetched from ps/gawk/regex
   local pids
-  pids=$( ps -wx -U "$username" | gawk '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { print $1 } }' )
+  ps_pids=$( ps -wx -U "$username" | gawk '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { print $1 } }' )
 
-  # quoting ${pids[@]} breaks code
+  # pgrep_pids as fetched from pgrep
+  local pgrep_pids
+  pgrep_pids=$(pgrep -U "$username" -x 'gpg-agent' -f "gpg-agent --homedir.*$TEST_GPG_HOMEDIR")
+
+  # quoting ${ps_pids[@]} breaks code
   # shellcheck disable=SC2068
-  for pid in ${pids[@]}; do
+  for ps_pid in ${ps_pids[@]}; do
     local processes
-    processes=$( ps -p "$pid" -v )
-    echo "ps+gawk+regex pid found: $pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
-    echo "ps+gawk+regex processes for $pid: $processes" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    processes=$( ps -p "$ps_pid" )	# get info on processes from ps
+    echo "gawk pid found: $ps_pid"                | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    echo "gawk processes for $ps_pid: $processes" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
     #kill "$pid"
   done
 
-  # pids2 as fetched from pgrep
-  local pids2
-  pids2=$(pgrep -U "$username" -x 'gpg-agent' -f "gpg-agent --homedir.*$TEST_GPG_HOMEDIR")
   # shellcheck disable=SC2068
-  for pid2 in ${pids2[@]}; do
+  for pgrep_pid in ${pgrep_pids[@]}; do
     local processes
-    processes=$( ps -p "$pid2" -v )
-    echo "pgrep pid found: $pid2" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
-    echo "pgrep processes for $pid2: $processes" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    processes=$( ps -p "$pgrep_pid" )  # get info on processes from ps
+    echo "pgrep pid found: $pgrep_pid"                | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    echo "pgrep processes for $pgrep_pid: $processes" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
 
     # we want $pid to be whitespace split below, so don't quote
     # shellcheck disable=SC2086
-    kill $pid2
+    kill $pgrep_pid
   done
 }
 
