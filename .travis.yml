@@ -100,7 +100,7 @@ script:
   - chmod +x ".ci/script.sh" && ".ci/script.sh"
 
 before_deploy:
-  - chmod +x ".ci/before_deploy.sh" && ".ci/before_deploy.sh"
+  - chmod +x ".ci/before_deploy.sh" && ".ci/before_deploy.sh" && chmod +x ".ci/github_release_script.sh" 
 
 deploy:
   - provider: bintray
@@ -123,6 +123,12 @@ deploy:
     user: "sobolevn"
     key: "$BINTRAY_API_KEY"
     passphrase: "$BINTRAY_GPG_PASS"
+  - provider: script
+    script: bash .ci/github_release_script.sh
+    on:
+      all_branches: true
+      tag: true
+      condition: "$TRAVIS_TAG =~ ^v.*$ && $GITSECRET_DIST == rpm"
 
 after_deploy:
   - chmod +x ".ci/after_deploy.sh" && ".ci/after_deploy.sh"
