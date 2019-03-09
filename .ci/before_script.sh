@@ -27,6 +27,11 @@ if [[ "$GITSECRET_DIST" == "brew" ]]; then
   brew install gawk
 fi
 
+# Windows
+if [[ "$GITSECRET_DIST" == "windows" ]]; then
+  choco install make shellcheck -y
+fi
+
 # Linux:
 if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
   update_linux
