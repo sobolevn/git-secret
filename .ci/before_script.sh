@@ -24,7 +24,7 @@ if [[ "$GITSECRET_DIST" == "brew" ]]; then
   if [[ -f "/usr/local/bin/gpg1" ]]; then
     ln -s /usr/local/bin/gpg1 /usr/local/bin/gpg
   fi
-  brew install gawk
+  brew install gawk shellcheck
 fi
 
 # Windows
