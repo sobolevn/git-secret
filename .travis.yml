@@ -7,11 +7,6 @@ matrix:
       env: GITSECRET_DIST="windows"
       sudo: required
       language: sh
-    - os: osx
-      env: GITSECRET_DIST="brew"
-      sudo: required
-      language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-alpine-latest"
       services: docker
