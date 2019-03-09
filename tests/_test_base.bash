@@ -66,9 +66,17 @@ function test_user_password {
 function stop_gpg_agent {
   local username
   username=$(id -u -n)
-  ps -wx -U "$username" | gawk \
-    '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' \
-    > /dev/null 2>&1
+  local pid
+  pid=$(pgrep -U "$username" -f "gpg-agent --homedir.*$TEST_GPG_HOMEDIR")
+  if [[ -n "$pid" ]]; then
+
+    # shellcheck disable=SC2001
+    #echo "$pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION' killing pid(s): /" >&3
+
+    # we want $pid to be whitespace split below, so don't quote
+    # shellcheck disable=SC2086
+    kill $pid
+  fi
 }
 
 

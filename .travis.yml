@@ -3,6 +3,11 @@ dist: xenial
 matrix:
   fast_finish: true
   include:
+    - os: osx
+      env: GITSECRET_DIST="brew"
+      sudo: required
+      language: ruby
+      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-alpine-latest"
       services: docker
@@ -80,11 +85,6 @@ matrix:
     - os: linux
       env: KITCHEN_REGEXP="gnupg-git-ubuntu-rolling"
       services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: osx
-      env: GITSECRET_DIST="brew"
       sudo: required
       language: ruby
       rvm: 2.6
