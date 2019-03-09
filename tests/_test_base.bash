@@ -76,23 +76,25 @@ function stop_gpg_agent {
   for pid in ${pids[@]}; do
     local processes
     processes=$( ps -p "$pid" -v )
-    echo "processes for $pid: $processes" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
-    echo "ps+gawk+regex found: $pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    echo "ps+gawk+regex pid found: $pid" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    echo "ps+gawk+regex processes for $pid: $processes" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
     #kill "$pid"
   done
 
   # pids2 as fetched from pgrep
   local pids2
-  pids2=$(pgrep -U "$username" -f "gpg-agent --homedir.*$TEST_GPG_HOMEDIR")
-  if [[ -n "$pids2" ]]; then
-
-    # shellcheck disable=SC2001
-    echo "$pids2" | sed "s/^/# '$BATS_TEST_DESCRIPTION' pgrep found pid(s): /" >&3
+  pids2=$(pgrep -U "$username" -x 'gpg-agent' -f "gpg-agent --homedir.*$TEST_GPG_HOMEDIR")
+  # shellcheck disable=SC2068
+  for pid2 in ${pids2[@]}; do
+    local processes
+    processes=$( ps -p "$pid2" -v )
+    echo "pgrep pid found: $pid2" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
+    echo "pgrep processes for $pid2: $processes" | sed "s/^/# '$BATS_TEST_DESCRIPTION': /" >&3
 
     # we want $pid to be whitespace split below, so don't quote
     # shellcheck disable=SC2086
-    kill $pids2
-  fi
+    kill $pid2
+  done
 }
 
 
