@@ -92,6 +92,11 @@ matrix:
       sudo: required
       language: ruby
       rvm: 2.6
+    - os: osx
+      env: GITSECRET_DIST="brew"
+      sudo: required
+      language: ruby
+      rvm: 2.6
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then gem update --system && gem install bundler; fi
