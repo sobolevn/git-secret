@@ -3,10 +3,10 @@ dist: xenial
 matrix:
   fast_finish: true
   include:
-    - os: windows
-      env: GITSECRET_DIST="windows"
-      sudo: required
-      language: sh
+    #- os: windows
+    #  env: GITSECRET_DIST="windows"
+    #  sudo: required
+    #  language: sh
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-alpine-latest"
       services: docker
