@@ -3,11 +3,7 @@
 # https://github.com/travis-ci/dpl/issues/155
 # https://gist.github.com/Jaskaranbir/d5b065173b3a6f164e47a542472168c1
 
-echo "inside $0"
-
 LAST_RELEASE_TAG=$(curl https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/latest 2>/dev/null | jq .name | sed 's/"//g')
-
-echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG"
 
 # ===> Set these variables first
 branch="$GIT_BRANCH"
