@@ -22,7 +22,7 @@ function reveal {
 
       p) passphrase=$OPTARG;;
 
-      d) homedir=$(_clean_path "$OPTARG");;
+      d) homedir=$(_clean_windows_path "$OPTARG");;
 
       *) _invalid_option_for 'reveal';;
     esac
