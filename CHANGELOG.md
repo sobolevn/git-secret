@@ -4,6 +4,7 @@
 
 ### Features
 
+- Support automated testing on windows with Travis CI (#372)
 - Support SECRETS_VERBOSE env var to enable verbosity (#323)
 - Use gpg without --quiet when decrypting in verbose mode (#394)
 - Add -v 'verbose' option to 'tell', showing gpg output (#320)

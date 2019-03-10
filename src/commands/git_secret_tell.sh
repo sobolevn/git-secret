@@ -34,7 +34,7 @@ function tell {
 
       m) self_email=1;;
 
-      d) homedir=$(_clean_path "$OPTARG");;
+      d) homedir=$(_clean_windows_path "$OPTARG");;
 
       *) _invalid_option_for 'tell';;
     esac
