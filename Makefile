@@ -33,11 +33,14 @@ uninstall:
 # Testing:
 #
 
+# The $(shell echo $${PWD}) construct is to access *nix paths under windows
+# Under git for windows '$PATH' is set to windows paths, e.g. C:\Something
+# Using a sub-shell we get the raw *nix paths, e.g. /c/Something
 .PHONY: test
 test: clean build
 	@chmod +x "./utils/tests.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PWD}:${PATH}"; \
+	export SECRET_PROJECT_ROOT="$(shell echo $${PWD})"; \
+	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
 	"./utils/tests.sh"
 
 #
