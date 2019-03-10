@@ -11,7 +11,9 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 # Constants:
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
-TEST_GPG_HOMEDIR="$BATS_TMPDIR"
+TEST_DIR="${BATS_TMPDIR}/git-secret-test"
+TEST_RUN_DIR="${TEST_DIR}/run"
+TEST_GPG_HOMEDIR="${TEST_DIR}/gpg"
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
@@ -102,7 +104,7 @@ function get_gpg_fingerprint_by_email {
 
 
 function install_fixture_key {
-  local public_key="$BATS_TMPDIR/public-${1}.key"
+  local public_key="${TEST_RUN_DIR}/public-${1}.key"
 
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
   $GPGTEST --import "$public_key" > /dev/null 2>&1
@@ -111,7 +113,7 @@ function install_fixture_key {
 
 
 function install_fixture_full_key {
-  local private_key="$BATS_TMPDIR/private-${1}.key"
+  local private_key="${TEST_RUN_DIR}/private-${1}.key"
   local gpgtest_prefix
   gpgtest_prefix=$(get_gpgtest_prefix "$1") 
   local gpgtest_import="$gpgtest_prefix $GPGTEST"
@@ -197,8 +199,10 @@ function remove_git_repository {
 # Git Secret:
 
 function set_state_initial {
-  cd "$BATS_TMPDIR" || exit 1
-  rm -rf "${BATS_TMPDIR:?}/*"
+  # Create needed directories
+  mkdir -p "${TEST_RUN_DIR}" "${TEST_GPG_HOMEDIR}"
+  cd "${TEST_RUN_DIR]}" || exit 1
+  rm -rf "${TEST_RUN_DIR:?}/*"
 }
 
 
@@ -265,11 +269,9 @@ function unset_current_state {
   # stop gpg-agent
   stop_gpg_agent
 
-  # removes gpg homedir:
-  find "$TEST_GPG_HOMEDIR" \
-    -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
-    -exec rm -rf {} +
-
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
+
+  # Cleanup
+  rm -rf "${TEST_DIR:?}"
 }
