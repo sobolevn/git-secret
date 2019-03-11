@@ -14,6 +14,7 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 TEST_DIR="${BATS_TMPDIR}/git-secret-test"
 TEST_RUN_DIR="${TEST_DIR}/run"
 TEST_GPG_HOMEDIR="${TEST_DIR}/gpg"
+mkdir -p "${TEST_RUN_DIR}" "${TEST_GPG_HOMEDIR}"
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
