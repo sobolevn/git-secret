@@ -201,7 +201,7 @@ function remove_git_repository {
 function set_state_initial {
   # Create needed directories
   mkdir -p "${TEST_RUN_DIR}" "${TEST_GPG_HOMEDIR}"
-  cd "${TEST_RUN_DIR]}" || exit 1
+  cd "${TEST_RUN_DIR}" || exit 1
   rm -rf "${TEST_RUN_DIR:?}/*"
 }
 
