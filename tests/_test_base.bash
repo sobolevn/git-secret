@@ -193,7 +193,7 @@ function git_commit {
 
 
 function remove_git_repository {
-  rm -rf ".git"
+  rm -rf "${TEST_RUN_DIR:?}/.git"
 }
 
 
@@ -262,7 +262,7 @@ function unset_current_state {
   secrets_dir=$(_get_secrets_dir)
 
   rm -rf "$secrets_dir"
-  rm -rf ".gitignore"
+  rm -rf "${TEST_RUN_DIR:?}/.gitignore"
 
   # unsets `git` state
   remove_git_repository
