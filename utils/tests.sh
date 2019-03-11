@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 
-# `SECRET_PROJECT_ROOT` must be set before running the script.
-
 set -e
+# `SECRET_PROJECT_ROOT` must be set before running the script.
+[ -z "${SECRET_PROJECT_ROOT}" ] && exit 1
+
+function cleanup {
+    echo "foo"
+    rm -rf "${TEST_RUN_DIR}" "${TEST_TMP_DIR}"
+    exit 0
+}
+
+trap cleanup EXIT
 
 # Running all the bats-tests in a dir with spaces:
 TEST_RUN_DIR="${SECRET_PROJECT_ROOT:?}/tempdir with spaces"
@@ -21,4 +29,4 @@ export SECRETS_EXTENSION=.secret2
 # bats ... 3>&1 shows diagnostic output when errors occur.
 TMPDIR="${TEST_TMP_DIR}" bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
 
-rm -rf "${TEST_RUN_DIR}" "${TEST_TMP_DIR}"
+cleanup
