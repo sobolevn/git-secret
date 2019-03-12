@@ -23,6 +23,7 @@
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
 - Use SECRETS_GPG_COMMAND env var in gpg version check (#389)
 - Add header to git-secret.7 man page, for debian and doc improvement (#386)
+- Use separate directory when testing, instead of using $BATS_TMPDIR directly (#407)
 
 ## Misc
 
