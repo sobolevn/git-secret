@@ -17,7 +17,8 @@ function run_kitchen_tests {
 
 # Local builds:
 if [[ "$GITSECRET_DIST" == "brew" ]]; then
-  make lint test
+  make lint && echo 'make lint: test passed' || echo 'make lint: test failed'
+  make test
 fi
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
   make test
