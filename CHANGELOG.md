@@ -27,6 +27,7 @@
 
 ## Misc
 
+- Automate github process for draft releases and actual releases (#194)
 - Use Shellcheck on tests/ files, changes for Shellcheck in tests/ (#368)
 - Document SECRETS_VERBOSE and improve env var docs (#396)
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
