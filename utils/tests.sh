@@ -5,7 +5,6 @@ set -e
 [ -z "${SECRET_PROJECT_ROOT}" ] && exit 1
 
 function cleanup {
-    echo "foo"
     rm -rf "${TEST_RUN_DIR}" "${TEST_TMP_DIR}"
     exit 0
 }
