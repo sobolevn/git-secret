@@ -12,11 +12,14 @@ function run_kitchen_tests {
   bundle exec kitchen test --test-base-path="$PWD/.ci/integration" $KITCHEN_REGEXP
 }
 
+# Only running `make test` on standard (non-docker) builds,
+# since it is called inside the docker container anyway.
+
 # Local builds:
 if [[ "$GITSECRET_DIST" == "brew" ]]; then
-  # Only running `make test` on standard (non-docker) build,
-  # since it is called inside the docker container anyway.
-  make lint
+  make test
+fi
+if [[ "$GITSECRET_DIST" == "windows" ]]; then
   make test
 fi
 
