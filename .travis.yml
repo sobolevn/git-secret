@@ -18,81 +18,68 @@ matrix:
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-debian-latest"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-fedora-latest"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-ubuntu-latest"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg1-ubuntu-rolling"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg2-alpine-latest"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     # distribute deb on this successful test
     - os: linux
       env: KITCHEN_REGEXP="gnupg2-debian-latest"; GITSECRET_DIST="deb"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     # distribute rpm on this successful test
     - os: linux
       env: KITCHEN_REGEXP="gnupg2-fedora-latest"; GITSECRET_DIST="rpm"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg2-ubuntu-latest"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg-git-ubuntu-latest"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg-git-ubuntu-rolling"
       services: docker
       sudo: required
       language: ruby
-      rvm: 2.6
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then gem update --system && gem install bundler; fi
