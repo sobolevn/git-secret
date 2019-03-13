@@ -196,3 +196,4 @@
 - Implementation of git secret reveal, with -d homedir and -p passphrase options
 - Implementation of git secret tell, with -m email and -d homedir options
 - Implementation of git secret usage
+
