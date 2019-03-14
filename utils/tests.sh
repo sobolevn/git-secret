@@ -6,7 +6,7 @@ set -e
 
 function cleanup {
     rm -rf "${TEST_RUN_DIR}" "${TEST_TMP_DIR}"
-    exit 0
+    exit $1
 }
 
 trap cleanup EXIT
@@ -27,5 +27,5 @@ export SECRETS_EXTENSION=.secret2
 # bats expects diagnostic lines to be sent to fd 3, matching regex '^ #' (IE, like: `echo '# message here' >&3`)
 # bats ... 3>&1 shows diagnostic output when errors occur.
 TMPDIR="${TEST_TMP_DIR}" bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
-
-cleanup
+status=$?
+cleanup $status
