@@ -6,7 +6,7 @@ set -e
 
 function cleanup {
     rm -rf "${TEST_RUN_DIR}" "${TEST_TMP_DIR}"
-    exit $1
+    exit "$1"
 }
 
 trap cleanup EXIT
