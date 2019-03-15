@@ -12,10 +12,9 @@ FINGERPRINT=""
 
 
 function setup {
+  set_state_initial
   FINGERPRINT=$(install_fixture_full_key "$TEST_DEFAULT_USER")
 
-  set_state_initial
-  set_state_git
   set_state_secret_init
   set_state_secret_tell "$TEST_DEFAULT_USER"
   set_state_secret_add "$FILE_TO_HIDE" "$FILE_CONTENTS"

@@ -9,10 +9,9 @@ FIRST_FILE="$TEST_DEFAULT_FILENAME"
 SECOND_FILE="$TEST_SECOND_FILENAME"
 
 function setup {
+  set_state_initial
   install_fixture_key "$TEST_NONAME_USER"
 
-  set_state_initial
-  set_state_git
   set_state_secret_init
   set_state_secret_tell "$TEST_NONAME_USER"
   set_state_secret_add "$FIRST_FILE" "somecontent"

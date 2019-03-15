@@ -11,11 +11,6 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 # Constants:
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
-TEST_DIR="${BATS_TMPDIR}/git-secret-test"
-TEST_RUN_DIR="${TEST_DIR}/run"
-TEST_GPG_HOMEDIR="${TEST_DIR}/gpg"
-mkdir -p "${TEST_RUN_DIR}" "${TEST_GPG_HOMEDIR}"
-
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
 BEGIN { OFS=":"; FS=":"; }
@@ -102,7 +97,7 @@ function get_gpg_fingerprint_by_email {
 
 
 function install_fixture_key {
-  local public_key="${TEST_RUN_DIR}/public-${1}.key"
+  local public_key="${TEST_BASE_DIR}/public-${1}.key"
 
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
   $GPGTEST --import "$public_key" > /dev/null 2>&1
@@ -111,7 +106,7 @@ function install_fixture_key {
 
 
 function install_fixture_full_key {
-  local private_key="${TEST_RUN_DIR}/private-${1}.key"
+  local private_key="${TEST_BASE_DIR}/private-${1}.key"
   local gpgtest_prefix
   gpgtest_prefix=$(get_gpgtest_prefix "$1") 
   local gpgtest_import="$gpgtest_prefix $GPGTEST"
@@ -197,14 +192,17 @@ function remove_git_repository {
 # Git Secret:
 
 function set_state_initial {
+  # Define needed directories
+  TEST_BASE_DIR="${BATS_TMPDIR}/${BATS_TEST_NAME}"
+  TEST_RUN_DIR="${TEST_BASE_DIR}/run"
+  TEST_GPG_HOMEDIR="${TEST_BASE_DIR}/gpg"
+
+  # Make sure we start clean
+  rm -rf "${TEST_BASE_DIR:?}"
+
   # Create needed directories
   mkdir -p "${TEST_RUN_DIR}" "${TEST_GPG_HOMEDIR}"
   cd "${TEST_RUN_DIR}" || exit 1
-  rm -rf "${TEST_RUN_DIR:?}/*"
-}
-
-
-function set_state_git {
   git init > /dev/null 2>&1
 }
 
@@ -247,22 +245,6 @@ function set_state_secret_hide {
 
 
 function unset_current_state {
-  # states order:
-  # initial, git, secret_init, secret_tell, secret_add, secret_hide
-
-  # unsets `secret_hide`
-  # removes .secret files:
-  git secret clean > /dev/null 2>&1
-
-  # unsets `secret_add`, `secret_tell` and `secret_init` by removing $_SECRETS_DIR
-  local secrets_dir
-  secrets_dir=$(_get_secrets_dir)
-
-  rm -rf "$secrets_dir"
-  rm -rf "${TEST_RUN_DIR:?}/.gitignore"
-
-  # unsets `git` state
-  remove_git_repository
 
   # stop gpg-agent
   stop_gpg_agent
@@ -271,5 +253,5 @@ function unset_current_state {
   cd "$SECRET_PROJECT_ROOT" || exit 1
 
   # Cleanup
-  rm -rf "${TEST_DIR:?}"
+  rm -rf "${TEST_BASE_DIR:?}"
 }
