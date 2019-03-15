@@ -2,6 +2,8 @@
 
 set -e
 
+echo "In .ci/before_script.sh"
+
 # Linux helper functions:
 function update_linux() {
   sudo apt-get update -qq
@@ -29,6 +31,7 @@ fi
 
 # Windows
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
+  echo "running 'choco install make shellcheck -y'"
   choco install make shellcheck -y
 fi
 
