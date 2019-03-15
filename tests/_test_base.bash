@@ -26,9 +26,6 @@ BEGIN { OFS=":"; FS=":"; }
 # GPG-based stuff:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
 
-# This command is used with absolute homedir set and disabled warnings:
-GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
-
 # Personal data:
 
 # these two are 'normal' keys
@@ -192,10 +189,13 @@ function remove_git_repository {
 # Git Secret:
 
 function set_state_initial {
-  # Define needed directories
+  # Define needed variables
   TEST_BASE_DIR="${BATS_TMPDIR}/${BATS_TEST_NAME}"
   TEST_RUN_DIR="${TEST_BASE_DIR}/run"
   TEST_GPG_HOMEDIR="${TEST_BASE_DIR}/gpg"
+
+  # This command is used with absolute homedir set and disabled warnings:
+  GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
 
   # Make sure we start clean
   rm -rf "${TEST_BASE_DIR:?}"
