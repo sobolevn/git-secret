@@ -2,6 +2,8 @@
 
 set -e
 
+echo "Debug: In .ci/before_script.sh"
+
 # Linux helper functions:
 function update_linux() {
   sudo apt-get update -qq
@@ -29,6 +31,7 @@ fi
 
 # Windows
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
+  echo "Debug: Running: 'choco install make shellcheck -y'"
   choco install make shellcheck -y
 fi
 
@@ -37,3 +40,5 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
   update_linux
   install_ansible
 fi
+
+echo "Debug: Exiting .ci/before_script.sh"
