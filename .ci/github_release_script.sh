@@ -3,37 +3,37 @@
 # https://github.com/travis-ci/dpl/issues/155
 # https://gist.github.com/Jaskaranbir/d5b065173b3a6f164e47a542472168c1
 
-echo "inside $0"
-
 LAST_RELEASE_TAG=$(curl https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/latest 2>/dev/null | jq .name | sed 's/"//g')
 
 echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG"
 
-# ===> Set these variables first
-branch="$GIT_BRANCH"
-# Example: "Jaskaranbir/MyRepo"
-repo_slug="$TRAVIS_REPO_SLUG"
-token="$GITHUB_OAUTH_TOKEN"
-version="$TRAVIS_TAG"
-
 # An automatic changelog generator
 gem install github_changelog_generator
 
+# move the manual log out of the way.
+# if we want we can later have a HISTORY.md as per 
+# https://github.com/github-changelog-generator/github-changelog-generator#migrating-from-a-manual-changelog
+mv CHANGELOG.md CHANGELOG.md.bak
+
 # Generate CHANGELOG.md
 github_changelog_generator \
-  -u $(cut -d "/" -f1 <<< $repo_slug) \
-  -p $(cut -d "/" -f2 <<< $repo_slug) \
-  --token $token \
+  -u $(cut -d "/" -f1 <<< $TRAVIS_REPO_SLUG) \
+  -p $(cut -d "/" -f2 <<< $TRAVIS_REPO_SLUG) \
+  --token $GITHUB_OAUTH_TOKEN \
   --since-tag ${LAST_RELEASE_TAG}
 
 body="$(cat CHANGELOG.md)"
 
-# Overwrite CHANGELOG.md with JSON data for GitHub API
+# this is only done in case we have some follow on steps that need this
+# however currently we don't.  
+mv CHANGELOG.md.bak CHANGELOG.md 
+
+# GitHub API needs json data. here we use the mighty jq from https://stedolan.github.io/jq/
 jq -n \
   --arg body "$body" \
-  --arg name "$version" \
-  --arg tag_name "$version" \
-  --arg target_commitish "$branch" \
+  --arg name "$TRAVIS_TAG" \
+  --arg tag_name "$TRAVIS_TAG" \
+  --arg target_commitish "$GIT_BRANCH" \
   '{
     body: $body,
     name: $name,
@@ -43,5 +43,5 @@ jq -n \
     prerelease: false
   }' > CHANGELOG.md
 
-echo "Create release $version for repo: $repo_slug, branch: $branch"
-curl -H "Authorization: token $token" --data @CHANGELOG.md "https://api.github.com/repos/$repo_slug/releases"
+echo "Create release $TRAVIS_TAG for repo: $TRAVIS_REPO_SLUG, branch: $GIT_BRANCH"
+curl -H "Authorization: token $GITHUB_OAUTH_TOKEN" --data @CHANGELOG.md "https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases"
