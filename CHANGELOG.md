@@ -29,6 +29,7 @@
 
 - Use Shellcheck on tests/ files, changes for Shellcheck in tests/ (#368)
 - Use Shellcheck on MacOS/osx travis tests (#403)
+- Show commands run by Makefile as per debian upstream recommendations (#386)
 - Document SECRETS_VERBOSE and improve env var docs (#396)
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
 - Add text explaining git-secret Style Guide and Development Philosophy
