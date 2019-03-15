@@ -3,10 +3,10 @@ dist: xenial
 matrix:
   fast_finish: true
   include:
-    - os: windows
-      env: GITSECRET_DIST="windows"
-      sudo: required
-      language: sh
+    #- os: windows
+    #  env: GITSECRET_DIST="windows"
+    #  sudo: required
+    #  language: sh
     - os: osx
       env: GITSECRET_DIST="brew"
       sudo: required
