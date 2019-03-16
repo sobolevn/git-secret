@@ -9,7 +9,7 @@ function __replace_in_file_linux {
 
 function __temp_file_linux {
   local filename
-  filename=$(mktemp)
+  filename=$(mktemp -t "_git_secret_test_XXX")
   echo "$filename"
 }
 
