@@ -12,7 +12,7 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 #TEST_GPG_HOMEDIR="$BATS_TMPDIR"
-TEST_GPG_HOMEDIR=$(mktemp -d --tmpdir="$BATS_TMPDIR" -t "_git_secret_test_XXX")
+TEST_GPG_HOMEDIR=$(TMPDIR="$BATS_TMPDIR"  mktemp -d -t "_git_secret_test_XXX")
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
