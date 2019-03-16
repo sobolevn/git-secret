@@ -3,6 +3,7 @@
 load _test_base
 
 
+# minimal git setup
 #function setup {
 #  set_state_initial
 #  set_state_git
@@ -12,7 +13,28 @@ load _test_base
 #}
 
 
+# complete git secret setup
+FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
+FILE_CONTENTS="hidden content юникод"
+function setup {
+  install_fixture_key "$TEST_DEFAULT_USER"
+
+  set_state_initial
+  set_state_git
+  set_state_secret_init
+  set_state_secret_tell "$TEST_DEFAULT_USER"
+  set_state_secret_add "$FILE_TO_HIDE" "$FILE_CONTENTS"
+}
+function teardown {
+  rm "$FILE_TO_HIDE"
+
+  uninstall_fixture_key $TEST_DEFAULT_USER
+  unset_current_state
+}
+
 @test "gnupg diagnostics" {
+  run git secret hide
+
   echo "# which gpg ------" >&3
   which gpg             | xargs ls -l | sed "s/^/# '$BATS_TEST_DESCRIPTION' which gpg: /" >&3
   echo "# gpg --version ------" >&3
@@ -30,8 +52,7 @@ load _test_base
   echo "# ------" >&3
  
   echo "# contents of TEST_GPG_HOMEDIR ($TEST_GPG_HOMEDIR) ------" >&3
-  #find $TEST_GPG_HOMEDIR -type f               | sed "s/^/# '$BATS_TEST_DESCRIPTION' HOME\/.gnupg: /" >&3
-  ls $TEST_GPG_HOMEDIR                          | sed "s/^/# '$BATS_TEST_DESCRIPTION' HOME\/.gnupg: /" >&3
+  ls $TEST_GPG_HOMEDIR                          | sed "s:^:# '$BATS_TEST_DESCRIPTION' '$TEST_GPG_HOMEDIR'\: :" >&3
   echo "# ------" >&3
  
   [ 1 ]
