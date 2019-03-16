@@ -10,10 +10,8 @@ echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG"
 # An automatic changelog generator
 gem install github_changelog_generator
 
-# move the manual log out of the way.
-# if we want we can later have a HISTORY.md as per 
-# https://github.com/github-changelog-generator/github-changelog-generator#migrating-from-a-manual-changelog
-mv CHANGELOG.md CHANGELOG.md.bak
+# move the manual log out of the way else it will be used by the tool. 
+rm CHANGELOG.md
 
 # Generate CHANGELOG.md
 github_changelog_generator \
@@ -23,10 +21,6 @@ github_changelog_generator \
   --since-tag ${LAST_RELEASE_TAG}
 
 body="$(cat CHANGELOG.md)"
-
-# this is only done in case we have some follow on steps that need this
-# however currently we don't.  
-mv CHANGELOG.md.bak CHANGELOG.md 
 
 # GitHub API needs json data. here we use the mighty jq from https://stedolan.github.io/jq/
 jq -n \
