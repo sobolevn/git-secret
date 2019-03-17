@@ -6,7 +6,7 @@ PREFIX?="/usr"
 #
 
 git-secret: src/version.sh src/_utils/*.sh src/commands/*.sh src/main.sh
-	@cat $^ > "$@"; \
+	cat $^ > "$@"; \
 	chmod +x git-secret; sync
 
 .PHONY: all
@@ -14,19 +14,19 @@ all: build
 
 .PHONY: clean
 clean:
-	@rm -f git-secret
+	rm -f git-secret
 
 .PHONY: build
 build: git-secret
 
 .PHONY: install
 install:
-	@chmod +x "./utils/install.sh"; sync; \
+	chmod +x "./utils/install.sh"; sync; \
 	"./utils/install.sh" "${PREFIX}"
 
 .PHONY: uninstall
 uninstall:
-	@chmod +x "./utils/uninstall.sh"; sync; \
+	chmod +x "./utils/uninstall.sh"; sync; \
 	"./utils/uninstall.sh" "${PREFIX}"
 
 #
@@ -38,7 +38,7 @@ uninstall:
 # Using a sub-shell we get the raw *nix paths, e.g. /c/Something
 .PHONY: test
 test: clean build
-	@chmod +x "./utils/tests.sh"; sync; \
+	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
 	"./utils/tests.sh"
@@ -49,19 +49,19 @@ test: clean build
 
 .PHONY: install-ronn
 install-ronn:
-	@if [ ! `gem list ronn -i` == "true" ]; then gem install ronn; fi
+	if [ ! `gem list ronn -i` == "true" ]; then gem install ronn; fi
 
 .PHONY: clean-man
 clean-man:
-	@find "man/" -type f ! -name "*.ronn" -delete
+	find "man/" -type f ! -name "*.ronn" -delete
 
 .PHONY: build-man
 build-man: install-ronn clean-man
-	@ronn --roff --organization="sobolevn" --manual="git-secret" man/*/*.ronn
+	ronn --roff --organization="sobolevn" --manual="git-secret" man/*/*.ronn
 
 .PHONY: build-gh-pages
 build-gh-pages:
-	@chmod +x "./utils/gh-branch.sh"; sync; \
+	chmod +x "./utils/gh-branch.sh"; sync; \
 	"./utils/gh-branch.sh"
 
 #
@@ -70,7 +70,7 @@ build-gh-pages:
 
 .PHONY: install-hooks
 install-hooks:
-	@ln -fs "${PWD}/utils/hooks/pre-commit.sh" "${PWD}/.git/hooks/pre-commit"; \
+	ln -fs "${PWD}/utils/hooks/pre-commit.sh" "${PWD}/.git/hooks/pre-commit"; \
 	chmod +x "${PWD}/.git/hooks/pre-commit"; sync; \
 	ln -fs "${PWD}/utils/hooks/post-commit.sh" "${PWD}/.git/hooks/post-commit"; \
 	chmod +x "${PWD}/.git/hooks/post-commit"; sync
@@ -80,8 +80,8 @@ develop: clean build install-hooks
 
 .PHONY: lint
 lint:
-	@find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
-	@find tests -type f -name '*.bats' -o -name '*.bash' -print0 | xargs -0 -I {} shellcheck {}
+	find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
+	find tests -type f -name '*.bats' -o -name '*.bash' -print0 | xargs -0 -I {} shellcheck {}
 
 #
 # Packaging:
@@ -89,27 +89,27 @@ lint:
 
 .PHONY: install-fpm
 install-fpm:
-	@if [ ! `gem list fpm -i` == "true" ]; then gem install fpm; fi
+	if [ ! `gem list fpm -i` == "true" ]; then gem install fpm; fi
 
 # .apk:
 
 .PHONY: build-apk
 build-apk: clean build install-fpm
-	@chmod +x "./utils/build-utils.sh"; sync; \
+	chmod +x "./utils/build-utils.sh"; sync; \
 	chmod +x "./utils/apk/apk-build.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	"./utils/apk/apk-build.sh"
 
 .PHONY: test-apk-ci
 test-apk-ci: build-apk
-	@chmod +x "./utils/apk/apk-ci.sh"; sync; \
+	chmod +x "./utils/apk/apk-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/apk/apk-ci.sh"
 
 .PHONY: deploy-apk
 deploy-apk: build-apk
-	@chmod +x "./utils/apk/apk-deploy.sh"; sync; \
+	chmod +x "./utils/apk/apk-deploy.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	"./utils/apk/apk-deploy.sh"
 
@@ -117,21 +117,21 @@ deploy-apk: build-apk
 
 .PHONY: build-deb
 build-deb: clean build install-fpm
-	@chmod +x "./utils/build-utils.sh"; sync; \
+	chmod +x "./utils/build-utils.sh"; sync; \
 	chmod +x "./utils/deb/deb-build.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	"./utils/deb/deb-build.sh"
 
 .PHONY: test-deb-ci
 test-deb-ci: build-deb
-	@chmod +x "./utils/deb/deb-ci.sh"; sync; \
+	chmod +x "./utils/deb/deb-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/deb/deb-ci.sh"
 
 .PHONY: deploy-deb
 deploy-deb: build-deb
-	@chmod +x "./utils/deb/deb-deploy.sh"; sync; \
+	chmod +x "./utils/deb/deb-deploy.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	"./utils/deb/deb-deploy.sh"
 
@@ -139,21 +139,21 @@ deploy-deb: build-deb
 
 .PHONY: build-rpm
 build-rpm: clean build install-fpm
-	@chmod +x "./utils/build-utils.sh"; sync; \
+	chmod +x "./utils/build-utils.sh"; sync; \
 	chmod +x "./utils/rpm/rpm-build.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	"./utils/rpm/rpm-build.sh"
 
 .PHONY: test-rpm-ci
 test-rpm-ci: build-rpm
-	@chmod +x "./utils/rpm/rpm-ci.sh"; sync; \
+	chmod +x "./utils/rpm/rpm-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/rpm/rpm-ci.sh"
 
 .PHONY: deploy-rpm
 deploy-rpm: build-rpm
-	@chmod +x "./utils/rpm/rpm-deploy.sh"; sync; \
+	chmod +x "./utils/rpm/rpm-deploy.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	"./utils/rpm/rpm-deploy.sh"
 
@@ -161,7 +161,7 @@ deploy-rpm: build-rpm
 
 .PHONY: test-make-ci
 test-make-ci: clean 
-	@chmod +x "./utils/make/make-ci.sh"; sync; \
+	chmod +x "./utils/make/make-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/make/make-ci.sh"
