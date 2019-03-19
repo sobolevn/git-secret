@@ -56,6 +56,6 @@ function remove {
     fi
   done
 
-  echo 'removed from index.'
-  echo "ensure that files: [$*] are now not ignored."
+  echo 'git-secret: removed from index.'
+  echo "git-secret: ensure that files: [$*] are now not ignored."
 }

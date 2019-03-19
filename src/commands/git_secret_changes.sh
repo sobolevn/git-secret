@@ -61,7 +61,7 @@ function changes {
     # we ignore the exit code because _decrypt will _abort if appropriate.
 
 
-    echo "changes in ${path}:"
+    _message "changes in ${path}:"
     # diff the result:
     # we have the '|| true' because `diff` returns error code if files differ.
     diff -u <(echo -n "$decrypted") "$path" || true
