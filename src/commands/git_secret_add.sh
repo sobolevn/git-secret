@@ -65,7 +65,7 @@ function add {
       # This file is not ignored. user don't want it to be added automatically.
       # Raise the exception, since all files, which will be hidden, must be ignored.
       # note that it is no longer possible to wind up in this code path as auto_ignore cannot be 0.
-      # code left here in case we want to restore more modifyp this path later
+      # code left here in case we want to restore/modify this path later
       _abort "$message"
     else
       # In this case these files should be added to the `.gitignore` automatically:
