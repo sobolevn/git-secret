@@ -189,14 +189,14 @@ function _file_has_line {
 
 
 
-# this sets the global variable 'filename'
-# currently this function is only used by 'hide'
+# this sets the global variable 'temporary_filename'
+# currently this function is only used by 'hide' and below in _gawk_inplace
 function _temporary_file {
   # This function creates temporary file
   # which will be removed on system exit.
-  filename=$(_os_based __temp_file)  # is not `local` on purpose.
+  temporary_filename=$(_os_based __temp_file)  # is not `local` on purpose.
 
-  trap 'echo "cleaning up..."; rm -f "$filename";' EXIT
+  trap 'echo "cleaning up..."; rm -f "$temporary_filename";' EXIT
 }
 
 
@@ -208,10 +208,10 @@ function _gawk_inplace {
   local dest_file
   dest_file="$(echo "$parms" | gawk -v RS="'" -v FS="'" 'END{ gsub(/^\s+/,""); print $1 }')"
 
-  _temporary_file
+  _temporary_file   # sets $temporary_filename
 
-  bash -c "gawk ${parms}" > "$filename"
-  mv "$filename" "$dest_file"
+  bash -c "gawk ${parms}" > "$temporary_filename"
+  mv "$temporary_filename" "$dest_file"
 }
 
 
