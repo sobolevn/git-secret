@@ -417,6 +417,11 @@ function _get_secrets_dir_paths_mapping {
 
 # Logic:
 
+function _message {
+  local message="$1" # required
+  echo "git-secret: $message"
+}
+
 function _abort {
   local message="$1" # required
   local exit_code=${2:-"1"}     # defaults to 1
