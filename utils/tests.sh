@@ -25,4 +25,4 @@ echo "# TMPDIR is $TMPDIR"
 bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
 
 cd ..; rm -rf "${TEST_DIR}"
-trap 'echo "# git-secret: cleaning up ${TEST_DIR}" >&3; rm -rf "${TEST_DIR}";' EXIT
+trap 'echo "# git-secret: cleaning up ${TEST_DIR}"; rm -rf "${TEST_DIR}";' EXIT
