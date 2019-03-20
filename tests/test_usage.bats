@@ -25,6 +25,7 @@ function teardown {
 
   # It's ok for 'usage' to succeed when there's no .git directory
   run git secret usage
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
   [ "$status" -eq 0 ]
 }
 
