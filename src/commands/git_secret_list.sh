@@ -22,6 +22,6 @@ function list {
   _list_all_added_files  # exports 'filenames' array
   local filename
   for filename in "${filenames[@]}"; do
-    echo "$filename"
+    echo "$filename"    # do not prepend 'git-secret: '
   done
 }

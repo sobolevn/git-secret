@@ -417,6 +417,11 @@ function _get_secrets_dir_paths_mapping {
 
 # Logic:
 
+function _message {
+  local message="$1" # required
+  echo "git-secret: $message"
+}
+
 function _abort {
   local message="$1" # required
   local exit_code=${2:-"1"}     # defaults to 1
@@ -471,7 +476,7 @@ function _find_and_clean_formatted {
   local pattern="$1" # can be any string pattern
 
   if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    echo && echo "cleaning:"
+    echo && echo "git-secret: cleaning:"
   fi
 
   _find_and_clean "$pattern"

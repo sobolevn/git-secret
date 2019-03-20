@@ -33,7 +33,7 @@ function _optional_delete {
 
     # We use custom formatting here:
     if [[ -n "$_SECRETS_VERBOSE" ]]; then
-      echo && echo 'git-secret: removing unencrypted files:'
+      echo && _message 'removing unencrypted files:'
     fi
 
     while read -r line; do
@@ -203,5 +203,5 @@ function hide {
   # after we have already hidden them.
   _optional_delete "$delete"
 
-  echo "git-secret: done. $counter of $num_mappings files are hidden."
+  _message "done. $counter of $num_mappings files are hidden."
 }
