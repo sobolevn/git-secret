@@ -292,13 +292,7 @@ function _check_ignore {
   local filename="$1" # required
 
   local result
-  result="$(git check-ignore -q '$filename'; echo $?)"
-  #if [[ "$result" -ne 0 ]]; then
-  #  result=0
-  #else
-  #  result=1
-  #fi
-  # returns 1 when not ignored, and 0 when ignored
+  result="$(git check-ignore -q "$filename"; echo $?)"
   echo "$result"
 }
 
