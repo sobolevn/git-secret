@@ -12,6 +12,11 @@ source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
+#TEST_GPG_HOMEDIR=$(TMPDIR="$BATS_TMPDIR"  mktemp -d -t "_git_secret_test_XXX")
+#
+#echo "# BATS_TMPDIR is: $BATS_TMPDIR" >&3
+#echo "# TEST_GPG_HOMEDIR is: $TEST_GPG_HOMEDIR" >&3
+
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
@@ -263,6 +268,7 @@ function unset_current_state {
   stop_gpg_agent
 
   # removes gpg homedir:
+  #rm -rf "$TEST_GPG_HOMEDIR"
   find "$TEST_GPG_HOMEDIR" \
     -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
     -exec rm -rf {} +
@@ -270,3 +276,5 @@ function unset_current_state {
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
 }
+
+#trap 'echo "# git-secret: cleaning up $TEST_GPG_HOMEDIR" >&3; rm -rf "$TEST_GPG_HOMEDIR";' EXIT

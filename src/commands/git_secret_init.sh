@@ -69,7 +69,7 @@ function init {
   mkdir "$git_secret_dir" "$(_get_secrets_dir_keys)" "$(_get_secrets_dir_path)"
   touch "$(_get_secrets_dir_keys_mapping)" "$(_get_secrets_dir_paths_mapping)"
 
-  echo "'$git_secret_dir/' created."
+  echo "git-secret: init created: '$git_secret_dir/'"
 
   local random_seed_file
   random_seed_file="${_SECRETS_DIR}/keys/random_seed"

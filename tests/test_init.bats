@@ -24,6 +24,7 @@ function teardown {
   remove_git_repository
 
   run git secret init
+
   [ "$status" -eq 1 ]
 }
 
