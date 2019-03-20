@@ -361,6 +361,9 @@ function _is_tracked_in_git {
 }
 
 
+# THIS CAN GIVE WRONG .git DIR IF WE ARE TESTING IN A SUBDIR of src/git-secret.
+# for example, if we're testing in ~/src/git-secret/tempdir and there's no .git dir in that directory,
+# this function will return ~/src/git-secret/   -- WHICH IS THE WRONG DIR
 function _get_git_root_path {
   # We need this function to get the location of the `.git` folder,
   # since `.gitsecret` (or value set by SECRETS_DIR env var) must be on the same level.
@@ -530,17 +533,21 @@ function _secrets_dir_is_not_ignored {
   # Create git_secret_dir required for check
   local cleanup=0
   if [[ ! -d "$git_secret_dir" ]]; then
+    echo "# in _secrets_dir_is_not_ignored: creating git_secret_dir ${git_secret_dir}" >&3
     mkdir "$git_secret_dir"
     cleanup=1
   fi
   local ignores
   ignores=$(_check_ignore "$git_secret_dir")
   if [[ "$cleanup" == 1 ]]; then
+    echo "# in _secrets_dir_is_not_ignored: removing git_secret_dir ${git_secret_dir}" >&3
     rmdir "$git_secret_dir"
   fi
 
   if [[ ! $ignores -eq 1 ]]; then
     _abort "'$git_secret_dir' is in .gitignore"
+  else
+    _message "'$git_secret_dir' is not in .gitignore"
   fi
 }
 
