@@ -23,12 +23,12 @@ function teardown {
 @test "run 'usage' without '.git'" {
   remove_git_repository
 
-  # It's ok for 'usage' to succeed when there's no .git directory
+  # It's ok for 'usage' to succeed when there's no .git directory, but it doesn't
   run git secret usage
 
   echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
-  [ "$status" -eq 0 ]
+  [ "$status" -eq 1 ]
 }
 
 
@@ -40,9 +40,9 @@ function teardown {
   #echo "# clear-line-output" >&3
   #echo "# SECRETS_DIR is ${_SECRETS_DIR}" >&3
 
-  # It's ok for 'usage' to succeed when the .gitsecret directory is ignored
+  # It's ok for 'usage' to succeed when the .gitsecret directory is ignored, but it doesn't
   run git secret usage
   #echo "# git secret usage -> status $status" >&3
 
-  [ "$status" -eq 0 ]
+  [ "$status" -eq 1 ]
 }
