@@ -35,6 +35,8 @@ function gitignore_add_pattern {
   pattern="$1"
   gitignore_file_path=$(_append_root_path '.gitignore')
 
+    echo "# in gitignore_add_pattern: adding pattern '${pattern}' to '${gitignore_file_path}'"
+
   _maybe_create_gitignore
   _gawk_inplace -v pattern="$pattern" "'$AWK_ADD_TO_GITIGNORE'" "$gitignore_file_path"
 }
@@ -60,7 +62,7 @@ function init {
   local PWD
   PWD=$(pwd)
   echo "# in init: current dir is ${PWD}" >&3
-  echo "# in init: git_secret_dir is ${git_secret_dir}" >&3
+  echo "# in init: checking for git_secret_dir ${git_secret_dir}" >&3
 
 
   if [[ -d "$git_secret_dir" ]]; then
