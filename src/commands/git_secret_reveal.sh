@@ -7,10 +7,11 @@ function reveal {
   local force=0             # this means 'clobber without warning'
   local force_continue=0    # this means 'continue if we have decryption errors'
   local preserve=0
+  local keyservice=''
 
   OPTIND=1
 
-  while getopts 'hfFPd:p:' opt; do
+  while getopts 'hfFPd:p:k:' opt; do
     case "$opt" in
       h) _show_manual_for 'reveal';;
 
@@ -24,9 +25,15 @@ function reveal {
 
       d) homedir=$(_clean_windows_path "$OPTARG");;
 
+      # multiple -k options allowed
+      k) keyservice="$keyservice,$OPTARG";;
+
       *) _invalid_option_for 'reveal';;
     esac
   done
+
+  # make sure keyservice content does not start with a comma
+  keyservice="${keyservice#,}"
 
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
@@ -54,7 +61,7 @@ function reveal {
     path=$(_append_root_path "$filename")
 
     # The parameters are: filename, write-to-file, force, homedir, passphrase, error_ok
-    _decrypt "$path" "1" "$force" "$homedir" "$passphrase" "$force_continue"
+    _decrypt "$path" "1" "$force" "$homedir" "$passphrase" "$force_continue" "$keyservice"
 
     if [[ ! -f "$path" ]]; then
       _warn_or_abort "cannot find decrypted version of file: $filename" "2" "$force_continue"

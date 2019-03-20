@@ -21,12 +21,13 @@ function tell {
   local emails
   local self_email=0
   local homedir
+  local group='default'
 
   # A POSIX variable
   # Reset in case getopts has been used previously in the shell.
   OPTIND=1
 
-  while getopts "vhmd:" opt; do
+  while getopts "vhmd:g:" opt; do
     case "$opt" in
       v) _SECRETS_VERBOSE=1;;
 
@@ -35,6 +36,8 @@ function tell {
       m) self_email=1;;
 
       d) homedir=$(_clean_windows_path "$OPTARG");;
+
+      g) group=$OPTARG;;
 
       *) _invalid_option_for 'tell';;
     esac
@@ -108,6 +111,13 @@ function tell {
     if [[ "$exit_code" -ne 0 ]]; then
       _abort "problem importing public key for '$email' with gpg: exit code $exit_code"
     fi
+
+    # sops specific
+    # If key was correctly imported try to setup the group
+    _add_id_group "$group" "$SECRETS_SOPS_PGP" "$email"
+    # And update sops config
+    _set_sops_config
+
   done
 
   echo "done. ${emails[*]} added as someone who know(s) the secret."

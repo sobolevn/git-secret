@@ -208,6 +208,9 @@ function set_state_secret_init {
   git secret init > /dev/null 2>&1
 }
 
+function set_state_secret_init_sops {
+  git secret init -m sops > /dev/null 2>&1
+}
 
 function set_state_secret_tell {
   local email
@@ -216,6 +219,12 @@ function set_state_secret_tell {
   git secret tell -d "$TEST_GPG_HOMEDIR" "$email" > /dev/null 2>&1
 }
 
+function set_state_secret_tell_sops_group1 {
+  local email
+
+  email="$1"
+  git secret tell -d "$TEST_GPG_HOMEDIR" -g group1 "$email" > /dev/null 2>&1
+}
 
 function set_state_secret_add {
   local filename="$1"

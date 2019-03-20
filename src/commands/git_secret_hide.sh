@@ -137,12 +137,6 @@ function hide {
     fsdb_file_hash=$(_get_record_hash "$record")
     encrypted_filename=$(_get_encrypted_filename "$filename")
 
-    local recipients
-    recipients=$(_get_recipients)
-
-    local secrets_dir_keys
-    secrets_dir_keys=$(_get_secrets_dir_keys)
-
     local input_path
     local output_path
     input_path=$(_append_root_path "$filename")
@@ -158,28 +152,8 @@ function hide {
       # encrypt file only if required
       if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
-        local args=( --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes "--trust-model=always" --encrypt )
+	_encrypt "$input_path" "$output_path" "$filename" "$force_continue"
 
-        # we depend on $recipients being split on whitespace
-        # shellcheck disable=SC2206
-        args+=( $recipients -o "$output_path" "$input_path" )
-
-        set +e   # disable 'set -e' so we can capture exit_code
-
-        if [[ -n "$_SECRETS_VERBOSE" ]]; then
-          # on at least some platforms, this doesn't output anything unless there's a warning or error
-          $SECRETS_GPG_COMMAND "${args[@]}"
-        else 
-          $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1
-        fi
-        local exit_code=$?
-
-        set -e  # re-enable set -e
-
-        if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
-          # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
-          _warn_or_abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code" "$force_continue"
-        fi
         if [[ -f "$output_path" ]]; then
           counter=$((counter+1))
           if [[ "$preserve" == 1 ]]; then

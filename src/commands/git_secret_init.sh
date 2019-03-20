@@ -41,10 +41,13 @@ function gitignore_add_pattern {
 
 function init {
   OPTIND=1
+  local mode
 
-  while getopts 'h' opt; do
+  while getopts 'h:m:' opt; do
     case "$opt" in
       h) _show_manual_for 'init';;
+
+      m) mode="$OPTARG";;
 
       *) _invalid_option_for 'init';;
     esac
@@ -52,6 +55,10 @@ function init {
 
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
+
+  # We set mode here so that it can be changed
+  # with init command even if already initialized (see failure below)
+  _set_mode "$mode"
 
   # Check if '.gitsecret/' already exists:
   local git_secret_dir
@@ -66,8 +73,10 @@ function init {
 
   # Create internal files:
 
-  mkdir "$git_secret_dir" "$(_get_secrets_dir_keys)" "$(_get_secrets_dir_path)"
-  touch "$(_get_secrets_dir_keys_mapping)" "$(_get_secrets_dir_paths_mapping)"
+  mkdir "$git_secret_dir" "$(_get_secrets_dir_keys)" "$(_get_secrets_dir_path)" \
+	"$(_get_secrets_dir_sops)"
+  touch "$(_get_secrets_dir_keys_mapping)" "$(_get_secrets_dir_paths_mapping)" \
+        "$(_get_secrets_dir_sops_groups)" "$(_get_secrets_dir_sops_config)"
 
   echo "'$git_secret_dir/' created."
 

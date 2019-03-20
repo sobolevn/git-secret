@@ -36,6 +36,13 @@ function killperson {
     if [[ "$exit_code" -ne 0 ]]; then
       _abort "problem deleting key for '$email' with gpg: exit code $exit_code"
     fi
+
+    # sops specific
+    # remove user from its group
+    _rm_id_group "$SECRETS_SOPS_PGP" "$email"
+    # and update sops config
+    _set_sops_config 
+
   done
 
   echo 'removed keys.'

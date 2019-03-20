@@ -19,6 +19,13 @@ re-encrypt the files, and they won't be able to decrypt secrets anymore.
 If you think the user might have copied the contents of the keys when they had access, then
 you should also change the secrets.
 
+Instead of plain gpg encryption, `git-secret` can use [sops](https://github.com/mozilla/sops) 
+to encrypt files, bringing the following features:
+* value only encryption in json or yaml structured files
+* group encryption: one user of each group must unlock their GPG key to allow
+  decryption
+* access to remote key service / gpg agent through sops keyservice
+
 
 ## Preview
 
@@ -41,6 +48,7 @@ See the [installation section](http://git-secret.io/installation) for the detail
 - `git` since `1.8.3.1`
 - `gpg` since `gnupg 1.4` to `gnupg 2.X`
 - `sha256sum` since `8.21` (on freebsd and MacOS `shasum` is used instead)
+- optionally `sops`
 
 
 ## Contributing

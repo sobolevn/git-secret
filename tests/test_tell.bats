@@ -21,6 +21,8 @@ function teardown {
   run git secret tell -d "$TEST_GPG_HOMEDIR" -v "$TEST_DEFAULT_USER"
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
+  # warning: output == created may not be valid depending on the 
+  # testing environment language
   [[ "$output" == *"created"* ]]
   [[ "$output" == *"gpg:"* ]]
   [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
