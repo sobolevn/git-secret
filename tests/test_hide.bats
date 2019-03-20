@@ -171,7 +171,6 @@ function teardown {
   [[ "${#lines[@]}" -eq 2 ]]
   [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
   [[ "${lines[1]}" == "git-secret: cleaning up:"* ]]
-  [ "${lines[1]}" = "git-secret: cleaning up..." ]
   
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
