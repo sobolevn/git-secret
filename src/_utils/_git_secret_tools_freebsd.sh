@@ -12,7 +12,7 @@ function __replace_in_file_freebsd {
 function __temp_file_freebsd {
   : "${TMPDIR:=/tmp}"
   local filename
-  filename=$(mktemp -t _gitsecrets_XXX )
+  filename=$(mktemp -t _git_secret_XXX )
   echo "$filename";
 }
 
