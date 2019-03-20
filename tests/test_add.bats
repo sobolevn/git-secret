@@ -176,9 +176,11 @@ function teardown {
 
   # Testing:
   run git secret add "$filename"
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
   run git secret add "$filename"
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: 1 item(s) added." ]
+  [[ "$output" == *"git-secret: 1 item(s) added."* ]]
 
   # Ensuring that path mappings was set correctly:
   local path_mappings
@@ -204,8 +206,9 @@ function teardown {
 
   # Testing:
   run git secret add "$filename1" "$filename2"
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: 2 item(s) added." ]
+  [[ "$output" == *"git-secret: 2 item(s) added."* ]]
 
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
