@@ -472,7 +472,7 @@ function _find_and_clean_formatted {
   local pattern="$1" # can be any string pattern
 
   if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    echo && echo "git-secret: cleaning:"
+    echo && _message "cleaning:"
   fi
 
   _find_and_clean "$pattern"
@@ -523,28 +523,11 @@ function _secrets_dir_is_not_ignored {
   local git_secret_dir
   git_secret_dir=$(_get_secrets_dir)
 
-  # remove this
-  ## Create git_secret_dir required for check
-  #local cleanup=0
-  #if [[ ! -d "$git_secret_dir" ]]; then
-  #  #echo "# in _secrets_dir_is_not_ignored: creating git_secret_dir ${git_secret_dir}" >&3
-  #  mkdir "$git_secret_dir"
-  #  cleanup=1
-  #fi
-
   local ignores
   ignores=$(_check_ignore "$git_secret_dir")
 
-  # remove this
-  #if [[ "$cleanup" == 1 ]]; then
-  #  #echo "# in _secrets_dir_is_not_ignored: removing git_secret_dir ${git_secret_dir}" >&3
-  #  rmdir "$git_secret_dir"
-  #fi
-
   if [[ ! $ignores -eq 1 ]]; then
     _abort "'$git_secret_dir' is in .gitignore"
-  #else
-  #  _message "'$git_secret_dir' is not in .gitignore"
   fi
 }
 

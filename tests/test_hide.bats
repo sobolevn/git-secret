@@ -129,9 +129,7 @@ function teardown {
 
   # Now it should hide 2 files:
   run git secret hide
-
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
-
   [ "$status" -eq 0 ]
   [ "$output" = "git-secret: done. 2 of 2 files are hidden." ]
 
@@ -142,8 +140,6 @@ function teardown {
 
 @test "run 'hide' with '-m'" {
   run git secret hide -m
-
-  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
@@ -171,7 +167,6 @@ function teardown {
   [[ "${#lines[@]}" -eq 2 ]]
   [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
   [[ "${lines[1]}" == "git-secret: cleaning up:"* ]]
-  
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
   # run hide again

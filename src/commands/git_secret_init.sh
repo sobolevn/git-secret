@@ -35,8 +35,6 @@ function gitignore_add_pattern {
   pattern="$1"
   gitignore_file_path=$(_append_root_path '.gitignore')
 
-    echo "# in gitignore_add_pattern: adding pattern '${pattern}' to '${gitignore_file_path}'"
-
   _maybe_create_gitignore
   _gawk_inplace -v pattern="$pattern" "'$AWK_ADD_TO_GITIGNORE'" "$gitignore_file_path"
 }
@@ -59,11 +57,6 @@ function init {
   local git_secret_dir
   git_secret_dir=$(_get_secrets_dir)
 
-  local PWD
-  PWD=$(pwd)
-  #echo "# in init: current dir is ${PWD}" >&3
-  #echo "# in init: checking for git_secret_dir ${git_secret_dir}" >&3
-
   if [[ -d "$git_secret_dir" ]]; then
     _abort 'already initialized.'
   fi
@@ -76,7 +69,7 @@ function init {
   mkdir "$git_secret_dir" "$(_get_secrets_dir_keys)" "$(_get_secrets_dir_path)"
   touch "$(_get_secrets_dir_keys_mapping)" "$(_get_secrets_dir_paths_mapping)"
 
-  #echo "git-secret: init created: '$git_secret_dir/'"
+  _message "init created: '$git_secret_dir/'"
 
   local random_seed_file
   random_seed_file="${_SECRETS_DIR}/keys/random_seed"
