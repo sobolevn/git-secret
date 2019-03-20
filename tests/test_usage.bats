@@ -24,7 +24,7 @@ function teardown {
   remove_git_repository
 
   run git secret usage
-  [ "$status" -eq 0 ]
+  [ "$status" -eq 1 ]
 }
 
 
