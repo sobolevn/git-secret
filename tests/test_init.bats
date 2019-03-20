@@ -25,7 +25,7 @@ function teardown {
 
   run git secret init
 
-  [ "$status" -eq 1 ]
+  [ "$status" -ne 0 ]
 }
 
 
