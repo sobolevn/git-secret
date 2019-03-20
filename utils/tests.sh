@@ -4,8 +4,8 @@
 
 set -e
 
-# Running all the bats-tests in a dir with spaces:
-cd "${SECRET_PROJECT_ROOT}"; rm -rf 'tempdir with spaces'; mkdir 'tempdir with spaces'; cd 'tempdir with spaces';
+cd "${SECRET_PROJECT_ROOT}"; rm -rf 'tempdir'; mkdir 'tempdir'; cd 'tempdir'
+
 
 # test with non-standard SECRETS_DIR (normally .gitsecret) and SECRETS_EXTENSION (normally .secret)
 export SECRETS_DIR=.gitsecret-testdir
@@ -16,4 +16,4 @@ export SECRETS_EXTENSION=.secret2
 # bats ... 3>&1 shows diagnostic output when errors occur.
 bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
 
-rm -rf 'tempdir with spaces'
+cd ..; rm -rf 'tempdir'
