@@ -78,5 +78,5 @@ function reveal {
   
   done
 
-  echo "done. $counter of ${#to_show[@]} files are revealed."
+  echo "git-secret: done. $counter of ${#to_show[@]} files are revealed."
 }

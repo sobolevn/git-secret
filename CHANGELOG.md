@@ -9,6 +9,7 @@
 - Use gpg without --quiet when decrypting in verbose mode (#394)
 - Add -v 'verbose' option to 'tell', showing gpg output (#320)
 - Change 'init' to never ignore .secret files (#362)
+- 'add' appends filepaths to .gitignore by default (#225)
 
 ### Bugfixes
 
@@ -24,10 +25,13 @@
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
 - Use SECRETS_GPG_COMMAND env var in gpg version check (#389)
 - Add header to git-secret.7 man page, for debian and doc improvement (#386)
+- Automate the GitHub release (#411)
 
 ## Misc
 
 - Use Shellcheck on tests/ files, changes for Shellcheck in tests/ (#368)
+- Use Shellcheck on MacOS/osx travis tests (#403)
+- Show commands run by Makefile as per debian upstream recommendations (#386)
 - Document SECRETS_VERBOSE and improve env var docs (#396)
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
 - Add text explaining git-secret Style Guide and Development Philosophy

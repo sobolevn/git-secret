@@ -209,7 +209,7 @@ function _temporary_file {
   # which will be removed on system exit.
   filename=$(_os_based __temp_file)  # is not `local` on purpose.
 
-  trap 'echo "cleaning up..."; rm -f "$filename";' EXIT
+  trap 'echo "git-secret: cleaning up..."; rm -f "$filename";' EXIT
 }
 
 
@@ -440,6 +440,11 @@ function _get_secrets_dir_sops_config {
 
 # Logic:
 
+function _message {
+  local message="$1" # required
+  echo "git-secret: $message"
+}
+
 function _abort {
   local message="$1" # required
   local exit_code=${2:-"1"}     # defaults to 1
@@ -494,7 +499,7 @@ function _find_and_clean_formatted {
   local pattern="$1" # can be any string pattern
 
   if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    echo && echo "cleaning:"
+    echo && echo "git-secret: cleaning:"
   fi
 
   _find_and_clean "$pattern"
