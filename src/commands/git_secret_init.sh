@@ -57,6 +57,12 @@ function init {
   local git_secret_dir
   git_secret_dir=$(_get_secrets_dir)
 
+  local PWD
+  PWD=$(pwd)
+  echo "# in init: current dir is ${PWD}" >&3
+  echo "# in init: git_secret_dir is ${git_secret_dir}" >&3
+
+
   if [[ -d "$git_secret_dir" ]]; then
     _abort 'already initialized.'
   fi
