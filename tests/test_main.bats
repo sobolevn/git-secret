@@ -36,9 +36,9 @@ function teardown {
   # We will break things apart, so normally it won't run:
   rm -r "./.git"
 
-  # This must fail:
+  # It's ok for 'usage' to succeed when there's no .git directory
   run git secret usage
-  [ "$status" -eq 1 ]
+  [ "$status" -eq 0 ]
 
   # Dry run won't fail:
   run git secret --dry-run
