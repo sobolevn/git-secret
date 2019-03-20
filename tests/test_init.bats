@@ -80,6 +80,9 @@ function teardown {
   mkdir "$secrets_dir"
 
   run git secret init
-  [ "$output" = "git-secret: abort: already initialized." ]
+
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+
+  [[ "$output" == *"git-secret: abort: already initialized."* ]]
   [ "$status" -eq 1 ]
 }
