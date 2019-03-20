@@ -9,6 +9,7 @@
 - Use gpg without --quiet when decrypting in verbose mode (#394)
 - Add -v 'verbose' option to 'tell', showing gpg output (#320)
 - Change 'init' to never ignore .secret files (#362)
+- 'add' appends filepaths to .gitignore by default (#225)
 
 ### Bugfixes
 
