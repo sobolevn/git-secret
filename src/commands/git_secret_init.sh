@@ -61,9 +61,8 @@ function init {
 
   local PWD
   PWD=$(pwd)
-  echo "# in init: current dir is ${PWD}" >&3
-  echo "# in init: checking for git_secret_dir ${git_secret_dir}" >&3
-
+  #echo "# in init: current dir is ${PWD}" >&3
+  #echo "# in init: checking for git_secret_dir ${git_secret_dir}" >&3
 
   if [[ -d "$git_secret_dir" ]]; then
     _abort 'already initialized.'
@@ -77,7 +76,7 @@ function init {
   mkdir "$git_secret_dir" "$(_get_secrets_dir_keys)" "$(_get_secrets_dir_path)"
   touch "$(_get_secrets_dir_keys_mapping)" "$(_get_secrets_dir_paths_mapping)"
 
-  echo "git-secret: init created: '$git_secret_dir/'"
+  #echo "git-secret: init created: '$git_secret_dir/'"
 
   local random_seed_file
   random_seed_file="${_SECRETS_DIR}/keys/random_seed"
