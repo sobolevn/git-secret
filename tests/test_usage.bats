@@ -23,6 +23,8 @@ function teardown {
 @test "run 'usage' without '.git/'" {
   remove_git_repository
 
+  # It's ok for 'usage' to succeed when there's no .git directory
+  # but it still fails because we haven't changed this behavior.
   run git secret usage
   [ "$status" -eq 1 ]
 }
