@@ -4,6 +4,7 @@
 
 ### Features
 
+- git-secret is now available in Fedora, link added to README.md. (#315)
 - Support automated testing on windows with Travis CI (#372)
 - Support SECRETS_VERBOSE env var to enable verbosity (#323)
 - Use gpg without --quiet when decrypting in verbose mode (#394)
