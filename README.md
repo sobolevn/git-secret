@@ -83,6 +83,7 @@ Here are some packagings of git-secret that we're aware of:
 - https://aur.archlinux.org/packages/git-secret/
 - https://packages.ubuntu.com/bionic/git-secret
 - https://packages.debian.org/sid/git-secret
+- https://apps.fedoraproject.org/packages/git-secret
 
 Such packages are considered 'downstream' because the git-secret code 'flows' from the git-secret repository 
 to the various rpm/deb/dpkg/etc packages that are created for specific OSes and distributions.
