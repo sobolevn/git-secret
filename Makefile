@@ -1,5 +1,6 @@
 SHELL:=/usr/bin/env bash
 PREFIX?="/usr"
+DESTDIR?=
 
 #
 # Building:
@@ -22,12 +23,12 @@ build: git-secret
 .PHONY: install
 install:
 	chmod +x "./utils/install.sh"; sync; \
-	"./utils/install.sh" "${PREFIX}"
+	"./utils/install.sh" "${DESTDIR}${PREFIX}"
 
 .PHONY: uninstall
 uninstall:
 	chmod +x "./utils/uninstall.sh"; sync; \
-	"./utils/uninstall.sh" "${PREFIX}"
+	"./utils/uninstall.sh" "${DESTDIR}${PREFIX}"
 
 #
 # Testing:
