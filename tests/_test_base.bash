@@ -262,9 +262,9 @@ function unset_current_state {
   # stop gpg-agent
   stop_gpg_agent
 
-  if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then 
+  #if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then 
     cat "$TEST_GPG_OUTPUT_FILE" | sed 's/^/# $BATS_TEST_DESCRIPTION: /' >&3
-  fi
+  #fi
 
   rm $TEST_GPG_OUTPUT_FILE
 
