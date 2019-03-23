@@ -361,6 +361,7 @@ function _is_tracked_in_git {
 }
 
 
+# THIS GIVES UNEXPECTED .git dir when used in a _subdirectory_ of another git repo; See #431 and #433.
 function _get_git_root_path {
   # We need this function to get the location of the `.git` folder,
   # since `.gitsecret` (or value set by SECRETS_DIR env var) must be on the same level.
