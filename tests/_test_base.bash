@@ -101,9 +101,18 @@ function get_gpg_fingerprint_by_email {
 function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
 
+    echo "# in install_fixture_key: exporting public_key to $public_key" >&3
+
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
-  $GPGTEST --import "$public_key" > /dev/null 2>&1
-  rm -f "$public_key"
+  local import_output
+  import_output=$($GPGTEST --verbose --import "$public_key" 2>&1)
+
+    echo "# output of key import: $import_output" >&3
+  if [ -f "$public_key" ]; then
+    rm -f "$public_key"
+  else
+    echo "# in install_fixture_key: can't find exported public key: $public_key" >&3
+  fi
 }
 
 
