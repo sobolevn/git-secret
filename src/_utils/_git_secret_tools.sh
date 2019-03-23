@@ -521,17 +521,8 @@ function _secrets_dir_is_not_ignored {
   local git_secret_dir
   git_secret_dir=$(_get_secrets_dir)
 
-  # Create git_secret_dir required for check
-  local cleanup=0
-  if [[ ! -d "$git_secret_dir" ]]; then
-    mkdir "$git_secret_dir"
-    cleanup=1
-  fi
   local ignores
   ignores=$(_check_ignore "$git_secret_dir")
-  if [[ "$cleanup" == 1 ]]; then
-    rmdir "$git_secret_dir"
-  fi
 
   if [[ ! $ignores -eq 1 ]]; then
     _abort "'$git_secret_dir' is in .gitignore"
