@@ -67,12 +67,10 @@ function stop_gpg_agent {
   username=$(id -u -n)
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
     ps -l -u "$username" | gawk \
-      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' \
-      > /dev/null 2>&1
+      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' > /dev/null 2>&1
   else
     ps -wx -U "$username" | gawk \
-      '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' \
-      > /dev/null 2>&1
+      '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' > /dev/null 2>&1
   fi
 }
 
