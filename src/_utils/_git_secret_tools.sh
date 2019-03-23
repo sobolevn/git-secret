@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# NO OP CHANGE HERE
 
 # Folders:
 _SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}   
