@@ -72,9 +72,9 @@ function tell {
   start_key_cnt=$(get_gpg_key_count)
   for email in "${emails[@]}"; do
     # This file will be removed automatically:
-    _temporary_file  # note, that `_temporary_file` will export `filename` var.
+    _temporary_file  # note that `_temporary_file` will export `temporary_filename` var.
     # shellcheck disable=2154
-    local keyfile="$filename"
+    local keyfile="$temporary_filename"
 
     local exit_code
     if [[ -z "$homedir" ]]; then
