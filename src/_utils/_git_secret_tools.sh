@@ -189,14 +189,14 @@ function _file_has_line {
 
 
 
-# this sets the global variable 'filename'
+# this sets the global variable 'temporary_filename'
 # currently this function is only used by 'hide'
 function _temporary_file {
   # This function creates temporary file
   # which will be removed on system exit.
-  filename=$(_os_based __temp_file)  # is not `local` on purpose.
+  temporary_filename=$(_os_based __temp_file)  # is not `local` on purpose.
 
-  trap 'echo "git-secret: cleaning up..."; rm -f "$filename";' EXIT
+  trap 'echo "git-secret: cleaning up: $temporary_filename"; rm -f "$temporary_filename";' EXIT
 }
 
 
@@ -210,8 +210,8 @@ function _gawk_inplace {
 
   _temporary_file
 
-  bash -c "gawk ${parms}" > "$filename"
-  mv "$filename" "$dest_file"
+  bash -c "gawk ${parms}" > "$temporary_filename"
+  mv "$temporary_filename" "$dest_file"
 }
 
 
@@ -470,7 +470,7 @@ function _find_and_clean_formatted {
   local pattern="$1" # can be any string pattern
 
   if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    echo && echo "git-secret: cleaning:"
+    echo && _message "cleaning:"
   fi
 
   _find_and_clean "$pattern"
