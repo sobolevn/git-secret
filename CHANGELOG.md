@@ -22,6 +22,7 @@
 - Remove unused functions from _git_secret_tools.sh
 - Fix link to current contributors in CONTRIBUTING.md (#331)
 - Fix tests when running from git hooks (#334)
+- Use separate directory when testing, instead of using $BATS_TMPDIR directly (#407)
 - Fix typo, remove temp directory in utils/tests.sh (#347)
 - Spelling fixes
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
