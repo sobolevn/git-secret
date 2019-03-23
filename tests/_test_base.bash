@@ -13,6 +13,8 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
+TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMP_DIR" mktemp -t '_git_secret_test_output_XXX')
+
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
 BEGIN { OFS=":"; FS=":"; }
@@ -67,10 +69,10 @@ function stop_gpg_agent {
   username=$(id -u -n)
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
     ps -l -u "$username" | gawk \
-      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' | sed 's/^/# /' >&3
+      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' 2>&1 >> $TEST_GPG_OUTPUT_FILE
   else
     ps -wx -U "$username" | gawk \
-      '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' | sed 's/^/# /' >&3
+      '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' 2>&1 >> $TEST_GPG_OUTPUT_FILE
   fi
 }
 
@@ -100,7 +102,7 @@ function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
 
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
-  $GPGTEST --import "$public_key" | sed 's/^/# /' >&3
+  $GPGTEST --import "$public_key" 2>&1 >> $TEST_GPG_OUTPUT_FILE
   rm -f "$public_key"
 }
 
@@ -118,7 +120,7 @@ function install_fixture_full_key {
   cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
   bash -c "$gpgtest_import --allow-secret-key-import \
-    --import \"$private_key\"" | sed 's/^/# /' >&3
+    --import \"$private_key\"" 2>&1 >> $TEST_GPG_OUTPUT_FILE
 
   # since 0.1.2 fingerprint is returned:
   fingerprint=$(get_gpg_fingerprint_by_email "$email")
@@ -135,7 +137,7 @@ function uninstall_fixture_key {
   local email
 
   email="$1"
-  $GPGTEST --yes --delete-key "$email" | sed 's/^/# /' >&3
+  $GPGTEST --yes --delete-key "$email" 2>&1 >> $TEST_GPG_OUTPUT_FILE
 }
 
 
@@ -150,7 +152,7 @@ function uninstall_fixture_full_key {
   fi
 
   $GPGTEST --yes \
-    --delete-secret-keys "$fingerprint" | sed 's/^/# /' >&3
+    --delete-secret-keys "$fingerprint" 2>&1 >> $TEST_GPG_OUTPUT_FILE
 
   uninstall_fixture_key "$1"
 }
@@ -198,12 +200,12 @@ function set_state_initial {
 
 
 function set_state_git {
-  git init | sed 's/^/# /' >&3
+  git init 2>&1 >> $TEST_GPG_OUTPUT_FILE
 }
 
 
 function set_state_secret_init {
-  git secret init | sed 's/^/# /' >&3
+  git secret init 2>&1 >> $TEST_GPG_OUTPUT_FILE
 }
 
 
@@ -211,7 +213,7 @@ function set_state_secret_tell {
   local email
 
   email="$1"
-  git secret tell -d "$TEST_GPG_HOMEDIR" "$email" | sed 's/^/# /' >&3
+  git secret tell -d "$TEST_GPG_HOMEDIR" "$email" 2>&1 >> $TEST_GPG_OUTPUT_FILE
 }
 
 
@@ -221,7 +223,7 @@ function set_state_secret_add {
   echo "$content" > "$filename"      # we add a newline
   echo "$filename" >> ".gitignore"
 
-  git secret add "$filename" | sed 's/^/# /' >&3
+  git secret add "$filename" 2>&1 >> $TEST_GPG_OUTPUT_FILE
 }
 
 function set_state_secret_add_without_newline {
@@ -230,12 +232,12 @@ function set_state_secret_add_without_newline {
   echo -n "$content" > "$filename"      # we do not add a newline
   echo "$filename" >> ".gitignore"
 
-  git secret add "$filename" | sed 's/^/# /' >&3
+  git secret add "$filename" 2>&1 >> $TEST_GPG_OUTPUT_FILE
 }
 
 
 function set_state_secret_hide {
-  git secret hide | sed 's/^/# /' >&3
+  git secret hide 2>&1 >> $TEST_GPG_OUTPUT_FILE
 }
 
 
@@ -245,7 +247,7 @@ function unset_current_state {
 
   # unsets `secret_hide`
   # removes .secret files:
-  git secret clean | sed 's/^/# /' >&3
+  git secret clean 2>&1 >> $TEST_GPG_OUTPUT_FILE
 
   # unsets `secret_add`, `secret_tell` and `secret_init` by removing $_SECRETS_DIR
   local secrets_dir
@@ -259,6 +261,12 @@ function unset_current_state {
 
   # stop gpg-agent
   stop_gpg_agent
+
+  if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then 
+    cat "$TEST_GPG_OUTPUT_FILE" | sed 's/^/# $BATS_TEST_DESCRIPTION: /' >&3
+  fi
+
+  rm $TEST_GPG_OUTPUT_FILE
 
   # removes gpg homedir:
   find "$TEST_GPG_HOMEDIR" \
