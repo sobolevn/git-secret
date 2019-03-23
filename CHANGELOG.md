@@ -39,6 +39,7 @@
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
 - Add text explaining git-secret Style Guide and Development Philosophy
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
+- Improve git-secret user messaging.
 
 ## Version 0.2.5
 
