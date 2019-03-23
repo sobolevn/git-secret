@@ -16,4 +16,4 @@ export SECRETS_EXTENSION=.secret2
 # bats ... 3>&1 shows diagnostic output when errors occur.
 bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
 
-rm -rf 'tempdir with spaces'
+cd ..; rm -rf 'tempdir with spaces'
