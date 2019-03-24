@@ -261,6 +261,7 @@ function unset_current_state {
   # stop gpg-agent
   stop_gpg_agent
 
+  # SECRETS_TEST_VERBOSE is experimental
   if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then 
     # display the captured output as bats diagnostic (fd3, preceded by '# ')
     sed "s/^/# $BATS_TEST_DESCRIPTION: /" < "$TEST_GPG_OUTPUT_FILE" >&3

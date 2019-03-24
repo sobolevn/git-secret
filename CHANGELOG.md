@@ -12,7 +12,6 @@
 - Change 'init' to never ignore .secret files (#362)
 - 'add' appends filepaths to .gitignore by default (#225)
 - Automate the GitHub release (#411)
-- Setting SECRETS_TEST_VERBOSE env var will show debug info during tests
 
 ### Bugfixes
 
@@ -40,6 +39,7 @@
 - Add text explaining git-secret Style Guide and Development Philosophy
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
 - Improve git-secret user messaging.
+- Setting SECRETS_TEST_VERBOSE env var shows debug info during tests (EXPERIMENTAL)
 
 ## Version 0.2.5
 
