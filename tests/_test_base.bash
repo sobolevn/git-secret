@@ -267,7 +267,7 @@ function unset_current_state {
     sed "s/^/# $BATS_TEST_DESCRIPTION: /" < "$TEST_GPG_OUTPUT_FILE" >&3
 
     # display the last $output
-    # shellcheck disable=SC2001
+    # shellcheck disable=SC2001,SC2154
     echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' final output: /" >&3
   fi
 
