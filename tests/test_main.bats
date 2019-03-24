@@ -36,9 +36,7 @@ function teardown {
   # We will break things apart, so normally it won't run:
   rm -r "./.git"
 
-  # This must fail:
-  run git secret usage
-  [ "$status" -eq 1 ]
+  # test of 'git secret usage' here removed as it's duplicated in test_usage.bats
 
   # Dry run won't fail:
   run git secret --dry-run
