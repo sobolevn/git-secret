@@ -13,6 +13,8 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
+TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMP_DIR" mktemp -t '_git_secret_test_output_XXX')
+
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
 BEGIN { OFS=":"; FS=":"; }
@@ -29,6 +31,7 @@ BEGIN { OFS=":"; FS=":"; }
 : "${SECRETS_GPG_COMMAND:="gpg"}"
 
 # This command is used with absolute homedir set and disabled warnings:
+# shellcheck disable=SC2086
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
 
 # Personal data:
@@ -66,13 +69,13 @@ function stop_gpg_agent {
   local username
   username=$(id -u -n)
   if [[ "$GITSECRET_DIST" == "windows" ]]; then
+    # shellcheck disable=SC2086
     ps -l -u "$username" | gawk \
-      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' \
-      > /dev/null 2>&1
+      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> $TEST_GPG_OUTPUT_FILE 2>&1
   else
+    # shellcheck disable=SC2086
     ps -wx -U "$username" | gawk \
-      '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' \
-      > /dev/null 2>&1
+      '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> $TEST_GPG_OUTPUT_FILE 2>&1 
   fi
 }
 
@@ -102,7 +105,8 @@ function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
 
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
-  $GPGTEST --import "$public_key" > /dev/null 2>&1
+  # shellcheck disable=SC2086
+  $GPGTEST --import "$public_key" >> $TEST_GPG_OUTPUT_FILE 2>&1
   rm -f "$public_key"
 }
 
@@ -119,8 +123,9 @@ function install_fixture_full_key {
 
   cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
+  # shellcheck disable=SC2086
   bash -c "$gpgtest_import --allow-secret-key-import \
-    --import \"$private_key\"" > /dev/null 2>&1
+    --import \"$private_key\"" >> $TEST_GPG_OUTPUT_FILE 2>&1
 
   # since 0.1.2 fingerprint is returned:
   fingerprint=$(get_gpg_fingerprint_by_email "$email")
@@ -137,7 +142,8 @@ function uninstall_fixture_key {
   local email
 
   email="$1"
-  $GPGTEST --yes --delete-key "$email" > /dev/null 2>&1
+  # shellcheck disable=SC2086
+  $GPGTEST --yes --delete-key "$email" >> $TEST_GPG_OUTPUT_FILE 2>&1
 }
 
 
@@ -151,8 +157,8 @@ function uninstall_fixture_full_key {
     fingerprint=$(get_gpg_fingerprint_by_email "$email")
   fi
 
-  $GPGTEST --yes \
-    --delete-secret-keys "$fingerprint" > /dev/null 2>&1
+  # shellcheck disable=SC2086
+  $GPGTEST --yes --delete-secret-keys "$fingerprint" >> $TEST_GPG_OUTPUT_FILE 2>&1
 
   uninstall_fixture_key "$1"
 }
@@ -200,12 +206,14 @@ function set_state_initial {
 
 
 function set_state_git {
-  git init > /dev/null 2>&1
+    # shellcheck disable=SC2086
+  git init >> $TEST_GPG_OUTPUT_FILE 2>&1
 }
 
 
 function set_state_secret_init {
-  git secret init > /dev/null 2>&1
+    # shellcheck disable=SC2086
+  git secret init >> $TEST_GPG_OUTPUT_FILE 2>&1
 }
 
 
@@ -213,7 +221,8 @@ function set_state_secret_tell {
   local email
 
   email="$1"
-  git secret tell -d "$TEST_GPG_HOMEDIR" "$email" > /dev/null 2>&1
+    # shellcheck disable=SC2086
+  git secret tell -d "$TEST_GPG_HOMEDIR" "$email" >> $TEST_GPG_OUTPUT_FILE 2>&1
 }
 
 
@@ -223,7 +232,8 @@ function set_state_secret_add {
   echo "$content" > "$filename"      # we add a newline
   echo "$filename" >> ".gitignore"
 
-  git secret add "$filename" > /dev/null 2>&1
+    # shellcheck disable=SC2086
+  git secret add "$filename" >> $TEST_GPG_OUTPUT_FILE 2>&1
 }
 
 function set_state_secret_add_without_newline {
@@ -232,12 +242,14 @@ function set_state_secret_add_without_newline {
   echo -n "$content" > "$filename"      # we do not add a newline
   echo "$filename" >> ".gitignore"
 
-  git secret add "$filename" > /dev/null 2>&1
+    # shellcheck disable=SC2086
+  git secret add "$filename" >> $TEST_GPG_OUTPUT_FILE 2>&1
 }
 
 
 function set_state_secret_hide {
-  git secret hide > /dev/null 2>&1
+    # shellcheck disable=SC2086
+  git secret hide >> $TEST_GPG_OUTPUT_FILE 2>&1
 }
 
 
@@ -247,7 +259,8 @@ function unset_current_state {
 
   # unsets `secret_hide`
   # removes .secret files:
-  git secret clean > /dev/null 2>&1
+    # shellcheck disable=SC2086
+  git secret clean >> $TEST_GPG_OUTPUT_FILE 2>&1
 
   # unsets `secret_add`, `secret_tell` and `secret_init` by removing $_SECRETS_DIR
   local secrets_dir
@@ -261,6 +274,15 @@ function unset_current_state {
 
   # stop gpg-agent
   stop_gpg_agent
+
+  if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then 
+    # display the captured output as bats diagnostic (fd3, preceded by '# ')
+    # shellcheck disable=SC2086
+    sed "s/^/# $BATS_TEST_DESCRIPTION: /" < $TEST_GPG_OUTPUT_FILE >&3
+  fi
+
+  # shellcheck disable=SC2086
+  rm $TEST_GPG_OUTPUT_FILE
 
   # removes gpg homedir:
   find "$TEST_GPG_HOMEDIR" \

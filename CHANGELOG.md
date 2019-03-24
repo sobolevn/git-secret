@@ -12,6 +12,7 @@
 - Change 'init' to never ignore .secret files (#362)
 - 'add' appends filepaths to .gitignore by default (#225)
 - Automate the GitHub release (#411)
+- Setting SECRETS_TEST_VERBOSE env var will show debug info during tests
 
 ### Bugfixes
 

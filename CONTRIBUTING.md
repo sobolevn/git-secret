@@ -47,7 +47,7 @@ These are only required if dealing with manuals, `gh-pages` or releases:
 
 2. Fork and clone your repository: `git clone https://github.com/${YOUR_NAME}/git-secret.git`
 
-3. Make sure that everything works on the current platform by running `make test`
+3. Make sure that everything works on the current platform by running `make test` or `SECRETS_TEST_VERBOSE=1 make test`
 
 4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
 
