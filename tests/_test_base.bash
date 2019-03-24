@@ -278,9 +278,10 @@ function unset_current_state {
 
   #if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then 
     # shellcheck disable=SC2086
-    cat "$TEST_GPG_OUTPUT_FILE" | sed "s/^/# $BATS_TEST_DESCRIPTION: /" >&3
+    sed "s/^/# $BATS_TEST_DESCRIPTION: /" < $TEST_GPG_OUTPUT_FILE >&3
   #fi
 
+  # shellcheck disable=SC2086
   rm $TEST_GPG_OUTPUT_FILE
 
   # removes gpg homedir:
