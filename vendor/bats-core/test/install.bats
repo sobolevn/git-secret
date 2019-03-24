@@ -13,6 +13,7 @@ setup() {
 
 @test "install.sh creates a valid installation" {
   run "$BATS_ROOT/install.sh" "$INSTALL_DIR"
+  emit_debug_output
   [ "$status" -eq 0 ]
   [ "$output" == "Installed Bats to $INSTALL_DIR/bin/bats" ]
   [ -x "$INSTALL_DIR/bin/bats" ]

@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
-export BATS_VERSION='1.1.0'
-
 version() {
-  printf 'Bats %s\n' "$BATS_VERSION"
+  printf 'Bats 1.1.0\n'
+}
+
+usage() {
+  version
+  printf 'Usage: bats [-c] [-r] [-p | -t] <test> [<test> ...]\n'
 }
 
 abort() {
@@ -13,23 +16,18 @@ abort() {
   exit 1
 }
 
-usage() {
-  local cmd="${0##*/}"
+help() {
   local line
-
-  while IFS= read -r line; do
+  usage
+  while read -r line; do
     printf '%s\n' "$line"
   done <<END_OF_HELP_TEXT
-Usage: $cmd [-cr] [-f <regex>] [-j <jobs>] [-p | -t] <test>...
-       $cmd [-h | -v]
 
   <test> is the path to a Bats test file, or the path to a directory
-  containing Bats test files (ending with ".bats").
+  containing Bats test files.
 
   -c, --count      Count the number of test cases without running any tests
-  -f, --filter     Filter test cases by names matching the regular expression
   -h, --help       Display this help message
-  -j, --jobs       Number of parallel jobs to run (requires GNU parallel)
   -p, --pretty     Show results in pretty format (default for terminals)
   -r, --recursive  Include tests in subdirectories
   -t, --tap        Show results in TAP format
@@ -38,11 +36,6 @@ Usage: $cmd [-cr] [-f <regex>] [-j <jobs>] [-p | -t] <test>...
   For more information, see https://github.com/bats-core/bats-core
 
 END_OF_HELP_TEXT
-}
-
-expand_link() {
-  readlink="$(type -p greadlink readlink | head -1)"
-  "$readlink" -f "$1"
 }
 
 expand_path() {
@@ -60,81 +53,68 @@ expand_path() {
   printf -v "$result" '%s/%s' "$dirname" "${path##*/}"
 }
 
-BATS_LIBEXEC="$(dirname "$(expand_link "$BASH_SOURCE")")"
 export BATS_CWD="$PWD"
 export BATS_TEST_PATTERN="^[[:blank:]]*@test[[:blank:]]+(.*[^[:blank:]])[[:blank:]]+\{(.*)\$"
-export BATS_TEST_FILTER=
-export PATH="$BATS_LIBEXEC:$PATH"
+export PATH="$BATS_ROOT/libexec/bats-core:$PATH"
 
+options=()
 arguments=()
-
-# Unpack single-character options bundled together, e.g. -cr, -pr.
 for arg in "$@"; do
-  if [[ "$arg" =~ ^-[^-]. ]]; then
-    index=1
-    while option="${arg:$((index++)):1}"; do
-      if [[ -z "$option" ]]; then
-        break
-      fi
-      arguments+=("-$option")
-    done
+  if [[ "${arg:0:1}" = "-" ]]; then
+    if [[ "${arg:1:1}" = "-" ]]; then
+      options[${#options[*]}]="${arg:2}"
+    else
+      index=1
+      while option="${arg:$index:1}"; do
+        if [[ -z "$option" ]]; then
+          break
+        fi
+        options[${#options[*]}]="$option"
+        let index+=1
+      done
+    fi
   else
-    arguments+=("$arg")
+    arguments[${#arguments[*]}]="$arg"
   fi
-  shift
 done
 
-set -- "${arguments[@]}"
-arguments=()
-
-unset flags pretty recursive
-flags=()
-pretty=
-recursive=
-if [[ -z "${CI:-}" && -t 0 && -t 1 ]] && command -v tput >/dev/null; then
+unset count_flag pretty recursive
+count_flag=''
+pretty=''
+recursive=''
+if [[ -z "${CI:-}" && -t 0 && -t 1 ]]; then
   pretty=1
 fi
 
-while [[ "$#" -ne 0 ]]; do
-  case "$1" in
-  -h|--help)
-    version
-    usage
-    exit 0
-    ;;
-  -v|--version)
-    version
-    exit 0
-    ;;
-  -c|--count)
-    flags+=('-c')
-    ;;
-  -f|--filter)
-    shift
-    flags+=('-f' "$1")
-    ;;
-  -j|--jobs)
-    shift
-    flags+=('-j' "$1")
-    ;;
-  -r|--recursive)
-    recursive=1
-    ;;
-  -t|--tap)
-    pretty=
-    ;;
-  -p|--pretty)
-    pretty=1
-    ;;
-  -*)
-    abort "Bad command line option '$1'"
-    ;;
-  *)
-    arguments+=("$1")
-    ;;
-  esac
-  shift
-done
+if [[ "${#options[@]}" -ne 0 ]]; then
+  for option in "${options[@]}"; do
+    case "$option" in
+    "h" | "help" )
+      help
+      exit 0
+      ;;
+    "v" | "version" )
+      version
+      exit 0
+      ;;
+    "c" | "count" )
+      count_flag="-c"
+      ;;
+    "r" | "recursive" )
+      recursive=1
+      ;;
+    "t" | "tap" )
+      pretty=""
+      ;;
+    "p" | "pretty" )
+      pretty=1
+      ;;
+    * )
+      abort "Bad command line option '-$option'"
+      ;;
+    esac
+  done
+fi
 
 if [[ "${#arguments[@]}" -eq 0 ]]; then
   abort 'Must specify at least one <test>'
@@ -148,24 +128,31 @@ for filename in "${arguments[@]}"; do
     shopt -s nullglob
     if [[ "$recursive" -eq 1 ]]; then
       while IFS= read -r -d $'\0' file; do
-        filenames+=("$file")
-      done < <(find "$filename" -type f -name '*.bats' -print0 | sort -z)
+        filenames["${#filenames[@]}"]="$file"
+      done < <(find "$filename" -type f -name "*.bats" -print0 | sort -z)
     else
       for suite_filename in "$filename"/*.bats; do
-        filenames+=("$suite_filename")
+        filenames["${#filenames[@]}"]="$suite_filename"
       done
     fi
     shopt -u nullglob
   else
-    filenames+=("$filename")
+    filenames["${#filenames[@]}"]="$filename"
   fi
 done
 
-formatter="cat"
-if [[ -n "$pretty" ]]; then
-  flags+=("-x")
-  formatter="bats-format-tap-stream"
+if [[ "${#filenames[@]}" -eq 1 ]]; then
+  command="bats-exec-test"
+else
+  command="bats-exec-suite"
 fi
 
 set -o pipefail execfail
-exec bats-exec-suite "${flags[@]}" "${filenames[@]}" | "$formatter"
+if [[ -z "$pretty" ]]; then
+  exec "$command" $count_flag "${filenames[@]}"
+else
+  extended_syntax_flag="-x"
+  formatter="bats-format-tap-stream"
+  exec "$command" $count_flag $extended_syntax_flag "${filenames[@]}" |
+    "$formatter"
+fi
