@@ -264,6 +264,9 @@ function unset_current_state {
   if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then 
     # display the captured output as bats diagnostic (fd3, preceded by '# ')
     sed "s/^/# $BATS_TEST_DESCRIPTION: /" < "$TEST_GPG_OUTPUT_FILE" >&3
+
+    # display the last $output
+    echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' final output: /" >&3
   fi
 
   rm "$TEST_GPG_OUTPUT_FILE"
