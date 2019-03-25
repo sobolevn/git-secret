@@ -11,6 +11,8 @@ function reveal {
   OPTIND=1
 
   while getopts 'hfFPd:p:v' opt; do
+    # line below is for _SECRETS_VERBOSE
+    # shellcheck disable=SC2034
     case "$opt" in
       h) _show_manual_for 'reveal';;
 
