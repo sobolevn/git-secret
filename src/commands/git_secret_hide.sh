@@ -109,7 +109,7 @@ function hide {
   [ "$1" = '--' ] && shift
 
   if [ $# -ne 0 ]; then 
-    _abort "clean does not understand params: *@"
+    _abort "clean does not understand params: $*"
   fi
 
   # We need user to continue:
