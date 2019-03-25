@@ -54,7 +54,7 @@ function init {
   [ "$1" = '--' ] && shift
 
   if [ $# -ne 0 ]; then 
-    _abort "init does not understand params: $@"
+    _abort "init does not understand params: *@"
   fi
 
   # Check if '.gitsecret/' already exists:

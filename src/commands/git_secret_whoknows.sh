@@ -19,7 +19,7 @@ function whoknows {
   [ "$1" = "--" ] && shift
 
   if [ $# -ne 0 ]; then 
-    _abort "whoknows does not understand params: $@"
+    _abort "whoknows does not understand params: *@"
   fi
 
   # Validating, that we have a user:
