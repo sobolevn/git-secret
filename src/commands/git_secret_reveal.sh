@@ -10,7 +10,9 @@ function reveal {
 
   OPTIND=1
 
-  while getopts 'hfFPd:p:' opt; do
+  while getopts 'hfFPd:p:v' opt; do
+    # line below is for _SECRETS_VERBOSE
+    # shellcheck disable=SC2034
     case "$opt" in
       h) _show_manual_for 'reveal';;
 
@@ -23,6 +25,8 @@ function reveal {
       p) passphrase=$OPTARG;;
 
       d) homedir=$(_clean_windows_path "$OPTARG");;
+
+      v) _SECRETS_VERBOSE=1;;
 
       *) _invalid_option_for 'reveal';;
     esac

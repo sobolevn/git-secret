@@ -292,13 +292,7 @@ function _check_ignore {
   local filename="$1" # required
 
   local result
-  result="$(git add -n "$filename" > /dev/null 2>&1; echo $?)"
-  # when ignored
-  if [[ "$result" -ne 0 ]]; then
-    result=0
-  else
-    result=1
-  fi
+  result="$(git check-ignore -q "$filename"; echo $?)"
   # returns 1 when not ignored, and 0 when ignored
   echo "$result"
 }
@@ -527,17 +521,8 @@ function _secrets_dir_is_not_ignored {
   local git_secret_dir
   git_secret_dir=$(_get_secrets_dir)
 
-  # Create git_secret_dir required for check
-  local cleanup=0
-  if [[ ! -d "$git_secret_dir" ]]; then
-    mkdir "$git_secret_dir"
-    cleanup=1
-  fi
   local ignores
   ignores=$(_check_ignore "$git_secret_dir")
-  if [[ "$cleanup" == 1 ]]; then
-    rmdir "$git_secret_dir"
-  fi
 
   if [[ ! $ignores -eq 1 ]]; then
     _abort "'$git_secret_dir' is in .gitignore"
