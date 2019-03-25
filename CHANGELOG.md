@@ -29,6 +29,7 @@
 - Use SECRETS_GPG_COMMAND env var in gpg version check (#389)
 - Add header to git-secret.7 man page, for debian and doc improvement (#386)
 - Respect DESTDIR when installing as per GNU/debian/etc recommendations (#424)
+- Use git check-ignore to test for files ignored by git.
 
 ## Misc
 
