@@ -39,6 +39,11 @@ function teardown {
   [ -f "$encrypted_file" ]
 }
 
+@test "run 'hide' with extra params" {
+  run git secret hide extra_param
+  [ "$status" -ne 0 ]
+}
+
 @test "run 'hide' normally with SECRETS_VERBOSE=1" {
   SECRETS_VERBOSE=1 run git secret hide
 

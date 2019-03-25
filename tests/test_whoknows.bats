@@ -31,6 +31,11 @@ function teardown {
   [[ "$output" == *"$TEST_SECOND_USER"* ]]
 }
 
+@test "run 'whoknows' with extra params" {
+  run git secret whoknows extra_param
+  [ "$status" -ne 0 ]
+}
+
 @test "run 'whoknows -l'" {
   run git secret whoknows -l
   [ "$status" -eq 0 ]

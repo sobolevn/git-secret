@@ -31,6 +31,10 @@ function teardown {
   [ "$output" = "$FILE_TO_HIDE" ]
 }
 
+@test "run 'list' with extra params" {
+  run git secret list extra_param
+  [ "$status" -ne 0 ]
+}
 
 @test "run 'list' with multiple files" {
   # Preparations:

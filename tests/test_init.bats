@@ -36,6 +36,12 @@ function teardown {
 }
 
 
+@test "run 'init' with extra params" {
+  run git secret init extra_params
+  [ "$status" -ne 0 ]
+}
+
+
 @test "run 'init' in subfolder" {
   # This test covers this issue:
   # https://github.com/sobolevn/git-secret/issues/83

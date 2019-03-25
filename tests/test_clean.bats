@@ -48,6 +48,10 @@ function _secret_files_exists {
   [ "$exists" -ne 0 ]
 }
 
+@test "run 'clean' with extra params" {
+  run git secret clean extra_param
+  [ "$status" -ne 0 ]
+}
 
 @test "run 'clean' with '-v'" {
   run git secret clean -v
