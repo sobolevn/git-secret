@@ -8,7 +8,7 @@
 - Support automated testing on windows with Travis CI (#372)
 - Support SECRETS_VERBOSE env var to enable verbosity (#323)
 - Use gpg without --quiet when decrypting in verbose mode (#394)
-- Add -v 'verbose' option to 'tell', showing gpg output (#320)
+- Add -v options to 'tell' and 'reveal', showing gpg output (#320, #395)
 - Change 'init' to never ignore .secret files (#362)
 - 'add' appends filepaths to .gitignore by default (#225)
 - Automate the GitHub release (#411)
