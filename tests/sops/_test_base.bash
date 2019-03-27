@@ -1,9 +1,11 @@
 #!/usr/bin/env/bash
 
+# shellcheck disable=SC2034
 FIXTURES_DIR="$BATS_TEST_DIRNAME/../fixtures"
 
 # reusing most of the helper from git-secret gpg tests
 
+# shellcheck disable=SC1090
 source "$BATS_TEST_DIRNAME/../_test_base.bash"
 
 # specific sops helpers
