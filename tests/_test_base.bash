@@ -9,7 +9,7 @@ source "$SECRET_PROJECT_ROOT/src/version.sh"
 source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
 
 # Constants:
-FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
+FIXTURES_DIR=${FIXTURES_DIR:-"$BATS_TEST_DIRNAME/fixtures"}
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
@@ -198,7 +198,6 @@ function set_state_initial {
   rm -rf "${BATS_TMPDIR:?}/*"
 }
 
-
 function set_state_git {
   git init > /dev/null 2>&1
 }
@@ -208,22 +207,11 @@ function set_state_secret_init {
   git secret init > /dev/null 2>&1
 }
 
-function set_state_secret_init_sops {
-  git secret init -m sops > /dev/null 2>&1
-}
-
 function set_state_secret_tell {
   local email
 
   email="$1"
   git secret tell -d "$TEST_GPG_HOMEDIR" "$email" > /dev/null 2>&1
-}
-
-function set_state_secret_tell_sops_group1 {
-  local email
-
-  email="$1"
-  git secret tell -d "$TEST_GPG_HOMEDIR" -g group1 "$email" > /dev/null 2>&1
 }
 
 function set_state_secret_add {

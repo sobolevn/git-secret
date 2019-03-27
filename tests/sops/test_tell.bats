@@ -18,6 +18,7 @@ function teardown {
 }
 
 @test "run 'tell' normally with sops" {
+
   run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
   [ "$status" -eq 0 ]
 
@@ -35,6 +36,7 @@ function teardown {
 }
 
 @test "run 'tell' normally with sops and test group" {
+
   run git secret tell -d "$TEST_GPG_HOMEDIR" -g "test" "$TEST_DEFAULT_USER"
   [ "$status" -eq 0 ]
 
@@ -52,6 +54,7 @@ function teardown {
 }
 
 @test "run 'tell' with multiple emails with sops" {
+
   # Preparations:
   install_fixture_key "$TEST_SECOND_USER"
 

@@ -14,9 +14,6 @@ function teardown {
 }
 
 @test "run 'init' normally in sops mode" {
-  if [ "$SECRET_TEST_SOPS" != "true" ]; then
-    skip "sops mode not requested for test"
-  fi
   run git secret init -m sops
   [ "$status" -eq 0 ]
 

@@ -20,6 +20,7 @@ function teardown {
 
 
 @test "run 'killperson' with short name and sops" {
+
   local name
   name=$(echo "$TEST_DEFAULT_USER" | sed -e 's/@.*//')
 
@@ -41,6 +42,7 @@ function teardown {
 
 
 @test "run 'killperson' with email" {
+
   local email="$TEST_DEFAULT_USER"
 
   run git secret killperson "$email"

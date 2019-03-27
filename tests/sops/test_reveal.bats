@@ -29,6 +29,7 @@ function teardown {
 
 
 @test "run 'reveal' with password argument and sops" {
+
   cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
   rm -f "$FILE_TO_HIDE"
 
@@ -45,6 +46,7 @@ function teardown {
 
 
 @test "run 'reveal' with '-f' and sops" {
+
   rm "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
@@ -56,6 +58,7 @@ function teardown {
 
 
 @test "run 'reveal' with '-P' and sops" {
+
   rm "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
@@ -81,6 +84,7 @@ function teardown {
 }
 
 @test "run 'reveal' with wrong password and sops" {
+
   rm "$FILE_TO_HIDE"
 
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "WRONG"
@@ -91,6 +95,7 @@ function teardown {
 
 
 @test "run 'reveal' for attacker and sops" {
+
   # Preparations
   rm "$FILE_TO_HIDE"
 
@@ -109,6 +114,7 @@ function teardown {
 }
 
 @test "run 'reveal' for attacker with -F (force) and sops" {
+
   # Preparations
   rm "$FILE_TO_HIDE"
 
@@ -131,6 +137,7 @@ function teardown {
 }
 
 @test "run 'reveal' for multiple users (with key deletion) and sops" {
+
   # Preparations:
   local second_fingerprint=$(install_fixture_full_key "$TEST_SECOND_USER")
   local password=$(test_user_password "$TEST_SECOND_USER")
@@ -153,6 +160,7 @@ function teardown {
 
 
 @test "run 'reveal' for multiple users (normally) and sops" {
+
   # Preparations:
   local second_fingerprint=$(install_fixture_full_key "$TEST_SECOND_USER")
   # bug in gpg v2.0.22, need to use default password

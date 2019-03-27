@@ -923,7 +923,9 @@ function _decrypt_sops {
   if [[ -n "$keyservice" ]]; then
     # this is a comma separated list of sops keyservices string
     # reformat args to pass it to sops
-    args+=( $( echo "$keyservice" | sed -e 's/^/--keyservice /' -e 's/,/ --keyservice /' ) )
+    while IFS=',' read -ra url; do
+      args+=( "--keyservice" "$url" )
+    done <<< "$keyservice"
   fi
   if [[ -n "$homedir" ]]; then
     export SOPS_GPG_HOMEDIR="$homedir"

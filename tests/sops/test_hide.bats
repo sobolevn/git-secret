@@ -26,6 +26,7 @@ function teardown {
 
 
 @test "run 'hide' normally with sops" {
+
   run git secret hide
   echo "$output"
 
@@ -41,6 +42,7 @@ function teardown {
 }
 
 @test "run 'hide' normally with SECRETS_VERBOSE=1 and sops" {
+
   SECRETS_VERBOSE=1 run git secret hide
 
   # Command must execute normally. 
@@ -107,6 +109,7 @@ function teardown {
 }
 
 @test "run 'hide' with missing file and sops" {
+
   # Preparations:
   local second_file="$TEST_SECOND_FILENAME"
   local second_content="some content"
@@ -123,6 +126,7 @@ function teardown {
 
 
 @test "run 'hide' with multiple files and sops" {
+
   # Preparations:
   local second_file="$TEST_SECOND_FILENAME"
   local second_content="some content"
@@ -140,6 +144,7 @@ function teardown {
 
 
 @test "run 'hide' with '-m' and sops" {
+
   run git secret hide -m
 
   # Command must execute normally:
@@ -156,6 +161,7 @@ function teardown {
 
 
 @test "run 'hide' with '-m' twice and sops" {
+
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
   run git secret hide -m
@@ -188,6 +194,7 @@ function teardown {
 
 
 @test "run 'hide' with '-c' and '-v' and sops" {
+
   # Preparations:
   local encrypted_filename=$(_get_encrypted_filename "$FILE_TO_HIDE")
   set_state_secret_hide # so it would be data to clean
@@ -205,6 +212,7 @@ function teardown {
 
 
 @test "run 'hide' with '-d' and sops" {
+
   run git secret hide -d
   [ "$status" -eq 0 ]
 
@@ -214,6 +222,7 @@ function teardown {
 
 
 @test "run 'hide' with '-d' and '-v' and sops" {
+
   run git secret hide -v -d
   [ "$status" -eq 0 ]
 
@@ -227,6 +236,7 @@ function teardown {
 
 
 @test "run 'hide' with '-d' and '-v' and files in subdirectories and sops" {
+
   # Preparations:
   local root_dir='test_sub_dir'
   mkdir -p "$root_dir"
@@ -252,6 +262,7 @@ function teardown {
 }
 
 @test "run 'hide' with multiple users and sops" {
+
   install_fixture_key "$TEST_SECOND_USER"
   set_state_secret_tell "$TEST_SECOND_USER"
 
@@ -261,6 +272,7 @@ function teardown {
 }
 
 @test "run 'hide' with multiple users/groups and sops" {
+
   install_fixture_key "$TEST_SECOND_USER"
   set_state_secret_tell_sops_group1 "$TEST_SECOND_USER"
 

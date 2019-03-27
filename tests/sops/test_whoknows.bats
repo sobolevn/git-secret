@@ -22,6 +22,7 @@ function teardown {
 }
 
 @test "run 'whoknows -l' with sops" {
+
   run git secret whoknows -l
   [ "$status" -eq 0 ]
 
