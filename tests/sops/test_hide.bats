@@ -28,13 +28,13 @@ function teardown {
 @test "run 'hide' normally with sops" {
 
   run git secret hide
-  echo "$output"
 
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  [ "$output" = "done. 1 of 1 files are hidden." ]
+  [ "$output" = "git-secret: done. 1 of 1 files are hidden." ]
+
 
   # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
@@ -47,7 +47,7 @@ function teardown {
 
   # Command must execute normally. 
   [ "$status" -eq 0 ]
-  [[ "$output" == "done. 1 of 1 files are hidden." ]]
+  [[ "$output" == "git-secret: done. 1 of 1 files are hidden." ]]
 }
 
 @test "run 'hide' with '-P' and sops" {
@@ -61,7 +61,7 @@ function teardown {
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  [ "$output" = "done. 1 of 1 files are hidden." ]
+  [ "$output" = "git-secret: done. 1 of 1 files are hidden." ]
 
   # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
@@ -121,7 +121,7 @@ function teardown {
   # Now it should return an error because one file can't be found
   run git secret hide
   [ "$status" -ne 0 ]
-  [ "$output" != "done. 2 of 2 files are hidden." ]
+  [ "$output" != "git-secret: done. 2 of 2 files are hidden." ]
 }
 
 
@@ -136,7 +136,7 @@ function teardown {
   run git secret hide
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
   [ "$status" -eq 0 ]
-  [ "$output" = "done. 2 of 2 files are hidden." ]
+  [ "$output" = "git-secret: done. 2 of 2 files are hidden." ]
 
   # Cleaning up:
   rm "$second_file"
@@ -151,8 +151,8 @@ function teardown {
   [ "$status" -eq 0 ]
   # git secret hide -m, use temp file so cleaning should take place
   [[ "${#lines[@]}" -eq 2 ]]
-  [ "${lines[0]}" = "done. 1 of 1 files are hidden." ]
-  [ "${lines[1]}" = "cleaning up..." ]
+  [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
+  [[ "${lines[1]}" == "git-secret: cleaning up:"* ]]
 
   # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
@@ -172,8 +172,8 @@ function teardown {
   [ "$status" -eq 0 ]
   # git secret hide -m, uses a temp file so cleaning should take place
   [[ "${#lines[@]}" -eq 2 ]]
-  [ "${lines[0]}" = "done. 1 of 1 files are hidden." ]
-  [ "${lines[1]}" = "cleaning up..." ]
+  [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
+  [[ "${lines[1]}" == "git-secret: cleaning up:"* ]]
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
   # run hide again
@@ -183,7 +183,7 @@ function teardown {
   [[ "${#lines[@]}" -eq 1 ]]
   
   # output says 0 of 1 files are hidden because checksum didn't change and we didn't need to hide it again.
-  [ "$output" = "done. 0 of 1 files are hidden." ]
+  [ "$output" = "git-secret: done. 0 of 1 files are hidden." ]
   # no changes should occur to path_mappings files
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
@@ -268,7 +268,7 @@ function teardown {
 
   run git secret hide
   [ "$status" -eq 0 ]
-  [ "$output" = "done. 1 of 1 files are hidden." ]
+  [ "$output" = "git-secret: done. 1 of 1 files are hidden." ]
 }
 
 @test "run 'hide' with multiple users/groups and sops" {
@@ -278,5 +278,5 @@ function teardown {
 
   run git secret hide
   [ "$status" -eq 0 ]
-  [ "$output" = "done. 1 of 1 files are hidden." ]
+  [ "$output" = "git-secret: done. 1 of 1 files are hidden." ]
 }

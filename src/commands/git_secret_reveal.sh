@@ -11,7 +11,9 @@ function reveal {
 
   OPTIND=1
 
-  while getopts 'hfFPd:p:k:' opt; do
+  while getopts 'hfFPd:p:vk:' opt; do
+    # line below is for _SECRETS_VERBOSE
+    # shellcheck disable=SC2034
     case "$opt" in
       h) _show_manual_for 'reveal';;
 
@@ -27,6 +29,8 @@ function reveal {
 
       # multiple -k options allowed
       k) keyservice="$keyservice,$OPTARG";;
+
+      v) _SECRETS_VERBOSE=1;;
 
       *) _invalid_option_for 'reveal';;
     esac
@@ -78,5 +82,5 @@ function reveal {
   
   done
 
-  echo "done. $counter of ${#to_show[@]} files are revealed."
+  echo "git-secret: done. $counter of ${#to_show[@]} files are revealed."
 }

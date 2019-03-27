@@ -45,7 +45,7 @@ function killperson {
 
   done
 
-  echo 'removed keys.'
-  echo "now [$*] do not have an access to the repository."
-  echo 'make sure to hide the existing secrets again.'
+  _message 'removed keys.'
+  _message "now [$*] do not have an access to the repository."
+  _message 'make sure to hide the existing secrets again.'
 }
