@@ -4,12 +4,14 @@
 
 ### Features
 
+- git-secret is now available in Fedora, link added to README.md. (#315)
 - Support automated testing on windows with Travis CI (#372)
 - Support SECRETS_VERBOSE env var to enable verbosity (#323)
 - Use gpg without --quiet when decrypting in verbose mode (#394)
-- Add -v 'verbose' option to 'tell', showing gpg output (#320)
+- Add -v options to 'tell' and 'reveal', showing gpg output (#320, #395)
 - Change 'init' to never ignore .secret files (#362)
 - 'add' appends filepaths to .gitignore by default (#225)
+- Automate the GitHub release (#411)
 
 ### Bugfixes
 
@@ -20,12 +22,14 @@
 - Remove unused functions from _git_secret_tools.sh
 - Fix link to current contributors in CONTRIBUTING.md (#331)
 - Fix tests when running from git hooks (#334)
+- Use separate directory when testing, instead of using $BATS_TMPDIR directly (#407)
 - Fix typo, remove temp directory in utils/tests.sh (#347)
 - Spelling fixes
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
 - Use SECRETS_GPG_COMMAND env var in gpg version check (#389)
 - Add header to git-secret.7 man page, for debian and doc improvement (#386)
-- Automate the GitHub release (#411)
+- Respect DESTDIR when installing as per GNU/debian/etc recommendations (#424)
+- Use git check-ignore to test for files ignored by git.
 
 ## Misc
 
@@ -36,6 +40,7 @@
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
 - Add text explaining git-secret Style Guide and Development Philosophy
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
+- Improve git-secret user messaging.
 
 ## Version 0.2.5
 

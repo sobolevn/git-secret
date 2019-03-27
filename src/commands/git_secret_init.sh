@@ -78,7 +78,7 @@ function init {
   touch "$(_get_secrets_dir_keys_mapping)" "$(_get_secrets_dir_paths_mapping)" \
         "$(_get_secrets_dir_sops_groups)" "$(_get_secrets_dir_sops_config)"
 
-  _message "'$git_secret_dir/' created."
+  _message "init created: '$git_secret_dir/'"
 
   local random_seed_file
   random_seed_file="${_SECRETS_DIR}/keys/random_seed"
