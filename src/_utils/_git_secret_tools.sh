@@ -1044,9 +1044,10 @@ function _rm_id_group {
 
   group_file=$(_get_secrets_dir_sops_groups)
 
-  sed -i -e "s/$type:$id//" \
-	 -e 's/,,/,/' -e 's/:,/:/' -e 's/,$//' -e "/^[^:]*:$/d" \
-	 "$group_file" > /dev/null
+  sed -i.bak -e "s/$type:$id//" \
+	     -e 's/,,/,/' -e 's/:,/:/' \
+	     -e 's/,$//' -e "/^[^:]*:$/d" \
+	     "$group_file" > /dev/null
 }
 
 # return group for passed id
@@ -1115,7 +1116,7 @@ function _add_id_group {
     _abort "Cannot add $type:$id to $group: it ilready belongs to $g"
   elif [ -z "$g" ] && _exists_group "$group"; then
     # add id to group
-    sed -i -e "s/^\(${group}:.*\)$/\1,${type}:${id}/" "$group_file"
+    sed -i.bak -e "s/^\(${group}:.*\)$/\1,${type}:${id}/" "$group_file"
   elif [ -z "$g" ]; then
     # create group in file and add id
     echo "${group}:${type}:${id}" >> "$group_file"
