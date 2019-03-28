@@ -39,8 +39,10 @@
 - Document SECRETS_VERBOSE and improve env var docs (#396)
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
 - Add text explaining git-secret Style Guide and Development Philosophy
+- Experimental SECRETS_TEST_VERBOSE env var shows debug info during tests (may be removed)
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
 - Improve git-secret user messaging.
+- Setting SECRETS_TEST_VERBOSE env var shows debug info during tests (EXPERIMENTAL)
 
 ## Version 0.2.5
 
