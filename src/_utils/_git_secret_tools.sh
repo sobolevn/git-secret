@@ -690,7 +690,7 @@ function _get_keyid_uid_in_gpg_keyring {
   # then parse it to extract fingerprint and print it
   # as this may return several lines (considering uid param matches as a substring for several
   # uid in pubring), we finally retain only the first line
-  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | sed -n -e '/^pub.*/ {' -e n -e x -e '}' -e "/^uid.*$uid.*/ {" -e x -e "s/fpr.*:\([^:]*\):[^:]*/\1/p" -e "}" | sed -n -e '1p')
+  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --fingerprint --with-colon --fixed-list-mode | sed -n -e '/^pub.*/ {' -e n -e x -e '}' -e "/^uid.*$uid.*/ {" -e x -e "s/fpr.*:\([^:]*\):[^:]*/\1/p" -e "}" | sed -n -e '1p')
   echo "$result"
 }
 
