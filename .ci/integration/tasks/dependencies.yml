@@ -34,3 +34,9 @@
   command: bash -lc "gem install etc || :"
   when:
     - ansible_os_family == "Alpine"
+
+- name: Download and install Mozilla Sops
+  get_url:
+    url: https://github.com/mozilla/sops/releases/download/3.2.0/sops-3.2.0.linux
+    dest: /usr/bin/sops
+    mode: 0755
