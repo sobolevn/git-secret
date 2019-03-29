@@ -1,7 +1,8 @@
 #!/usr/bin/env bats
 
+: "${TMPDIR:=/tmp}"
 
-INSTALL_BASE="/tmp/git-secret-test-install"
+INSTALL_BASE="${TMPDIR}/git-secret-test-install"
 
 @test "install git-secret to '$INSTALL_BASE'" {
 
