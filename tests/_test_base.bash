@@ -103,7 +103,7 @@ function install_fixture_key {
 
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
   $GPGTEST --import "$public_key" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
-  rm -f "$public_key"
+  rm -f "$public_key" || _abort "Couldn't delete public key: $public_key"
 }
 
 
@@ -127,7 +127,7 @@ function install_fixture_full_key {
 
   install_fixture_key "$1"
 
-  rm -f "$private_key"
+  rm -f "$private_key" || _abort "Couldn't delete private key: $private_key"
   # return fingerprint to delete it later:
   echo "$fingerprint"
 }
@@ -273,10 +273,10 @@ function unset_current_state {
 
   rm "$TEST_GPG_OUTPUT_FILE"
 
-  # removes gpg homedir:
-  find "$TEST_GPG_HOMEDIR" \
-    -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
-    -exec rm -rf {} +
+  ## removes gpg homedir:
+  #find "$TEST_GPG_HOMEDIR" \
+  #  -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
+  #  -exec rm -rf {} +
 
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
