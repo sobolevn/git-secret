@@ -6,7 +6,8 @@ set -e
 
 #TEST_DIR="/tmp/tempdir with spaces"
 #TEST_DIR="/tmp/tempdir"
-TEST_DIR=$(mktemp -d -t 'git-secret-tempdir-XXX')
+TEST_DIR=$(mktemp -d -t 'git-secret-tempdir.XXX')
+echo "Created dir: ${TEST_DIR}"
 
 rm -rf "${TEST_DIR}" 
 mkdir "${TEST_DIR}"
@@ -27,4 +28,4 @@ chmod 0700 "${TEST_DIR}"
     bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
 )
 
-rm -rf "${TEST_DIR}"
+rm -vrf "${TEST_DIR}"
