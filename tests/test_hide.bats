@@ -101,8 +101,9 @@ function teardown {
   run git secret hide
   [ "$status" -eq 0 ]
 
-  # cd back
+  # cd back and clean up
   cd ".."
+  rm -rf "$root_dir"
 }
 
 @test "run 'hide' with missing file" {
@@ -248,6 +249,8 @@ function teardown {
   [[ "$output" == *"removing unencrypted files"* ]]
   [[ "$output" == *"$FILE_TO_HIDE"* ]]
   [[ "$output" == *"$second_file"* ]]
+
+  rm -rf "$root_dir"
 }
 
 
