@@ -27,4 +27,4 @@ chmod 0700 "${TEST_DIR}"
     bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
 )
 
-rm -vrf "${TEST_DIR}"
+rm -rf "${TEST_DIR}"
