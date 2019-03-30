@@ -1,6 +1,6 @@
 FROM ubuntu:rolling
 
-ENV DEBIAN_FRONTEND="noninteractive" container="docker"
+ENV DEBIAN_FRONTEND="noninteractive" container="docker" SECRETS_TEST_VERBOSE=1
 
 RUN apt-get update \
  && apt-get upgrade -y \
