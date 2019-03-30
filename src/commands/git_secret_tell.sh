@@ -71,7 +71,6 @@ function tell {
   local start_key_cnt
   start_key_cnt=$(get_gpg_key_count)
   for email in "${emails[@]}"; do
-    # This file will be removed automatically:
     _temporary_file  # note that `_temporary_file` will export `temporary_filename` var.
     # shellcheck disable=2154
     local keyfile="$temporary_filename"
@@ -105,6 +104,9 @@ function tell {
       $SECRETS_GPG_COMMAND "${args[@]}"
     fi
     exit_code=$?
+
+    rm -f "$keyfile" || _abort "error removing temporary keyfile: $keyfile"
+
     if [[ "$exit_code" -ne 0 ]]; then
       _abort "problem importing public key for '$email' with gpg: exit code $exit_code"
     fi
