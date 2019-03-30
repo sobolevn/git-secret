@@ -285,3 +285,4 @@ function unset_current_state {
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
 }
+trap 'echo "git-secret: cleaning up: $TEST_GPG_OUTPUT_FILE"; rm -f "$TEST_GPG_OUTPUT_FILE";' EXIT
