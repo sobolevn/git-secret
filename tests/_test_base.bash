@@ -277,6 +277,10 @@ function unset_current_state {
   #find "$TEST_GPG_HOMEDIR" \
   #  -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
   #  -exec rm -rf {} +
+  rm -vrf "${TEST_GPG_HOMEDIR}/private-keys*"
+  rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx"
+  rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx~"
+  rm -vrf "${TEST_GPG_HOMEDIR}/*.gpg"
 
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
