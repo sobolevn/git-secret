@@ -5,7 +5,8 @@
 set -e
 
 #TEST_DIR="/tmp/tempdir with spaces"
-TEST_DIR="/tmp/tempdir"
+#TEST_DIR="/tmp/tempdir"
+TEST_DIR=$(mktemp -d -t 'git-secret-tempdir-XXX')
 
 rm -rf "${TEST_DIR}" 
 mkdir "${TEST_DIR}"
@@ -18,8 +19,8 @@ chmod 0700 "${TEST_DIR}"
     export SECRETS_EXTENSION=.secret2
     #export SECRETS_VERBOSE=''
 
-    #export TMPDIR="${TEST_DIR}"    # uncommenting this line seems to cause #451
-    #echo "# TMPDIR is $TMPDIR" 
+    export TMPDIR="${TEST_DIR}"    # uncommenting this line seems to cause #451
+    echo "# TMPDIR is $TMPDIR" 
 
     # bats expects diagnostic lines to be sent to fd 3, matching regex '^ #' (IE, like: `echo '# message here' >&3`)
     # bats ... 3>&1 shows diagnostic output when errors occur.
