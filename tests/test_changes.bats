@@ -167,4 +167,6 @@ function teardown {
 
   local num_lines=$(echo "$output" | wc -l)
   [[ "$num_lines" -eq 1 ]]
+
+  rm -f "$THIRD_FILE_TO_HIDE"
 }
