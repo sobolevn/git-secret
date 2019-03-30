@@ -6,7 +6,7 @@ set -e
 
 #TEST_DIR="/tmp/tempdir with spaces"
 #TEST_DIR="/tmp/tempdir"
-TEST_DIR=$(mktemp -d -t 'git-secret-tempdir-XXX')
+TEST_DIR=$(mktemp -d -u '/tmp/temp.XXX')
 
 rm -rf "${TEST_DIR}" 
 mkdir "${TEST_DIR}"
@@ -15,8 +15,8 @@ chmod 0700 "${TEST_DIR}"
     cd "${TEST_DIR}"
 
     # test with non-standard SECRETS_DIR (normally .gitsecret) and SECRETS_EXTENSION (normally .secret)
-    export SECRETS_DIR=.gitsecret-testdir
-    export SECRETS_EXTENSION=.secret2
+    export SECRETS_DIR=.gitsec
+    export SECRETS_EXTENSION=.sec
     #export SECRETS_VERBOSE=''
 
     export TMPDIR="${TEST_DIR}"    # uncommenting this line seems to cause #451
