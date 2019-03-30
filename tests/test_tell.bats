@@ -99,6 +99,11 @@ function teardown {
   [ "$status" -eq 1 ]
 }
 
+@test "run 'init' with bad arg" {
+  run git secret tell -Z -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
+  [ "$status" -ne 0 ]
+}
+
 
 @test "run 'tell' normally" {
   run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"

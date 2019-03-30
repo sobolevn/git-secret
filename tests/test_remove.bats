@@ -126,3 +126,10 @@ function _has_line {
   [ -f "$first_encrypted_file" ]
   [ ! -f "$second_encrypted_file" ]
 }
+
+@test "run 'remove' with bad arg" {
+  set_state_secret_hide
+  run git secret remove -Z "$SECOND_FILE"
+  [ "$status" -ne 0 ]
+}
+
