@@ -50,4 +50,10 @@ function teardown {
   run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" NO_SUCH_FILE
   [ "$status" -eq 2 ]
 }
+@test "run 'cat' with bad arg" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret cat -Z -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE" 
+  [ "$status" -ne 0 ]
+}
+
 

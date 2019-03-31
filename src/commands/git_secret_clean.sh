@@ -18,6 +18,10 @@ function clean {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
+  if [ $# -ne 0 ]; then 
+    _abort "clean does not understand params: $*"
+  fi
+
   _user_required
 
   # User should see properly formatted output:

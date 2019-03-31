@@ -53,6 +53,10 @@ function init {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
+  if [ $# -ne 0 ]; then 
+    _abort "init does not understand params: $*"
+  fi
+
   # Check if '.gitsecret/' already exists:
   local git_secret_dir
   git_secret_dir=$(_get_secrets_dir)

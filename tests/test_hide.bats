@@ -39,6 +39,16 @@ function teardown {
   [ -f "$encrypted_file" ]
 }
 
+@test "run 'hide' with extra filename" {
+  run git secret hide extra_filename
+  [ "$status" -ne 0 ]
+}
+
+@test "run 'hide' with bad arg" {
+  run git secret hide -Z
+  [ "$status" -ne 0 ]
+}
+
 @test "run 'hide' normally with SECRETS_VERBOSE=1" {
   SECRETS_VERBOSE=1 run git secret hide
 
