@@ -25,78 +25,80 @@ transport:
   max_ssh_sessions: 3
 
 platforms:
-  - name: alpine-latest
-    driver_config:
-      run_command: /sbin/init
-      dockerfile: .Dockerfiles/alpine/latest/Dockerfile
-      platform: alpine
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
-      run_options:
-        tmpfs:
-          - /run
-          - /run/lock
+  - name: freebsd-11-i386
+    # Latest 32-bit stable minor release of freebsd 10
+  #- name: alpine-latest
+  #  driver_config:
+  #    run_command: /sbin/init
+  #    dockerfile: .Dockerfiles/alpine/latest/Dockerfile
+  #    platform: alpine
+  #    volume:
+  #      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #      - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+  #    run_options:
+  #      tmpfs:
+  #        - /run
+  #        - /run/lock
+  #
+  #- name: debian-latest
+  #  driver_config:
+  #    run_command: /lib/systemd/systemd
+  #    dockerfile: .Dockerfiles/debian/latest/Dockerfile
+  #    platform: debian
+  #    cap_add:
+  #      - SYS_ADMIN
+  #    volume:
+  #      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #      - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+  #    run_options:
+  #      tmpfs:
+  #        - /run
+  #        - /run/lock
 
-  - name: debian-latest
-    driver_config:
-      run_command: /lib/systemd/systemd
-      dockerfile: .Dockerfiles/debian/latest/Dockerfile
-      platform: debian
-      cap_add:
-        - SYS_ADMIN
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
-      run_options:
-        tmpfs:
-          - /run
-          - /run/lock
-
-  - name: fedora-latest
-    driver_config:
-      run_command: /lib/systemd/systemd
-      dockerfile: .Dockerfiles/fedora/latest/Dockerfile
-      platform: fedora
-      cap_add:
-        - SYS_ADMIN
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
-      run_options:
-        tmpfs:
-          - /run
-          - /run/lock
-
-  - name: ubuntu-latest
-    driver_config:
-      run_command: /lib/systemd/systemd
-      dockerfile: .Dockerfiles/ubuntu/latest/Dockerfile
-      platform: ubuntu
-      cap_add:
-        - SYS_ADMIN
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
-      run_options:
-        tmpfs:
-          - /run
-          - /run/lock
-
-  - name: ubuntu-rolling
-    driver_config:
-      run_command: /lib/systemd/systemd
-      dockerfile: .Dockerfiles/ubuntu/rolling/Dockerfile
-      platform: ubuntu
-      cap_add:
-        - SYS_ADMIN
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
-      run_options:
-        tmpfs:
-          - /run
-          - /run/lock
+  # - name: fedora-latest
+  #  driver_config:
+  #    run_command: /lib/systemd/systemd
+  #    dockerfile: .Dockerfiles/fedora/latest/Dockerfile
+  #    platform: fedora
+  #    cap_add:
+  #      - SYS_ADMIN
+  #    volume:
+  #      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #      - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+  #    run_options:
+  #      tmpfs:
+  #        - /run
+  #        - /run/lock
+  #
+  #- name: ubuntu-latest
+  #  driver_config:
+  #    run_command: /lib/systemd/systemd
+  #    dockerfile: .Dockerfiles/ubuntu/latest/Dockerfile
+  #    platform: ubuntu
+  #    cap_add:
+  #      - SYS_ADMIN
+  #    volume:
+  #      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #      - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+  #    run_options:
+  #      tmpfs:
+  #        - /run
+  ##        - /run/lock
+  #
+  #- name: ubuntu-rolling
+  #  driver_config:
+  #    run_command: /lib/systemd/systemd
+  #    dockerfile: .Dockerfiles/ubuntu/rolling/Dockerfile
+  #    platform: ubuntu
+  #    cap_add:
+  #      - SYS_ADMIN
+  #    volume:
+  #      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #      - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+  #    run_options:
+  #      tmpfs:
+  #        - /run
+  #        - /run/lock
 
 verifier:
   name: serverspec
