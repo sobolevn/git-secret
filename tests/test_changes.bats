@@ -170,3 +170,9 @@ function teardown {
 
   rm -f "$THIRD_FILE_TO_HIDE"
 }
+
+@test "run 'changes' with bad arg" {
+  run git secret changes -Z
+  [ "$status" -ne 0 ]
+}
+

@@ -26,6 +26,7 @@
 - Fix typo, remove temp directory in utils/tests.sh (#347)
 - Spelling fixes
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
+- git-secret will fail if you pass params or filenames that are not understood (#390)
 - Use SECRETS_GPG_COMMAND env var in gpg version check (#389)
 - Add header to git-secret.7 man page, for debian and doc improvement (#386)
 - Respect DESTDIR when installing as per GNU/debian/etc recommendations (#424)

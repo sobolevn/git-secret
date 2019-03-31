@@ -36,6 +36,17 @@ function teardown {
 }
 
 
+@test "run 'init' with extra filename" {
+  run git secret init extra_filename
+  [ "$status" -ne 0 ]
+}
+
+@test "run 'init' with bad arg" {
+  run git secret init -Z
+  [ "$status" -ne 0 ]
+}
+
+
 @test "run 'init' in subfolder" {
   # This test covers this issue:
   # https://github.com/sobolevn/git-secret/issues/83
