@@ -32,6 +32,7 @@ fi
 # Windows
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
   choco install make shellcheck -y
+  # TODO: install sops from this url: https://github.com/mozilla/sops/releases/download/3.2.0/sops-3.2.0.exe
 fi
 
 # Linux:
