@@ -18,9 +18,9 @@ chmod 0700 "${TEST_DIR}"
     export SECRETS_EXTENSION=.secret2
     #export SECRETS_VERBOSE=''
 
-    #export TMPDIR="${TEST_DIR}"
-    #echo "# TMPDIR is $TMPDIR"
-    
+    #export TMPDIR="${TEST_DIR}"    # uncommenting this line seems to cause #451
+    #echo "# TMPDIR is $TMPDIR" 
+
     # bats expects diagnostic lines to be sent to fd 3, matching regex '^ #' (IE, like: `echo '# message here' >&3`)
     # bats ... 3>&1 shows diagnostic output when errors occur.
     bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1

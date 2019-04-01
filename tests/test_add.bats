@@ -40,6 +40,18 @@ function teardown {
 }
 
 
+@test "run 'add' with bad arg" {
+  local test_file="$TEST_DEFAULT_FILENAME"
+  touch "$test_file"
+  echo "content" > "$test_file"
+
+  run git secret add -Z "$test_file"
+  [ "$status" -ne 0 ]
+
+  rm "$test_file"
+}
+
+
 @test "run 'add' for file ignored by default" {
   local test_file="$TEST_DEFAULT_FILENAME"
   touch "$test_file"

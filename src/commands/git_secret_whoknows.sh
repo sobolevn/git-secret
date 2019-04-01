@@ -18,6 +18,10 @@ function whoknows {
   shift $((OPTIND-1))
   [ "$1" = "--" ] && shift
 
+  if [ $# -ne 0 ]; then 
+    _abort "whoknows does not understand params: $*"
+  fi
+
   # Validating, that we have a user:
   _user_required
 

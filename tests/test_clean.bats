@@ -48,6 +48,16 @@ function _secret_files_exists {
   [ "$exists" -ne 0 ]
 }
 
+@test "run 'clean' with extra filename" {
+  run git secret clean extra_filename
+  [ "$status" -ne 0 ]
+}
+
+@test "run 'clean' with bad arg" {
+  run git secret clean -Z
+  [ "$status" -ne 0 ]
+}
+
 
 @test "run 'clean' with '-v'" {
   run git secret clean -v
@@ -86,3 +96,8 @@ function _secret_files_exists {
   # Output must not be verbose:
   [[ "$output" != *"cleaning"* ]]
 }
+@test "run 'clean' with bad arg" {
+  run git secret clean -Z
+  [ "$status" -ne 0 ]
+}
+

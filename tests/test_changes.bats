@@ -168,3 +168,9 @@ function teardown {
   local num_lines=$(echo "$output" | wc -l)
   [[ "$num_lines" -eq 1 ]]
 }
+
+@test "run 'changes' with bad arg" {
+  run git secret changes -Z
+  [ "$status" -ne 0 ]
+}
+

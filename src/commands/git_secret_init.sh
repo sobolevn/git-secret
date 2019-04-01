@@ -56,6 +56,10 @@ function init {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
+  if [ $# -ne 0 ]; then 
+    _abort "init does not understand params: $*"
+  fi
+  
   # We set mode here so that it can be changed
   # with init command even if already initialized (see failure below)
   _set_mode "$mode"

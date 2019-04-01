@@ -26,6 +26,7 @@
 - Fix typo, remove temp directory in utils/tests.sh (#347)
 - Spelling fixes
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
+- git-secret will fail if you pass params or filenames that are not understood (#390)
 - Use SECRETS_GPG_COMMAND env var in gpg version check (#389)
 - Add header to git-secret.7 man page, for debian and doc improvement (#386)
 - Respect DESTDIR when installing as per GNU/debian/etc recommendations (#424)
@@ -39,7 +40,6 @@
 - Document SECRETS_VERBOSE and improve env var docs (#396)
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
 - Add text explaining git-secret Style Guide and Development Philosophy
-- Experimental SECRETS_TEST_VERBOSE env var shows debug info during tests (may be removed)
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
 - Improve git-secret user messaging.
 - Setting SECRETS_TEST_VERBOSE env var shows debug info during tests (EXPERIMENTAL)
