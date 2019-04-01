@@ -16,6 +16,13 @@ function __temp_file_freebsd {
   echo "$filename";
 }
 
+function __temp_dir_freebsd {
+  : "${TMPDIR:=/tmp}"
+  local filename
+  filename=$(mktemp _git_secret.XXX )   # this is not fully tested on freebsd
+  echo "$filename";
+}
+
 
 function __sha256_freebsd {
   # this is in a different location than MacOS
