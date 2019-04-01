@@ -933,7 +933,7 @@ function _decrypt_sops {
   local exit_code
   $SECRETS_SOPS_COMMAND "${args[@]}" "$encrypted_filename"
   exit_code=$?
-
+ 
   set -e  # re-enable set -e
 
   if [[ -n "$passphrase" ]]; then
@@ -1010,9 +1010,10 @@ function _encrypt_sops {
 
   config_file=$(_get_secrets_dir_sops_config)
 
-  # we need to provide a gpg wrapper to sops so that homedir is overridden
-  # see start of script (main.sh)
-  export SOPS_GPG_EXEC="$ALIAS_SOPS_GPG_WRAPPER"
+  # We need to set homedir for Sops
+  # This is not documented in Sops, but present here :
+  # https://github.com/mozilla/sops/blob/ae93caf2c6ef5e02cab12c69779d69889cf7ed4d/pgp/keysource.go#L254
+  export GNUPGHOME=$(_get_secrets_dir_keys)
 
   set +e   # disable 'set -e' so we can capture exit_code
 
@@ -1021,9 +1022,10 @@ function _encrypt_sops {
 			--output "$output_path" "$input_path"
 
   local exit_code="$?"
-  export SOPS_GPG_EXEC=""
+  unset SOPS_GPG_EXEC
 
   set -e  # re-enable set -e
+  unset GNUPGHOME
 
   if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
     # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.

@@ -78,22 +78,19 @@ function _init_script {
   fi
 }
 
-# gpg wrapper called when sops is used to encrypt
-# as we need to use a specific homedir
-function _gpg_sops_wrapper_encrypt {
-  local homedir
-  homedir=$(_get_secrets_dir_keys)
- 
-  ${SECRETS_GPG_COMMAND} --homedir "$homedir" --trust-model=always --no-permission-warning "$@"
-}
-
+# gpg wrapper to pass passphrase to sops
+# It is required to pass passphrase from git-secret command line
+# as this feature is not supported by sops
 function _gpg_sops_wrapper_decrypt {
   local args=()
 
   if [ -n "$SOPS_GPG_HOMEDIR" ]; then
+    # required to tell gpg where keys are
     args+=( "--homedir" "$SOPS_GPG_HOMEDIR" )
   fi
+
   if [[ "$GPG_VER_21" -eq 1 ]]; then
+    # required to pass passphrase through fd
     args+=( "--pinentry-mode" "loopback" )
   fi
 
@@ -101,7 +98,7 @@ function _gpg_sops_wrapper_decrypt {
     # sops passes data to encrypt on stdin so we need
     # a new file descriptor to pass passphrase
     exec 3<<<"$SOPS_GPG_PASSPHRASE"
-    ${SECRETS_GPG_COMMAND} --batch --passphrase-fd 3 "${args[@]}" "$@"
+    ${SECRETS_GPG_COMMAND} -d ${args[@]} --batch --passphrase-fd 3
     exec 3<&-
   else
     ${SECRETS_GPG_COMMAND} "${args[@]}" "$@"
@@ -111,9 +108,7 @@ function _gpg_sops_wrapper_decrypt {
 # git-secret can be used as git-secret or as a gpg command wrapper (sops mode)
 # XXX trying to guess whether gpg command wrapper is used based on gpg set by sops
 # See https://github.com/mozilla/sops/blob/master/pgp/keysource.go
-if echo "$@" | grep -e '--no-default-recipient' > /dev/null ; then
-  _gpg_sops_wrapper_encrypt "$@"
-elif echo "$@" | grep -e '--use-agent' > /dev/null ; then 
+if echo "$@" | grep -e '--use-agent' > /dev/null ; then 
   _gpg_sops_wrapper_decrypt "$@"
 else
   _init_script "$@"
