@@ -25,7 +25,7 @@ if [[ "$GITSECRET_DIST" == "brew" ]]; then
     ln -s /usr/local/bin/gpg1 /usr/local/bin/gpg
   fi
   brew install gawk shellcheck
-  wget -O /usr/local/bin/sops https://github.com/mozilla/sops/releases/download/3.2.0/sops-3.2.0.linux
+  wget -O /usr/local/bin/sops https://github.com/mozilla/sops/releases/download/3.2.0/sops-3.2.0.darwin
   chmod 750 /usr/local/bin/sops
 fi
 
