@@ -98,7 +98,7 @@ function _gpg_sops_wrapper_decrypt {
     # sops passes data to encrypt on stdin so we need
     # a new file descriptor to pass passphrase
     exec 3<<<"$SOPS_GPG_PASSPHRASE"
-    ${SECRETS_GPG_COMMAND} -d ${args[@]} --batch --passphrase-fd 3
+    ${SECRETS_GPG_COMMAND} -d "${args[@]}" --batch --passphrase-fd 3
     exec 3<&-
   else
     ${SECRETS_GPG_COMMAND} "${args[@]}" "$@"

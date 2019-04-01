@@ -1013,7 +1013,8 @@ function _encrypt_sops {
   # We need to set homedir for Sops
   # This is not documented in Sops, but present here :
   # https://github.com/mozilla/sops/blob/ae93caf2c6ef5e02cab12c69779d69889cf7ed4d/pgp/keysource.go#L254
-  export GNUPGHOME=$(_get_secrets_dir_keys)
+  GNUPGHOME="$(_get_secrets_dir_keys)"
+  export GNUPGHOME
 
   set +e   # disable 'set -e' so we can capture exit_code
 
