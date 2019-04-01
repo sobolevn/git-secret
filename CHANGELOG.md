@@ -34,15 +34,16 @@
 
 ## Misc
 
+- Document SECRETS_VERBOSE and improve env var docs (#396)
+- Setting SECRETS_TEST_VERBOSE env var shows debug info during tests (EXPERIMENTAL)
+- Suppress 'cleaning up temp files' messages unless in a verbose mode.
+- Improve git-secret user messaging.
+- Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
+- Add text explaining git-secret Style Guide and Development Philosophy
 - Use Shellcheck on tests/ files, changes for Shellcheck in tests/ (#368)
 - Use Shellcheck on MacOS/osx travis tests (#403)
 - Show commands run by Makefile as per debian upstream recommendations (#386)
-- Document SECRETS_VERBOSE and improve env var docs (#396)
-- Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
-- Add text explaining git-secret Style Guide and Development Philosophy
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
-- Improve git-secret user messaging.
-- Setting SECRETS_TEST_VERBOSE env var shows debug info during tests (EXPERIMENTAL)
 
 ## Version 0.2.5
 
