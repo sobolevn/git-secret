@@ -96,8 +96,4 @@ function _secret_files_exists {
   # Output must not be verbose:
   [[ "$output" != *"cleaning"* ]]
 }
-@test "run 'clean' with bad arg" {
-  run git secret clean -Z
-  [ "$status" -ne 0 ]
-}
 
