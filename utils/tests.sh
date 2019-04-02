@@ -4,7 +4,8 @@
 
 set -e
 
-TEST_DIR=$(mktemp -d -u '/tmp/temp.XXX')
+#TEST_DIR=$(mktemp -d -u '/tmp/temp.XXX')
+TEST_DIR=/tmp/git-secret-test
 echo "Created dir: ${TEST_DIR}"
 
 rm -rf "${TEST_DIR}" 
