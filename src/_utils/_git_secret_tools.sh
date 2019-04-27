@@ -628,7 +628,7 @@ function _get_users_in_gpg_keyring {
   # pluck out 'uid' lines, fetch 10th field, extract part in <> if it exists (else leave alone).
   # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
   # gensub at the end is to extract email from <>. (If there's no <>, then the line is just an email address anyway.)
-  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | awk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }')
+  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }')
 
   echo "$result"
 }
