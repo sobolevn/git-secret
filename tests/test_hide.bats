@@ -50,11 +50,12 @@ function teardown {
 }
 
 @test "run 'hide' normally with SECRETS_VERBOSE=1" {
-  SECRETS_VERBOSE=1 run git secret hide
+  SECRETS_VERBOSE=1 run git secret hide 
 
   # Command must execute normally. 
   [ "$status" -eq 0 ]
-  [[ "$output" == "git-secret: done. 1 of 1 files are hidden." ]]
+
+  echo "$output" | grep "git-secret: done. 1 of 1 files are hidden."
 }
 
 @test "run 'hide' with '-P'" {
@@ -166,6 +167,37 @@ function teardown {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
   run git secret hide -m
+
+  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+
+  # Command must execute normally:
+  [ "$status" -eq 0 ]
+  # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
+  [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
+
+  # back path mappings
+  cp "${path_mappings}" "${path_mappings}.bak"
+  # run hide again
+  run git secret hide -m
+  # compare
+  [ "$status" -eq 0 ]
+  [[ "${#lines[@]}" -eq 1 ]]
+  
+  # output says 0 of 1 files are hidden because checksum didn't change and we didn't need to hide it again.
+  [ "$output" = "git-secret: done. 0 of 1 files are hidden." ]
+  # no changes should occur to path_mappings files
+  cmp -s "${path_mappings}" "${path_mappings}.bak"
+
+  # New files should be created:
+  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  [ -f "$encrypted_file" ]
+}
+
+
+@test "run 'hide' without then with '-m'" {
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+  run git secret hide
 
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
