@@ -590,6 +590,7 @@ function _assert_keychain_contains_emails {
     for uid in $gpg_uids; do
         if [[ "$uid" == "$email" ]]; then
             email_ok=1
+            break
         fi
     done
     if [[ $email_ok -eq 0 ]]; then
