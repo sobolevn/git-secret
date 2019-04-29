@@ -107,7 +107,7 @@ This will copy the git-secret development hooks from utils/hooks into .git/hooks
    
 5. Add an entry to CHANGELOG.md, referring to the related issue # if appropriate
 
-6. Change the .ronn file(s) in man*/man to document your changes if appropriate
+6. Change the .ronn file(s) in man/man1 and man/man7 to document your changes if appropriate
 
 7. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`. 
    Write a good commit message which explains your work
@@ -145,6 +145,15 @@ Cloud CI is done with the help of `travis`. `travis` handles multiple environmen
 
 1. Install required gems with `bundle install`.
 2. Run ci-tests with `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`
+
+### Writing tests
+
+`git-secret` uses [bats-core](https://github.com/bats-core/bats-core) for testing.
+See the files in tests/ and the `bats-core` documentation for details.
+
+Because the output of many commands can be effected by the SECRETS_VERBOSE environment
+variable (which enables verbosity), it's best not to expect a particular numbers of lines of 
+output from commands.
 
 ### Release process
 
