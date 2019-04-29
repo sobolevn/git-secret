@@ -103,7 +103,7 @@ This will copy the git-secret development hooks from utils/hooks into .git/hooks
 3. When making changes to any files inside `src/`, for changes to take effect you will need to rebuild the `git-secret` script with `make clean && make build`
 
 4. Run [`shellcheck`][shellcheck] against all your changes with `make lint`. 
-   You should also your changes for spelling errors using 'aspell -c filename'.
+   You should also check your changes for spelling errors using 'aspell -c filename'.
    
 5. Add an entry to CHANGELOG.md, referring to the related issue # if appropriate
 
