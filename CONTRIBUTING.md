@@ -151,7 +151,7 @@ Cloud CI is done with the help of `travis`. `travis` handles multiple environmen
 `git-secret` uses [bats-core](https://github.com/bats-core/bats-core) for testing.
 See the files in tests/ and the `bats-core` documentation for details.
 
-Because the output of many commands can be effected by the SECRETS_VERBOSE environment
+Because the output of many commands can be affected by the SECRETS_VERBOSE environment
 variable (which enables verbosity), it's best not to expect a particular numbers of lines of 
 output from commands.
 
