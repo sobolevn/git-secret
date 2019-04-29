@@ -54,8 +54,7 @@ function teardown {
 
   # Command must execute normally. 
   [ "$status" -eq 0 ]
-
-  echo "$output" | grep "git-secret: done. 1 of 1 files are hidden."
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 }
 
 @test "run 'hide' with '-P'" {
@@ -173,7 +172,7 @@ function teardown {
   # Command must execute normally:
   [ "$status" -eq 0 ]
   # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
-  [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
+  [[ "${lines[0]}" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
@@ -184,7 +183,7 @@ function teardown {
   [[ "${#lines[@]}" -eq 1 ]]
   
   # output says 0 of 1 files are hidden because checksum didn't change and we didn't need to hide it again.
-  [ "$output" = "git-secret: done. 0 of 1 files are hidden." ]
+  [[ "$output" == *"git-secret: done. 0 of 1 files are hidden."* ]]
   # no changes should occur to path_mappings files
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
@@ -204,7 +203,7 @@ function teardown {
   # Command must execute normally:
   [ "$status" -eq 0 ]
   # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
-  [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
+  [[ "${lines[0]}" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
@@ -215,7 +214,7 @@ function teardown {
   [[ "${#lines[@]}" -eq 1 ]]
   
   # output says 0 of 1 files are hidden because checksum didn't change and we didn't need to hide it again.
-  [ "$output" = "git-secret: done. 0 of 1 files are hidden." ]
+  [[ "$output" == *"git-secret: done. 0 of 1 files are hidden."* ]]
   # no changes should occur to path_mappings files
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
