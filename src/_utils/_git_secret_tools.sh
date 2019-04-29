@@ -8,7 +8,6 @@ _SECRETS_DIR_KEYS="${_SECRETS_DIR}/keys"
 _SECRETS_DIR_PATHS="${_SECRETS_DIR}/paths"
 
 # Files:
-_SECRETS_DIR_KEYS_MAPPING="${_SECRETS_DIR_KEYS}/mapping.cfg"
 _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
@@ -392,11 +391,6 @@ function _get_secrets_dir_keys {
 
 function _get_secrets_dir_path {
   _append_root_path "${_SECRETS_DIR_PATHS}"
-}
-
-
-function _get_secrets_dir_keys_mapping {
-  _append_root_path "${_SECRETS_DIR_KEYS_MAPPING}"
 }
 
 
