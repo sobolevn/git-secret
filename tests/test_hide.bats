@@ -32,7 +32,7 @@ function teardown {
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: done. 1 of 1 files are hidden." ]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
@@ -68,7 +68,7 @@ function teardown {
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: done. 1 of 1 files are hidden." ]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
@@ -141,7 +141,7 @@ function teardown {
   run git secret hide
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: done. 2 of 2 files are hidden." ]
+  [[ "$output" == *"git-secret: done. 2 of 2 files are hidden."* ]]
 
   # Cleaning up:
   rm "$second_file"
@@ -295,5 +295,5 @@ function teardown {
 
   run git secret hide
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: done. 1 of 1 files are hidden." ]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 }
