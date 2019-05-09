@@ -65,7 +65,7 @@ function _get_file_hash {
   echo "$file_hash"
 }
 
-function _optional_fsdb_update_hash {
+function _fsdb_update_hash {
   local key="$1"
   local hash="$2"
   local fsdb          # path_mappings
@@ -80,7 +80,7 @@ function hide {
   local clean=0
   local preserve=0
   local delete=0
-  local fsdb_update_hash=0 # add checksum hashes to fsdb
+  local update_only_modified=0
   local force_continue=0
 
   OPTIND=1
@@ -95,7 +95,7 @@ function hide {
 
       d) delete=1;;
 
-      m) fsdb_update_hash=1;;
+      m) update_only_modified=1;;
 
       v) _SECRETS_VERBOSE=1;;
 
@@ -160,7 +160,7 @@ function hide {
       file_hash=$(_get_file_hash "$input_path")
   
       # encrypt file only if required
-      if [[ "$fsdb_file_hash" != "$file_hash" ]]; then
+      if [[ "$update_only_modified" -eq 0 ]] || [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
         local args=( --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes "--trust-model=always" --encrypt )
 
@@ -193,12 +193,10 @@ function hide {
           fi
         fi
   
-        # If -m option was provided, it will update unencrypted file hash
+        # Update file hash for future use of -m
         local key="$filename"
         local hash="$file_hash"
-        # Update file hash if required in fsdb
-        [[ "$fsdb_update_hash" -gt 0 ]] && \
-          _optional_fsdb_update_hash "$key" "$hash"
+        _fsdb_update_hash "$key" "$hash"
       fi
     fi
   done
