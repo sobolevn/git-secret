@@ -13,7 +13,7 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
-TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output.XXX')
+TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output')
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
@@ -285,4 +285,4 @@ function unset_current_state {
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
 }
-trap 'echo "git-secret: cleaning up: $TEST_GPG_OUTPUT_FILE"; rm -f "$TEST_GPG_OUTPUT_FILE";' EXIT
+trap 'if [[ -f "$TEST_GPG_OUTPUT_FILE" ]]; then echo "git-secret: test: cleaning up: $TEST_GPG_OUTPUT_FILE"; rm -f "$TEST_GPG_OUTPUT_FILE"; fi;' EXIT
