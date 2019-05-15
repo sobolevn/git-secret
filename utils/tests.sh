@@ -17,7 +17,6 @@ chmod 0700 "${TEST_DIR}"
     # test with non-standard SECRETS_DIR (normally .gitsecret) and SECRETS_EXTENSION (normally .secret)
     export SECRETS_DIR=.gitsec
     export SECRETS_EXTENSION=.sec
-    #export SECRETS_VERBOSE=''	# this will break some tests that examine output
 
     export TMPDIR="${TEST_DIR}"
     echo "# TMPDIR is $TMPDIR" 
