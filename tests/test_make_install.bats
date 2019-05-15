@@ -4,7 +4,7 @@
 
 INSTALL_BASE="${TMPDIR}/git-secret-test-install"
 
-@test "install git-secret to '$TMPDIR'" {
+@test "install git-secret to DESTDIR='$INSTALL_BASE'" {
 
   rm -f "${INSTALL_BASE}/usr/bin/git-secret"
 
