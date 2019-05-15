@@ -105,7 +105,7 @@ function _has_line {
   [ -f "$encrypted_file" ]
 
   # Cleaning up:
-  rm -r "$folder"
+  rm -rf "$folder"
 }
 
 

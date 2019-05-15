@@ -13,7 +13,7 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
-TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t '_git_secret_test_output_XXX')
+TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output.XXX')
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
@@ -103,7 +103,7 @@ function install_fixture_key {
 
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
   $GPGTEST --import "$public_key" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
-  rm -f "$public_key"
+  rm -f "$public_key" || _abort "Couldn't delete public key: $public_key"
 }
 
 
@@ -127,7 +127,7 @@ function install_fixture_full_key {
 
   install_fixture_key "$1"
 
-  rm -f "$private_key"
+  rm -f "$private_key" || _abort "Couldn't delete private key: $private_key"
   # return fingerprint to delete it later:
   echo "$fingerprint"
 }
@@ -273,11 +273,16 @@ function unset_current_state {
 
   rm "$TEST_GPG_OUTPUT_FILE"
 
-  # removes gpg homedir:
-  find "$TEST_GPG_HOMEDIR" \
-    -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
-    -exec rm -rf {} +
+  ## removes gpg homedir:
+  #find "$TEST_GPG_HOMEDIR" \
+  #  -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
+  #  -exec rm -rf {} +
+  rm -vrf "${TEST_GPG_HOMEDIR}/private-keys*" 2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx"         2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx~"        2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR}/*.gpg"         2>&1 | sed 's/^/# unset_current_state: rm /'
 
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
 }
+trap 'echo "git-secret: cleaning up: $TEST_GPG_OUTPUT_FILE"; rm -f "$TEST_GPG_OUTPUT_FILE";' EXIT

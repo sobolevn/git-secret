@@ -14,5 +14,7 @@ INSTALL_BASE="${TMPDIR}/git-secret-test-install"
   DESTDIR="${INSTALL_BASE}" run make install
 
   [ -x "${INSTALL_BASE}/usr/bin/git-secret" ]
+
+  rm -rf "${INSTALL_BASE}"
 }
 

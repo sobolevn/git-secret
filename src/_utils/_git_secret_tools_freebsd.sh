@@ -12,7 +12,13 @@ function __replace_in_file_freebsd {
 function __temp_file_freebsd {
   : "${TMPDIR:=/tmp}"
   local filename
-  filename=$(mktemp -t _git_secret_XXX )
+  # man mktemp on FreeBSD:
+  # ...
+  # If	the -t prefix option is	given, mktemp will generate a template string
+  #   based on the prefix and the TMPDIR	environment variable if	set.  The
+  #   default location if TMPDIR	is not set is /tmp. "
+
+  filename=$(mktemp -t _git_secret )
   echo "$filename";
 }
 
