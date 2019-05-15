@@ -13,7 +13,7 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
-TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output_XXXXXX')
+TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output.XXXXXX')
 echo "# TEST_GPG_OUTPUT_FILE=$TEST_GPG_OUTPUT_FILE" >&3
 
 # shellcheck disable=SC2016
