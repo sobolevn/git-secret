@@ -283,13 +283,14 @@ function unset_current_state {
 
   # new code to remove temporary gpg homedir artifacts. 
   # For #360, 'find and rm only relevant files when test fails'.
-  rm -vrf "${TEST_GPG_HOMEDIR}/private-keys*" 2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx"         2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx~"        2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR}/*.gpg"         2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR}/${TEST_DEFAULT_FILENAME}"  2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR}/${TEST_SECOND_FILENAME}"   2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR}/${TEST_THIRD_FILENAME}"    2>&1 | sed 's/^/# unset_current_state: rm /'
+  # ${VAR:?} will cause command to fail if VAR is 0 length, as per shellcheck SC2115
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/private-keys*" 2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/*.kbx"         2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/*.kbx~"        2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/*.gpg"         2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_DEFAULT_FILENAME}"  2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_SECOND_FILENAME}"   2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_THIRD_FILENAME}"    2>&1 | sed 's/^/# unset_current_state: rm /'
 
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
