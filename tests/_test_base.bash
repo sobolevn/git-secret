@@ -13,8 +13,10 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
+# TODO: factor out tempdir creation. On osx TEST_GPG_OUTPUT_FILE, still has 'XXXXXX's, like
+#   /var/folders/mm/_f0j67x10l92b4zznyx4ylzh00017w/T/gitsecret_output.XXXXXX.RaqyGYqL
 TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output.XXXXXX')
-echo "# TEST_GPG_OUTPUT_FILE=$TEST_GPG_OUTPUT_FILE" >&3
+#echo "# TEST_GPG_OUTPUT_FILE=$TEST_GPG_OUTPUT_FILE" >&3
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
@@ -274,16 +276,24 @@ function unset_current_state {
 
   rm "$TEST_GPG_OUTPUT_FILE"
 
-  ## removes gpg homedir:
+  ## old code to remove tmp gpg homedir: TODO: remove.
   #find "$TEST_GPG_HOMEDIR" \
   #  -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
   #  -exec rm -rf {} +
+
+  # new code to remove temporary gpg homedir artifacts. 
+  # For #360, 'find and rm only relevant files with test fails.
   rm -vrf "${TEST_GPG_HOMEDIR}/private-keys*" 2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx"         2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx~"        2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR}/*.gpg"         2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR}/${TEST_DEFAULT_FILENAME}"  2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR}/${TEST_SECOND_FILENAME}"   2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR}/${TEST_THIRD_FILENAME}"    2>&1 | sed 's/^/# unset_current_state: rm /'
 
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
 }
+
+# show output if we wind up manually removing the test output file in a trap
 trap 'if [[ -f "$TEST_GPG_OUTPUT_FILE" ]]; then echo "git-secret: test: cleaning up: $TEST_GPG_OUTPUT_FILE"; rm -f "$TEST_GPG_OUTPUT_FILE"; fi;' EXIT
