@@ -282,7 +282,7 @@ function unset_current_state {
   #  -exec rm -rf {} +
 
   # new code to remove temporary gpg homedir artifacts. 
-  # For #360, 'find and rm only relevant files with test fails.
+  # For #360, 'find and rm only relevant files when test fails'.
   rm -vrf "${TEST_GPG_HOMEDIR}/private-keys*" 2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx"         2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR}/*.kbx~"        2>&1 | sed 's/^/# unset_current_state: rm /'
