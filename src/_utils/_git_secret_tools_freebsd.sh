@@ -42,7 +42,7 @@ function __epoch_to_date_freebsd {
     #echo "# running: $cmd" >&3
     echo ''
   else
-    local cmd="date -I -r '$epoch'"
+    local cmd="date -I -r $epoch"
     #echo "# running: $cmd" >&3
     local datetime
     datetime=$($cmd)
