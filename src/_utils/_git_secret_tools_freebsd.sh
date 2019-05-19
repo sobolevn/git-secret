@@ -39,9 +39,11 @@ function __get_octal_perms_freebsd {
 function __epoch_to_date_freebsd {
   local epoch=$1;
   if [ -z "$epoch" ]; then
+    #echo "# running: $cmd" >&3
     echo ''
   else
-    local cmd="date +%F -r $epoch"
+    local cmd="date -I -r '$epoch'"
+    #echo "# running: $cmd" >&3
     local datetime
     datetime=$($cmd)
     echo "$datetime"
