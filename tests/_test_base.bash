@@ -297,4 +297,5 @@ function unset_current_state {
 }
 
 # show output if we wind up manually removing the test output file in a trap
-trap 'if [[ -f "$TEST_GPG_OUTPUT_FILE" ]]; then echo "git-secret: test: cleaning up: $TEST_GPG_OUTPUT_FILE"; rm -f "$TEST_GPG_OUTPUT_FILE"; fi;' EXIT
+trap 'if [[ -f "$TEST_GPG_OUTPUT_FILE" ]]; then if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then echo "git-secret: test: cleaning up: $TEST_GPG_OUTPUT_FILE"; fi; rm -f "$TEST_GPG_OUTPUT_FILE"; fi;' EXIT
+
