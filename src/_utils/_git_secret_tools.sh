@@ -575,6 +575,7 @@ function _get_user_key_expiry {
 
   local expiry_epoch
   expiry_epoch=$(echo "$line" | cut -d: -f7)
+  #echo "# got expiry_epoch: $expiry_epoch" >&3
   echo "$expiry_epoch"
 }
 
