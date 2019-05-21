@@ -10,7 +10,16 @@ function __replace_in_file_osx {
 function __temp_file_osx {
   : "${TMPDIR:=/tmp}"
   local filename
-  filename=$(mktemp -t _git_secret )    # makes a filename like '/var/folders/nz/vv4_91234569k3tkvyszvwg90009gn/T/_git_secret.HhvUPlUI'
+  # man mktemp on OSX: 
+  # ...
+  # "If the -t prefix option is given, mktemp will generate a template string
+  #   based on the prefix and the _CS_DARWIN_USER_TEMP_DIR configuration vari-
+  #   able if available.  Fallback locations if _CS_DARWIN_USER_TEMP_DIR is not
+  #   available are TMPDIR and /tmp."
+
+  filename=$(mktemp -t _git_secret )    
+  # On OSX this can make a filename like 
+  # '/var/folders/nz/vv4_91234569k3tkvyszvwg90009gn/T/_git_secret.HhvUPlUI'
   echo "$filename";
 }
 
