@@ -36,7 +36,7 @@ function __get_octal_perms_linux {
   local filename
   filename=$1
   local perms
-  perms=$(stat --format '%a' "$filename")
+  perms=$(stat --format '%a' "$filename" || stat -f '%a' "$filename")
   # a string like '0644'
   echo "$perms"
 }
