@@ -35,10 +35,22 @@ function __sha256_linux {
 function __get_octal_perms_linux {
   local filename
   filename=$1
-  local perms
-  # special case for busybox, which doesn't understand --format
-  perms=$(stat --format '%a' "$filename" || stat -f '%a' "$filename")
-  # a string like '0644'
+
+  # we assume stat is from busybox if it's a symlink
+  local stat_from_busybox=0
+  local stat_path
+  stat_path=$(command -v stat)
+  if [ -L "$stat_path" ]; then
+    stat_from_busybox=1
+  fi
+
+  local perms   # a string like '0644'
+  if [ $stat_from_busybox -eq 1 ]; then
+    # special case for busybox, which doesn't understand --format
+    perms=$(stat -f '%a' "$filename")
+  else
+    perms=$(stat --format '%a' "$filename")
+  fi
   echo "$perms"
 }
 
