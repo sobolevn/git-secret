@@ -76,7 +76,7 @@ function stop_gpg_agent {
   else
     local ps_is_busybox
     ps_is_busybox=exe_is_busybox $(command -v ps)
-    if [ $ps_is_busybox -eq "1" ]; then
+    if [[ $ps_is_busybox -eq "1" ]]; then
       echo "# git-secret: tests: not stoping gpg-agent on busybox" >&3
     else
       ps -wx -U "$username" | gawk \
