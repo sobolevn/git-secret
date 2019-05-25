@@ -37,6 +37,18 @@ platforms:
         tmpfs:
           - /run
           - /run/lock
+  - name: alpinebusybox-latest
+    driver_config:
+      run_command: /sbin/init
+      dockerfile: .Dockerfiles/alpinebusybox/latest/Dockerfile
+      platform: alpine
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - <%=ENV['PWD']%>:/opt/workspace # Make the working directory available inside the container
+      run_options:
+        tmpfs:
+          - /run
+          - /run/lock
 
   - name: debian-latest
     driver_config:
