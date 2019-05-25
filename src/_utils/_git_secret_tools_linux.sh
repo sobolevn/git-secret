@@ -36,6 +36,7 @@ function __get_octal_perms_linux {
   local filename
   filename=$1
   local perms
+  # special case for busybox, which doesn't understand --format
   perms=$(stat --format '%a' "$filename" || stat -f '%a' "$filename")
   # a string like '0644'
   echo "$perms"
