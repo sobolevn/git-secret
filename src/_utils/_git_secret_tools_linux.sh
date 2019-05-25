@@ -44,10 +44,10 @@ function __get_octal_perms_linux {
     stat_from_busybox=1
   fi
 
-  local perms   # a string like '0644'
+  local perms   # a string like '644'
   if [ $stat_from_busybox -eq 1 ]; then
     # special case for busybox, which doesn't understand --format
-    perms=$(stat -f '%a' "$filename")
+    perms=$(stat -c '%a' "$filename")	
   else
     perms=$(stat --format '%a' "$filename")
   fi
