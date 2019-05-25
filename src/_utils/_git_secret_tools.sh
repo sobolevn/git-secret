@@ -153,6 +153,21 @@ function _clean_windows_path {
   echo "$1" | sed 's#^\([a-zA-Z]\):/#/\1/#'
 }
 
+function _exe_is_busybox {
+  local exe
+  exe=$1
+
+  # we assume stat is from busybox if it's a symlink
+  local is_busybox=0
+  local stat_path
+  stat_path=$(command -v "$exe")
+  if [ -L "$stat_path" ]; then
+    is_busybox=1
+  fi
+  echo"$is_busybox"
+
+}
+
 function _set_config {
   # This function creates a line in the config, or alters it.
 

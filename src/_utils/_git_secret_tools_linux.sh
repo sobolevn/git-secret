@@ -36,14 +36,7 @@ function __get_octal_perms_linux {
   local filename
   filename=$1
 
-  # we assume stat is from busybox if it's a symlink
-  local stat_from_busybox=0
-  local stat_path
-  stat_path=$(command -v stat)
-  if [ -L "$stat_path" ]; then
-    stat_from_busybox=1
-  fi
-
+  local stat_is_busybox=_exe_is_busybox "stat"
   local perms   # a string like '644'
   if [ $stat_from_busybox -eq 1 ]; then
     # special case for busybox, which doesn't understand --format
