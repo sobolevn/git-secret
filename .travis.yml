@@ -21,7 +21,7 @@ matrix:
       #language: ruby
       #rvm: 2.6
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-alpine-latest"
+      env: KITCHEN_REGEXP="gnupg1-alpine-latest" SECRETS_TEST_VERBOSE=1
       services: docker
       sudo: required
       language: ruby
@@ -51,7 +51,7 @@ matrix:
       language: ruby
       rvm: 2.6
     - os: linux
-      env: KITCHEN_REGEXP="gnupg2-alpine-latest"
+      env: KITCHEN_REGEXP="gnupg2-alpine-latest" SECRETS_TEST_VERBOSE=1
       services: docker
       sudo: required
       language: ruby
