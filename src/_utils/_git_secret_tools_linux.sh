@@ -23,7 +23,7 @@ function __temp_file_linux {
   #         relative to a directory: $TMPDIR, if set; else the directory 
   #         specified via -p; else /tmp [deprecated]
 
-  filename=$(mktemp -p "${TMPDIR}" _git_secret.XXXXX ) 
+  filename=$(mktemp -p "${TMPDIR}" _git_secret.XXXXXX ) 
   # makes a filename like /$TMPDIR/_git_secret.ONIHo
   echo "$filename"
 }

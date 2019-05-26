@@ -20,6 +20,7 @@
 - Be more careful when deleting test files (#360)
 - Use separate directory when testing, instead of using $BATS_TMPDIR directly (#407)
 - Fix 'whoknows -l' and related tests on FreeBSD (#454)
+- Fix git-secret init when used on busybox (#475)
 - Update git-secret.io, fix utils/gh-branch.sh to use 'git all --add' (#344)
 - Fix link to homebrew's git-secret in README.md (#310)
 - Remove diagnostic output from test results (#324)
