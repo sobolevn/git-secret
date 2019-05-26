@@ -15,6 +15,7 @@
 
 ### Bugfixes
 
+- Fix git-secret init when used on busybox (#475)
 - Update git-secret.io, fix utils/gh-branch.sh to use 'git all --add' (#344)
 - Fix link to homebrew's git-secret in README.md (#310)
 - Remove diagnostic output from test results (#324)
