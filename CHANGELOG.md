@@ -15,15 +15,18 @@
 
 ### Bugfixes
 
+- Fix 'hide -m' when used as first hide operation (#466)
+- Fix code to respect $TMPDIR when generating tmp files (#451)
+- Be more careful when deleting test files (#360)
+- Use separate directory when testing, instead of using $BATS_TMPDIR directly (#407)
+- Fix 'whoknows -l' and related tests on FreeBSD (#454)
 - Fix git-secret init when used on busybox (#475)
 - Update git-secret.io, fix utils/gh-branch.sh to use 'git all --add' (#344)
 - Fix link to homebrew's git-secret in README.md (#310)
 - Remove diagnostic output from test results (#324)
 - Remove un-needed redirection in 'reveal' (#325)
-- Remove unused functions from _git_secret_tools.sh
 - Fix link to current contributors in CONTRIBUTING.md (#331)
 - Fix tests when running from git hooks (#334)
-- Use separate directory when testing, instead of using $BATS_TMPDIR directly (#407)
 - Fix typo, remove temp directory in utils/tests.sh (#347)
 - Spelling fixes
 - Fix re: SECRETS_DIR in 'init' and SECRETS_EXTENSION in test_reveal.bats (#364)
@@ -31,12 +34,14 @@
 - Use SECRETS_GPG_COMMAND env var in gpg version check (#389)
 - Add header to git-secret.7 man page, for debian and doc improvement (#386)
 - Respect DESTDIR when installing as per GNU/debian/etc recommendations (#424)
-- Use git check-ignore to test for files ignored by git.
+- Use git check-ignore to test for files ignored by git
 
 ## Misc
 
+- Improve docs about hide -m option (#467)
 - Document SECRETS_VERBOSE and improve env var docs (#396)
 - Setting SECRETS_TEST_VERBOSE env var shows debug info during tests (EXPERIMENTAL)
+- Add documentation about how to write tests.
 - Suppress 'cleaning up temp files' messages unless in a verbose mode.
 - Improve git-secret user messaging.
 - Update CHANGELOG.md to mention fix for #281 in v0.2.5 (#311)
@@ -45,6 +50,9 @@
 - Use Shellcheck on MacOS/osx travis tests (#403)
 - Show commands run by Makefile as per debian upstream recommendations (#386)
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
+- Use gawk to parse emails from gpg output
+- Optimize code that parses keychains
+- Remove unused code
 
 ## Version 0.2.5
 
