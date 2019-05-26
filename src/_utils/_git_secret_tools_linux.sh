@@ -36,9 +36,10 @@ function __get_octal_perms_linux {
   local filename
   filename=$1
 
-  local stat_is_busybox=_exe_is_busybox "stat"
+  local stat_is_busybox
+  stat_is_busybox=_exe_is_busybox "stat"
   local perms   # a string like '644'
-  if [ $stat_from_busybox -eq 1 ]; then
+  if [ "$stat_is_busybox" -eq 1 ]; then
     # special case for busybox, which doesn't understand --format
     perms=$(stat -c '%a' "$filename")	
   else
