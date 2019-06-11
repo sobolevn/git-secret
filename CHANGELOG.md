@@ -1,5 +1,11 @@
 # Changelog
 
+## {{Next Version}}
+
+### Bugfixes
+
+- Fix for when user sets PATH to favor gnu mktemp on MacOS/OSX (#485)
+
 ## Version 0.2.6
 
 ### Features

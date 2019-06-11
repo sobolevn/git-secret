@@ -17,7 +17,8 @@ function __temp_file_osx {
   #   able if available.  Fallback locations if _CS_DARWIN_USER_TEMP_DIR is not
   #   available are TMPDIR and /tmp."
 
-  filename=$(mktemp -t _git_secret )    
+  # we use /usr/bin/mktemp in case there's another mktemp available. See #485
+  filename=$(/usr/bin/mktemp -t _git_secret )    
   # On OSX this can make a filename like 
   # '/var/folders/nz/vv4_91234569k3tkvyszvwg90009gn/T/_git_secret.HhvUPlUI'
   echo "$filename";
