@@ -11,7 +11,7 @@ provisioner:
   ansible_verbose: false
   require_ansible_repo: false
   require_ansible_omnibus: true
-  ansible_version: 2.5.0
+  ansible_version: 2.8.1
   require_chef_for_busser: false
   sudo_command: sudo -E -H
   idempotency_test: false
