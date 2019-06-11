@@ -1,6 +1,12 @@
 # Changelog
 
+## {Next Version}
+
 ## Version 0.2.6
+
+### Bugfixes
+
+- Upgrade to ansible 2.8 to fix builds on Fedora 30
 
 ### Features
 
