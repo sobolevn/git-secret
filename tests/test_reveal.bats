@@ -197,7 +197,6 @@ function teardown {
 }
 
 @test "run 'reveal' with SECRETS_PINENTRY=error" {
-  echo "# reveal with SECRETS_PINENTRY=error: GPG_VER_MIN_21 is $GPG_VER_MIN_21" >&3
   if [[ "$GPG_VER_MIN_21" -ne 1 ]]; then
     skip "this test is skipped on gpg before version 2.1"
   fi
