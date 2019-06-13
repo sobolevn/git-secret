@@ -681,7 +681,9 @@ function _decrypt {
     args+=( "--homedir" "$homedir" )
   fi
 
-  if [[ "$GPG_VER_21" -eq 1 ]]; then
+  if [[ -n "$SECRETS_PINENTRY" ]]; then
+    args+=( "--pinentry-mode" "$SECRETS_PINENTRY" )
+  elif [[ "$GPG_VER_21" -eq 1 ]]; then
     args+=( "--pinentry-mode" "loopback" )
   fi
 
