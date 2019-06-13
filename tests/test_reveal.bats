@@ -186,3 +186,12 @@ function teardown {
   # Cleaning up:
   uninstall_fixture_full_key "$TEST_SECOND_USER" "$second_fingerprint"
 }
+
+@test "run 'reveal' with bad SECRETS_PINENTRY" {
+  cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
+  rm -f "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  SECRETS_PINENTRY=/no/such/file run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  [ "$status" -ne 0 ]
+}
