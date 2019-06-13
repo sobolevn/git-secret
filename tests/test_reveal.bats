@@ -187,12 +187,12 @@ function teardown {
   uninstall_fixture_full_key "$TEST_SECOND_USER" "$second_fingerprint"
 }
 
-@test "run 'reveal' with SECRETS_PINENTRY=localhost" {
+@test "run 'reveal' with SECRETS_PINENTRY=loopback" {
   cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  SECRETS_PINENTRY=localhost run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  SECRETS_PINENTRY=loopback run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -eq 0 ]
 }
 
