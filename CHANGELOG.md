@@ -4,7 +4,7 @@
 
 ### Bugfixes
 
-- Support SECRETS_PINENTRY env var to specify gnupg --pinentry paramater (#221)
+- Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
 
 ## Version 0.2.6
 
