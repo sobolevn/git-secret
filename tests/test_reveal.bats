@@ -188,7 +188,6 @@ function teardown {
 }
 
 @test "run 'reveal' with SECRETS_PINENTRY=loopback" {
-  cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
@@ -201,7 +200,6 @@ function teardown {
     skip "this test is skipped on gpg before version 2.1"
   fi
 
-  cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
