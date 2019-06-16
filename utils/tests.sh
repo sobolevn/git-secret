@@ -8,7 +8,7 @@ TEST_DIR=/tmp/git-secret-test
 
 rm -rf "${TEST_DIR}" 
 mkdir "${TEST_DIR}"
-echo "Created dir: ${TEST_DIR}"
+echo "# created dir: ${TEST_DIR}"
 
 chmod 0700 "${TEST_DIR}"
 (
