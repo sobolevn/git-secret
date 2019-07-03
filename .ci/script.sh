@@ -6,7 +6,9 @@ function run_kitchen_tests {
   ansible --version
   ruby --version
   python --version
+  python3 --version
   pip --version
+  pip3 --version
   bundler --version
   bundle show
   bundle exec kitchen test --test-base-path="$PWD/.ci/integration" $KITCHEN_REGEXP
