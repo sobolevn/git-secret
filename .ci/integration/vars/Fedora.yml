@@ -12,6 +12,7 @@ test_dependencies:
   - rubygems-devel
 
 build_tools:
+  - python3-dnf
   - ImageMagick
   - autoconf
   - automake
