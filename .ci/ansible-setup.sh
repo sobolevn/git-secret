@@ -9,7 +9,7 @@ echo "Setting up Ansible Version Manager"
 AVM_VERSION="v1.0.0"
 ## Install Ansible 2.8.X using pip and label it 'v2.8'
 export ANSIBLE_VERSIONS_0="2.8.1.0"
-export INSTALL_TYPE_0="pip3"
+export INSTALL_TYPE_0="pip"
 export ANSIBLE_LABEL_0="v2.8"
 # Whats the default version
 export ANSIBLE_DEFAULT_VERSION="v2.8"
