@@ -19,7 +19,6 @@ RUN dnf clean all \
 	redhat-rpm-config \
 	sudo \
 	systemd \
- && pip3 install --upgrade pip3 \
  && dnf clean all \
  && if ! getent passwd <%= @username %>; then \
       useradd -d /home/<%= @username %> -m -s /usr/bin/bash -p '*' <%= @username %>; \
