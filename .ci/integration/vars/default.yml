@@ -14,3 +14,4 @@ build_tools:
   - imagemagick
   - texinfo
   - transfig
+  - rsync

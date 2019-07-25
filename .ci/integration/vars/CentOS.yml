@@ -6,7 +6,6 @@ test_dependencies:
   - man
   - redhat-rpm-config
   - rpm-build
-  - rsync
   - ruby-devel
   - rubygems
   - rubygems-devel
@@ -17,3 +16,4 @@ build_tools:
   - automake
   - texinfo
   - transfig
+  - rsync
