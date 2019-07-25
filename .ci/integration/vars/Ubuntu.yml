@@ -6,6 +6,7 @@ test_dependencies:
   - man
   - ruby-dev
   - rubygems
+  - rsync
 
 build_tools:
   - autoconf
@@ -14,4 +15,3 @@ build_tools:
   - imagemagick
   - texinfo
   - transfig
-  - rsync
