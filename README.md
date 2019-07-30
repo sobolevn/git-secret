@@ -16,7 +16,7 @@ With `git-secret`, changes to access rights are simplified, and private-public k
 When someone's permission is revoked, secrets do not need to be changed with `git-secret` -
 just remove their key from the keychain using `git secret killperson their@email.com`, 
 re-encrypt the files, and they won't be able to decrypt secrets anymore.
-If you think the user might have copied the secrets or the contents of the keys when they had access, then
+If you think the user might have copied the secrets or keys when they had access, then
 you should also change the secrets.
 
 
