@@ -6,6 +6,7 @@ test_dependencies:
   - man
   - ruby-dev
   - rubygems
+  - rsync
 
 build_tools:
   - autoconf
