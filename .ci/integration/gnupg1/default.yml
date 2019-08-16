@@ -20,9 +20,9 @@
       when:
         - ansible_distribution == item.distribution
       with_items:
-        - name: gnupg
+        - name: gnupg1
           distribution: Alpine
-        - name: gnupg
+        - name: gnupg1
           distribution: Fedora
         - name: gnupg1
           distribution: Debian
