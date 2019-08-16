@@ -5,6 +5,7 @@
 ### Bugfixes
 
 - Fix for when user sets PATH to favor gnu mktemp on MacOS/OSX (#485)
+- Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
 
 ## Version 0.2.6
 

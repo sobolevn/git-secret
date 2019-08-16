@@ -186,3 +186,23 @@ function teardown {
   # Cleaning up:
   uninstall_fixture_full_key "$TEST_SECOND_USER" "$second_fingerprint"
 }
+
+@test "run 'reveal' with SECRETS_PINENTRY=loopback" {
+  rm -f "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  SECRETS_PINENTRY=loopback run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  [ "$status" -eq 0 ]
+}
+
+@test "run 'reveal' with SECRETS_PINENTRY=error" {
+  if [[ "$GPG_VER_MIN_21" -ne 1 ]]; then
+    skip "this test is skipped on gpg before version 2.1"
+  fi
+
+  rm -f "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  SECRETS_PINENTRY=error run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  [ "$status" -ne 0 ]
+}
