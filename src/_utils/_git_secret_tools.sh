@@ -95,7 +95,7 @@ AWK_GPG_VER_CHECK='
 '
 
 # This is 1 for gpg version 2.1 or greater, otherwise 0
-GPG_VER_21="$($SECRETS_GPG_COMMAND --version | gawk "$AWK_GPG_VER_CHECK")"
+GPG_VER_MIN_21="$($SECRETS_GPG_COMMAND --version | gawk "$AWK_GPG_VER_CHECK")"
 
 
 # Bash:
@@ -681,8 +681,12 @@ function _decrypt {
     args+=( "--homedir" "$homedir" )
   fi
 
-  if [[ "$GPG_VER_21" -eq 1 ]]; then
-    args+=( "--pinentry-mode" "loopback" )
+  if [[ "$GPG_VER_MIN_21" -eq 1 ]]; then
+    if [[ -n "$SECRETS_PINENTRY" ]]; then
+      args+=( "--pinentry-mode" "$SECRETS_PINENTRY" )
+    else
+      args+=( "--pinentry-mode" "loopback" )
+    fi
   fi
 
   if [[ -z "$_SECRETS_VERBOSE" ]]; then
