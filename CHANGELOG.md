@@ -1,5 +1,11 @@
 # Changelog
 
+## {{Next Version}}
+
+### Bugfixes
+
+- Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
+
 ## Version 0.2.6
 
 ### Features
