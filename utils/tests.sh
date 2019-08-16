@@ -8,7 +8,7 @@ TEST_DIR=/tmp/git-secret-test
 
 rm -rf "${TEST_DIR}" 
 mkdir "${TEST_DIR}"
-echo "Created dir: ${TEST_DIR}"
+echo "# created dir: ${TEST_DIR}"
 
 chmod 0700 "${TEST_DIR}"
 (
@@ -21,7 +21,7 @@ chmod 0700 "${TEST_DIR}"
     export TMPDIR="${TEST_DIR}"
     echo "# TMPDIR is $TMPDIR" 
 
-    # bats expects diagnostic lines to be sent to fd 3, matching regex '^ #' 
+    # bats expects diagnostic lines to be sent to fd 3, matching regex '^# ' 
     #  (IE, like: `echo '# message here' >&3`).
     # bats ... 3>&1 shows diagnostic output
     bats "${SECRET_PROJECT_ROOT}/tests/" 3>&1
