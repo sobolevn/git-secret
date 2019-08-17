@@ -4,8 +4,16 @@
 
 ### Bugfixes
 
-- Fix for when user sets PATH to favor gnu mktemp on MacOS/OSX (#485)
+- Use OSX's mktemp on OSX, even if there's another version in PATH. (#485)
 - Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
+- Make rsync a build requirement on debian (#500)
+- When tests specify gnupg1, use gnupg1, not gnupg2 (#241)
+- Ignore revoked gnupg keys (#508)
+
+## Misc
+
+- Add note about secrets and old keys (#499)
+- Improve code comments
 
 ## Version 0.2.6
 
