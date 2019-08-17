@@ -1,4 +1,4 @@
-FROM fedora:29
+FROM fedora:latest
 
 ENV container="docker"
 
