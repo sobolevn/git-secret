@@ -17,3 +17,6 @@ build_tools:
   - automake
   - texinfo
   - transfig
+
+ansible_python_interpreter: /usr/bin/python3
+
