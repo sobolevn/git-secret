@@ -20,6 +20,9 @@ RUN dnf clean all \
 	redhat-rpm-config \
 	sudo \
 	systemd \
+ && echo "-- removing python2 --" \
+ && dnf remove -y python2 \
+ && echo "-- removed python2 --" \
  && pip3 install --upgrade pip \
  && dnf clean all \
  && if ! getent passwd <%= @username %>; then \
