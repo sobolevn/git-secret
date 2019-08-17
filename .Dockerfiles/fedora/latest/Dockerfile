@@ -19,6 +19,7 @@ RUN dnf clean all \
 	redhat-rpm-config \
 	sudo \
 	systemd \
+ && dnf remove -y python2 \
  && pip3 install --upgrade pip3 \
  && dnf clean all \
  && if ! getent passwd <%= @username %>; then \
