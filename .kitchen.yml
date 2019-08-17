@@ -9,7 +9,7 @@ provisioner:
   # use an ansible playbook to provision our server
   name: ansible_playbook
   ansible_verbose: true
-  ansible_omnibus_url: https://raw.githubusercontent.com/joshrabinowitz/omnibus-ansible/pip3-support/ansible_install.sh
+  #ansible_omnibus_url: https://raw.githubusercontent.com/joshrabinowitz/omnibus-ansible/pip3-support/ansible_install.sh
   require_ansible_repo: false
   require_ansible_omnibus: true
   ansible_version: 2.8.4
