@@ -8,6 +8,7 @@
 - Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
 - Make rsync a build requirement on debian (#500)
 - When tests specify gnupg1, use gnupg1, not gnupg2 (#241)
+- Ignore revoked gnupg keys (#508)
 
 ## Misc
 
