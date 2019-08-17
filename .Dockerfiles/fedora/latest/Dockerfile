@@ -13,8 +13,8 @@ RUN dnf clean all \
 	net-tools \
 	openssh-server \
 	openssl-devel \
-	python2-devel \
-	python2-pip \
+	python3-devel \
+	python3-pip \
 	redhat-lsb \
 	redhat-rpm-config \
 	sudo \
