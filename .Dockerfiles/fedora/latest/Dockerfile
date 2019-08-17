@@ -4,7 +4,6 @@ ENV container="docker"
 
 RUN dnf clean all \
  && dnf makecache \
- && dnf remove -y python2 \
  && dnf install -y \
 	curl \
 	findutils \
@@ -16,10 +15,12 @@ RUN dnf clean all \
 	openssl-devel \
 	python3-devel \
 	python3-pip \
+	python3-dnf \
 	redhat-lsb \
 	redhat-rpm-config \
 	sudo \
 	systemd \
+ && dnf remove -y python2 \
  && pip3 install --upgrade pip \
  && dnf clean all \
  && if ! getent passwd <%= @username %>; then \
