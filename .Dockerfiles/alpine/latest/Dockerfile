@@ -17,7 +17,7 @@ RUN apk add --no-cache --update \
 	openssl-dev \
 	py-boto \
 	py2-pip \
-	python2-dev \
+	python3-dev \
 	rsyslog \
 	sudo \
 	xz \
