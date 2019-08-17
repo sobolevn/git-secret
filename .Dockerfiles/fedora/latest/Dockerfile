@@ -20,7 +20,7 @@ RUN dnf clean all \
 	sudo \
 	systemd \
  && dnf remove -y python2 \
- && pip3 install --upgrade pip3 \
+ && pip3 install --upgrade pip \
  && dnf clean all \
  && if ! getent passwd <%= @username %>; then \
       useradd -d /home/<%= @username %> -m -s /usr/bin/bash -p '*' <%= @username %>; \
