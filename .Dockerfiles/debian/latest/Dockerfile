@@ -11,8 +11,8 @@ RUN apt-get update \
 	lsb-release \
 	net-tools \
 	openssh-server \
-	python-pip \
-	python2.7 \
+	python3-pip \
+	python3 \
 	sudo \
 	systemd \
  && pip install --upgrade pip \
