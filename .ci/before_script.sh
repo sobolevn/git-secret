@@ -2,6 +2,8 @@
 
 set -e
 
+echo "Starting before_script.sh"
+
 # Linux helper functions:
 function update_linux() {
   sudo apt-get update -qq
@@ -16,8 +18,6 @@ function install_ansible {
   ~/.avm/v2.8/venv/bin/pip install netaddr ansible-lint   pyOpenSSL ndg-httpsclient pyasn1
 }
 
-
-echo "# starting before_script.sh"
 
 # Mac:
 if [[ "$GITSECRET_DIST" == "brew" ]]; then
@@ -42,4 +42,4 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
   install_ansible
 fi
 
-echo "# ending before_script.sh"
+echo "Ending before_script.sh"

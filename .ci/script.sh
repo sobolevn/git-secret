@@ -2,6 +2,8 @@
 
 set -e
 
+echo "Starting script.sh"
+
 function run_kitchen_tests {
   ansible --version
   ruby --version
@@ -13,8 +15,6 @@ function run_kitchen_tests {
   bundle show
   bundle exec kitchen test --test-base-path="$PWD/.ci/integration" $KITCHEN_REGEXP
 }
-
-echo "# starting script.sh"
 
 # Only running `make test` on standard (non-docker) builds,
 # since it is called inside the docker container anyway.
@@ -31,6 +31,6 @@ fi
 # Linux:
 if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
   run_kitchen_tests
-fi
+ss
 
-echo "# ending script.sh"
+echo "Ending script.sh"
