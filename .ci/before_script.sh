@@ -12,9 +12,12 @@ function install_ansible {
   bash .ci/ansible-setup.sh
   # pyOpen, ndg-* and pyasn1 are for 'InsecurePlatformWarning' error
   # pip3 does not exists here (!)
+  ~/.avm/v2.8/venv/bin/pip --version
   ~/.avm/v2.8/venv/bin/pip install netaddr ansible-lint   pyOpenSSL ndg-httpsclient pyasn1
 }
 
+
+echo "# starting before_script.sh"
 
 # Mac:
 if [[ "$GITSECRET_DIST" == "brew" ]]; then
@@ -38,3 +41,5 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
   update_linux
   install_ansible
 fi
+
+echo "# ending before_script.sh"
