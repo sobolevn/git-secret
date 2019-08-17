@@ -15,7 +15,7 @@ RUN apt-get update \
 	python3 \
 	sudo \
 	systemd \
- && pip install --upgrade pip \
+ && pip3 install --upgrade pip \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
  && if ! getent passwd <%= @username %>; then \
