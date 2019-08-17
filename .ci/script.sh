@@ -31,6 +31,6 @@ fi
 # Linux:
 if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
   run_kitchen_tests
-ss
+fi
 
 echo "Ending script.sh"
