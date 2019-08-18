@@ -15,7 +15,6 @@ RUN dnf clean all \
 	openssl-devel \
 	python3-devel \
 	python3-pip \
-	python3-dnf \
 	redhat-lsb \
 	redhat-rpm-config \
 	sudo \
