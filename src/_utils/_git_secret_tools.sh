@@ -622,9 +622,9 @@ function _get_users_in_gpg_keyring {
   fi
 
   # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
-  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid' that is not revoked (field 2 set to 'r') and selects field 10 "User-ID"
+  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID" 
   # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address anyway and the regex just passes it through.)
-  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | gawk -F: '$1~/uid/&&$2!="r"{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }')
+  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }')
 
   echo "$result"
 }
