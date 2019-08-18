@@ -5,9 +5,7 @@ set -e
 function run_kitchen_tests {
   ansible --version
   ruby --version
-  python --version
   python3 --version
-  pip --version
   pip3 --version
   bundler --version
   bundle show
