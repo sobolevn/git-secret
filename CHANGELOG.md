@@ -2,10 +2,13 @@
 
 ## {{Next Version}}
 
+### Features
+
+- Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
+
 ### Bugfixes
 
 - Use OSX's mktemp on OSX, even if there's another version in PATH. (#485)
-- Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
 - Make rsync a build requirement on debian (#500)
 - When tests specify gnupg1, use gnupg1, not gnupg2 (#241)
 - Ignore revoked gnupg keys (#508)
@@ -13,6 +16,9 @@
 ## Misc
 
 - Add note about secrets and old keys (#499)
+- Transition build process from python 2 to python 3 (#487)
+- Upgrade build process from ansible 2.5 to ansible 2.8
+- Fix in build process when installing gnupg2 source deps on Ubuntu
 - Improve code comments
 
 ## Version 0.2.6

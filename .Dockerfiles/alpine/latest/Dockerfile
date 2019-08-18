@@ -16,12 +16,12 @@ RUN apk add --no-cache --update \
 	openssh-sftp-server \
 	openssl-dev \
 	py-boto \
-	py2-pip \
-	python2-dev \
+	py-pip \
+	python3-dev \
 	rsyslog \
 	sudo \
 	xz \
- && pip install --upgrade pip \
+ && pip3 install --upgrade pip \
  && if ! getent passwd <%= @username %>; then \
       adduser -h /home/<%= @username %> -s /bin/bash -D <%= @username %>; \
       passwd -d <%= @username %>; \
