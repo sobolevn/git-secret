@@ -21,7 +21,7 @@
       set_fact:
         deb_src_check_result: "{{ deb_src_check.stdout | default(0) }}"
 
-    - name: Show /etc/apt/sources.list on Ubuntu
+    - name: Show /etc/apt/sources.list before alterations on Ubuntu
       command: cat /etc/apt/sources.list
       when:
         - ansible_distribution == "Ubuntu"
@@ -51,6 +51,11 @@
       when:
         - ansible_distribution == "Debian"
         - deb_src_check_result|int < 1
+
+    - name: Show /etc/apt/sources.list after alterations on Ubuntu
+      command: cat /etc/apt/sources.list
+      when:
+        - ansible_distribution == "Ubuntu"
 
     - name: Install gnupg build dependencies for Debian based distros
       apt:
