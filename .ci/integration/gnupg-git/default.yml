@@ -21,6 +21,11 @@
       set_fact:
         deb_src_check_result: "{{ deb_src_check.stdout | default(0) }}"
 
+    - name: Show /etc/apt/sources.list on Ubuntu
+      command: cat /etc/apt/sources.list
+      when:
+        - ansible_distribution == "Ubuntu"
+
     - name: Enable Ubuntu main & restricted source repo
       replace:
         path: '/etc/apt/sources.list'
