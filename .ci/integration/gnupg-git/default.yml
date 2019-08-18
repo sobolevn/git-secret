@@ -19,7 +19,7 @@
 
     - name: Set deb-src check results
       set_fact:
-        deb_src_check_result: "{{ deb_src_check.stdout | default(0) | int }}"
+        deb_src_check_result: "{{ deb_src_check.stdout | default(0) }}"
 
     - name: Enable Ubuntu main & restricted source repo
       replace:
@@ -28,7 +28,7 @@
         replace: '\2 # enabled'
       when:
         - ansible_distribution == "Ubuntu"
-        - deb_src_check_result >= 1
+        - deb_src_check_result|int < 1
 
     - name: Remove dpkg excludes on Ubuntu
       replace:
@@ -45,7 +45,7 @@
         replace: '\1\2\ndeb-src\2'
       when:
         - ansible_distribution == "Debian"
-        - deb_src_check_result >= 1
+        - deb_src_check_result|int < 1
 
     - name: Install gnupg build dependencies for Debian based distros
       apt:

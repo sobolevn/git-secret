@@ -5,13 +5,13 @@ set -e
 # Linux helper functions:
 function update_linux() {
   sudo apt-get update -qq
-  sudo apt-get install -qq python-apt python-pycurl git python-pip build-essential autoconf rpm
+  sudo apt-get install -qq python3-apt python3-pycurl git python3-pip build-essential autoconf rpm
 }
 
 function install_ansible {
   bash .ci/ansible-setup.sh
   # pyOpen, ndg-* and pyasn1 are for 'InsecurePlatformWarning' error
-  ~/.avm/v2.5/venv/bin/pip install netaddr ansible-lint   pyOpenSSL ndg-httpsclient pyasn1
+  ~/.avm/v2.8/venv/bin/pip install netaddr ansible-lint   pyOpenSSL ndg-httpsclient pyasn1
 }
 
 
