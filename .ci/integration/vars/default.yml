@@ -1,4 +1,5 @@
 ---
+ansible_python_interpreter: /usr/bin/python3
 test_dependencies:
   - gawk
   - make
@@ -14,5 +15,3 @@ build_tools:
   - imagemagick
   - texinfo
   - transfig
-
-ansible_python_interpreter: /usr/bin/python3

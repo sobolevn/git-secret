@@ -2,8 +2,6 @@
 
 set -e
 
-echo "Starting script.sh"
-
 function run_kitchen_tests {
   ansible --version
   ruby --version
@@ -32,5 +30,3 @@ fi
 if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
   run_kitchen_tests
 fi
-
-echo "Ending script.sh"

@@ -3,8 +3,6 @@
 
 set -e
 
-echo "Starting ansible-setup.sh"
-
 ## This is an example setup script that you would encapsulate the installation
 # What version of avm setup to use
 echo "Setting up Ansible Version Manager"
@@ -22,7 +20,5 @@ git clone https://github.com/ahelal/avm.git "${avm_dir}" > /dev/null 2>&1
 
 ## Run the setup
 /bin/sh ${avm_dir}/setup.sh
-
-echo "Ending ansible-setup.sh"
 
 exit 0
