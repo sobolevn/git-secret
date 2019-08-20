@@ -556,7 +556,7 @@ function _user_required {
     # this might catch corner case where gpg --list-keys shows 
     # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds? 
     # See #136
-    echo "$keys_exists"	# show whatever _did_ come out of gpg
+    echo "$keys_exist"	# show whatever _did_ come out of gpg
     _abort "problem listing public keys with gpg: exit code $exit_code"
   fi
 }
