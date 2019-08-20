@@ -11,7 +11,6 @@
 - Use OSX's mktemp on OSX, even if there's another version in PATH. (#485)
 - Make rsync a build requirement on debian (#500)
 - When tests specify gnupg1, use gnupg1, not gnupg2 (#241)
-- Ignore revoked gnupg keys (#508)
 
 ## Misc
 
@@ -19,6 +18,7 @@
 - Transition build process from python 2 to python 3 (#487)
 - Upgrade build process from ansible 2.5 to ansible 2.8
 - Fix in build process when installing gnupg2 source deps on Ubuntu
+- Small optimization in 'hide'
 - Improve code comments
 
 ## Version 0.2.6

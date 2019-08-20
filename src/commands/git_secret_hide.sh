@@ -132,6 +132,12 @@ function hide {
     to_hide+=("$record")  # add record to array
   done < "$path_mappings"
 
+  local recipients
+  recipients=$(_get_recipients)
+
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
+
   local counter=0
   for record in "${to_hide[@]}"; do
     local filename
@@ -140,12 +146,6 @@ function hide {
     filename=$(_get_record_filename "$record")
     fsdb_file_hash=$(_get_record_hash "$record")
     encrypted_filename=$(_get_encrypted_filename "$filename")
-
-    local recipients
-    recipients=$(_get_recipients)
-
-    local secrets_dir_keys
-    secrets_dir_keys=$(_get_secrets_dir_keys)
 
     local input_path
     local output_path
