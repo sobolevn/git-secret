@@ -109,7 +109,7 @@ function hide {
   [ "$1" = '--' ] && shift
 
   if [ $# -ne 0 ]; then 
-    _abort "clean does not understand params: $*"
+    _abort "hide does not understand params: $*"
   fi
 
   # We need user to continue:
@@ -171,21 +171,26 @@ function hide {
         set +e   # disable 'set -e' so we can capture exit_code
 
         local gpg_output
-        gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}")
+        gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}")  # we leave stderr alone
         local exit_code=$?
 
         set -e  # re-enable set -e
 
-        if [[ -n "$_SECRETS_VERBOSE" ]] || [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
-          echo "$gpg_output"
+        local error=0
+        if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
+          error=1 
         fi
 
-        if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
+        if [[ "$error" -ne 0 ]] || [[ -n "$_SECRETS_VERBOSE" ]]; then
+          if [[ -n "$gpg_output" ]]; then
+            echo "$gpg_output"
+          fi  
+        fi
+
+        if [[ ! -f "$output_path" ]]; then
           # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
           _warn_or_abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code" "$force_continue"
-        fi
-
-        if [[ -f "$output_path" ]]; then
+        else
           counter=$((counter+1))
           if [[ "$preserve" == 1 ]]; then
             local perms
