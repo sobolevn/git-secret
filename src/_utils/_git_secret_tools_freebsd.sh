@@ -10,7 +10,6 @@ function __replace_in_file_freebsd {
 
 
 function __temp_file_freebsd {
-  : "${TMPDIR:=/tmp}"
   local filename
   # man mktemp on FreeBSD:
   # ...

@@ -28,6 +28,8 @@ fi
 : "${SECRETS_OCTAL_PERMS_COMMAND:="_os_based __get_octal_perms"}"
 : "${SECRETS_EPOCH_TO_DATE:="_os_based __epoch_to_date"}"
 
+# Temp Dir
+: "${TMPDIR:=/tmp}"
 
 # AWK scripts:
 # shellcheck disable=2016
@@ -547,14 +549,15 @@ function _user_required {
   local keys_exist
   keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys)
   local exit_code=$?
+  if [[ -z "$keys_exist" ]]; then
+    _abort "$error_message"
+  fi
   if [[ "$exit_code" -ne 0 ]]; then
     # this might catch corner case where gpg --list-keys shows 
     # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds? 
     # See #136
+    echo "$keys_exists"	# show whatever _did_ come out of gpg
     _abort "problem listing public keys with gpg: exit code $exit_code"
-  fi
-  if [[ -z "$keys_exist" ]]; then
-    _abort "$error_message"
   fi
 }
 

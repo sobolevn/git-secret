@@ -8,7 +8,6 @@ function __replace_in_file_osx {
 
 
 function __temp_file_osx {
-  : "${TMPDIR:=/tmp}"
   local filename
   # man mktemp on OSX: 
   # ...
