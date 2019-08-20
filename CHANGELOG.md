@@ -11,7 +11,6 @@
 - Use OSX's mktemp on OSX, even if there's another version in PATH. (#485)
 - Make rsync a build requirement on debian (#500)
 - When tests specify gnupg1, use gnupg1, not gnupg2 (#241)
-- Ignore revoked gnupg keys (#508)
 
 ## Misc
 
