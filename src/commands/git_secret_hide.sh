@@ -170,20 +170,21 @@ function hide {
 
         set +e   # disable 'set -e' so we can capture exit_code
 
-        if [[ -n "$_SECRETS_VERBOSE" ]]; then
-          # on at least some platforms, this doesn't output anything unless there's a warning or error
-          $SECRETS_GPG_COMMAND "${args[@]}"
-        else 
-          $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1
-        fi
+	local gpg_output
+	gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}")
         local exit_code=$?
 
         set -e  # re-enable set -e
+
+        if [[ -n "$_SECRETS_VERBOSE" ]] || [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
+          echo "$gpg_output"
+        fi
 
         if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
           # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
           _warn_or_abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code" "$force_continue"
         fi
+
         if [[ -f "$output_path" ]]; then
           counter=$((counter+1))
           if [[ "$preserve" == 1 ]]; then
