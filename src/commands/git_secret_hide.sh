@@ -170,8 +170,8 @@ function hide {
 
         set +e   # disable 'set -e' so we can capture exit_code
 
-	local gpg_output
-	gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}")
+        local gpg_output
+        gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}")
         local exit_code=$?
 
         set -e  # re-enable set -e
