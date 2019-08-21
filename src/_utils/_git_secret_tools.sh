@@ -544,8 +544,9 @@ function _user_required {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
+  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
   local keys_exist
-  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys)
+  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
   local exit_code=$?
   if [[ "$exit_code" -ne 0 ]]; then
     # this might catch corner case where gpg --list-keys shows 
@@ -571,7 +572,8 @@ function _get_user_key_expiry {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
-  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub:)
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-)
 
   local expiry_epoch
   expiry_epoch=$(echo "$line" | cut -d: -f7)
@@ -624,7 +626,8 @@ function _get_users_in_gpg_keyring {
   # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
   # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID" 
   # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address anyway and the regex just passes it through.)
-  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }')
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' 3>&-)
 
   echo "$result"
 }

@@ -171,10 +171,11 @@ function hide {
         set +e   # disable 'set -e' so we can capture exit_code
 
         if [[ -n "$_SECRETS_VERBOSE" ]]; then
+      	  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
           # on at least some platforms, this doesn't output anything unless there's a warning or error
-          $SECRETS_GPG_COMMAND "${args[@]}"
+          $SECRETS_GPG_COMMAND "${args[@]}" 3>&-
         else 
-          $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1
+          $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1 3>&-
         fi
         local exit_code=$?
 
