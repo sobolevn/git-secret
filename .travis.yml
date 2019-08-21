@@ -14,44 +14,44 @@ matrix:
       language: shell
       #language: ruby
       #rvm: 2.6
-    - os: osx
-      env: GITSECRET_DIST="brew"
-      sudo: required
-      language: shell
-      #language: ruby
-      #rvm: 2.6
+    #- os: osx
+    #  env: GITSECRET_DIST="brew"
+    #  sudo: required
+    #  language: shell
+    #  #language: ruby
+    #  #rvm: 2.6
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-alpine-latest"
+      env: KITCHEN_REGEXP="gnupg1-alpine-latest" SECRETS_TEST_VERBOSE=1
       services: docker
       sudo: required
       language: ruby
       rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg1-debian-latest"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg1-fedora-latest"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg1-ubuntu-latest"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg1-ubuntu-rolling"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg2-alpine-latest"
+    # - os: linux
+    #  env: KITCHEN_REGEXP="gnupg1-debian-latest"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg1-fedora-latest"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg1-ubuntu-latest"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg1-ubuntu-rolling"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+      env: KITCHEN_REGEXP="gnupg2-alpine-latest" SECRETS_TEST_VERBOSE=1
       services: docker
       sudo: required
       language: ruby
@@ -70,36 +70,36 @@ matrix:
       sudo: required
       language: ruby
       rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg2-ubuntu-latest"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-ubuntu-latest"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg-git-ubuntu-rolling"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg2-ubuntu-latest"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg-git-ubuntu-latest"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg-git-ubuntu-rolling"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then gem update --system && gem install bundler; fi
