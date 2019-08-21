@@ -28,6 +28,8 @@ fi
 : "${SECRETS_OCTAL_PERMS_COMMAND:="_os_based __get_octal_perms"}"
 : "${SECRETS_EPOCH_TO_DATE:="_os_based __epoch_to_date"}"
 
+# Temp Dir
+: "${TMPDIR:=/tmp}"
 
 # AWK scripts:
 # shellcheck disable=2016
@@ -544,17 +546,19 @@ function _user_required {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
+  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
   local keys_exist
-  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys)
+  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
   local exit_code=$?
+  if [[ -z "$keys_exist" ]]; then
+    _abort "$error_message"
+  fi
   if [[ "$exit_code" -ne 0 ]]; then
     # this might catch corner case where gpg --list-keys shows 
     # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds? 
     # See #136
+    echo "$keys_exist"	# show whatever _did_ come out of gpg
     _abort "problem listing public keys with gpg: exit code $exit_code"
-  fi
-  if [[ -z "$keys_exist" ]]; then
-    _abort "$error_message"
   fi
 }
 
@@ -571,7 +575,8 @@ function _get_user_key_expiry {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
-  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub:)
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-)
 
   local expiry_epoch
   expiry_epoch=$(echo "$line" | cut -d: -f7)
@@ -624,7 +629,8 @@ function _get_users_in_gpg_keyring {
   # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
   # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID" 
   # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address anyway and the regex just passes it through.)
-  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }')
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' 3>&-)
 
   echo "$result"
 }

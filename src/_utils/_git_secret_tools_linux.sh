@@ -8,7 +8,6 @@ function __replace_in_file_linux {
 
 
 function __temp_file_linux {
-  : "${TMPDIR:=/tmp}"
   local filename
   # man mktemp on CentOS 7:
   # mktemp [OPTION]... [TEMPLATE]

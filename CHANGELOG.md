@@ -5,6 +5,7 @@
 ### Features
 
 - Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
+- If 'hide' fails, show output from gnupg (#516)
 
 ### Bugfixes
 
@@ -18,7 +19,8 @@
 - Add note about secrets and old keys (#499)
 - Transition build process from python 2 to python 3 (#487)
 - Upgrade build process from ansible 2.5 to ansible 2.8
-- Fix in build process when installing gnupg2 source deps on Ubuntu
+- Fix build process when installing gnupg2 source deps on Ubuntu
+- Close file descriptor 3 when running gnupg subprocesses (#521)
 - Small optimization in 'hide'
 - Improve code comments
 
