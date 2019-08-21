@@ -64,6 +64,7 @@ function build_package {
   # Only requires `rpm`, `apk` or `deb` as first argument:
   local build_type="$1"
 
+  # coreutils is for sha256sum
   # See https://github.com/jordansissel/fpm for docs:
   fpm \
     -s dir \
@@ -76,6 +77,9 @@ function build_package {
     --maintainer "Nikita Sobolev (mail@sobolevn.me)" \
     --license "MIT" \
     -C "$SCRIPT_DEST_DIR" \
+    -d "bash" \
+    -d "coreutils" \
+    -d "gawk" \
     -d "git" \
     -d "gnupg" \
     --deb-no-default-config-files \
