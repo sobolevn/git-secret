@@ -527,6 +527,22 @@ function _secrets_dir_is_not_ignored {
 }
 
 
+function _exe_is_busybox {
+  local exe
+  exe=$1
+
+  # we assume stat is from busybox if it's a symlink
+  local is_busybox=0
+  local stat_path
+  stat_path=$(command -v "$exe")
+  if [ -L "$stat_path" ]; then
+    is_busybox=1
+  fi
+  echo"$is_busybox"
+
+}
+
+
 function _user_required {
   # This function does a bunch of validations:
   # 1. It calls `_secrets_dir_exists` to verify that "$_SECRETS_DIR" exists.
