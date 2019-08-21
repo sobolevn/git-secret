@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-# don't install coreutils, so we get busybox versions of stat and mktemp. See #475 
+# don't install coreutils on Alpine, so we get busybox versions of ps, stat, and ls. See #475 
 RUN apk add --no-cache --update \
 	bash \
 	build-base \
