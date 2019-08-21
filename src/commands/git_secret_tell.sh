@@ -114,7 +114,7 @@ function tell {
     fi
   done
 
-  echo "done. ${emails[*]} added as someone who know(s) the secret."
+  _message "done. ${emails[*]} added as user(s) who know the secret."
 
   # force re-encrypting of files if required
   local fsdb

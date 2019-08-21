@@ -5,6 +5,7 @@
 ### Features
 
 - Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
+- If 'hide' fails, show output from gnupg (#516)
 
 ### Bugfixes
 
