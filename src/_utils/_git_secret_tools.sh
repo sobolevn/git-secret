@@ -538,7 +538,7 @@ function _exe_is_busybox {
   if [ -L "$stat_path" ]; then
     is_busybox=1
   fi
-  echo"$is_busybox"
+  echo "$is_busybox"
 
 }
 

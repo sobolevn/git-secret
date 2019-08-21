@@ -58,12 +58,6 @@ function teardown {
 }
 
 @test "run 'hide' with '-P'" {
-  ## skip this test when ls is from busybox because it won't show permissions
-  #local ls_is_busybox=_exe_is_busybox "ls"
-  #if [[ "$ls_is_busybox" -eq 1 ]]; then
-  #  skip "this test is skipped because 'ls' is from busybox"
-  #fi
-
   # attempt to alter permissions on input file
   chmod o-rwx "$FILE_TO_HIDE"
 
@@ -79,15 +73,12 @@ function teardown {
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
 
-  ## permissions should match. We don't have access to SECRETS_OCTAL_PERMS_COMMAND here
+  ## permissions should match.  We skip below test for now because ls -l doesn't return permissions on busybox
   #local secret_perm
   #local file_perm   
   #secret_perm=$(ls -l "$encrypted_file" | cut -d' ' -f1)    
   #file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
-
-  # text prefixed with '# ' and sent to file descriptor 3 is 'diagnostic' (debug) output for devs
-  #echo "# '$BATS_TEST_DESCRIPTION': $secret_perm, file_perm: $file_perm" >&3
-
+  ##echo "# '$BATS_TEST_DESCRIPTION': $secret_perm, file_perm: $file_perm" >&3
   #[ "$secret_perm" = "$file_perm" ]
 
 }
