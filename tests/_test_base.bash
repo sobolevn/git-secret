@@ -7,6 +7,9 @@
 source "$SECRET_PROJECT_ROOT/src/version.sh"
 # shellcheck disable=SC1090
 source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
+source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_freebsd.sh"
+source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_linux.sh"
+source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_osx.sh"
 
 # Constants:
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
