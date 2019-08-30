@@ -539,7 +539,6 @@ function _exe_is_busybox {
     is_busybox=1
   fi
   echo "$is_busybox"
-
 }
 
 
