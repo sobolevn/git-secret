@@ -85,7 +85,7 @@ function teardown {
 
   [ "$status" -eq 0 ]
 
-  ## permissions should match.  We skip below test for now because ls -l doesn't return permissions on busybox
+  ## permissions should match.
   local secret_perm
   local file_perm
   file_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$FILE_TO_HIDE")

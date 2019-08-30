@@ -73,14 +73,13 @@ function teardown {
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
 
-  ## permissions should match.  We skip below test for now because ls -l doesn't return permissions on busybox
+  ## permissions should match.
   local secret_perm
   local file_perm   
   file_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$FILE_TO_HIDE")
   secret_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$encrypted_file")
   #echo "# '$BATS_TEST_DESCRIPTION': $secret_perm, file_perm: $file_perm" >&3
   [ "$secret_perm" = "$file_perm" ]
-
 }
 
 @test "run 'hide' from inside subdirectory" {
