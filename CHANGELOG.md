@@ -5,14 +5,15 @@
 ### Features
 
 - Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
-- If 'hide' fails, show output from gnupg (#516)
+- Show output from gnupg if 'hide' fails (#516)
+- Add support for Busybox (#478)
 
 ### Bugfixes
 
 - Use OSX's mktemp on OSX, even if there's another version in PATH. (#485)
 - Make rsync a build requirement on debian (#500)
-- When tests specify gnupg1, use gnupg1, not gnupg2 (#241)
-- Add dependencies gawk, bash, and coreutils to linux packages (#493)
+- Use gnupg1, not gnupg2, when tests specify gnupg1 (#241) 
+- Note dependencies gawk, bash, and coreutils in linux packages (#493)
 
 ## Misc
 
