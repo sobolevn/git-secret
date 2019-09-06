@@ -159,6 +159,27 @@ function teardown {
 }
 
 
+@test "run 'tell' with key without email and with comment" {
+  # Preparations:
+  install_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
+
+  # Testing the command itself:
+  run git secret tell -d "$TEST_GPG_HOMEDIR" \
+    "$TEST_NOEMAIL_COMMENT_USER"
+
+  [ "$status" -eq 0 ]
+
+  # Testing that these users are presented in the
+  # list of people who knows secret:
+  run git secret whoknows
+
+  [[ "$output" == *"$TEST_NOEMAIL_COMMENT_USER"* ]]
+
+  # Cleaning up:
+  uninstall_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
+}
+
+
 @test "run 'tell' in subfolder" {
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
     skip "this test is skipped while 'git commit'. See #334"

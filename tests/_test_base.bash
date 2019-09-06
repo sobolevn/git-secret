@@ -51,6 +51,8 @@ export TEST_NONAME_USER="user3@gitsecret.io"
 # TEST_EXPIRED_USER (user4) has expired
 export TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
 
+export TEST_NOEMAIL_COMMENT_USER="user5@gitsecret.io"    # not user5@gitsecret.io. user has no email and a comment, as per #527
+
 export TEST_ATTACKER_USER="attacker1@gitsecret.io"
 
 
