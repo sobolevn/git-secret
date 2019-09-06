@@ -24,5 +24,6 @@
     `gpg --export-secret-keys --armor user4 > tests/fixtures/gpg/user4/private.key`
 
 * user5 was created for issue #527 using `gpg --full-generate-key`.
-  with name 'user5', no email address, and the comment 'comment comment', and 
+  with name 'user5', no email address, the comment 'comment comment', and 
   the passphrase 'user5pass'.  Keys were exported as above.
+  
