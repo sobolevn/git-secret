@@ -466,14 +466,11 @@ function _find_and_clean_formatted {
   # required:
   local pattern="$1" # can be any string pattern
 
-  if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    echo && _message "cleaning:"
-  fi
+  local outputs
+  outputs=$(_find_and_clean "$pattern" 2>&1)
 
-  _find_and_clean "$pattern"
-
-  if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    echo
+  if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
+      echo "$outputs" | sed "s/^/git-secret: cleaning: /" 
   fi
 }
 
