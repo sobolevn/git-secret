@@ -607,6 +607,9 @@ function _assert_keychain_contains_emails {
   local gpg_uids
   gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
   for email in "${emails[@]}"; do
+    if [[ $email != *"@"* ]]; then
+        _abort "does not appear to be an email: $email"
+    fi
     local email_ok=0
     for uid in $gpg_uids; do
         if [[ "$uid" == "$email" ]]; then
