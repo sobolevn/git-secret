@@ -160,23 +160,24 @@ function teardown {
 
 
 @test "run 'tell' with key without email and with comment" {
-  # Preparations:
+  # You can't install a key without an email using an email; try anyway
   install_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
 
   # Testing the command itself:
   run git secret tell -d "$TEST_GPG_HOMEDIR" \
     "$TEST_NOEMAIL_COMMENT_USER"
 
-  [ "$status" -eq 0 ]
+  # this should not succeed because we only support addressing users by email
+  [ "$status" -ne 0 ]
 
   # Testing that these users are presented in the
   # list of people who knows secret:
   run git secret whoknows
 
-  [[ "$output" == *"$TEST_NOEMAIL_COMMENT_USER"* ]]
+  [[ "$output" != *"$TEST_NOEMAIL_COMMENT_USER"* ]]
 
-  # Cleaning up:
-  uninstall_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
+  # Cleaning up: We don't have to uninstall the fixture because it never installs
+  #uninstall_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
 }
 
 
