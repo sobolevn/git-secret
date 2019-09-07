@@ -39,9 +39,10 @@ BEGIN { OFS=":"; FS=":"; }
 # This command is used with absolute homedir set and disabled warnings:
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
 
-# Personal data:
+# Test key fixture data. Fixtures are at tests/fixtures/gpg/$email
 
-# these two are 'normal' keys
+# See tests/fixtures/gpg/README.md for more on key fixtures 'user[1-5]@gitsecret.io'
+# these two are 'normal' keys. 
 export TEST_DEFAULT_USER="user1@gitsecret.io"
 export TEST_SECOND_USER="user2@gitsecret.io"
 
@@ -50,6 +51,8 @@ export TEST_NONAME_USER="user3@gitsecret.io"
 
 # TEST_EXPIRED_USER (user4) has expired
 export TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
+
+export TEST_NOEMAIL_COMMENT_USER="user5@gitsecret.io"    # fixture filename is named this, but key has no email and a comment, as per #527
 
 export TEST_ATTACKER_USER="attacker1@gitsecret.io"
 
