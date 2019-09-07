@@ -470,6 +470,7 @@ function _find_and_clean_formatted {
   outputs=$(_find_and_clean "$pattern" 2>&1)
 
   if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
+      # shellcheck disable=SC2001
       echo "$outputs" | sed "s/^/git-secret: cleaning: /" 
   fi
 }
