@@ -159,6 +159,48 @@ function teardown {
 }
 
 
+@test "run 'tell' with key without email and with comment" {
+  # install works because it works on filename, not contents of keychain
+  install_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
+
+  # Testing the command itself fails because you have to use an email address
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_NOEMAIL_COMMENT_USER"
+
+  # this should not succeed because we only support addressing users by email
+  [ "$status" -ne 0 ]
+
+  # Testing that these users are presented in the
+  # list of people who knows secret:
+  run git secret whoknows
+
+  [[ "$output" != *"$TEST_NOEMAIL_COMMENT_USER"* ]]
+
+  # Cleaning up: can't clean up by email 
+  #uninstall_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
+}
+
+@test "run 'tell' on non-email" {
+  install_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
+
+  local name=$(echo "$TEST_NOEMAIL_COMMENT_USER" | sed -e 's/@.*//')
+  #echo "$name" | sed "s/^/# '$BATS_TEST_DESCRIPTION' name is: /" >&3
+
+  # Testing the command itself, should fail because you must use email
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$name"
+
+  # this should not succeed because we only support addressing users by email
+  [ "$status" -ne 0 ]
+
+  # Testing that these users are presented in the
+  # list of people who knows secret:
+  run git secret whoknows
+
+  [[ "$output" != *"$name"* ]]
+
+  # Cleaning up: can't clean up by email because key doesn't hold it
+  #uninstall_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
+}
+
 @test "run 'tell' in subfolder" {
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
     skip "this test is skipped while 'git commit'. See #334"
