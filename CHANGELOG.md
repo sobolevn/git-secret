@@ -14,9 +14,12 @@
 - Make rsync a build requirement on debian (#500)
 - Use gnupg1, not gnupg2, when tests specify gnupg1 (#241) 
 - Note dependencies gawk, bash, and coreutils in linux packages (#493)
+- Handle case of key having no email and a comment (#527)
+- Avoid blank lines from output of 'clean -v'
 
 ## Misc
 
+- Improve messaging and logic around deleting tmp files.
 - Add note about secrets and old keys (#499)
 - Transition build process from python 2 to python 3 (#487)
 - Upgrade build process from ansible 2.5 to ansible 2.8
