@@ -5,9 +5,6 @@ load _test_base
 FIRST_FILE="$TEST_DEFAULT_FILENAME"
 SECOND_FILE="$TEST_SECOND_FILENAME"
 
-FOLDER="somedir"
-FILE_IN_FOLDER="${FOLDER}/file_to_hide3"
-
 
 function setup {
   install_fixture_key "$TEST_DEFAULT_USER"
@@ -25,7 +22,6 @@ function setup {
 function teardown {
   # This also needs to be cleaned:
   rm "$FIRST_FILE" "$SECOND_FILE"
-  rm -r "$FOLDER"
 
   uninstall_fixture_key "$TEST_DEFAULT_USER"
   unset_current_state
