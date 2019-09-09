@@ -5,6 +5,7 @@
 ### Features
 
 - Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
+- Support SECRETS_TELL_GPG_OPTIONS for gnupg key discovery options (#509)
 - Show output from gnupg if 'hide' fails (#516)
 - Add support for Busybox (#478)
 

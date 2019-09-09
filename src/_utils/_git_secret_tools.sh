@@ -21,6 +21,7 @@ if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
+: "${SECRETS_TELL_GPG_OPTIONS:-}"   # options for gpg key exports under 'git secret tell'. See #509
 
 # Commands:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
