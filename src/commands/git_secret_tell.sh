@@ -84,7 +84,7 @@ function tell {
     if [[ -n "$SECRETS_TELL_GPG_OPTIONS" ]]; then
       args+=( "$SECRETS_TELL_GPG_OPTIONS" )
     fi
-    echo "# gpg args: ${args[@]}" >&3
+    echo "# gpg args:" "${args[@]}" >&3
 
     local exit_code
     $SECRETS_GPG_COMMAND "${args[@]}" --export -a "$email" > "$keyfile" 3>&-
