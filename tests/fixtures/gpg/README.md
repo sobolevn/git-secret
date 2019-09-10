@@ -27,3 +27,12 @@
   with name 'user5', no email address, the comment 'comment comment', and 
   the passphrase 'user5pass'.  Keys were exported as above.
   
+* user6 was created for issue #509 using `gpg --full-generate-key'
+  with the name 'user6', the email address 'user6@gitsecret.io',
+  and the passphrase 'user6pass'. It was also uploaded to keys.opengpg.org
+  as per `https://keys.openpgp.org/about/usage`. Since the key was not verified
+  (by confirming an email sent to user6@gitsecret.io), it can only be found on
+  keys.opengpg.org using its fingerprint 'FA536BC8867421437DF58F347E99A53E6A74F0FC'.
+  Keys were also exported to tests/fixtures/gpg as above.
+  See the tests using `SECRETS_TELL_GPG_OPTIONS` env var in <tests/test_tell.bats>
+  for an example of fetching keys from keys.openpgp.org
