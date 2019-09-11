@@ -31,8 +31,9 @@
   with the name 'user6', the email address 'user6@gitsecret.io',
   and the passphrase 'user6pass'. It was also uploaded to keys.opengpg.org
   as per `https://keys.openpgp.org/about/usage`. Since the key was not verified
-  (by confirming an email sent to user6@gitsecret.io), it can only be found on
+  (by confirming an email sent to user6@gitsecret.io), it can only be found at
   keys.opengpg.org using its fingerprint 'FA536BC8867421437DF58F347E99A53E6A74F0FC'.
+  For example using <https://keys.openpgp.org/vms/v1/by-fingerprint/FA536BC8867421437DF58F347E99A53E6A74F0FC>
   Keys were also exported to tests/fixtures/gpg as above.
   See the tests using `SECRETS_TELL_GPG_OPTIONS` env var in <tests/test_tell.bats>
   for an example of fetching keys from keys.openpgp.org
