@@ -143,6 +143,8 @@
 
 ### Misc
 
+- Backward Compatibilty: git-secret now stores checksums of hidden files mapping.cfg, so `.gitsecret/paths/mapping.cfg` 
+  files generated or updated by git-secret after and including 0.2.3 will not be understood by older versions of git-secret.
 - Now users can run local CI tests using test-kitchen (#6)
 - Migrated travis ci tests to test-kitchen for Linux platforms.
 - Added more `gpg` version to test matrix (#99)
