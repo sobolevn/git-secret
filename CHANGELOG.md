@@ -133,7 +133,8 @@
 ### Features
 
 - Added `-m` option to `hide` command, files will only be hidden when modifications are detected (#92)
-- Changed how path mappings file works: colon delimited FSDB (#92)
+- Changed how path mappings file works: colon delimited FSDB in `.gitsecret/paths/mapping.cfg', so git-secret
+  can store checksums of hidden files. Note that that breaks backward compatibility with pre-0.2.3 versions.  (#92) 
 - `git secret init` now adds `random_seed` to `.gitignore` (#93)
 
 ### Bugfixes
@@ -143,8 +144,6 @@
 
 ### Misc
 
-- Backward Compatibilty: git-secret now stores checksums of hidden files mapping.cfg, so `.gitsecret/paths/mapping.cfg` 
-  files generated or updated by git-secret after and including 0.2.3 will not be understood by older versions of git-secret.
 - Now users can run local CI tests using test-kitchen (#6)
 - Migrated travis ci tests to test-kitchen for Linux platforms.
 - Added more `gpg` version to test matrix (#99)
