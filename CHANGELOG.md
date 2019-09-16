@@ -134,7 +134,7 @@
 
 - Added `-m` option to `hide` command, files will only be hidden when modifications are detected (#92)
 - Changed how path mappings file works: colon delimited FSDB in `.gitsecret/paths/mapping.cfg', so git-secret
-  can store checksums of hidden files. Note that that breaks backward compatibility with pre-0.2.3 versions.  (#92) 
+  can store checksums of hidden files. Note this breaks backward compatibility with pre-0.2.3 versions.  (#92) 
 - `git secret init` now adds `random_seed` to `.gitignore` (#93)
 
 ### Bugfixes
