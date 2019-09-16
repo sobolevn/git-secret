@@ -27,6 +27,8 @@
 - Close file descriptor 3 when running gnupg subprocesses (#521)
 - Small optimization in 'hide'
 - Improve code comments
+- Update docs to note that git-secret repos modified by git-secret 0.2.3 or 
+  later are not backward compatible with pre-0.2.3 versions of git-secret.
 
 ## Version 0.2.6
 
