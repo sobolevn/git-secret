@@ -28,6 +28,8 @@
 - Close file descriptor 3 when running gnupg subprocesses (#521)
 - Small optimization in 'hide'
 - Improve code comments
+- Update docs to note that git-secret repos modified by git-secret 0.2.3 and
+  later are not backward compatible with pre-0.2.3 versions of git-secret.
 
 ## Version 0.2.6
 
@@ -134,7 +136,9 @@
 ### Features
 
 - Added `-m` option to `hide` command, files will only be hidden when modifications are detected (#92)
-- Changed how path mappings file works: colon delimited FSDB (#92)
+- Changed how path mappings file works: colon delimited FSDB in `.gitsecret/paths/mapping.cfg', so git-secret
+  can store checksums of hidden files. Note this means git-secret repos modified by git-secret 0.2.3 
+  or later are not backward compatible with pre-0.2.3 versions of git-secret. (#92)
 - `git secret init` now adds `random_seed` to `.gitignore` (#93)
 
 ### Bugfixes
