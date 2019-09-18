@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-add'
-date:   2019-09-18 17:15:22 -0400
+date:   2019-09-18 17:21:14 -0400
 permalink: git-secret-add
 categories: command
 ---
