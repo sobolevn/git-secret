@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-reveal'
-date:   2019-03-07 18:29:07 -0500
+date:   2019-09-18 14:18:42 -0400
 permalink: git-secret-reveal
 categories: command
 ---
@@ -10,7 +10,7 @@ git-secret-reveal - decrypts all added files.
 
 ## SYNOPSIS
 
-    git secret reveal [-f] [-F] [-P] [-d dir] [-p password] [pathspec]...
+    git secret reveal [-f] [-F] [-P] [-v] [-d dir] [-p password] [pathspec]...
 
 
 ## DESCRIPTION
@@ -20,18 +20,19 @@ You will need to have imported the paired secret-key with one of the
 public-keys which were used in the encryption.
 Under the hood, this uses the `gpg --decrypt` command. 
 
-(See [git-secret(7)](http://git-secret.io/git-secret) for information about renaming the .gitsecret
-folder using the SECRETS_DIR environment variable.
-
 
 ## OPTIONS
 
     -f  - forces gpg to overwrite existing files without prompt.
     -F  - forces reveal to continue even if a file fails to decrypt.
     -d  - specifies `--homedir` option for the `gpg`, basically use this option if you store your keys in a custom location.
+    -v  - verbose, shows extra information.
     -p  - specifies password for noinput mode, adds `--passphrase` option for `gpg`.
     -P  - preserve permissions of encrypted file in unencrypted file.
     -h  - shows help.
+
+(See [git-secret(7)](http://git-secret.io/git-secret) for information about renaming the .gitsecret
+folder using the SECRETS_DIR environment variable.
 
 
 ## MANUAL

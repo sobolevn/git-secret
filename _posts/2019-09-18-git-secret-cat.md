@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-cat'
-date:   2019-03-07 18:29:07 -0500
+date:   2019-09-18 14:18:42 -0400
 permalink: git-secret-cat
 categories: command
 ---
@@ -17,6 +17,9 @@ git-secret-cat - decrypts files passed on command line to stdout
 `git-secret-cat` - Outputs to stdout the contents of the files named on the command line.
 As with `git-secret-reveal`, you'll need to have a public/private keypair that is allowed to 
 decrypt this repo.
+
+Note also that this command can be affected by the `SECRETS_PINENTRY` environment variable. See
+(See [git-secret(7)](http://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
 
 
 ## OPTIONS

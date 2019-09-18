@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-changes'
-date:   2019-03-07 18:29:07 -0500
+date:   2019-09-18 14:18:42 -0400
 permalink: git-secret-changes
 categories: command
 ---
@@ -18,6 +18,9 @@ git-secret-changes - view diff of the hidden files.
 You can provide any number of hidden files to this command as arguments, and it will show changes for these files only. 
 Note that files must be specified by their encrypted names, typically `filename.yml.secret`.
 If no arguments are provided, information about all hidden files will be shown.
+
+Note also that this command can be affected by the `SECRETS_PINENTRY` environment variable. See
+(See [git-secret(7)](http://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
 
 
 ## OPTIONS

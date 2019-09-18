@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-clean'
-date:   2019-03-07 18:29:07 -0500
+date:   2019-09-18 14:18:42 -0400
 permalink: git-secret-clean
 categories: command
 ---
@@ -20,9 +20,11 @@ Verbose output is enabled with the -v option, in which case the program prints w
 
 ## OPTIONS
 
-    -v  - shows which files are deleted.
+    -v  - verbose mode, shows which files are deleted. 
     -h  - shows this help.
 
+You can also enable verbosity using the SECRETS_VERBOSE environment variable,
+as documented at [git-secret(7)](http://git-secret.io/)
 
 ## MANUAL
 

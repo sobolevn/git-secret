@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-hide'
-date:   2019-03-07 18:29:07 -0500
+date:   2019-09-18 14:18:42 -0400
 permalink: git-secret-hide
 categories: command
 ---
@@ -33,13 +33,18 @@ it's possible to make it so some files can no longer be decrypted by users who s
 (and would appear) able to decrypt them, and vice-versa.
 
 If you know what you are doing and wish to encrypt or re-encrypt only a subset of the files 
-even after reading the above paragraphs, you can use the -F option to force `git secret hide` 
-to skip any hidden files where the unencrypted versions aren't present. 
+even after reading the above paragraphs, you can use the -F or -m option to only encrypted 
+a subset of files. The -F option forces `git secret hide` to skip any hidden files 
+where the unencrypted versions aren't present. The -m option skips any hidden files that have 
+not be modified since the last time they were encrypted. 
 
 Also, it is possible to modify the names of the encrypted files by setting `SECRETS_EXTENSION` variable.
 
 (See [git-secret(7)](http://git-secret.io/git-secret) for information about renaming the .gitsecret
 folder using the SECRETS_DIR environment variable.
+
+You can also enable verbosity using the SECRETS_VERBOSE environment variable,
+as documented at [git-secret(7)](http://git-secret.io/)
 
 
 ## OPTIONS
@@ -51,7 +56,6 @@ folder using the SECRETS_DIR environment variable.
     -d  - deletes unencrypted files after encryption.
     -m  - encrypt files only when modified.
     -h  - shows help.
-
 
 ## MANUAL
 
