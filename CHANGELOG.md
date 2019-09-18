@@ -1,5 +1,11 @@
 # Changelog
 
+## {{Next Version}}
+
+## Misc
+
+Update man pages from roff sources.
+
 ## Version 0.3.0
 
 ### Features
