@@ -17,41 +17,52 @@ For development with `git-secret` you should have these tools:
 - sha256sum  (on freebsd and MacOS `shasum` is used instead)
 - [shellcheck](https://github.com/koalaman/shellcheck)
 
-To test `git-secret` using test-kitchen, you will also need:
+To test `git-secret` using [test-kitchen](https://kitchen.ci/), which uses docker to test on multiple distributions,
+you will also need:
 
-- docker
-- test-kitchen
-- aspell, to check your changes for spelling errors
+- [docker](https://www.docker.com/)
+- [test-kitchen](https://kitchen.ci/)
+- [aspell](http://aspell.net/), to check your changes for spelling errors
 
-These are only required if dealing with manuals, `gh-pages` or releases:
+The below only required if dealing with manuals, `gh-pages` or releases:
 
 - ruby, ruby-dev
 
 ### Environment MacOS
 
-- install Homebrew
+- install [Homebrew](https://brew.sh/)
 - install gnupg2 with `brew install gnupg2`
 
-#### For docker/test-kitchen
+#### For docker/test-kitchen (for testing multiple distros using docker)
+
 - install Docker for Mac
-- install Chef Developer Kit (?)
-- install ruby2.4 and kitchen dependencies with 
+- install ruby2.6 and kitchen dependencies with
 
   brew install rbenv ruby-build rbenv-vars; 
   rbenv install 2.4.4; rbenv rehash; rbenv global 2.4.4;
-  gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec;
+  # you can also use `rvm` instead of `rbenv`
+
+then use
+
+  gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec
+
+- test-kitchen has also been tested with git-secret using ruby 2.6.3
+
+If you have trouble getting test-kitchen and docker working on your mac to test git-secret with, see #534
 
 ### Getting started
 
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
 
-2. Fork and clone your repository: `git clone https://github.com/${YOUR_NAME}/git-secret.git`
+2. Fork the git-secret and then clone your repository using a command like `git clone https://github.com/${YOUR_NAME}/git-secret.git`
 
 3. Make sure that everything works on the current platform by running `make test`.
    You can also try the experimental `SECRETS_TEST_VERBOSE=1 make test`.
    Note that 'experimental' features may change or be removed in a future version of `git-secret`.
 
-4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
+4. [Run local CI tests](#running-local-ci-tests) -- Optional.
+To verify functionality on supported platforms use `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
+See link to `test-kitchen` above for more info about using `kitchen verify`.
 
 ### Code style
 
@@ -141,7 +152,10 @@ Cloud CI is done with the help of `travis`. `travis` handles multiple environmen
 - `OSX` jobs, which handle basic unit-tests on `MacOS` (Travis still calls MacOS 'OSX')
 - Native `travis` jobs, which handle basic unit-tests and style checks
 
-### Running local ci-tests
+### Running local ci-tests.
+
+Ci-tests are only necessary if you want to test git-secret on multiple OS'es using docker and test-kitchen,
+like we do on travis-ci. 
 
 1. Install required gems with `bundle install`.
 2. Run ci-tests with `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`
@@ -159,13 +173,16 @@ output from commands.
 
 The release process is defined in the `git`-hooks and `.travis.yml`.
 
-When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) the hooks will trigger three events.
+When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) the 
+pre-commit and post-commit hooks will trigger three events.
 
-- the test suite will be run locally
+- `pre-commit`: run the test suite will be locally
 
-- new manuals will be created and added to the current commit with `make build-man` on `pre-commit` hook.
+- `pre-commit`: generate and update the manuals and add them to the current commit with `make build-man`
 
-- after the commit is successfully created it will also trigger `make build-gh-pages` target on `post-commit` hook, which will push new manuals to the [git-secret site][git-secret-site]. And the new `git` tag will be automatically created if the version is changed:
+- `post-commit`: trigger `make build-gh-pages`, which will update and push manuals to the [git-secret site][git-secret-site].
+
+- `post-commit`: new `git` tag (such as v0.3.1) will be automatically created if the version is changed, using something like
 
 ```bash
 if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
@@ -182,13 +199,16 @@ Here are some links to gnupg documentation that might be useful for those workin
 
 #### Travis releases
 
-After you commit a tag that matches the pattern '^v.*$' and the tests succeed, Travis will publish new `deb` and `rpm` packages to [`bintray`][bintray].
+After you commit a tag that matches the pattern '^v' and the tests succeed, Travis will publish new `deb` and `rpm` packages to [`bintray`][bintray].
 
 If you wish to override a previous release (*be careful*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`
 
 #### Manual releases
 
-Releases to `brew` are made manually.
+Releases to `brew` are made manually, and involve opening a PR on the [Homebrew Core](https://github.com/Homebrew/homebrew-core) repo .
+To get started, see the
+[Homebrew docs about Formuae-related PRs](https://docs.brew.sh/How-To-Open-a-Homebrew-Pull-Request#formulae-related-pull-request)
+and `brew bump-formula-pr --help`
 
 #### Dockerhub releases
 
