@@ -40,13 +40,14 @@ The below only required if dealing with manuals, `gh-pages` or releases:
 
   brew install rbenv ruby-build rbenv-vars; 
   rbenv install 2.4.4; rbenv rehash; rbenv global 2.4.4;
-  # you can also use `rvm` instead of `rbenv`
+
+(You can also use `rvm` instead of `rbenv`.)
 
 then use
 
   gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec
 
-- test-kitchen has also been tested with git-secret using ruby 2.6.3
+test-kitchen has also been tested with git-secret using ruby 2.6.3
 
 If you have trouble getting test-kitchen and docker working on your mac to test git-secret with, see #534
 
@@ -54,13 +55,19 @@ If you have trouble getting test-kitchen and docker working on your mac to test 
 
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
 
-2. Fork the git-secret and then clone your repository using a command like `git clone https://github.com/${YOUR_NAME}/git-secret.git`
+2. Fork the git-secret repo and then clone your repository using a command like `git clone https://github.com/${YOUR_NAME}/git-secret.git`
 
 3. Make sure that everything works on the current platform by running `make test`.
-   You can also try the experimental `SECRETS_TEST_VERBOSE=1 make test`.
+   You can also try the experimental `SECRETS_TEST_VERBOSE=1 make test`, which will
+   show you a lot of debug output while the tests are running.
    Note that 'experimental' features may change or be removed in a future version of `git-secret`.
 
-4. [Run local CI tests](#running-local-ci-tests) -- Optional.
+4. [Run local CI tests](#running-local-ci-tests)
+
+As mentioned above, it is optional whether or not you run the CI tests locally. 
+These tests will occur automatically on Jenkins-CI when you create a PR for `git-secret`,
+and again when any PR is merged.
+
 To verify functionality on supported platforms use `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
 See link to `test-kitchen` above for more info about using `kitchen verify`.
 
@@ -230,7 +237,10 @@ There are several distributions and packaging systems that may already have git-
 First of all, thank you for packaging git-secret for your platform! We appreciate it.
 
 We also would like to welcome you to collaborate or discuss any issues, ideas or thoughts you have about 
-git-secret by submitting issue report (which can also be feature requests) or pull requests via the git repo at 
+git-secret by submitting [issue report](https://github.com/sobolevn/git-secret/issues) 
+(which can also be feature requests) or 
+[pull requests](https://help.github.com/en/articles/creating-a-pull-request) 
+via the git repo at 
 [git-secret on github](https://github.com/sobolevn/git-secret) 
 
 Please let us know if there are any changes you'd like to see to the source, 
