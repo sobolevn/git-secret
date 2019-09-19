@@ -64,7 +64,7 @@ If you found any security related issues, please do not disclose it in public. S
 
 ## Changelog
 
-`git-secret` uses semver. See [CHANGELOG.md](CHANGELOG.md).
+`git-secret` uses [semver](https://semver.org/). See [CHANGELOG.md](CHANGELOG.md).
 
 
 ## Packagers
