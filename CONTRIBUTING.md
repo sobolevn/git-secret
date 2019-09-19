@@ -17,59 +17,58 @@ For development with `git-secret` you should have these tools:
 - sha256sum  (on freebsd and MacOS `shasum` is used instead)
 - [shellcheck](https://github.com/koalaman/shellcheck)
 
-To test `git-secret` using [test-kitchen](https://kitchen.ci/), which uses docker to test on multiple distributions,
+To test `git-secret` using [test-kitchen](https://kitchen.ci/), which is optional and uses docker to test on multiple distributions,
 you will also need:
 
 - [docker](https://www.docker.com/)
 - [test-kitchen](https://kitchen.ci/)
-- [aspell](http://aspell.net/), to check your changes for spelling errors
 
 The below only required if dealing with manuals, `gh-pages` or releases:
 
 - ruby, ruby-dev
+- [aspell](http://aspell.net/), to check your changes for spelling errors
 
 ### Environment MacOS
 
 - install [Homebrew](https://brew.sh/)
 - install gnupg2 with `brew install gnupg2`
 
-#### For docker/test-kitchen (for testing multiple distros using docker)
+#### For docker/test-kitchen (optional, for testing multiple distros locally using docker)
 
 - install Docker for Mac
 - install ruby2.6 and kitchen dependencies with
 
   brew install rbenv ruby-build rbenv-vars; 
-  rbenv install 2.4.4; rbenv rehash; rbenv global 2.4.4;
+  rbenv install 2.6.3; rbenv rehash; rbenv global 2.6.3;
 
-(You can also use `rvm` instead of `rbenv`.)
+(You can also use `rvm` instead of `rbenv`, but brew packages `rbenv` for you.)
 
 then use
 
   gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec
 
-test-kitchen has also been tested with git-secret using ruby 2.6.3
-
 If you have trouble getting test-kitchen and docker working on your mac to test git-secret with, see #534
+or let us know by filing an issue.
 
 ### Getting started
 
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
 
-2. Fork the git-secret repo and then clone your repository using a command like `git clone https://github.com/${YOUR_NAME}/git-secret.git`
+2. Fork the git-secret repo and then clone the repository using a command like `git clone https://github.com/${YOUR_NAME}/git-secret.git`
 
 3. Make sure that everything works on the current platform by running `make test`.
    You can also try the experimental `SECRETS_TEST_VERBOSE=1 make test`, which will
    show you a lot of debug output while the tests are running.
    Note that 'experimental' features may change or be removed in a future version of `git-secret`.
 
-4. [Run local CI tests](#running-local-ci-tests)
+4. If you want to test on multiple operating systems, [Run local CI tests](#running-local-ci-tests) (optional; this will 
+   automatically happen on [Travis-CI](https://travis-ci.org/sobolevn/git-secret) when you submit a PR).
 
-As mentioned above, it is optional whether or not you run the CI tests locally. 
-These tests will occur automatically on Jenkins-CI when you create a PR for `git-secret`,
-and again when any PR is merged.
+Running the CI tests locally is optional.  The tests will happen automatically on Travis-CI 
+when you create a PR for `git-secret`, and again when any PR is merged.
 
 To verify functionality on supported platforms use `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
-See link to `test-kitchen` above for more info about using `kitchen verify`.
+See `[test-kitchen](https://kitchen.ci/) and `kitchen help verify` for more info about using `kitchen verify`.
 
 ### Code style
 
@@ -88,10 +87,10 @@ New features and changes should aim to be as clear, concise, simple, and consist
    This also aids future development and helps minimize bugs.
 
 4. consistent: Write code that is consistent with the surrounding code and the rest of the git-secret code base.
-   Every code base has its own conventions and style that develop and accrete over time.
+   Every code base has its own conventions and style that develop and accrue over time.
 
    Consistency also means that the inputs and outputs of git-secret should be as consistent as reasonable
-   with related unix and git tools, and follow the 'rule of least surprise', 
+   with related Unix and git tools, and follow the 'rule of least surprise', 
    also known as the 'principle of least astonishment': <https://en.wikipedia.org/wiki/Principle_of_least_astonishment>
 
 We wrote this to clarify our thinking about how git-secret should be written.  Of course, these are philosophical goals, 
@@ -105,11 +104,11 @@ Also it's often best to implement larger or complex changes as a series of plann
 each making a small set of specific changes. This facilitates discussions of implementation, which often come to light
 only after seeing the actual code used to perform a task.
 
-As mentioned above, we seek to be consistent with surrounding git and unix tools, so when writing changes to git-secret,
-think about the input, output, and command-line options that similar unix commands use.
+As mentioned above, we seek to be consistent with surrounding git and Unix tools, so when writing changes to git-secret,
+think about the input, output, and command-line options that similar Unix commands use.
 
-Our favor toward traditional unix and git command-style inputs and outputs can also mean it's appropriate to 
-lean heavily on git and widely-used unix command features instead of re-implementing them in code.
+Our favor toward traditional Unix and git command-style inputs and outputs can also mean it's appropriate to 
+lean heavily on git and widely-used Unix command features instead of re-implementing them in code.
 
 ### Development Process
 
@@ -151,15 +150,16 @@ The `gh-pages` branch is used for the pages at `git-secret.io`. See 'Release Pro
 ### Continuous integration
 
 Local CI is done with the help [`test-kitchen`](http://kitchen.ci/). `test-kitchen` handles multiple test-suites on various platforms.
-`bundle exec kitchen list` will output the list of test suites to be run against supported platforms.
+You can run our CI tests locally, but it is not strictly required in order to do development or testing of git-secret. When you have
+`test-kitchen` installed, `bundle exec kitchen list` will output the list of test suites to be run against supported platforms.
 
-Cloud CI is done with the help of `travis`. `travis` handles multiple environments:
+Cloud CI is done with the help of [Travis-CI](https://travis-ci.org/sobolevn/git-secret), which handles testing on multiple environments using
 
-- `Docker`-based jobs or so-called 'integration tests', these tests create a local release, install it with the package manager and then run unit-tests and system checks
+- `Docker`-based jobs or so-called 'integration tests', which create a local release, install it with the package manager and then run unit-tests and system checks
 - `OSX` jobs, which handle basic unit-tests on `MacOS` (Travis still calls MacOS 'OSX')
 - Native `travis` jobs, which handle basic unit-tests and style checks
 
-### Running local ci-tests.
+### Running local ci-tests with test-kitchen
 
 Ci-tests are only necessary if you want to test git-secret on multiple OS'es using docker and test-kitchen,
 like we do on travis-ci. 
@@ -206,15 +206,16 @@ Here are some links to gnupg documentation that might be useful for those workin
 
 #### Travis releases
 
-After you commit a tag that matches the pattern '^v' and the tests succeed, Travis will publish new `deb` and `rpm` packages to [`bintray`][bintray].
+After you commit a tag that matches the pattern '^v' and the tests succeed, scripts run on [Travis-CI](https://travis-ci.org/sobolevn/git-secret) 
+will publish new `deb` and `rpm` packages to [`bintray`][bintray].
 
-If you wish to override a previous release (*be careful*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`
+(If you wish to override a previous release (*be careful, this is discouraged*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`)
 
 #### Manual releases
 
 Releases to `brew` are made manually, and involve opening a PR on the [Homebrew Core](https://github.com/Homebrew/homebrew-core) repo .
 To get started, see the
-[Homebrew docs about Formuae-related PRs](https://docs.brew.sh/How-To-Open-a-Homebrew-Pull-Request#formulae-related-pull-request)
+[Homebrew docs about Formulae-related PRs](https://docs.brew.sh/How-To-Open-a-Homebrew-Pull-Request#formulae-related-pull-request)
 and `brew bump-formula-pr --help`
 
 #### Dockerhub releases
