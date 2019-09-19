@@ -112,8 +112,8 @@ lean heavily on git and widely-used Unix command features instead of re-implemen
 
 ### Development Process
 
-1. Firstly, you should need to setup development git hooks with `make install-hooks`
-This will copy the git-secret development hooks from utils/hooks into .git/hooks/pre-commit and .git/hooks/post-commit
+1. Firstly, you should setup git-secret's development git hooks with `make install-hooks`
+This will copy the hooks from utils/hooks into .git/hooks/pre-commit and .git/hooks/post-commit
 
 2. Make changes to the git secret files that need to be changed
 
@@ -131,9 +131,10 @@ This will copy the git-secret development hooks from utils/hooks into .git/hooks
 
 8. When running `git commit` the tests will run automatically, your commit will be canceled if they fail.
    You can run the tests manually with `make clean build test`.
+   If you want to make a commit and not run the pre- and post-commit hooks, use 'git commit -n'
    
-9. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request; 
-otherwise PRs will probably be `squashed` into one commit when merged.
+9. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request,
+but don't worry, it's easy to `squash` PRs into a small number of commit when they're merged.
 
 ### Branches
 
@@ -145,7 +146,9 @@ Development looks like this:
 
 - `master` branch is protected, so only fully tested code goes there. It is also used to create a new `git` tag and a `github` release
 
-The `gh-pages` branch is used for the pages at `git-secret.io`. See 'Release Process' below.
+By convention, you can name your branches like `issue-###-short-description`, but that's not required.
+The `gh-pages` branch is used for the pages at `git-secret.io`. See 'Release Process' below. 
+
 
 ### Continuous integration
 
