@@ -87,7 +87,7 @@ New features and changes should aim to be as clear, concise, simple, and consist
    This also aids future development and helps minimize bugs.
 
 4. consistent: Write code that is consistent with the surrounding code and the rest of the git-secret code base.
-   Every code base has its own conventions and style that develop and accrue over time.
+   Every code base has its own conventions and style that develop and accrete over time.
 
    Consistency also means that the inputs and outputs of git-secret should be as consistent as reasonable
    with related Unix and git tools, and follow the 'rule of least surprise', 
