@@ -134,7 +134,7 @@ This will copy the hooks from utils/hooks into .git/hooks/pre-commit and .git/ho
    If you want to make a commit and not run the pre- and post-commit hooks, use 'git commit -n'
    
 9. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request,
-but don't worry, it's easy to `squash` PRs into a small number of commit when they're merged.
+but don't worry, it's easy to `squash` PRs into a small number of commits when they're merged.
 
 ### Branches
 
