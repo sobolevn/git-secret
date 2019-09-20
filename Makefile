@@ -57,8 +57,8 @@ clean-man:
 	find "man/" -type f ! -name "*.ronn" -delete
 
 .PHONY: build-man
-build-man: install-ronn clean-man
-	ronn --roff --organization="sobolevn" --manual="git-secret" man/*/*.ronn
+build-man: install-ronn clean-man git-secret
+	export GITSECRET_VERSION=`./git-secret --version` && ronn --roff --organization="sobolevn" --manual="git-secret $${GITSECRET_VERSION}" man/*/*.ronn
 
 .PHONY: build-gh-pages
 build-gh-pages:
