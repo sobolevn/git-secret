@@ -64,7 +64,7 @@ If you found any security related issues, please do not disclose it in public. S
 
 ## Changelog
 
-`git-secret` uses semver. See [CHANGELOG.md](CHANGELOG.md).
+`git-secret` uses [semver](https://semver.org/). See [CHANGELOG.md](CHANGELOG.md).
 
 
 ## Packagers
@@ -73,11 +73,12 @@ Thanks also to all the people and groups who package git-secret to be easier to 
 
 Here are some packagings of git-secret that we're aware of:
 
-- https://pkgs.alpinelinux.org/package/edge/testing/x86/git-secret
-- https://aur.archlinux.org/packages/git-secret/
+- https://formulae.brew.sh/formula/git-secret
 - https://packages.ubuntu.com/bionic/git-secret
-- https://packages.debian.org/sid/git-secret
 - https://apps.fedoraproject.org/packages/git-secret
+- https://aur.archlinux.org/packages/git-secret/
+- https://pkgs.alpinelinux.org/package/edge/testing/x86/git-secret
+- https://packages.debian.org/sid/git-secret
 
 Such packages are considered 'downstream' because the git-secret code 'flows' from the git-secret repository 
 to the various rpm/deb/dpkg/etc packages that are created for specific OSes and distributions.

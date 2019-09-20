@@ -1,5 +1,11 @@
 # Changelog
 
+## {{Next Version}}
+
+### Misc
+
+- Update developer docs, especially regarding mac, docker, and test-kitchen (#195)
+
 ## Version 0.3.1
 
 ## Misc
