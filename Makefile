@@ -58,6 +58,7 @@ clean-man:
 
 .PHONY: build-man
 build-man: install-ronn clean-man git-secret
+	touch man/*/*.ronn
 	export GITSECRET_VERSION=`./git-secret --version` && ronn --roff --organization="sobolevn" --manual="git-secret $${GITSECRET_VERSION}" man/*/*.ronn
 
 .PHONY: build-gh-pages
