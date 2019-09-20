@@ -8,6 +8,7 @@
 
 ### Misc
 
+- Update developer docs, especially regarding mac, docker, and test-kitchen (#195)
 - Update man pages to mention version documented (#420)
 
 ## Version 0.3.1
