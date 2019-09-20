@@ -16,9 +16,7 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
-# TODO: factor out tempdir creation. On osx TEST_GPG_OUTPUT_FILE, still has 'XXXXXX's, like
-#   /var/folders/mm/_f0j67x10l92b4zznyx4ylzh00017w/T/gitsecret_output.XXXXXX.RaqyGYqL
-TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output.XXXXXX')
+TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output.XXXXXXXX')
 #echo "# TEST_GPG_OUTPUT_FILE=$TEST_GPG_OUTPUT_FILE" >&3
 
 # shellcheck disable=SC2016

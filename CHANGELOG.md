@@ -1,5 +1,11 @@
 # Changelog
 
+## {{Next Version}}
+
+### Bugfixes
+
+- Give mktemp enough X's on osx (#546)
+
 ## Version 0.3.1
 
 ## Misc
