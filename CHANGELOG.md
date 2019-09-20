@@ -2,13 +2,18 @@
 
 ## {{Next Version}}
 
+### Bugfixes
+
+- Fix mention of version in git-secret add man page (#544)
+
 ### Misc
 
 - Update developer docs, especially regarding mac, docker, and test-kitchen (#195)
+- Update man pages to mention version documented (#420)
 
 ## Version 0.3.1
 
-## Misc
+### Misc
 
 - Update man pages
 
@@ -29,7 +34,7 @@
 - Handle case of key having no email and a comment (#527)
 - Avoid blank lines from output of 'clean -v'
 
-## Misc
+### Misc
 
 - Improve messaging and logic around deleting tmp files.
 - Add note about secrets and old keys (#499)
@@ -78,7 +83,7 @@
 - Respect DESTDIR when installing as per GNU/debian/etc recommendations (#424)
 - Use git check-ignore to test for files ignored by git
 
-## Misc
+### Misc
 
 - Improve docs about hide -m option (#467)
 - Document SECRETS_VERBOSE and improve env var docs (#396)
@@ -118,7 +123,7 @@
 - Require keys to be specified by email, as documented (#267)
 - Disallow 'git secret tell' or 'killperson' with emails that are not in keychain (also #267)
 
-## Misc
+### Misc
 
 - Added notes about packages and for package maintainers (#281)
 - Improve documentation regarding operation with different versions of GPG (#274, #182)
