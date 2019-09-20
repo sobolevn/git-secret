@@ -1,6 +1,12 @@
 # Changelog
 
-## {{Next Version}}
+## Version 0.3.1
+
+## Misc
+
+- Update man pages
+
+## Version 0.3.0
 
 ### Features
 
