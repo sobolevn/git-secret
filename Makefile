@@ -58,7 +58,6 @@ clean-man:
 
 .PHONY: build-man
 build-man: install-ronn clean-man
-	touch man/*/*.ronn
 	ronn --roff --organization="sobolevn" --manual="git-secret" man/*/*.ronn
 
 .PHONY: build-gh-pages
