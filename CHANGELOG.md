@@ -1,5 +1,11 @@
 # Changelog
 
+## {{Next Version}}
+
+### Bugfixes
+
+- Avoid using 'tell' on disabled, revoked, expired, or otherwise invalid keys (#552, #508)
+
 ## Version 0.3.2
 
 ### Bugfixes
