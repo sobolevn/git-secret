@@ -19,7 +19,7 @@ function teardown {
 
 @test "test 'tell' using expired key" {
   run git secret tell "$TEST_EXPIRED_USER"
-  [ $status -ne 0 ] # we expect failure here because you can't tell an expired key
+  [ $status -ne 0 ] # failure here because we'd need to use 'tell -f' with expired key
 }
 
 @test "test 'hide' using expired key forced with 'tell -f'" {
