@@ -667,7 +667,12 @@ function _get_users_in_gpg_keyring {
   # i=invalid, d=disabled, r=revoked, e=expired, n=not valid
   # See https://github.com/gpg/gnupg/blob/master/doc/DETAILS#field-2---validity # for more on gpg 'validity codes'.
   if [[ "$active_only" -eq 1 ]]; then
-      result=$(echo "$result" | gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"')
+      local new_result
+      new_result=$(echo "$result" | gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"')
+      if [[ "$result" != "$new_result" ]]; then
+          _warn "at least one key was ignored because it was revoked, expired, or otherwise invalid"
+      fi
+      result="$new_result"
   fi
 
   # gensub() outputs email from <> within field 10, "User-ID".  If there's no <>, then field is just an email address 
