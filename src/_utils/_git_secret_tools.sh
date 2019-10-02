@@ -660,10 +660,12 @@ function _get_users_in_gpg_keyring {
   # Sed at the end removes any 'comment' that appears in parentheses, for #530
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
-      gawk -F: '$1~/uid/')
+      gawk -F: '$1=="uid"')
+
   if [[ "$active_only" -gt 0 ]]; then
-      result=$(echo "$result" | gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n" {print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }')
+      result=$(echo "$result" | gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"')
   fi
+
   result=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' )
 
   echo "$result"
