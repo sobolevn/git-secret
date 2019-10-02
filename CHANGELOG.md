@@ -4,7 +4,7 @@
 
 ### Bugfixes
 
-- Change 'tell' to reject disabled, revoked, expired, or otherwise invalid keys (#552, #508)
+- Change 'tell' to skip disabled, revoked, expired, or otherwise invalid keys, and show warning when we do (#552, #508, #283)
 - Add '-f' option to 'tell' to force use of unusable keys (mostly for testing, #508)
 
 ## Version 0.3.2
