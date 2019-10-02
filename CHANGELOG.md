@@ -4,7 +4,7 @@
 
 ### Bugfixes
 
-- Change 'tell' to skip disabled, revoked, expired, or otherwise invalid keys, and show warning when we do (#552, #508, #283)
+- Change 'tell' to skip disabled, revoked, expired, or otherwise invalid keys, and show warning when we do (#552, #508, #317, #290, #283, #238)
 - Add '-f' option to 'tell' to force use of unusable keys (mostly for testing, #508)
 
 ## Version 0.3.2
@@ -29,7 +29,7 @@
 ### Features
 
 - Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
-- Show output from gnupg if 'hide' fails (#516)
+- Show output from gnupg if 'hide' fails (#516, #202, #317)
 - Add support for Busybox (#478)
 
 ### Bugfixes
