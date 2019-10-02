@@ -227,6 +227,14 @@ function set_state_secret_tell {
   local email
 
   email="$1"
+  git secret tell -d "$TEST_GPG_HOMEDIR" "$email" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+}
+
+# just like function above, except we use -f to force 'tell' to use unusable keys
+function set_state_secret_tell_force {
+  local email
+
+  email="$1"
   git secret tell -f -d "$TEST_GPG_HOMEDIR" "$email" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
 }
 
