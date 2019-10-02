@@ -539,7 +539,9 @@ function _exe_is_busybox {
   echo "$is_busybox"
 }
 
-
+# this is used by just about every command
+# it does not consider if the keys are expired, revoked or otherwise invalid
+# because we're already using these keys in the repo's keyring
 function _user_required {
   # This function does a bunch of validations:
   # 1. It calls `_secrets_dir_exists` to verify that "$_SECRETS_DIR" exists.
@@ -562,8 +564,7 @@ function _user_required {
   # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
   # see _get_users_in_gpg_keyring() for info about gawk and $2 below
   local keys_exist
-  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys | \
-    gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"'  3>&-)
+  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
   local exit_code=$?
   if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
@@ -581,6 +582,9 @@ function _user_required {
 # https://github.com/sobolevn/git-secret/issues/268
 # where it will match emails that have other emails as substrings.
 # we need to use fingerprints for a unique key id with gpg.
+# as of 0.3.2 this is only used in 'whoknows'.
+# it does not consider if the keys are expired, revoked or otherwise invalid
+# because we're already using these keys in the repo's keyring
 function _get_user_key_expiry {
   # This function returns the user's key's expiry, as an epoch. 
   # It will return the empty string if there is no expiry date for the user's key
@@ -592,8 +596,7 @@ function _get_user_key_expiry {
 
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
   # see _get_users_in_gpg_keyring() for info about gawk and $2 below
-  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: | \
-         gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"' 3>&-)
+  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-)
 
   local expiry_epoch
   expiry_epoch=$(echo "$line" | cut -d: -f7)
@@ -605,9 +608,10 @@ function _get_user_key_expiry {
 function _assert_keychain_contains_emails {
   local homedir=$1
   local emails=$2
+  local active_only=${2:-0}
 
   local gpg_uids
-  gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
+  gpg_uids=$(_get_users_in_gpg_keyring "$homedir" "$active_only")
   for email in "${emails[@]}"; do
     if [[ $email != *"@"* ]]; then
         _abort "does not appear to be an email: $email"
@@ -634,12 +638,13 @@ function _get_encrypted_filename {
   echo "${filename}${SECRETS_EXTENSION}" | sed -e 's#^\./##'
 }
 
-
+# this is used throughout this file, and in 'whoknows'
 function _get_users_in_gpg_keyring {
   # show the users in the gpg keyring.
   # `whoknows` command uses it internally.
   # parses the `gpg` public keys
   local homedir=$1
+  local active_only=${2:-0}
   local result
   local args=()
   if [[ -n "$homedir" ]]; then
@@ -655,8 +660,11 @@ function _get_users_in_gpg_keyring {
   # Sed at the end removes any 'comment' that appears in parentheses, for #530
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
-      gawk -F: '$1~/uid/&&($2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"){print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | \
-      sed 's/([^)]*)//g' 3>&-)
+      gawk -F: '$1~/uid/')
+  if [[ "$active_only" -gt 0 ]]; then
+      result=$(echo "$result" | gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n" {print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }')
+  fi
+  result=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' )
 
   echo "$result"
 }
