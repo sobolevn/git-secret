@@ -303,7 +303,7 @@ function _git_normalize_filename {
   local filename="$1" # required
 
   local result
-  result=$(git ls-files --full-name -o "$filename")
+  result=$(git ls-files --full-name -o "$filename" 3>&-)
   echo "$result"
 }
 
@@ -338,7 +338,7 @@ function _add_ignored_file {
 function _is_inside_git_tree {
   # Checks if we are working inside the `git` tree.
   local result
-  result=$(git rev-parse --is-inside-work-tree > /dev/null 2>&1; echo $?)
+  result=$(git rev-parse --is-inside-work-tree > /dev/null 2>&1 3>&-; echo $?)
 
   echo "$result"
 }
@@ -346,7 +346,7 @@ function _is_inside_git_tree {
 function _is_tracked_in_git {
   local filename="$1" # required
   local result
-  result="$(git ls-files --error-unmatch "$filename" >/dev/null 2>&1; echo $?)"
+  result="$(git ls-files --error-unmatch "$filename" >/dev/null 2>&1 3>&-; echo $?)"
 
   if [[ "$result" -eq 0 ]]; then
     echo "1"
