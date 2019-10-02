@@ -608,7 +608,7 @@ function _get_user_key_expiry {
 function _assert_keychain_contains_emails {
   local homedir=$1
   local emails=$2
-  local active_only=${2:-0}
+  local active_only=${3:-0}
 
   local gpg_uids
   gpg_uids=$(_get_users_in_gpg_keyring "$homedir" "$active_only")
@@ -645,6 +645,7 @@ function _get_users_in_gpg_keyring {
   # parses the `gpg` public keys
   local homedir=$1
   local active_only=${2:-0}
+
   local result
   local args=()
   if [[ -n "$homedir" ]]; then
@@ -662,7 +663,7 @@ function _get_users_in_gpg_keyring {
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
       gawk -F: '$1=="uid"')
 
-  if [[ "$active_only" -gt 0 ]]; then
+  if [[ "$active_only" -ne 0 ]]; then
       result=$(echo "$result" | gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"')
   fi
 
