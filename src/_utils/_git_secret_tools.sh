@@ -624,7 +624,11 @@ function _assert_keychain_contains_emails {
         fi
     done
     if [[ $email_ok -eq 0 ]]; then
-      _abort "email not found in gpg keyring: $email"
+      if [[ $active_only -ne 0 ]]; then
+        _abort "no valid key found in gpg keyring for: $email"
+      else
+        _abort "no key found in gpg keyring for: $email"
+      fi
     fi
   done
 }
