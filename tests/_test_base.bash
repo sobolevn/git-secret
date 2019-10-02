@@ -108,7 +108,7 @@ function get_gpg_fingerprint_by_email {
 
   fingerprint=$($GPGTEST --with-fingerprint \
                          --with-colon \
-                         --list-secret-key "$email" | gawk "$AWK_GPG_GET_FP")
+                         --list-secret-key "$email" | gawk "$AWK_GPG_GET_FP" 3>&-)
   echo "$fingerprint"
 }
 
