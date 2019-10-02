@@ -560,8 +560,10 @@ function _user_required {
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
   # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
+  # see _get_users_in_gpg_keyring() for info about gawk and $2 below
   local keys_exist
-  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
+  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys | \
+    gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"'  3>&-)
   local exit_code=$?
   if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
@@ -589,7 +591,9 @@ function _get_user_key_expiry {
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
-  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-)
+  # see _get_users_in_gpg_keyring() for info about gawk and $2 below
+  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: | \
+         gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"' 3>&-)
 
   local expiry_epoch
   expiry_epoch=$(echo "$line" | cut -d: -f7)
@@ -642,14 +646,16 @@ function _get_users_in_gpg_keyring {
     args+=( "--homedir" "$homedir" )
   fi
 
-  # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
-  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID" 
-  # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address 
+  # We use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
+  # Gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID" 
+  #  and checks $2 is not i=invalid, d=disabled, r=revoked, e=expired, n=not valid; for #508 / #552:
+  # See https://github.com/gpg/gnupg/blob/master/doc/DETAILS#field-2---validity # for more on gpg 'validity codes'.
+  # The gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address 
   #  (and maybe a comment) and the regex just passes it through.)
-  # sed at the end removes any 'comment' that appears in parentheses, for #530
+  # Sed at the end removes any 'comment' that appears in parentheses, for #530
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
-      gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | \
+      gawk -F: '$1~/uid/&&($2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"){print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | \
       sed 's/([^)]*)//g' 3>&-)
 
   echo "$result"
