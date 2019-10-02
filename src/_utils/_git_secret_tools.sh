@@ -562,7 +562,6 @@ function _user_required {
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
   # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
-  # see _get_users_in_gpg_keyring() for info about gawk and $2 below
   local keys_exist
   keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
   local exit_code=$?
@@ -595,7 +594,6 @@ function _get_user_key_expiry {
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
-  # see _get_users_in_gpg_keyring() for info about gawk and $2 below
   line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-)
 
   local expiry_epoch
@@ -660,8 +658,7 @@ function _get_users_in_gpg_keyring {
   # Gawk splits on colon as --with-colon, matches field 1 as 'uid', 
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
-      gawk -F: '$1~/uid/' 3>&-)
-      #gawk -F: '$1=="uid"')
+      gawk -F: '$1=="uid"' 3>&-)
 
   # For #508 / #552: if user asked for only active keys, check $2 is none of:
   # i=invalid, d=disabled, r=revoked, e=expired, n=not valid
