@@ -12,18 +12,20 @@ _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 
+export PS4="git-secret: running: "
 # _SECRETS_VERBOSE is expected to be empty or '1'. 
 # Empty means 'off', any other value means 'on'.
 # shellcheck disable=SC2153
-if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
+if [[ -n "SECRETS_TEST_VERBOSE" ]] || [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
     # shellcheck disable=SC2034
     _SECRETS_VERBOSE='1'
+    : "${_SECRETS_SET_FLAG:="-x"}"
+else
+    : "${_SECRETS_SET_FLAG:="--"}"
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
 
-export PS4="git-secret: running: "
-: "${_SECRETS_SET_FLAG:="--"}"
 
 # Commands:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
@@ -729,7 +731,7 @@ function _decrypt {
   #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
-    (set "$_SECRETS_SET_FLAG"; echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename")
+    echo "$passphrase" | (set "$_SECRETS_SET_FLAG"; $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename")
     exit_code=$?
   else
     (set "$_SECRETS_SET_FLAG"; $SECRETS_GPG_COMMAND "${args[@]}" "$encrypted_filename")
