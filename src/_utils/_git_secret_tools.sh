@@ -22,6 +22,8 @@ fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
 
+export PS4="git-secret: running: "
+
 # Commands:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
 : "${SECRETS_CHECKSUM_COMMAND:="_os_based __sha256"}"
@@ -561,7 +563,9 @@ function _user_required {
 
   # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
   local keys_exist
+
   keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
+
   local exit_code=$?
   if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
@@ -589,7 +593,7 @@ function _get_user_key_expiry {
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
-  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-)
+  (set -x; line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-))
 
   local expiry_epoch
   expiry_epoch=$(echo "$line" | cut -d: -f7)
@@ -724,11 +728,10 @@ function _decrypt {
   #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
-    echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 0 \
-      "$encrypted_filename"
+    (set -x; echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename")
     exit_code=$?
   else
-    $SECRETS_GPG_COMMAND "${args[@]}" "$encrypted_filename"
+    (set -x; $SECRETS_GPG_COMMAND "${args[@]}" "$encrypted_filename")
     exit_code=$?
   fi
 
