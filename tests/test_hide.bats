@@ -150,7 +150,7 @@ function teardown {
   # Command must execute normally:
   [ "$status" -eq 0 ]
   # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
-  [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
@@ -168,7 +168,7 @@ function teardown {
   # Command must execute normally:
   [ "$status" -eq 0 ]
   # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
-  [[ "${lines[0]}" == *"git-secret: done. 1 of 1 files are hidden."* ]]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
@@ -199,7 +199,7 @@ function teardown {
   # Command must execute normally:
   [ "$status" -eq 0 ]
   # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
-  [[ "${lines[0]}" == *"git-secret: done. 1 of 1 files are hidden."* ]]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
