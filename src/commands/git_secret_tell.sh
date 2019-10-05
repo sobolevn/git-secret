@@ -79,11 +79,11 @@ function tell {
     # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
     local exit_code
     if [[ -z "$homedir" ]]; then
-      ( set -x; $SECRETS_GPG_COMMAND --export -a "$email" > "$keyfile" 3>&- )
+      ( set "$_SECRETS_SET_FLAG"; $SECRETS_GPG_COMMAND --export -a "$email" > "$keyfile" 3>&- )
       exit_code=$?
     else
       # It means that homedir is set as an extra argument via `-d`:
-      ( set -x; $SECRETS_GPG_COMMAND --no-permission-warning --homedir="$homedir" \
+      ( set "$_SECRETS_SET_FLAG"; $SECRETS_GPG_COMMAND --no-permission-warning --homedir="$homedir" \
           --export -a "$email" > "$keyfile" 3>&-)
       exit_code=$?
     fi
@@ -101,9 +101,9 @@ function tell {
 
     local args=( --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" )
     if [[ -z "$_SECRETS_VERBOSE" ]]; then
-      ( set -x; $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1 3>&-)
+      ( set "$_SECRETS_SET_FLAG"; $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1 3>&-)
     else
-        ( set -x; $SECRETS_GPG_COMMAND "${args[@]}" 3>&- )
+        ( set "$_SECRETS_SET_FLAG"; $SECRETS_GPG_COMMAND "${args[@]}" 3>&- )
     fi
     exit_code=$?
 

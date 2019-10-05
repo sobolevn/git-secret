@@ -172,7 +172,8 @@ function hide {
 
      	  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
         local gpg_output
-        ( set -x;  gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}" 3>&-))  # we leave stderr alone
+        _message "running:" "$SECRETS_GPG_COMMAND" "${args[@]}"
+        gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}" 3>&-)  # we leave stderr alone
         local exit_code=$?
 
         set -e  # re-enable set -e
