@@ -10,6 +10,7 @@ function setup {
   set_state_initial
   set_state_git
   set_state_secret_init
+  set_state_secret_tell "$TEST_EXPIRED_USER"
 }
 
 function teardown {
@@ -17,15 +18,9 @@ function teardown {
   unset_current_state
 }
 
-@test "test 'tell' using expired key" {
-  run git secret tell "$TEST_EXPIRED_USER"
-  [ $status -ne 0 ] # failure here because we'd need to use 'tell -f' with expired key
-}
-
-@test "test 'hide' using expired key forced with 'tell -f'" {
+@test "run 'hide' using expired key" {
   FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
   FILE_CONTENTS="hidden content юникод"
-  set_state_secret_tell_force "$TEST_EXPIRED_USER"
   set_state_secret_add "$FILE_TO_HIDE" "$FILE_CONTENTS"
 
   run git secret hide   
@@ -39,8 +34,12 @@ function teardown {
 }
 
 
-@test "run 'whoknows -l' on expired key forced with 'tell -f'" {
-  set_state_secret_tell_force "$TEST_EXPIRED_USER"
+@test "run 'whoknows' using expired key" {
+  run git secret whoknows
+  [ $status -eq 0 ] 
+}
+
+@test "run 'whoknows -l' on only expired key" {
   run git secret whoknows -l
   [ "$status" -eq 0 ]
 
@@ -56,8 +55,7 @@ function teardown {
 
 
 
-@test "run 'whoknows -l' on normal key and forced expired key" {
-  set_state_secret_tell_force "$TEST_EXPIRED_USER"
+@test "run 'whoknows -l' on normal key and expired key" {
   install_fixture_key "$TEST_DEFAULT_USER"
   set_state_secret_tell "$TEST_DEFAULT_USER"
 
