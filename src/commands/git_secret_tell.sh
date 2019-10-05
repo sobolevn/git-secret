@@ -22,21 +22,18 @@ function tell {
   local emails
   local self_email=0
   local homedir
-  local force=0
 
   # A POSIX variable
   # Reset in case getopts has been used previously in the shell.
   OPTIND=1
 
-  while getopts "vhmfd:" opt; do
+  while getopts "vhmd:" opt; do
     case "$opt" in
       v) _SECRETS_VERBOSE=1;;
 
       h) _show_manual_for "tell";;
 
       m) self_email=1;;
-
-      f) force=1;;
 
       d) homedir=$(_clean_windows_path "$OPTARG");;
 
@@ -67,7 +64,7 @@ function tell {
   if [[ "${#emails[@]}" -eq 0 ]]; then
     # If after possible addition of git_email, emails are still empty,
     # we should raise an exception.
-    _abort "you must provide at least one email address."
+    _abort "you must use -m or provide at least one email address."
   fi
 
   # third param of "1" means "skip revoked/expired/invalid keys", so you can't add such keys
