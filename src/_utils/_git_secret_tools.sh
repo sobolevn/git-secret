@@ -540,8 +540,6 @@ function _exe_is_busybox {
 }
 
 # this is used by just about every command
-# it does not consider if the keys are expired, revoked or otherwise invalid
-# because we're already using these keys in the repo's keyring
 function _user_required {
   # This function does a bunch of validations:
   # 1. It calls `_secrets_dir_exists` to verify that "$_SECRETS_DIR" exists.
@@ -581,9 +579,6 @@ function _user_required {
 # https://github.com/sobolevn/git-secret/issues/268
 # where it will match emails that have other emails as substrings.
 # we need to use fingerprints for a unique key id with gpg.
-# as of 0.3.2 this is only used in 'whoknows'.
-# it does not consider if the keys are expired, revoked or otherwise invalid
-# because we're already using these keys in the repo's keyring
 function _get_user_key_expiry {
   # This function returns the user's key's expiry, as an epoch. 
   # It will return the empty string if there is no expiry date for the user's key
@@ -606,28 +601,24 @@ function _get_user_key_expiry {
 function _assert_keychain_contains_emails {
   local homedir=$1
   local emails=$2
-  local active_only=${3:-0}
 
   local gpg_uids
-  gpg_uids=$(_get_users_in_gpg_keyring "$homedir" "$active_only")
+  gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
   for email in "${emails[@]}"; do
     if [[ $email != *"@"* ]]; then
-        _abort "does not appear to be an email: $email"
+      _abort "does not appear to be an email: $email"
     fi
-    local email_ok=0
+    local emails_found=0
     for uid in $gpg_uids; do
-        if [[ "$uid" == "$email" ]]; then
-            email_ok=1
-            break
-        fi
-    done
-    if [[ $email_ok -eq 0 ]]; then
-      if [[ $active_only -ne 0 ]]; then
-        _abort "no valid key found in gpg keyring for: $email"
-      else
-        _abort "no key found in gpg keyring for: $email"
+      if [[ "$uid" == "$email" ]]; then
+        emails_found=$((emails_found+1))
       fi
-    fi
+    done
+    if [[ $emails_found -eq 0 ]]; then
+      _abort "no key found in gpg keyring for: $email"
+    elif [[ $emails_found -gt 1 ]]; then
+      _abort "$emails_found keys found in gpg keyring for: $email"
+    fi 
   done
 }
 
@@ -646,8 +637,6 @@ function _get_users_in_gpg_keyring {
   # `whoknows` command uses it internally.
   # parses the `gpg` public keys
   local homedir=$1
-  local active_only=${2:-0}
-
   local result
   local args=()
   if [[ -n "$homedir" ]]; then
@@ -660,26 +649,34 @@ function _get_users_in_gpg_keyring {
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
       gawk -F: '$1=="uid"' 3>&-)
 
-  # For #508 / #552: if user asked for only active keys, check $2 is none of:
+  # For #508 / #552: warn user if gpg indicates keys are one of:
   # i=invalid, d=disabled, r=revoked, e=expired, n=not valid
   # See https://github.com/gpg/gnupg/blob/master/doc/DETAILS#field-2---validity # for more on gpg 'validity codes'.
-  if [[ "$active_only" -eq 1 ]]; then
-      local new_result
-      new_result=$(echo "$result" | gawk -F: '$2!="i" && $2!="d" && $2!="r" && $2!="e" && $2!="n"')
-      if [[ "$result" != "$new_result" ]]; then
-          _warn "at least one key was ignored because it was revoked, expired, or otherwise invalid"
-      fi
-      result="$new_result"
-  fi
+  local invalid_lines
+  invalid_lines=$(echo "$result" | gawk -F: '$2=="i" || $2=="d" || $2=="r" || $2=="e" || $2=="n"')
 
   # gensub() outputs email from <> within field 10, "User-ID".  If there's no <>, then field is just an email address 
   #  (and maybe a comment) and we pass it through.
   # Sed at the end removes any 'comment' that appears in parentheses, for #530
-  result=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' )
+  local emails
+  emails=$(_extract_emails_from_gpg_output "$result")
 
-  echo "$result"
+  local emails_with_invalid_keys
+  emails_with_invalid_keys=$(_extract_emails_from_gpg_output "$invalid_lines")
+
+  if [[ -n "$emails_with_invalid_keys" ]]; then
+     _warn "at least one key for email(s) is revoked, expired, or otherwise invalid: $emails_with_invalid_keys"
+  fi
+
+  echo "$emails"
 }
 
+function _extract_emails_from_gpg_output {
+  local result=$1
+  emails=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' )
+  echo "$emails"
+    
+}
 
 function _get_users_in_gitsecret_keyring {
   # show the users in the gitsecret keyring.
