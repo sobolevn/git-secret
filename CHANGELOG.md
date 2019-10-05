@@ -4,8 +4,8 @@
 
 ### Bugfixes
 
-- Change 'tell' to skip disabled, revoked, expired, or otherwise invalid keys, and show warning when we do (#552, #508, #317, #290, #283, #238)
-- Add '-f' option to 'tell' to force use of unusable keys (mostly for testing, #508)
+- Warn about disabled, revoked, expired, or otherwise invalid keys (#552, #508, #317, #290, #283, #238)
+- Warn if 'tell' is used on an email address with multiple keys (#552)
 
 ## Version 0.3.2
 
