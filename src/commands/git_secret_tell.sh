@@ -68,11 +68,7 @@ function tell {
   fi
 
   # third param of "1" means "skip revoked/expired/invalid keys", so you can't add such keys
-  if [[ "$force" -eq 1 ]]; then
-    _assert_keychain_contains_emails "$homedir" "${emails[@]}" "0"
-  else
-    _assert_keychain_contains_emails "$homedir" "${emails[@]}" "1"
-  fi
+  _assert_keychain_contains_emails "$homedir" "${emails[@]}"
 
 
   local start_key_cnt
