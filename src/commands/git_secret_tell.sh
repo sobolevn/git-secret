@@ -67,9 +67,7 @@ function tell {
     _abort "you must use -m or provide at least one email address."
   fi
 
-  # third param of "1" means "skip revoked/expired/invalid keys", so you can't add such keys
   _assert_keychain_contains_emails "$homedir" "${emails[@]}"
-
 
   local start_key_cnt
   start_key_cnt=$(get_gpg_key_count)

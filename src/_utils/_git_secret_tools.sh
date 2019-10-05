@@ -655,9 +655,6 @@ function _get_users_in_gpg_keyring {
   local invalid_lines
   invalid_lines=$(echo "$result" | gawk -F: '$2=="i" || $2=="d" || $2=="r" || $2=="e" || $2=="n"')
 
-  # gensub() outputs email from <> within field 10, "User-ID".  If there's no <>, then field is just an email address 
-  #  (and maybe a comment) and we pass it through.
-  # Sed at the end removes any 'comment' that appears in parentheses, for #530
   local emails
   emails=$(_extract_emails_from_gpg_output "$result")
 
@@ -673,6 +670,10 @@ function _get_users_in_gpg_keyring {
 
 function _extract_emails_from_gpg_output {
   local result=$1
+
+  # gensub() outputs email from <> within field 10, "User-ID".  If there's no <>, then field is just an email address 
+  #  (and maybe a comment) and we pass it through.
+  # Sed at the end removes any 'comment' that appears in parentheses, for #530
   emails=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' )
   echo "$emails"
     
