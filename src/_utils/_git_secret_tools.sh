@@ -23,7 +23,7 @@ fi
 : "${SECRETS_EXTENSION:=".secret"}"
 
 export PS4="git-secret: running: "
-: "${SECRETS_SET_FLAG:="--"}"
+: "${_SECRETS_SET_FLAG:="--"}"
 
 # Commands:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
