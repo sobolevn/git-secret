@@ -8,6 +8,7 @@ function cat {
   OPTIND=1
 
   # 'cat' and 'changes' cannot show extra output
+  # shellcheck disable=SC2034
   SECRETS_VERBOSE=0
 
   while getopts 'hd:p:' opt; do
