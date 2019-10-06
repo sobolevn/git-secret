@@ -1,63 +1,114 @@
 #!/usr/bin/env bash
 set -e
 
-count_only_flag=""
-if [[ "$1" = "-c" ]]; then
-  count_only_flag=1
+count_only_flag=''
+extended_syntax_flag=''
+filter=''
+num_jobs=1
+have_gnu_parallel=
+flags=()
+
+while [[ "$#" -ne 0 ]]; do
+  case "$1" in
+  -c)
+    count_only_flag=1
+    ;;
+  -f)
+    shift
+    filter="$1"
+    flags+=('-f' "$filter")
+    ;;
+  -j)
+    shift
+    num_jobs="$1"
+    ;;
+  -x)
+    # shellcheck disable=SC2034
+    extended_syntax_flag='-x'
+    flags+=('-x')
+    ;;
+  *)
+    break
+    ;;
+  esac
   shift
-fi
-
-extended_syntax_flag=""
-if [[ "$1" = "-x" ]]; then
-  extended_syntax_flag="-x"
-  shift
-fi
-
-trap "kill 0; exit 1" int
-
-count=0
-for filename in "$@"; do
-  while IFS= read -r line; do
-    if [[ "$line" =~ $BATS_TEST_PATTERN ]]; then
-      let count+=1
-    fi
-  done <"$filename"
 done
 
+if ( type -p parallel &>/dev/null ); then
+  # shellcheck disable=SC2034
+  have_gnu_parallel=1
+elif [[ "$num_jobs" != 1 ]]; then
+  printf 'bats: cannot execute "%s" jobs without GNU parallel\n' "$num_jobs" >&2
+  exit 1
+fi
+
+trap 'kill 0; exit 1' INT
+
+all_tests=()
+for filename in "$@"; do
+  if  [[ ! -f "$filename" ]]; then
+    printf 'bats: %s does not exist\n' "$filename" >&2
+    exit 1
+  fi
+
+  test_names=()
+  test_dupes=()
+  while read -r line; do
+    if [[ ! "$line" =~ ^bats_test_function\  ]]; then
+      continue
+    fi
+    line="${line%$'\r'}"
+    line="${line#* }"
+
+    all_tests+=( "$(printf "%s\t%s" "$filename" "$line")" )
+    if [[ " ${test_names[*]} " == *" $line "* ]]; then
+      test_dupes+=("$line")
+      continue
+    fi
+    test_names+=("$line")
+  done < <(BATS_TEST_FILTER="$filter" bats-preprocess "$filename")
+
+  if [[ "${#test_dupes[@]}" -ne 0 ]]; then
+    printf 'bats warning: duplicate test name(s) in %s: %s\n' "$filename" "${test_dupes[*]}" >&2
+  fi
+done
+
+test_count="${#all_tests[@]}"
+
 if [[ -n "$count_only_flag" ]]; then
-  printf '%d\n' "$count"
+  printf '%d\n' "${test_count}"
   exit
 fi
 
-printf '1..%d\n' "$count"
 status=0
-offset=0
-for filename in "$@"; do
-  index=0
-  {
-    IFS= read -r # 1..n
-    while IFS= read -r line; do
-      case "$line" in
-      "begin "* )
-        let index+=1
-        printf '%s\n' "${line/ $index / $(($offset + $index)) }"
-        ;;
-      "ok "* | "not ok "* )
-        if [[ -z "$extended_syntax_flag" ]]; then
-          let index+=1
-        fi
-        printf '%s\n' "${line/ $index / $(($offset + $index)) }"
-        if [[ "${line:0:6}" == "not ok" ]]; then
-          status=1
-        fi
-        ;;
-      * )
-        printf '%s\n' "$line"
-        ;;
-      esac
-    done
-  } < <( bats-exec-test $extended_syntax_flag "$filename" )
-  offset=$(($offset + $index))
-done
+printf '1..%d\n' "${test_count}"
 
+# No point on continuing if there's no tests.
+if [[ "${test_count}" == 0 ]]; then
+  exit
+fi
+
+if [[ "$num_jobs" != 1 ]]; then
+  # Only use GNU parallel when we want parallel execution -- there is a small
+  # amount of overhead using it over a simple loop in the serial case.
+  set -o pipefail
+  printf '%s\n' "${all_tests[@]}" | grep -v '^$' | \
+    parallel -qk -j "$num_jobs" --colsep="\t" -- bats-exec-test "${flags[@]}" '{1}' '{2}' '{#}' || status=1
+else
+  # Just do it serially.
+  test_number=0
+  for test_line in "${all_tests[@]}"; do
+    # Only handle non-empty lines
+    if [[ $test_line ]]; then
+      filename="${test_line%%$'\t'*}"
+      test_name="${test_line##*$'\t'}"
+      ((++test_number))
+      bats-exec-test "${flags[@]}" "$filename" "$test_name" "$test_number" || status=1
+    fi
+  done
+  if [[ "${test_number}" != "${test_count}" ]]; then
+    printf '# bats warning: Only executed %s of %s tests\n' "$test_number" "$test_count"
+    status=1
+  fi
+fi
 exit "$status"

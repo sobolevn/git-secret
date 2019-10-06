@@ -1,6 +1,12 @@
+emulate_bats_env() {
+  export BATS_CWD="$PWD"
+  export BATS_TEST_PATTERN="^[[:blank:]]*@test[[:blank:]]+(.*[^[:blank:]])[[:blank:]]+\{(.*)\$"
+  export BATS_TEST_FILTER=
+}
+
 fixtures() {
   FIXTURE_ROOT="$BATS_TEST_DIRNAME/fixtures/$1"
-  bats_trim_filename "$FIXTURE_ROOT" 'RELATIVE_FIXTURE_ROOT'
+  RELATIVE_FIXTURE_ROOT="${FIXTURE_ROOT#$BATS_CWD/}"
 }
 
 make_bats_test_suite_tmpdir() {
