@@ -704,6 +704,8 @@ function _decrypt {
 
   if [[ "$write_to_file" -eq 1 ]]; then
     args+=( "-o" "$filename" )
+  else
+    : "${_SECRETS_SET_FLAG:="--"}"
   fi
 
   if [[ "$force" -eq 1 ]]; then
