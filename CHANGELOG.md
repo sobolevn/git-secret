@@ -1,5 +1,11 @@
 # Changelog
 
+## {{Next Version}}
+
+### Misc
+
+- Update bats-core to beta version e582ef5, for faster testing (#540)
+
 ## Version 0.3.2
 
 ### Bugfixes
