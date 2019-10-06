@@ -1,6 +1,6 @@
 README for git-secret/vendor directory
 
-We import bats-core v1.1.0 here for 
+We import bats-core at SHA e582ef5 here, originally for 
 https://github.com/sobolevn/git-secret/issues/377,
 "Don't depend on network during builds (re: bats-core)"
 
