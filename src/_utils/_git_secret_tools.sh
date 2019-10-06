@@ -15,13 +15,13 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 # _SECRETS_VERBOSE is expected to be empty or '1'. 
 # Empty means 'off', any other value means 'on'.
 # shellcheck disable=SC2153
-if [[ -n "$SECRETS_TEST_VERBOSE" ]] || [[ -n "$SECRETS_VERBOSE" && "$SECRETS_VERBOSE" -ne 0 ]]; then
+if [[ -n "$SECRETS_VERBOSE" && "$SECRETS_VERBOSE" -ne 0 ]]; then
     # shellcheck disable=SC2034
     _SECRETS_VERBOSE='1'
-    : "${_SECRETS_SET_FLAG:="-x"}"
+    : "${_SECRETS_SET_FLAG="-x"}"
     export PS4="git-secret: running: "
 else
-    : "${_SECRETS_SET_FLAG:="--"}"
+    : "${_SECRETS_SET_FLAG="--"}"
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
@@ -566,9 +566,7 @@ function _user_required {
 
   # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
   local keys_exist
-
   keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
-
   local exit_code=$?
   if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
@@ -704,8 +702,6 @@ function _decrypt {
 
   if [[ "$write_to_file" -eq 1 ]]; then
     args+=( "-o" "$filename" )
-  else
-    : "${_SECRETS_SET_FLAG:="--"}"
   fi
 
   if [[ "$force" -eq 1 ]]; then
