@@ -36,7 +36,7 @@ function _secret_files_exists {
 
 
 @test "run 'clean' normally" {
-  run git secret clean
+  run_wrapper git secret clean
   [ "$status" -eq 0 ]
 
   # There must be no .secret files:
@@ -45,18 +45,18 @@ function _secret_files_exists {
 }
 
 @test "run 'clean' with extra filename" {
-  run git secret clean extra_filename
+  run_wrapper git secret clean extra_filename
   [ "$status" -ne 0 ]
 }
 
 @test "run 'clean' with bad arg" {
-  run git secret clean -Z
+  run_wrapper git secret clean -Z
   [ "$status" -ne 0 ]
 }
 
 
 @test "run 'clean' with '-v'" {
-  run git secret clean -v
+  run_wrapper git secret clean -v
   [ "$status" -eq 0 ]
 
   # There must be no .secret files:
@@ -75,7 +75,7 @@ function _secret_files_exists {
 # this test is like above, but uses SECRETS_VERBOSE env var
 @test "run 'clean' with 'SECRETS_VERBOSE=1'" {
   export SECRETS_VERBOSE=1
-  run git secret clean 
+  run_wrapper git secret clean 
   [ "$status" -eq 0 ]
 
   # Output must be verbose:
@@ -86,7 +86,7 @@ function _secret_files_exists {
 # and expected non-verbose output
 @test "run 'clean' with 'SECRETS_VERBOSE=0'" {
   export SECRETS_VERBOSE=0
-  run git secret clean 
+  run_wrapper git secret clean 
   [ "$status" -eq 0 ]
 
   # Output must not be verbose:

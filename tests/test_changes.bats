@@ -33,7 +33,7 @@ function teardown {
 
 @test "run 'changes' on one file with no file changed" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
 
   [ "$status" -eq 0 ]
 
@@ -47,7 +47,7 @@ function teardown {
   local new_content="new content"
   echo "$new_content" >> "$FILE_TO_HIDE"
 
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
@@ -65,7 +65,7 @@ function teardown {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   rm "$FILE_TO_HIDE" || _abort "error removing: $FILE_TO_HIDE"
 
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -ne 0 ]
 }
 
@@ -74,7 +74,7 @@ function teardown {
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   rm "$encrypted_file" || _abort "error removing: $encrypted_file"
 
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -ne 0 ]
 }
 
@@ -84,7 +84,7 @@ function teardown {
   local new_content="replace"
   echo "$new_content" > "$FILE_TO_HIDE"
 
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
@@ -98,7 +98,7 @@ function teardown {
 @test "run 'changes' on two files with no file changed" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
 
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
 
 
   [ "$status" -eq 0 ]
@@ -115,7 +115,7 @@ function teardown {
   echo "$new_content" >> "$FILE_TO_HIDE"
   echo "$second_new_content" >> "$SECOND_FILE_TO_HIDE"
 
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -eq 0 ]
 
   # Testing that output has both filename and changes:
@@ -137,7 +137,7 @@ function teardown {
   echo "$new_content" >> "$FILE_TO_HIDE"
   echo "$second_new_content" >> "$SECOND_FILE_TO_HIDE"
 
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" \
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" \
     "$FILE_TO_HIDE" "$SECOND_FILE_TO_HIDE"
 
   [ "$status" -eq 0 ]
@@ -153,7 +153,7 @@ function teardown {
 }
 
 @test "run 'changes' on file that does not exist" {
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_NON_EXISTENT"
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_NON_EXISTENT"
   [ "$status" -ne 0 ]
 }
 
@@ -162,7 +162,7 @@ function teardown {
   set_state_secret_hide
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$THIRD_FILE_TO_HIDE"
+  run_wrapper git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$THIRD_FILE_TO_HIDE"
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
@@ -172,7 +172,7 @@ function teardown {
 }
 
 @test "run 'changes' with bad arg" {
-  run git secret changes -Z
+  run_wrapper git secret changes -Z
   [ "$status" -ne 0 ]
 }
 

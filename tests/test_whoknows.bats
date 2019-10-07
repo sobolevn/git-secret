@@ -23,7 +23,7 @@ function teardown {
 
 
 @test "run 'whoknows' normally" {
-  run git secret whoknows
+  run_wrapper git secret whoknows
   [ "$status" -eq 0 ]
 
   # Now test the output, both users should be present:
@@ -32,17 +32,17 @@ function teardown {
 }
 
 @test "run 'whoknows' with extra filename" {
-  run git secret whoknows extra_filename
+  run_wrapper git secret whoknows extra_filename
   [ "$status" -ne 0 ]
 }
 
 @test "run 'whoknows' with bad arg" {
-  run git secret whoknows -Z
+  run_wrapper git secret whoknows -Z
   [ "$status" -ne 0 ]
 }
 
 @test "run 'whoknows -l'" {
-  run git secret whoknows -l
+  run_wrapper git secret whoknows -l
   [ "$status" -eq 0 ]
 
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
@@ -68,7 +68,7 @@ function teardown {
   cd "$test_dir"
 
   # Test:
-  run git secret whoknows
+  run_wrapper git secret whoknows
   [ "$status" -eq 0 ]
 
   # Now test the output, both users should be present:
@@ -88,6 +88,6 @@ function teardown {
   git secret killperson "$email1" "$email2"
 
   # Now whoknows should raise an error: there are no users.
-  run git secret whoknows
+  run_wrapper git secret whoknows
   [ "$status" -eq 1 ]
 }
