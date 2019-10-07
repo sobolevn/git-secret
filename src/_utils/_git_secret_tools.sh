@@ -17,7 +17,7 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 # shellcheck disable=SC2153
 if [[ -n "$SECRETS_VERBOSE" && "$SECRETS_VERBOSE" -ne 0 ]]; then
     # shellcheck disable=SC2034
-    _SECRETS_VERBOSE='1'
+    _SECRETS_VERBOSE=1
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
@@ -472,7 +472,7 @@ function _find_and_clean_formatted {
 
   if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
       # shellcheck disable=SC2001
-      echo "$outputs" | sed "s/^/git-secret: cleaning: /" 
+      echo "$outputs" | sed "s/^/git-secret: removing: /" 
   fi
 }
 
