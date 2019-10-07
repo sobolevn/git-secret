@@ -67,7 +67,7 @@ function _secret_files_exists {
   local second_filename=$(_get_encrypted_filename "$SECOND_FILE")
 
   # Output must be verbose:
-  [[ "$output" == *"cleaning"* ]]
+  [[ "$output" == *"removing:"* ]]
   [[ "$output" == *"$first_filename"* ]]
   [[ "$output" == *"$second_filename"* ]]
 }
@@ -79,7 +79,7 @@ function _secret_files_exists {
   [ "$status" -eq 0 ]
 
   # Output must be verbose:
-  [[ "$output" == *"cleaning"* ]]
+  [[ "$output" == *"removing:"* ]]
 }
 
 # this test is like above, but sets SECRETS_VERBOSE env var to 0
@@ -90,6 +90,6 @@ function _secret_files_exists {
   [ "$status" -eq 0 ]
 
   # Output must not be verbose:
-  [[ "$output" != *"cleaning"* ]]
+  [[ "$output" != *"removing:"* ]]
 }
 
