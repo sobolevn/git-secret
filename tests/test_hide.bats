@@ -232,7 +232,7 @@ function teardown {
   [ -f "$FILE_TO_HIDE" ]
 
   # Output should be verbose:
-  [[ "$output" == *"cleaning"* ]]
+  [[ "$output" == *"removing:"* ]]
   [[ "$output" == *"$encrypted_filename"* ]]
 }
 
@@ -254,7 +254,7 @@ function teardown {
   [ ! -f "$FILE_TO_HIDE" ]
 
   # It should be verbose:
-  [[ "$output" == *"removing unencrypted files"* ]]
+  [[ "$output" == *"removing:"* ]]
   [[ "$output" == *"$FILE_TO_HIDE"* ]]
 }
 
@@ -279,7 +279,7 @@ function teardown {
   [ ! -f "$second_file" ]
 
   # It should be verbose:
-  [[ "$output" == *"removing unencrypted files"* ]]
+  [[ "$output" == *"removing:"* ]]
   [[ "$output" == *"$FILE_TO_HIDE"* ]]
   [[ "$output" == *"$second_file"* ]]
 
