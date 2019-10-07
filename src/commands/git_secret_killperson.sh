@@ -31,8 +31,7 @@ function killperson {
   _assert_keychain_contains_emails "$secrets_dir_keys" "${emails[@]}"
 
   for email in "${emails[@]}"; do
-    # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
-    ( set "$_SECRETS_SET_FLAG"; $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --batch --yes --delete-key "$email" 3>&-)
+    ( _maybe_show_command; $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --batch --yes --delete-key "$email" )
     local exit_code=$?
     if [[ "$exit_code" -ne 0 ]]; then
       _abort "problem deleting key for '$email' with gpg: exit code $exit_code"
