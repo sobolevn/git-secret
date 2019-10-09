@@ -29,7 +29,7 @@ function teardown {
 
 @test "run 'hide -F' with missing input file" {
   mv "$FILE_TO_HIDE" "$FILE_TO_HIDE.was"    # move the first file out of the way
-  run git secret hide -F
+  run_wrapper git secret hide -F
 
   #echo "# output of 'git secret hide -F' is: $output" >&3
 
