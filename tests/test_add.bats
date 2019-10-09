@@ -25,7 +25,7 @@ function teardown {
   echo "content" > "$filename"
   echo "$filename" > ".gitignore"
 
-  run git secret add "$filename"
+  run_wrapper git secret add "$filename"
   [ "$status" -eq 0 ]
 
   # Ensuring that path mappings was set correctly:
@@ -45,7 +45,7 @@ function teardown {
   touch "$test_file"
   echo "content" > "$test_file"
 
-  run git secret add -Z "$test_file"
+  run_wrapper git secret add -Z "$test_file"
   [ "$status" -ne 0 ]
 
   rm "$test_file"
@@ -57,7 +57,7 @@ function teardown {
   touch "$test_file"
   echo "content" > "$test_file"
 
-  run git secret add "$test_file"
+  run_wrapper git secret add "$test_file"
   [ "$status" -eq 0 ]
 
   rm "$test_file"
@@ -70,10 +70,10 @@ function teardown {
   echo "content" > "$test_file"
 
   # add -i is now a no-op (See #225) so this tests that -i does nothing.
-  run git secret add -i "$test_file"
+  run_wrapper git secret add -i "$test_file"
   [ "$status" -eq 0 ]
 
-  run _file_has_line "$test_file" ".gitignore"
+  run_wrapper _file_has_line "$test_file" ".gitignore"
   [ "$status" -eq 0 ]
 
   rm "$test_file"
@@ -102,11 +102,11 @@ function teardown {
   echo "content" > "$test_file"
 
   # Test commands:
-  run git secret add -i "$test_file"
+  run_wrapper git secret add -i "$test_file"
   [ "$status" -eq 0 ]
 
   [[ -f "$current_dir/.gitignore" ]]
-  run _file_has_line "$test_file" "$current_dir/.gitignore"
+  run_wrapper _file_has_line "$test_file" "$current_dir/.gitignore"
   [ "$status" -eq 0 ]
 
   # .gitignore was not created:
@@ -139,7 +139,7 @@ function teardown {
   cd "$sibling"
 
   # Testing:
-  run git secret add "../node/$TEST_DEFAULT_FILENAME"
+  run_wrapper git secret add "../node/$TEST_DEFAULT_FILENAME"
   [ "$status" -eq 0 ]
   [[ "$output" == *"git-secret: 1 item(s) added."* ]]
 
@@ -172,7 +172,7 @@ function teardown {
   echo "$test_dir/$test_file" > ".gitignore"
 
   # Testing:
-  run git secret add "$test_dir/$test_file"
+  run_wrapper git secret add "$test_dir/$test_file"
   [ "$status" -eq 0 ]
   [[ "$output" == *"git-secret: 1 item(s) added."* ]]
 
@@ -188,8 +188,8 @@ function teardown {
   echo "$filename" > ".gitignore"
 
   # Testing:
-  run git secret add "$filename"
-  run git secret add "$filename"
+  run_wrapper git secret add "$filename"
+  run_wrapper git secret add "$filename"
   [ "$status" -eq 0 ]
   [ "$output" = "git-secret: 1 item(s) added." ]
 
@@ -216,7 +216,7 @@ function teardown {
   echo "$filename2" >> ".gitignore"
 
   # Testing:
-  run git secret add "$filename1" "$filename2"
+  run_wrapper git secret add "$filename1" "$filename2"
   [ "$status" -eq 0 ]
   [ "$output" = "git-secret: 2 item(s) added." ]
 

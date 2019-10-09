@@ -33,7 +33,7 @@ function teardown {
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]
   [ -f "$FILE_TO_HIDE" ]
@@ -48,7 +48,7 @@ function teardown {
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret reveal -Z k-d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret reveal -Z k-d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -ne 0 ]
 }
 
@@ -56,7 +56,7 @@ function teardown {
   rm "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret reveal -f -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret reveal -f -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]
   [ -f "$FILE_TO_HIDE" ]
@@ -66,7 +66,7 @@ function teardown {
   rm "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret reveal -v -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret reveal -v -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]
   [ -f "$FILE_TO_HIDE" ]
@@ -81,7 +81,7 @@ function teardown {
   local secret_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   chmod o-rwx "$secret_file"
 
-  run git secret reveal -P -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret reveal -P -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]
 
@@ -99,7 +99,7 @@ function teardown {
 @test "run 'reveal' with wrong password" {
   rm "$FILE_TO_HIDE"
 
-  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "WRONG"
+  run_wrapper git secret reveal -d "$TEST_GPG_HOMEDIR" -p "WRONG"
   [ "$status" -eq 2 ]
   [ ! -f "$FILE_TO_HIDE" ]
 }
@@ -113,7 +113,7 @@ function teardown {
   local attacker_fingerprint=$(install_fixture_full_key "$TEST_ATTACKER_USER")
   local password=$(test_user_password "$TEST_ATTACKER_USER")
 
-  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   # This should fail, nothing should be created:
   [ "$status" -eq 2 ]
@@ -130,7 +130,7 @@ function teardown {
   local attacker_fingerprint=$(install_fixture_full_key "$TEST_ATTACKER_USER")
   local password=$(test_user_password "$TEST_ATTACKER_USER")
 
-  run git secret reveal -F -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret reveal -F -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   #echo "# status is $status" >&3
 
@@ -157,7 +157,7 @@ function teardown {
   uninstall_fixture_full_key "$TEST_DEFAULT_USER" "$FINGERPRINT"
 
   # Testing:
-  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]
   [ -f "$FILE_TO_HIDE" ]
@@ -176,7 +176,7 @@ function teardown {
   set_state_secret_hide
 
   # Testing:
-  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  run_wrapper git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]
   [ -f "$FILE_TO_HIDE" ]
@@ -189,7 +189,7 @@ function teardown {
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  SECRETS_PINENTRY=loopback run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  SECRETS_PINENTRY=loopback run_wrapper git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -eq 0 ]
 }
 
@@ -201,6 +201,6 @@ function teardown {
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  SECRETS_PINENTRY=error run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  SECRETS_PINENTRY=error run_wrapper git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -ne 0 ]
 }

@@ -7,6 +7,14 @@
 - Warn about disabled, revoked, expired, or otherwise invalid keys (#552, #508, #317, #290, #283, #238)
 - Warn if 'tell' is used on an email address with multiple keys (#552)
 
+### Features
+
+- Verbose mode shows gpg commands used for hide, reveal, tell, and killperson (#554)
+
+### Misc
+
+- Fix tests from occasional hang when interrupting with cntl-c (#558)
+
 ## Version 0.3.2
 
 ### Bugfixes
