@@ -23,13 +23,13 @@ function teardown {
 @test "run 'init' without '.git'" {
   remove_git_repository
 
-  run git secret init
+  run_wrapper git secret init
   [ "$status" -eq 1 ]
 }
 
 
 @test "run 'init' normally" {
-  run git secret init
+  run_wrapper git secret init
   [ "$status" -eq 0 ]
 
   [[ -d "${_SECRETS_DIR}" ]]
@@ -37,12 +37,12 @@ function teardown {
 
 
 @test "run 'init' with extra filename" {
-  run git secret init extra_filename
+  run_wrapper git secret init extra_filename
   [ "$status" -ne 0 ]
 }
 
 @test "run 'init' with bad arg" {
-  run git secret init -Z
+  run_wrapper git secret init -Z
   [ "$status" -ne 0 ]
 }
 
@@ -64,7 +64,7 @@ function teardown {
   cd "$nested_dir"
 
   # Test:
-  run git secret init
+  run_wrapper git secret init
   [ "$status" -eq 0 ]
 
   # It should not be created in the current folder:
@@ -87,7 +87,7 @@ function teardown {
 
   mkdir "$secrets_dir"
 
-  run git secret init
+  run_wrapper git secret init
   [ "$output" = "git-secret: abort: already initialized." ]
   [ "$status" -eq 1 ]
 }

@@ -2,8 +2,13 @@
 
 ## {{Next Version}}
 
+### Features
+
+- Verbose mode shows gpg commands used for hide, reveal, tell, and killperson (#554)
+
 ### Misc
 
+- Fix tests from occasional hang when interrupting with cntl-c (#558)
 - Update bats-core to beta version e582ef5, for faster testing (#540)
 
 ## Version 0.3.2

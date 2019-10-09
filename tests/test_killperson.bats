@@ -20,7 +20,7 @@ function teardown {
 
 
 @test "run 'killperson' without arguments" {
-  run git secret killperson
+  run_wrapper git secret killperson
   [ "$status" -eq 1 ]
 }
 
@@ -30,11 +30,11 @@ function teardown {
   name=$(echo "$TEST_DEFAULT_USER" | sed -e 's/@.*//')
 
   # killperson must use full email, not short name
-  run git secret killperson "$name"
+  run_wrapper git secret killperson "$name"
   [ "$status" -eq 1 ]
 
   # Then whoknows will be ok because user3@gitsecret.io still knows
-  run git secret whoknows
+  run_wrapper git secret whoknows
   [ "$status" -eq 0 ]
 
   # Testing output:
@@ -45,14 +45,14 @@ function teardown {
 @test "run 'killperson' with email" {
   local email="$TEST_DEFAULT_USER"
 
-  run git secret killperson "$email"
+  run_wrapper git secret killperson "$email"
   [ "$status" -eq 0 ]
 
   # Testing output:
   [[ "$output" == *"$email"* ]]
 
   # Then whoknows must return an error with status code 1:
-  run git secret whoknows
+  run_wrapper git secret whoknows
   [ "$status" -eq 1 ]
 }
 
@@ -65,7 +65,7 @@ function teardown {
   local default_email="$TEST_DEFAULT_USER"
   local second_email="$TEST_SECOND_USER"
 
-  run git secret killperson "$default_email" "$second_email"
+  run_wrapper git secret killperson "$default_email" "$second_email"
   [ "$status" -eq 0 ]
 
   # Testing output:
@@ -73,13 +73,13 @@ function teardown {
   [[ "$output" == *"$second_email"* ]]
 
   # Nothing to show:
-  run git secret whoknows
+  run_wrapper git secret whoknows
   [ "$status" -eq 1 ]
 }
 
 @test "run 'killperson' with bad arg" {
   local email="$TEST_DEFAULT_USER"
-  run git secret killperson -Z "$email"
+  run_wrapper git secret killperson -Z "$email"
   [ "$status" -ne 0 ]
 }
 

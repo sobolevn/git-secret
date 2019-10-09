@@ -26,7 +26,7 @@ function teardown {
 
 
 @test "run 'hide' normally" {
-  run git secret hide
+  run_wrapper git secret hide
 
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
@@ -40,17 +40,17 @@ function teardown {
 }
 
 @test "run 'hide' with extra filename" {
-  run git secret hide extra_filename
+  run_wrapper git secret hide extra_filename
   [ "$status" -ne 0 ]
 }
 
 @test "run 'hide' with bad arg" {
-  run git secret hide -Z
+  run_wrapper git secret hide -Z
   [ "$status" -ne 0 ]
 }
 
 @test "run 'hide' normally with SECRETS_VERBOSE=1" {
-  SECRETS_VERBOSE=1 run git secret hide 
+  SECRETS_VERBOSE=1 run_wrapper git secret hide 
 
   # Command must execute normally. 
   [ "$status" -eq 0 ]
@@ -61,7 +61,7 @@ function teardown {
   # attempt to alter permissions on input file
   chmod o-rwx "$FILE_TO_HIDE"
 
-  run git secret hide -P
+  run_wrapper git secret hide -P
 
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
@@ -103,7 +103,7 @@ function teardown {
   cd "$root_dir"
 
   # Now it should hide 2 files:
-  run git secret hide
+  run_wrapper git secret hide
   [ "$status" -eq 0 ]
 
   # cd back and clean up
@@ -121,7 +121,7 @@ function teardown {
   rm -f "$second_file"
 
   # Now it should return an error because one file can't be found
-  run git secret hide
+  run_wrapper git secret hide
   [ "$status" -ne 0 ]
   [ "$output" != "git-secret: done. 2 of 2 files are hidden." ]
 }
@@ -134,7 +134,7 @@ function teardown {
   set_state_secret_add "$second_file" "$second_content"
 
   # Now it should hide 2 files:
-  run git secret hide
+  run_wrapper git secret hide
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
   [ "$status" -eq 0 ]
   [[ "$output" == *"git-secret: done. 2 of 2 files are hidden."* ]]
@@ -145,12 +145,12 @@ function teardown {
 
 
 @test "run 'hide' with '-m'" {
-  run git secret hide -m
+  run_wrapper git secret hide -m
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
   # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
-  [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # New files should be created:
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
@@ -161,19 +161,19 @@ function teardown {
 @test "run 'hide' with '-m' twice" {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
-  run git secret hide -m
+  run_wrapper git secret hide -m
 
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
   # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
-  [[ "${lines[0]}" == *"git-secret: done. 1 of 1 files are hidden."* ]]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
-  # run hide again
-  run git secret hide -m
+  # run_wrapper hide again
+  run_wrapper git secret hide -m
   # compare
   [ "$status" -eq 0 ]
   [[ "${#lines[@]}" -eq 1 ]]
@@ -192,19 +192,19 @@ function teardown {
 @test "run 'hide' without then with '-m'" {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
-  run git secret hide
+  run_wrapper git secret hide
 
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
   # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
-  [[ "${lines[0]}" == *"git-secret: done. 1 of 1 files are hidden."* ]]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # back path mappings
   cp "${path_mappings}" "${path_mappings}.bak"
-  # run hide again
-  run git secret hide -m
+  # run_wrapper hide again
+  run_wrapper git secret hide -m
   # compare
   [ "$status" -eq 0 ]
   [[ "${#lines[@]}" -eq 1 ]]
@@ -225,20 +225,20 @@ function teardown {
   local encrypted_filename=$(_get_encrypted_filename "$FILE_TO_HIDE")
   set_state_secret_hide # so it would be data to clean
 
-  run git secret hide -v -c
+  run_wrapper git secret hide -v -c
   [ "$status" -eq 0 ]
 
   # File should be still there (it is not deletion):
   [ -f "$FILE_TO_HIDE" ]
 
   # Output should be verbose:
-  [[ "$output" == *"cleaning"* ]]
+  [[ "$output" == *"removing:"* ]]
   [[ "$output" == *"$encrypted_filename"* ]]
 }
 
 
 @test "run 'hide' with '-d'" {
-  run git secret hide -d
+  run_wrapper git secret hide -d
   [ "$status" -eq 0 ]
 
   # File must be removed:
@@ -247,14 +247,14 @@ function teardown {
 
 
 @test "run 'hide' with '-d' and '-v'" {
-  run git secret hide -v -d
+  run_wrapper git secret hide -v -d
   [ "$status" -eq 0 ]
 
   # File must be removed:
   [ ! -f "$FILE_TO_HIDE" ]
 
   # It should be verbose:
-  [[ "$output" == *"removing unencrypted files"* ]]
+  [[ "$output" == *"removing:"* ]]
   [[ "$output" == *"$FILE_TO_HIDE"* ]]
 }
 
@@ -271,7 +271,7 @@ function teardown {
   [ -f "$second_file" ]
 
   # Now it should hide 2 files:
-  run git secret hide -v -d
+  run_wrapper git secret hide -v -d
   [ "$status" -eq 0 ]
 
   # File must be removed:
@@ -279,7 +279,7 @@ function teardown {
   [ ! -f "$second_file" ]
 
   # It should be verbose:
-  [[ "$output" == *"removing unencrypted files"* ]]
+  [[ "$output" == *"removing:"* ]]
   [[ "$output" == *"$FILE_TO_HIDE"* ]]
   [[ "$output" == *"$second_file"* ]]
 
@@ -291,7 +291,7 @@ function teardown {
   install_fixture_key "$TEST_SECOND_USER"
   set_state_secret_tell "$TEST_SECOND_USER"
 
-  run git secret hide
+  run_wrapper git secret hide
   [ "$status" -eq 0 ]
   [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 }
