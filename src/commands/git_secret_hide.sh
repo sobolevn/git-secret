@@ -31,13 +31,21 @@ function _optional_delete {
     local path_mappings
     path_mappings=$(_get_secrets_dir_paths_mapping)
 
+    # We use custom formatting here:
+    if [[ -n "$_SECRETS_VERBOSE" ]]; then
+      echo && _message 'removing unencrypted files:'
+    fi
+
     while read -r line; do
       # So the formatting would not be repeated several times here:
       local filename
       filename=$(_get_record_filename "$line")
-      _find_and_clean_formatted "*$filename"
+      _find_and_clean "*$filename"
     done < "$path_mappings"
 
+    if [[ -n "$_SECRETS_VERBOSE" ]]; then
+      echo
+    fi
   fi
 }
 
@@ -162,12 +170,9 @@ function hide {
 
         set +e   # disable 'set -e' so we can capture exit_code
 
+     	  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
         local gpg_output
-        if [[ -n $_SECRETS_VERBOSE ]]; then 
-          # we don't use _maybe_show_command here because we couldn't get it working right
-          echo "git-secret: running:" "$SECRETS_GPG_COMMAND" "${args[@]}"
-        fi
-        gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}")  # we leave stderr alone
+        gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}" 3>&-)  # we leave stderr alone
         local exit_code=$?
 
         set -e  # re-enable set -e

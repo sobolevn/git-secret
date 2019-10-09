@@ -15,19 +15,19 @@ function teardown {
 
 
 @test "run 'git secret' without command" {
-  run_wrapper git secret
+  run git secret
   [ "$status" -eq 126 ]
 }
 
 
 @test "run 'git secret' with bad command" {
-  run_wrapper git secret notacommand
+  run git secret notacommand
   [ "$status" -eq 126 ]
 }
 
 
 @test "run 'git secret --version'" {
-  run_wrapper git secret --version
+  run git secret --version
   [ "$output" == "$GITSECRET_VERSION" ]
 }
 
@@ -38,7 +38,7 @@ function teardown {
 
   # test of 'git secret usage' here removed as it's duplicated in test_usage.bats
 
-  # Dry run_wrapper won't fail:
-  run_wrapper git secret --dry-run
+  # Dry run won't fail:
+  run git secret --dry-run
   [ "$status" -eq 0 ]
 }

@@ -62,12 +62,6 @@ export TEST_SECOND_FILENAME="space file two" # has spaces
 export TEST_THIRD_FILENAME="space file three"  # has spaces
 
 
-# this works around https://github.com/bats-core/bats-core/issues/155
-# always use run_wrapper() and not bats-core's run()
-function run_wrapper {
-    run "${@}" 3>- 
-}
-
 function test_user_password {
   # Password for 'user3@gitsecret.io' is 'user3pass'
   # As it was set on key creation. 
@@ -220,7 +214,7 @@ function set_state_initial {
 
 
 function set_state_git {
-  git init | sed 's/^/git: /' >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  git init >> "$TEST_GPG_OUTPUT_FILE" 2>&1
 }
 
 

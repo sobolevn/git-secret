@@ -26,18 +26,18 @@ function teardown {
 
 
 @test "run 'list' normally" {
-  run_wrapper git secret list
+  run git secret list
   [ "$status" -eq 0 ]
   [ "$output" = "$FILE_TO_HIDE" ]
 }
 
 @test "run 'list' with extra filename" {
-  run_wrapper git secret list extra_filename
+  run git secret list extra_filename
   [ "$status" -ne 0 ]
 }
 
 @test "run 'list' with bad arg" {
-  run_wrapper git secret list -Z
+  run git secret list -Z
   [ "$status" -ne 0 ]
 }
 
@@ -46,7 +46,7 @@ function teardown {
   local second_file="second_file.txt"
   set_state_secret_add "$second_file" "$FILE_CONTENTS"
 
-  run_wrapper git secret list
+  run git secret list
   [ "$status" -eq 0 ]
 
   # Now it should list two files:
@@ -62,6 +62,6 @@ function teardown {
   git secret remove "$FILE_TO_HIDE"
 
   # Running `list` on empty mapping should result an error:
-  run_wrapper git secret list
+  run git secret list
   [ "$status" -eq 1 ]
 }

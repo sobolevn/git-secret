@@ -18,7 +18,7 @@ function teardown {
 }
 
 @test "run 'tell' with '-v'" {
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" -v "$TEST_DEFAULT_USER"
+  run git secret tell -d "$TEST_GPG_HOMEDIR" -v "$TEST_DEFAULT_USER"
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   [[ "$output" == *"created"* ]]
@@ -28,7 +28,7 @@ function teardown {
 }
 
 @test "run 'tell' without '-v'" {
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR"  "$TEST_DEFAULT_USER"
+  run git secret tell -d "$TEST_GPG_HOMEDIR"  "$TEST_DEFAULT_USER"
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   [[ "$output" != *"imported:"* ]]
@@ -37,19 +37,19 @@ function teardown {
 }
 
 @test "run 'tell' on substring of emails" {
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" user
+  run git secret tell -d "$TEST_GPG_HOMEDIR" user
   # this should give an error because there is no user named 'user', 
   # even though there are users with the substring 'user'.
   # See issue https://github.com/sobolevn/git-secret/issues/176 
   [ "$status" -eq 1 ]
 
-  run_wrapper git secret whoknows 
+  run git secret whoknows 
   [ "$status" -eq 1 ]   # should error when there are no users told
   
 }
 
 @test "fail on no users" {
-  run_wrapper _user_required
+  run _user_required
   [ "$status" -eq 1 ]
 }
 
@@ -65,7 +65,7 @@ function teardown {
 
   # It was showing something like `tru::1:1289775241:0:2:1:6`
   # after the preparations done and the error was not generated.
-  run_wrapper _user_required
+  run _user_required
   [ "$status" -eq 1 ]
 }
 
@@ -78,7 +78,7 @@ function teardown {
   echo "private key" > "$private_key"
   [ -s "$private_key" ]
 
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
   [ "$status" -eq 1 ]
 }
 
@@ -89,32 +89,32 @@ function teardown {
 
   rm -r "$secrets_dir"
 
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
   [ "$status" -eq 1 ]
 }
 
 
 @test "run 'tell' without arguments" {
-  run_wrapper git secret tell
+  run git secret tell
   [ "$status" -eq 1 ]
 }
 
 @test "run 'init' with bad arg" {
-  run_wrapper git secret tell -Z -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
+  run git secret tell -Z -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
   [ "$status" -ne 0 ]
 }
 
 
 @test "run 'tell' normally" {
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
   [ "$status" -eq 0 ]
 
   # Testing that now user is found:
-  run_wrapper _user_required
+  run _user_required
   [ "$status" -eq 0 ]
 
   # Testing that now user is in the list of people who knows the secret:
-  run_wrapper git secret whoknows
+  run git secret whoknows
   [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
 }
 
@@ -123,7 +123,7 @@ function teardown {
   local email="$TEST_DEFAULT_USER"
 
   git_set_config_email "$email"
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" -m
+  run git secret tell -d "$TEST_GPG_HOMEDIR" -m
   [ "$status" -eq 0 ]
 }
 
@@ -132,7 +132,7 @@ function teardown {
   # Preparations:
   git_set_config_email "" # now it should not allow to add yourself
 
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" -m
+  run git secret tell -d "$TEST_GPG_HOMEDIR" -m
   [ "$status" -eq 1 ]
 }
 
@@ -142,14 +142,14 @@ function teardown {
   install_fixture_key "$TEST_SECOND_USER"
 
   # Testing the command itself:
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" \
+  run git secret tell -d "$TEST_GPG_HOMEDIR" \
     "$TEST_DEFAULT_USER" "$TEST_SECOND_USER"
 
   [ "$status" -eq 0 ]
 
   # Testing that these users are presented in the
   # list of people who knows secret:
-  run_wrapper git secret whoknows
+  run git secret whoknows
 
   [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
   [[ "$output" == *"$TEST_SECOND_USER"* ]]
@@ -164,14 +164,14 @@ function teardown {
   install_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
 
   # Testing the command itself fails because you have to use an email address
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_NOEMAIL_COMMENT_USER"
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_NOEMAIL_COMMENT_USER"
 
   # this should not succeed because we only support addressing users by email
   [ "$status" -ne 0 ]
 
   # Testing that these users are presented in the
   # list of people who knows secret:
-  run_wrapper git secret whoknows
+  run git secret whoknows
 
   [[ "$output" != *"$TEST_NOEMAIL_COMMENT_USER"* ]]
 
@@ -186,14 +186,14 @@ function teardown {
   #echo "$name" | sed "s/^/# '$BATS_TEST_DESCRIPTION' name is: /" >&3
 
   # Testing the command itself, should fail because you must use email
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" "$name"
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$name"
 
   # this should not succeed because we only support addressing users by email
   [ "$status" -ne 0 ]
 
   # Testing that these users are presented in the
   # list of people who knows secret:
-  run_wrapper git secret whoknows
+  run git secret whoknows
 
   [[ "$output" != *"$name"* ]]
 
@@ -215,15 +215,15 @@ function teardown {
   cd "$test_dir"
 
   # Test:
-  run_wrapper git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
   [ "$status" -eq 0 ]
 
   # Testing that now user is found:
-  run_wrapper _user_required
+  run _user_required
   [ "$status" -eq 0 ]
 
   # Testing that now user is in the list of people who knows the secret:
-  run_wrapper git secret whoknows
+  run git secret whoknows
   [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
 
   # Cleaning up:

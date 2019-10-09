@@ -5,10 +5,6 @@ function changes {
 
   OPTIND=1
 
-  # 'cat' and 'changes' cannot show extra output
-  # shellcheck disable=SC2034
-  SECRETS_VERBOSE=0
-
   while getopts 'hd:p:' opt; do
     case "$opt" in
       h) _show_manual_for 'changes';;
