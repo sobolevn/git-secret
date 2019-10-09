@@ -41,7 +41,7 @@ function _has_line {
 
 
 @test "run 'remove' for nameless user normally" {
-  run_wrapper git secret remove "$SECOND_FILE"
+  run git secret remove "$SECOND_FILE"
   [ "$status" -eq 0 ]
 
   # Test output:

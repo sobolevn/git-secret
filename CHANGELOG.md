@@ -1,15 +1,5 @@
 # Changelog
 
-## {Next Version}
-
-### Features
-
-- Verbose mode shows gpg commands used for hide, reveal, tell, and killperson (#554)
-
-### Misc
-
-- Fix tests from occasional hang when interrupting with cntl-c (#558)
-
 ## Version 0.3.2
 
 ### Bugfixes
