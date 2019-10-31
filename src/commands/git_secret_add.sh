@@ -7,7 +7,7 @@ function add {
 
   while getopts "ih" opt; do
     case "$opt" in
-      i) auto_ignore=1;;    # this doesn't change anything
+      i) null  # this doesn't change anything
 
       h) _show_manual_for "add";;
 
