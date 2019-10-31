@@ -7,14 +7,14 @@
 
 ## What is `git-secret`?
 
-`git-secret` is a bash tool which stores private data inside a git repo. 
+`git-secret` is a bash tool which stores private data inside a git repo.
 `git-secret` encrypts files with permitted users' public keys,
-allowing users you trust to access encrypted data using pgp and their secret keys. 
+allowing users you trust to access encrypted data using pgp and their secret keys.
 
-With `git-secret`, changes to access rights are simplified, and private-public key issues are handled for you. 
+With `git-secret`, changes to access rights are simplified, and private-public key issues are handled for you.
 
 When someone's permission is revoked, secrets do not need to be changed with `git-secret` -
-just remove their key from the keychain using `git secret killperson their@email.com`, 
+just remove their key from the keychain using `git secret killperson their@email.com`,
 re-encrypt the files, and they won't be able to decrypt secrets anymore.
 If you think the user might have copied the secrets or keys when they had access, then
 you should also change the secrets.
@@ -22,14 +22,14 @@ you should also change the secrets.
 
 ## Preview
 
-[![git-secret terminal preview](https://asciinema.org/a/41811.png)](https://asciinema.org/a/41811?autoplay=1)
+[![git-secret terminal preview](git-secret.gif)](https://asciinema.org/a/41811?autoplay=1)
 
 
 ## Installation
 
 `git-secret` supports `brew`, just type: `brew install git-secret`
 
-It also supports `apt` and `yum`. You can also use `make` if you want to. 
+It also supports `apt` and `yum`. You can also use `make` if you want to.
 See the [installation section](http://git-secret.io/installation) for the details.
 
 ### Requirements
@@ -45,7 +45,7 @@ See the [installation section](http://git-secret.io/installation) for the detail
 
 ## Contributing
 
-Do you want to help the project? Find an [issue](https://github.com/sobolevn/git-secret/issues) 
+Do you want to help the project? Find an [issue](https://github.com/sobolevn/git-secret/issues)
 and send a PR. It is more than welcomed! See [CONTRIBUTING.md](CONTRIBUTING.md) on how to do that.
 
 ### Security
@@ -80,7 +80,7 @@ Here are some packagings of git-secret that we're aware of:
 - https://pkgs.alpinelinux.org/package/edge/testing/x86/git-secret
 - https://packages.debian.org/sid/git-secret
 
-Such packages are considered 'downstream' because the git-secret code 'flows' from the git-secret repository 
+Such packages are considered 'downstream' because the git-secret code 'flows' from the git-secret repository
 to the various rpm/deb/dpkg/etc packages that are created for specific OSes and distributions.
 
 We have also added notes specifically for packagers in [CONTRIBUTING.md](CONTRIBUTING.md).
