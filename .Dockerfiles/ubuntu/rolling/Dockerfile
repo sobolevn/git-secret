@@ -14,7 +14,7 @@ RUN apt-get update \
 	openssh-server \
 	python3-pip \
 	python3 \
-	rust cargo \
+	rustc cargo \
 	sudo \
 	systemd \
  && pip3 install --upgrade pip \
