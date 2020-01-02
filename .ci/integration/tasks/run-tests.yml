@@ -35,7 +35,7 @@
   when:
     - lint_results.rc == 0
 
-- name: "Create git-secret {{ os_pkg_type }} package"
+- name: Create git-secret OS-specific package
   command: bash -lc "cd /tmp/git-secret && make build-{{ os_pkg_type }}"
   changed_when: False
   ignore_errors: yes
@@ -43,20 +43,20 @@
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
 
-- name: "Find git-secret {{ os_pkg_type }} file"
+- name: Find git-secret OS-specific file
   find:
     paths: /tmp/git-secret/build
     patterns: "*.{{ os_pkg_type }}"
     recurse: yes
   register: pkg_location
 
-- name: "Set git-secret {{ os_pkg_type }} location"
+- name: Set git-secret OS-specific location
   set_fact:
     pkg_path: "{{ pkg_location.files | map(attribute='path') | first }}"
   when:
     - pkg_location is defined
 
-- name: "Install git-secret {{ os_pkg_type }} package"
+- name: Install git-secret OS-specific package
   command: bash -lc "{{ item.command }} {{ pkg_path }}"
   when:
     - item.os_family == ansible_os_family

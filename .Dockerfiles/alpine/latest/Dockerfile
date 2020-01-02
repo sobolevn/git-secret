@@ -19,7 +19,7 @@ RUN apk add --no-cache --update \
 	py-pip \
 	python3-dev \
 	rsyslog \
-	gpgme rust cargo \
+	gpgme libgpg-error-dev rust cargo \
 	sudo \
 	xz \
  && pip3 install --upgrade pip \
