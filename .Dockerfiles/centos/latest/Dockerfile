@@ -19,7 +19,7 @@ RUN yum clean all \
 	python2-pip \
 	redhat-lsb \
 	redhat-rpm-config \
-	rust \
+	rust cargo \
 	sudo \
 	systemd \
  && pip install --upgrade pip \
