@@ -167,3 +167,4 @@ test-make-ci: clean
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
 	"./utils/make/make-ci.sh"
+
