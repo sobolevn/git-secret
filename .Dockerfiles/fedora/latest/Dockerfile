@@ -17,6 +17,7 @@ RUN dnf clean all \
 	python3-pip \
 	redhat-lsb \
 	redhat-rpm-config \
+	rust \
 	sudo \
 	systemd \
  && pip3 install --upgrade pip \

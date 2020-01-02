@@ -6,9 +6,14 @@ DESTDIR?=
 # Building:
 #
 
-git-secret: src/version.sh src/_utils/*.sh src/commands/*.sh src/main.sh
+git-secret-was: src/version.sh src/_utils/*.sh src/commands/*.sh src/main.sh
 	cat $^ > "$@"; \
 	chmod +x git-secret; sync
+
+git-secret: git-secret git-secret-rust
+	rm -rf git-secret-rust
+	git clone https://github.com/sobolevn/git-secret-rust.git && cd git-secret-rust && cargo build 
+	cp git-secret-rust/target/debug/git-secret git-secret
 
 .PHONY: all
 all: build

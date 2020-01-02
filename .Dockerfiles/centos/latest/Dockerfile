@@ -19,6 +19,7 @@ RUN yum clean all \
 	python2-pip \
 	redhat-lsb \
 	redhat-rpm-config \
+	rust \
 	sudo \
 	systemd \
  && pip install --upgrade pip \
