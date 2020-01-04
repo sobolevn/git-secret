@@ -35,6 +35,7 @@ function teardown {
   run git secret init
 
   echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  echo "$status" | sed "s/^/# '$BATS_TEST_DESCRIPTION' status: /" >&3
 
   [ "$status" -eq 0 ]
 
