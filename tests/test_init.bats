@@ -24,12 +24,18 @@ function teardown {
   remove_git_repository
 
   run git secret init
+
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+
   [ "$status" -eq 1 ]
 }
 
 
 @test "run 'init' normally" {
   run git secret init
+
+  echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+
   [ "$status" -eq 0 ]
 
   [[ -d "${_SECRETS_DIR}" ]]
