@@ -85,14 +85,12 @@ function teardown {
 
   [ "$status" -eq 0 ]
 
+  ## permissions should match.
   local secret_perm
   local file_perm
-  secret_perm=$(ls -l "$FILE_TO_HIDE$SECRETS_EXTENSION" | cut -d' ' -f1)
-  file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
-
-  # text prefixed with '# ' and sent to file descriptor 3 is 'diagnostic' (debug) output for devs
+  file_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$FILE_TO_HIDE")
+  secret_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$FILE_TO_HIDE$SECRETS_EXTENSION")
   #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3    
-
   [ "$secret_perm" = "$file_perm" ]
 
   [ -f "$FILE_TO_HIDE" ]

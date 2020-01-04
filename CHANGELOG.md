@@ -1,25 +1,51 @@
 # Changelog
 
-## {{Next Version}}
+## Version 0.3.2
+
+### Bugfixes
+
+- Fix mention of version in git-secret add man page (#544)
+
+### Misc
+
+- Update developer docs, especially regarding mac, docker, and test-kitchen (#195)
+- Update man pages to mention version documented (#420)
+
+## Version 0.3.1
+
+### Misc
+
+- Update man pages
+
+## Version 0.3.0
 
 ### Features
 
 - Support SECRETS_PINENTRY env var for gnupg --pinentry-mode parameter (#221)
+- Show output from gnupg if 'hide' fails (#516)
+- Add support for Busybox (#478)
 
 ### Bugfixes
 
 - Use OSX's mktemp on OSX, even if there's another version in PATH. (#485)
 - Make rsync a build requirement on debian (#500)
-- When tests specify gnupg1, use gnupg1, not gnupg2 (#241)
-- Ignore revoked gnupg keys (#508)
+- Use gnupg1, not gnupg2, when tests specify gnupg1 (#241) 
+- Note dependencies gawk, bash, and coreutils in linux packages (#493)
+- Handle case of key having no email and a comment (#527)
+- Avoid blank lines from output of 'clean -v'
 
-## Misc
+### Misc
 
+- Improve messaging and logic around deleting tmp files.
 - Add note about secrets and old keys (#499)
 - Transition build process from python 2 to python 3 (#487)
 - Upgrade build process from ansible 2.5 to ansible 2.8
-- Fix in build process when installing gnupg2 source deps on Ubuntu
+- Fix build process when installing gnupg2 source deps on Ubuntu
+- Close file descriptor 3 when running gnupg subprocesses (#521)
+- Small optimization in 'hide'
 - Improve code comments
+- Update docs to note that git-secret repos modified by git-secret 0.2.3 and
+  later are not backward compatible with pre-0.2.3 versions of git-secret. (#536)
 
 ## Version 0.2.6
 
@@ -57,7 +83,7 @@
 - Respect DESTDIR when installing as per GNU/debian/etc recommendations (#424)
 - Use git check-ignore to test for files ignored by git
 
-## Misc
+### Misc
 
 - Improve docs about hide -m option (#467)
 - Document SECRETS_VERBOSE and improve env var docs (#396)
@@ -97,7 +123,7 @@
 - Require keys to be specified by email, as documented (#267)
 - Disallow 'git secret tell' or 'killperson' with emails that are not in keychain (also #267)
 
-## Misc
+### Misc
 
 - Added notes about packages and for package maintainers (#281)
 - Improve documentation regarding operation with different versions of GPG (#274, #182)
@@ -126,7 +152,9 @@
 ### Features
 
 - Added `-m` option to `hide` command, files will only be hidden when modifications are detected (#92)
-- Changed how path mappings file works: colon delimited FSDB (#92)
+- Changed how path mappings file works: colon delimited FSDB in `.gitsecret/paths/mapping.cfg', so git-secret
+  can store checksums of hidden files. Note this means git-secret repos modified by git-secret 0.2.3 
+  or later are not backward compatible with pre-0.2.3 versions of git-secret. (#92)
 - `git secret init` now adds `random_seed` to `.gitignore` (#93)
 
 ### Bugfixes

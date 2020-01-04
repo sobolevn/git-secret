@@ -109,7 +109,7 @@ function hide {
   [ "$1" = '--' ] && shift
 
   if [ $# -ne 0 ]; then 
-    _abort "clean does not understand params: $*"
+    _abort "hide does not understand params: $*"
   fi
 
   # We need user to continue:
@@ -132,6 +132,12 @@ function hide {
     to_hide+=("$record")  # add record to array
   done < "$path_mappings"
 
+  local recipients
+  recipients=$(_get_recipients)
+
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
+
   local counter=0
   for record in "${to_hide[@]}"; do
     local filename
@@ -140,12 +146,6 @@ function hide {
     filename=$(_get_record_filename "$record")
     fsdb_file_hash=$(_get_record_hash "$record")
     encrypted_filename=$(_get_encrypted_filename "$filename")
-
-    local recipients
-    recipients=$(_get_recipients)
-
-    local secrets_dir_keys
-    secrets_dir_keys=$(_get_secrets_dir_keys)
 
     local input_path
     local output_path
@@ -170,21 +170,28 @@ function hide {
 
         set +e   # disable 'set -e' so we can capture exit_code
 
-        if [[ -n "$_SECRETS_VERBOSE" ]]; then
-          # on at least some platforms, this doesn't output anything unless there's a warning or error
-          $SECRETS_GPG_COMMAND "${args[@]}"
-        else 
-          $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1
-        fi
+     	  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
+        local gpg_output
+        gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}" 3>&-)  # we leave stderr alone
         local exit_code=$?
 
         set -e  # re-enable set -e
 
+        local error=0
         if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
+          error=1 
+        fi
+
+        if [[ "$error" -ne 0 ]] || [[ -n "$_SECRETS_VERBOSE" ]]; then
+          if [[ -n "$gpg_output" ]]; then
+            echo "$gpg_output"
+          fi  
+        fi
+
+        if [[ ! -f "$output_path" ]]; then
           # if gpg can't encrypt a file we asked it to, that's an error unless in force_continue mode.
           _warn_or_abort "problem encrypting file with gpg: exit code $exit_code: $filename" "$exit_code" "$force_continue"
-        fi
-        if [[ -f "$output_path" ]]; then
+        else
           counter=$((counter+1))
           if [[ "$preserve" == 1 ]]; then
             local perms

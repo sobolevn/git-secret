@@ -58,7 +58,6 @@ function teardown {
 }
 
 @test "run 'hide' with '-P'" {
-
   # attempt to alter permissions on input file
   chmod o-rwx "$FILE_TO_HIDE"
 
@@ -74,17 +73,13 @@ function teardown {
   local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
 
-  # permissions should match. We don't have access to SECRETS_OCTAL_PERMS_COMMAND here
+  ## permissions should match.
   local secret_perm
   local file_perm   
-  secret_perm=$(ls -l "$encrypted_file" | cut -d' ' -f1)    
-  file_perm=$(ls -l "$FILE_TO_HIDE" | cut -d' ' -f1)
-
-  # text prefixed with '# ' and sent to file descriptor 3 is 'diagnostic' (debug) output for devs
+  file_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$FILE_TO_HIDE")
+  secret_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$encrypted_file")
   #echo "# '$BATS_TEST_DESCRIPTION': $secret_perm, file_perm: $file_perm" >&3
-
   [ "$secret_perm" = "$file_perm" ]
-
 }
 
 @test "run 'hide' from inside subdirectory" {

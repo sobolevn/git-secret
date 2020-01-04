@@ -7,6 +7,9 @@
 source "$SECRET_PROJECT_ROOT/src/version.sh"
 # shellcheck disable=SC1090
 source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
+source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_freebsd.sh"
+source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_linux.sh"
+source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_osx.sh"
 
 # Constants:
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
@@ -36,9 +39,10 @@ BEGIN { OFS=":"; FS=":"; }
 # This command is used with absolute homedir set and disabled warnings:
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
 
-# Personal data:
+# Test key fixture data. Fixtures are at tests/fixtures/gpg/$email
 
-# these two are 'normal' keys
+# See tests/fixtures/gpg/README.md for more on key fixtures 'user[1-5]@gitsecret.io'
+# these two are 'normal' keys. 
 export TEST_DEFAULT_USER="user1@gitsecret.io"
 export TEST_SECOND_USER="user2@gitsecret.io"
 
@@ -47,6 +51,8 @@ export TEST_NONAME_USER="user3@gitsecret.io"
 
 # TEST_EXPIRED_USER (user4) has expired
 export TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
+
+export TEST_NOEMAIL_COMMENT_USER="user5@gitsecret.io"    # fixture filename is named this, but key has no email and a comment, as per #527
 
 export TEST_ATTACKER_USER="attacker1@gitsecret.io"
 
@@ -74,8 +80,14 @@ function stop_gpg_agent {
     ps -l -u "$username" | gawk \
       '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_GPG_OUTPUT_FILE" 2>&1
   else
-    ps -wx -U "$username" | gawk \
-      '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_GPG_OUTPUT_FILE" 2>&1 
+    local ps_is_busybox
+    ps_is_busybox=_exe_is_busybox "ps"
+    if [[ $ps_is_busybox -eq "1" ]]; then
+      echo "# git-secret: tests: not stopping gpg-agent on busybox" >&3
+    else
+      ps -wx -U "$username" | gawk \
+        '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+    fi
   fi
 }
 

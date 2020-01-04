@@ -28,6 +28,8 @@ fi
 : "${SECRETS_OCTAL_PERMS_COMMAND:="_os_based __get_octal_perms"}"
 : "${SECRETS_EPOCH_TO_DATE:="_os_based __epoch_to_date"}"
 
+# Temp Dir
+: "${TMPDIR:=/tmp}"
 
 # AWK scripts:
 # shellcheck disable=2016
@@ -195,7 +197,7 @@ function _temporary_file {
   # which will be removed on system exit.
   temporary_filename=$(_os_based __temp_file)  # is not `local` on purpose.
 
-  trap 'if [[ -n "$_SECRETS_VERBOSE" ]] || [[ -n "$SECRETS_TEST_VERBOSE" ]]; then echo "git-secret: cleaning up: $temporary_filename"; fi; rm -f "$temporary_filename";' EXIT
+  trap 'if [[ -f "$temporary_filename" ]]; then if [[ -n "$_SECRETS_VERBOSE" ]] || [[ -n "$SECRETS_TEST_VERBOSE" ]]; then echo "git-secret: cleaning up: $temporary_filename"; fi; rm -f "$temporary_filename"; fi;' EXIT
 }
 
 
@@ -464,14 +466,12 @@ function _find_and_clean_formatted {
   # required:
   local pattern="$1" # can be any string pattern
 
-  if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    echo && _message "cleaning:"
-  fi
+  local outputs
+  outputs=$(_find_and_clean "$pattern" 2>&1)
 
-  _find_and_clean "$pattern"
-
-  if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    echo
+  if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
+      # shellcheck disable=SC2001
+      echo "$outputs" | sed "s/^/git-secret: cleaning: /" 
   fi
 }
 
@@ -525,6 +525,21 @@ function _secrets_dir_is_not_ignored {
 }
 
 
+function _exe_is_busybox {
+  local exe
+  exe=$1
+
+  # we assume stat is from busybox if it's a symlink
+  local is_busybox=0
+  local stat_path
+  stat_path=$(command -v "$exe")
+  if [ -L "$stat_path" ]; then
+    is_busybox=1
+  fi
+  echo "$is_busybox"
+}
+
+
 function _user_required {
   # This function does a bunch of validations:
   # 1. It calls `_secrets_dir_exists` to verify that "$_SECRETS_DIR" exists.
@@ -544,17 +559,19 @@ function _user_required {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
+  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
   local keys_exist
-  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys)
+  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
   local exit_code=$?
+  if [[ -z "$keys_exist" ]]; then
+    _abort "$error_message"
+  fi
   if [[ "$exit_code" -ne 0 ]]; then
     # this might catch corner case where gpg --list-keys shows 
     # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds? 
     # See #136
+    echo "$keys_exist"	# show whatever _did_ come out of gpg
     _abort "problem listing public keys with gpg: exit code $exit_code"
-  fi
-  if [[ -z "$keys_exist" ]]; then
-    _abort "$error_message"
   fi
 }
 
@@ -571,7 +588,8 @@ function _get_user_key_expiry {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
-  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub:)
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-)
 
   local expiry_epoch
   expiry_epoch=$(echo "$line" | cut -d: -f7)
@@ -587,6 +605,9 @@ function _assert_keychain_contains_emails {
   local gpg_uids
   gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
   for email in "${emails[@]}"; do
+    if [[ $email != *"@"* ]]; then
+        _abort "does not appear to be an email: $email"
+    fi
     local email_ok=0
     for uid in $gpg_uids; do
         if [[ "$uid" == "$email" ]]; then
@@ -622,9 +643,14 @@ function _get_users_in_gpg_keyring {
   fi
 
   # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
-  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid' that is not revoked (field 2 set to 'r') and selects field 10 "User-ID"
-  # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address anyway and the regex just passes it through.)
-  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | gawk -F: '$1~/uid/&&$2!="r"{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }')
+  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID" 
+  # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address 
+  #  (and maybe a comment) and the regex just passes it through.)
+  # sed at the end removes any 'comment' that appears in parentheses, for #530
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
+      gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | \
+      sed 's/([^)]*)//g' 3>&-)
 
   echo "$result"
 }

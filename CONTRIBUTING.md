@@ -17,41 +17,58 @@ For development with `git-secret` you should have these tools:
 - sha256sum  (on freebsd and MacOS `shasum` is used instead)
 - [shellcheck](https://github.com/koalaman/shellcheck)
 
-To test `git-secret` using test-kitchen, you will also need:
+To test `git-secret` using [test-kitchen](https://kitchen.ci/), which is optional and uses docker to test on multiple distributions,
+you will also need:
 
-- docker
-- test-kitchen
-- aspell, to check your changes for spelling errors
+- [docker](https://www.docker.com/)
+- [test-kitchen](https://kitchen.ci/)
 
-These are only required if dealing with manuals, `gh-pages` or releases:
+The below only required if dealing with manuals, `gh-pages` or releases:
 
 - ruby, ruby-dev
+- [aspell](http://aspell.net/), to check your changes for spelling errors
 
 ### Environment MacOS
 
-- install Homebrew
+- install [Homebrew](https://brew.sh/)
 - install gnupg2 with `brew install gnupg2`
 
-#### For docker/test-kitchen
+#### For docker/test-kitchen (optional, for testing multiple distros locally using docker)
+
 - install Docker for Mac
-- install Chef Developer Kit (?)
-- install ruby2.4 and kitchen dependencies with 
+- install ruby2.6 and kitchen dependencies with
 
   brew install rbenv ruby-build rbenv-vars; 
-  rbenv install 2.4.4; rbenv rehash; rbenv global 2.4.4;
-  gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec;
+  rbenv install 2.6.3; rbenv rehash; rbenv global 2.6.3;
+
+(You can also use `rvm` instead of `rbenv`, but brew packages `rbenv` for you.)
+
+then use
+
+  gem install bundler kitchen-ansible serverspec kitchen-docker kitchen-verifier-serverspec
+
+If you have trouble getting test-kitchen and docker working on your mac to test git-secret with, see #534
+or let us know by filing an issue.
 
 ### Getting started
 
 1. Create your own or pick an opened issue from the [tracker][tracker]. Take a look at the [`help-wanted` tag][help-wanted]
 
-2. Fork and clone your repository: `git clone https://github.com/${YOUR_NAME}/git-secret.git`
+2. Fork the git-secret repo and then clone the repository using a command like `git clone https://github.com/${YOUR_NAME}/git-secret.git`
 
 3. Make sure that everything works on the current platform by running `make test`.
-   You can also try the experimental `SECRETS_TEST_VERBOSE=1 make test`.
+   You can also try the experimental `SECRETS_TEST_VERBOSE=1 make test`, which will
+   show you a lot of debug output while the tests are running.
    Note that 'experimental' features may change or be removed in a future version of `git-secret`.
 
-4. [Run local CI tests](#running-local-ci-tests) to verify functionality on supported platforms `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
+4. If you want to test on multiple operating systems, [Run local CI tests](#running-local-ci-tests) (optional; this will 
+   automatically happen on [Travis-CI](https://travis-ci.org/sobolevn/git-secret) when you submit a PR).
+
+Running the CI tests locally is optional.  The tests will happen automatically on Travis-CI 
+when you create a PR for `git-secret`, and again when any PR is merged.
+
+To verify functionality on supported platforms use `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`.
+See `[test-kitchen](https://kitchen.ci/) and `kitchen help verify` for more info about using `kitchen verify`.
 
 ### Code style
 
@@ -73,7 +90,7 @@ New features and changes should aim to be as clear, concise, simple, and consist
    Every code base has its own conventions and style that develop and accrete over time.
 
    Consistency also means that the inputs and outputs of git-secret should be as consistent as reasonable
-   with related unix and git tools, and follow the 'rule of least surprise', 
+   with related Unix and git tools, and follow the 'rule of least surprise', 
    also known as the 'principle of least astonishment': <https://en.wikipedia.org/wiki/Principle_of_least_astonishment>
 
 We wrote this to clarify our thinking about how git-secret should be written.  Of course, these are philosophical goals, 
@@ -87,16 +104,16 @@ Also it's often best to implement larger or complex changes as a series of plann
 each making a small set of specific changes. This facilitates discussions of implementation, which often come to light
 only after seeing the actual code used to perform a task.
 
-As mentioned above, we seek to be consistent with surrounding git and unix tools, so when writing changes to git-secret,
-think about the input, output, and command-line options that similar unix commands use.
+As mentioned above, we seek to be consistent with surrounding git and Unix tools, so when writing changes to git-secret,
+think about the input, output, and command-line options that similar Unix commands use.
 
-Our favor toward traditional unix and git command-style inputs and outputs can also mean it's appropriate to 
-lean heavily on git and widely-used unix command features instead of re-implementing them in code.
+Our favor toward traditional Unix and git command-style inputs and outputs can also mean it's appropriate to 
+lean heavily on git and widely-used Unix command features instead of re-implementing them in code.
 
 ### Development Process
 
-1. Firstly, you should need to setup development git hooks with `make install-hooks`
-This will copy the git-secret development hooks from utils/hooks into .git/hooks/pre-commit and .git/hooks/post-commit
+1. Firstly, you should setup git-secret's development git hooks with `make install-hooks`
+This will copy the hooks from utils/hooks into .git/hooks/pre-commit and .git/hooks/post-commit
 
 2. Make changes to the git secret files that need to be changed
 
@@ -114,9 +131,10 @@ This will copy the git-secret development hooks from utils/hooks into .git/hooks
 
 8. When running `git commit` the tests will run automatically, your commit will be canceled if they fail.
    You can run the tests manually with `make clean build test`.
+   If you want to make a commit and not run the pre- and post-commit hooks, use 'git commit -n'
    
-9. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request; 
-otherwise PRs will probably be `squashed` into one commit when merged.
+9. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request,
+but don't worry, it's easy to `squash` PRs into a small number of commits when they're merged.
 
 ### Branches
 
@@ -128,20 +146,26 @@ Development looks like this:
 
 - `master` branch is protected, so only fully tested code goes there. It is also used to create a new `git` tag and a `github` release
 
-The `gh-pages` branch is used for the pages at `git-secret.io`. See 'Release Process' below.
+By convention, you can name your branches like `issue-###-short-description`, but that's not required.
+The `gh-pages` branch is used for the pages at `git-secret.io`. See 'Release Process' below. 
+
 
 ### Continuous integration
 
 Local CI is done with the help [`test-kitchen`](http://kitchen.ci/). `test-kitchen` handles multiple test-suites on various platforms.
-`bundle exec kitchen list` will output the list of test suites to be run against supported platforms.
+You can run our CI tests locally, but it is not strictly required in order to do development or testing of git-secret. When you have
+`test-kitchen` installed, `bundle exec kitchen list` will output the list of test suites to be run against supported platforms.
 
-Cloud CI is done with the help of `travis`. `travis` handles multiple environments:
+Cloud CI is done with the help of [Travis-CI](https://travis-ci.org/sobolevn/git-secret), which handles testing on multiple environments using
 
-- `Docker`-based jobs or so-called 'integration tests', these tests create a local release, install it with the package manager and then run unit-tests and system checks
+- `Docker`-based jobs or so-called 'integration tests', which create a local release, install it with the package manager and then run unit-tests and system checks
 - `OSX` jobs, which handle basic unit-tests on `MacOS` (Travis still calls MacOS 'OSX')
 - Native `travis` jobs, which handle basic unit-tests and style checks
 
-### Running local ci-tests
+### Running local ci-tests with test-kitchen
+
+Ci-tests are only necessary if you want to test git-secret on multiple OS'es using docker and test-kitchen,
+like we do on travis-ci. 
 
 1. Install required gems with `bundle install`.
 2. Run ci-tests with `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`
@@ -159,13 +183,16 @@ output from commands.
 
 The release process is defined in the `git`-hooks and `.travis.yml`.
 
-When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) the hooks will trigger three events.
+When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) the 
+pre-commit and post-commit hooks will trigger three events.
 
-- the test suite will be run locally
+- `pre-commit`: run the test suite will be locally
 
-- new manuals will be created and added to the current commit with `make build-man` on `pre-commit` hook.
+- `pre-commit`: generate and update the manuals and add them to the current commit with `make build-man`
 
-- after the commit is successfully created it will also trigger `make build-gh-pages` target on `post-commit` hook, which will push new manuals to the [git-secret site][git-secret-site]. And the new `git` tag will be automatically created if the version is changed:
+- `post-commit`: trigger `make build-gh-pages`, which will update and push manuals to the [git-secret site][git-secret-site].
+
+- `post-commit`: new `git` tag (such as v0.3.1) will be automatically created if the version is changed, using something like
 
 ```bash
 if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
@@ -182,13 +209,17 @@ Here are some links to gnupg documentation that might be useful for those workin
 
 #### Travis releases
 
-After you commit a tag that matches the pattern '^v.*$' and the tests succeed, Travis will publish new `deb` and `rpm` packages to [`bintray`][bintray].
+After you commit a tag that matches the pattern '^v' and the tests succeed, scripts run on [Travis-CI](https://travis-ci.org/sobolevn/git-secret) 
+will publish new `deb` and `rpm` packages to [`bintray`][bintray].
 
-If you wish to override a previous release (*be careful*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`
+(If you wish to override a previous release (*be careful, this is discouraged*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`)
 
 #### Manual releases
 
-Releases to `brew` are made manually.
+Releases to `brew` are made manually, and involve opening a PR on the [Homebrew Core](https://github.com/Homebrew/homebrew-core) repo .
+To get started, see the
+[Homebrew docs about Formulae-related PRs](https://docs.brew.sh/How-To-Open-a-Homebrew-Pull-Request#formulae-related-pull-request)
+and `brew bump-formula-pr --help`
 
 #### Dockerhub releases
 
@@ -210,7 +241,10 @@ There are several distributions and packaging systems that may already have git-
 First of all, thank you for packaging git-secret for your platform! We appreciate it.
 
 We also would like to welcome you to collaborate or discuss any issues, ideas or thoughts you have about 
-git-secret by submitting issue report (which can also be feature requests) or pull requests via the git repo at 
+git-secret by submitting [issue report](https://github.com/sobolevn/git-secret/issues) 
+(which can also be feature requests) or 
+[pull requests](https://help.github.com/en/articles/creating-a-pull-request) 
+via the git repo at 
 [git-secret on github](https://github.com/sobolevn/git-secret) 
 
 Please let us know if there are any changes you'd like to see to the source, 

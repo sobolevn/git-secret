@@ -9,7 +9,7 @@ matrix:
     #  language: sh
     - os: osx
       name: osx-with-debug-output
-      env: GITSECRET_DIST="brew" SECRETS_TEST_VERBOSE=1
+      env: GITSECRET_DIST="brew"; SECRETS_TEST_VERBOSE=1
       sudo: required
       language: shell
       #language: ruby
@@ -21,7 +21,7 @@ matrix:
       #language: ruby
       #rvm: 2.6
     - os: linux
-      env: KITCHEN_REGEXP="gnupg1-alpine-latest"
+      env: KITCHEN_REGEXP="gnupg1-alpine-latest"; SECRETS_TEST_VERBOSE=1
       services: docker
       sudo: required
       language: ruby

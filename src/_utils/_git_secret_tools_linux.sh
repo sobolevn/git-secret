@@ -8,7 +8,6 @@ function __replace_in_file_linux {
 
 
 function __temp_file_linux {
-  : "${TMPDIR:=/tmp}"
   local filename
   # man mktemp on CentOS 7:
   # mktemp [OPTION]... [TEMPLATE]
@@ -35,9 +34,16 @@ function __sha256_linux {
 function __get_octal_perms_linux {
   local filename
   filename=$1
-  local perms
-  perms=$(stat --format '%a' "$filename")
-  # a string like '0644'
+
+  local stat_is_busybox
+  stat_is_busybox=_exe_is_busybox "stat"
+  local perms   # a string like '644'
+  if [ "$stat_is_busybox" -eq 1 ]; then
+    # special case for busybox, which doesn't understand --format
+    perms=$(stat -c '%a' "$filename")
+  else
+    perms=$(stat --format '%a' "$filename")
+  fi
   echo "$perms"
 }
 
