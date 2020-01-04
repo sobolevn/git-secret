@@ -17,7 +17,7 @@ RUN dnf clean all \
 	python3-pip \
 	redhat-lsb \
 	redhat-rpm-config \
-	libgpgme-dev libgpg-error-dev rust cargo \
+	gpgme-devel libgpg-error-devel rust cargo \
 	sudo \
 	systemd \
  && pip3 install --upgrade pip \
