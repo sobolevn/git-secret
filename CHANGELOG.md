@@ -1,5 +1,11 @@
 # Changelog
 
+## {Next Version}
+
+#### Misc
+
+- Upgrade build process to ansible 2.9
+
 ## Version 0.3.2
 
 ### Bugfixes
