@@ -8,7 +8,7 @@ function run_kitchen_tests {
   python3 --version
   pip3 --version
   bundler --version
-  bundle show
+  bundle list
   bundle exec kitchen test --test-base-path="$PWD/.ci/integration" $KITCHEN_REGEXP
 }
 

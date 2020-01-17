@@ -1,5 +1,12 @@
 # Changelog
 
+## {Next Version}
+
+### Misc
+
+- Reflect changes in ruby bundler during build process
+- Upgrade build process to ansible 2.9
+
 ## Version 0.3.2
 
 ### Bugfixes
