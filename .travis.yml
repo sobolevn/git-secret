@@ -8,6 +8,7 @@ matrix:
     #  sudo: required
     #  language: sh
     - os: osx
+      osx_image: xcode11.3
       name: osx-with-debug-output
       env: GITSECRET_DIST="brew"; SECRETS_TEST_VERBOSE=1
       sudo: required
@@ -15,6 +16,7 @@ matrix:
       #language: ruby
       #rvm: 2.6
     - os: osx
+      osx_image: xcode11.3
       env: GITSECRET_DIST="brew"
       sudo: required
       language: shell
