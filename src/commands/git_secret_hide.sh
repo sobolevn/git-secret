@@ -131,7 +131,7 @@ function hide {
       has_record=$(_fsdb_has_record "$path" "$fsdb")
 
       if [ "$has_record" -eq 1 ]; then
-        _abort "file not exits in git secret database: $path" 1
+        _abort "file does not exist in git secret database: $path" 1
       fi
 
       record=$(_fsdb_get_record "$path" "$fsdb")
