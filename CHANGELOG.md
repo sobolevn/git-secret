@@ -1,6 +1,8 @@
 # Changelog
 
 ## {Next Version}
+### Features
+- Allow passing paths of files to encrypt to git-secret hide
 
 ### Misc
 
