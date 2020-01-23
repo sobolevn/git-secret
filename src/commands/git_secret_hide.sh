@@ -108,10 +108,6 @@ function hide {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
-  if [ $# -ne 0 ]; then 
-    _abort "hide does not understand params: $*"
-  fi
-
   # We need user to continue:
   _user_required
 
@@ -128,9 +124,13 @@ function hide {
 
   # make sure all the unencrypted files needed are present
   local to_hide=()
-  while read -r record; do
-    to_hide+=("$record")  # add record to array
-  done < "$path_mappings"
+  if [ $# -ne 0 ]; then 
+    to_hide=( "$@" )
+  else
+    while read -r record; do
+      to_hide+=("$record")  # add record to array
+    done < "$path_mappings"
+  fi
 
   local recipients
   recipients=$(_get_recipients)
