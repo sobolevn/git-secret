@@ -122,10 +122,21 @@ function hide {
   local num_mappings
   num_mappings=$(gawk 'END{print NR}' "$path_mappings")
 
-  # make sure all the unencrypted files needed are present
+  # get the files to encrypt from input or get all from the database if none are given as arguments
   local to_hide=()
-  if [ $# -ne 0 ]; then 
-    to_hide=( "$@" )
+  if [ $# -ne 0 ]; then
+    paths=( "$@" )
+    fsdb=$(_get_secrets_dir_paths_mapping)
+    for path in "${paths[@]}"; do
+      has_record=$(_fsdb_has_record "$path" "$fsdb")
+
+      if [ "$has_record" -eq 1 ]; then
+        _abort "file not exits in git secret database: $path" 1
+      fi
+
+      record=$(_fsdb_get_record "$path" "$fsdb")
+      to_hide+=("$record")
+    done
   else
     while read -r record; do
       to_hide+=("$record")  # add record to array
@@ -158,7 +169,7 @@ function hide {
       _warn_or_abort "file not found: $input_path" "1" "$force_continue"
     else
       file_hash=$(_get_file_hash "$input_path")
-  
+
       # encrypt file only if required
       if [[ "$update_only_modified" -eq 0 ]] || [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
@@ -179,13 +190,13 @@ function hide {
 
         local error=0
         if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
-          error=1 
+          error=1
         fi
 
         if [[ "$error" -ne 0 ]] || [[ -n "$_SECRETS_VERBOSE" ]]; then
           if [[ -n "$gpg_output" ]]; then
             echo "$gpg_output"
-          fi  
+          fi
         fi
 
         if [[ ! -f "$output_path" ]]; then
@@ -199,7 +210,7 @@ function hide {
             chmod "$perms" "$output_path"
           fi
         fi
-  
+
         # Update file hash for future use of -m
         local key="$filename"
         local hash="$file_hash"

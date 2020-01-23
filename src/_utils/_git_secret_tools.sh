@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Folders:
-_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}   
+_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}
 # if SECRETS_DIR env var is set, use that instead of .gitsecret
 # for full path to secrets dir, use _get_secrets_dir() from _git_secret_tools.sh
 _SECRETS_DIR_KEYS="${_SECRETS_DIR}/keys"
@@ -12,7 +12,7 @@ _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 
-# _SECRETS_VERBOSE is expected to be empty or '1'. 
+# _SECRETS_VERBOSE is expected to be empty or '1'.
 # Empty means 'off', any other value means 'on'.
 # shellcheck disable=SC2153
 if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
@@ -42,6 +42,19 @@ BEGIN { FS=":"; OFS=":"; cnt=0; }
   }
 }
 END { if ( cnt > 0 ) print "0"; else print "1"; }
+'
+
+# shellcheck disable=2016
+AWK_FSDB_GET_RECORD='
+BEGIN { FS=":"; OFS=":"; cnt=0; }
+{
+  if ( key == $1 )
+  {
+    cnt++
+    print $0;
+  }
+}
+END { if ( cnt < 1 ) print "1"; }
 '
 
 # shellcheck disable=2016
@@ -125,7 +138,7 @@ function _os_based {
     Linux)
       "$1_linux" "${@:2}"
     ;;
-	
+
     MINGW*)
       "$1_linux" "${@:2}"
     ;;
@@ -247,6 +260,16 @@ function _fsdb_has_record {
 
   # 0 on contains, 1 for error.
   gawk -v key="$key" "$AWK_FSDB_HAS_RECORD" "$fsdb"
+}
+
+function _fsdb_get_record {
+  # First parameter is the key
+  # Second is the fsdb
+  local key="$1"  # required
+  local fsdb="$2" # required
+
+  # returns record if found
+  gawk -v key="$key" "$AWK_FSDB_GET_RECORD" "$fsdb"
 }
 
 
@@ -435,8 +458,8 @@ function _warn_or_abort {
   local error_ok=${3:-0}        # can be 0 or 1
 
   if [[ "$error_ok" -eq "0" ]]; then
-    if [[ "$exit_code" -eq "0" ]]; then 
-      # if caller sends an exit_code of 0, we change it to 1 before aborting. 
+    if [[ "$exit_code" -eq "0" ]]; then
+      # if caller sends an exit_code of 0, we change it to 1 before aborting.
       exit_code=1
     fi
     _abort "$message" "$exit_code"
@@ -471,12 +494,12 @@ function _find_and_clean_formatted {
 
   if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
       # shellcheck disable=SC2001
-      echo "$outputs" | sed "s/^/git-secret: cleaning: /" 
+      echo "$outputs" | sed "s/^/git-secret: cleaning: /"
   fi
 }
 
 
-# this sets the global array variable 'filenames' 
+# this sets the global array variable 'filenames'
 function _list_all_added_files {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
@@ -567,20 +590,20 @@ function _user_required {
     _abort "$error_message"
   fi
   if [[ "$exit_code" -ne 0 ]]; then
-    # this might catch corner case where gpg --list-keys shows 
-    # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds? 
+    # this might catch corner case where gpg --list-keys shows
+    # 'gpg: skipped packet of type 12 in keybox' warnings but succeeds?
     # See #136
     echo "$keys_exist"	# show whatever _did_ come out of gpg
     _abort "problem listing public keys with gpg: exit code $exit_code"
   fi
 }
 
-# note: this has the same 'username matching' issue described in 
+# note: this has the same 'username matching' issue described in
 # https://github.com/sobolevn/git-secret/issues/268
 # where it will match emails that have other emails as substrings.
 # we need to use fingerprints for a unique key id with gpg.
 function _get_user_key_expiry {
-  # This function returns the user's key's expiry, as an epoch. 
+  # This function returns the user's key's expiry, as an epoch.
   # It will return the empty string if there is no expiry date for the user's key
   local username="$1"
   local line
@@ -643,8 +666,8 @@ function _get_users_in_gpg_keyring {
   fi
 
   # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
-  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID" 
-  # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address 
+  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID"
+  # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address
   #  (and maybe a comment) and the regex just passes it through.)
   # sed at the end removes any 'comment' that appears in parentheses, for #530
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
@@ -660,7 +683,7 @@ function _get_users_in_gitsecret_keyring {
   # show the users in the gitsecret keyring.
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
-    
+
   local result
   result=$(_get_users_in_gpg_keyring "$secrets_dir_keys")
 
@@ -734,7 +757,7 @@ function _decrypt {
 
   set -e  # re-enable set -e
 
-  # note that according to https://github.com/sobolevn/git-secret/issues/238 , 
+  # note that according to https://github.com/sobolevn/git-secret/issues/238 ,
   # it's possible for gpg to return a 0 exit code but not have decrypted the file
   #echo "# gpg exit code: $exit_code, error_ok: $error_ok" >&3
   if [[ "$exit_code" -ne "0" ]]; then
