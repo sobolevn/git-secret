@@ -57,6 +57,10 @@ function reveal {
     filename=$(_get_record_filename "$line")
     path=$(_append_root_path "$filename")
 
+    if [[ "$filename" == *"$SECRETS_EXTENSION" ]]; then
+      _abort "cannot decrypt to secret version of file: $filename"
+    fi
+
     # The parameters are: filename, write-to-file, force, homedir, passphrase, error_ok
     _decrypt "$path" "1" "$force" "$homedir" "$passphrase" "$force_continue"
 
