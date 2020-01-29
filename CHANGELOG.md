@@ -2,6 +2,10 @@
 
 ## {Next Version}
 
+### Bugfixes
+
+- Don't let reveal clobber secret files (#579)
+
 ### Misc
 
 - Reflect changes in ruby bundler during build process
