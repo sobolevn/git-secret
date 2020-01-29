@@ -8,6 +8,7 @@
 
 ### Misc
 
+- Improve docs about using gpg with git-secret (#577)
 - Reflect changes in ruby bundler during build process
 - Upgrade build process to ansible 2.9
 
