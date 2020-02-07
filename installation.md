@@ -53,6 +53,14 @@ sudo mv bintray-sobolevn-rpm.repo /etc/yum.repos.d/
 sudo yum install git-secret
 ```
 
+### Arch
+
+You can install from the [AUR](https://aur.archlinux.org/packages/git-secret/) using your helper of choice by installing the package `git-secret` e.g. with [yay](https://github.com/Jguer/yay)
+
+```bash
+yay -S git-secret
+```
+
 ---
 
 ### Manual
