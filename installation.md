@@ -55,7 +55,7 @@ sudo yum install git-secret
 
 ### Arch Linux
 
-The `Arch` way to install git-secret is to use the directions for
+The _Arch_ way to install git-secret is to use the directions for
 "Installing Packages" at [Arch User Repository Documentation](https://wiki.archlinux.org/index.php/Arch_User_Repository#Installing_packages)
 along with the PKGBUILD file from the [git-secret Arch Linux Package](https://aur.archlinux.org/packages/git-secret/)
 
