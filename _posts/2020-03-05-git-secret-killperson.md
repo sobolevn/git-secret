@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-killperson'
-date:   2019-09-21 09:22:11 -0400
+date:   2020-03-05 17:51:54 -0600
 permalink: git-secret-killperson
 categories: command
 ---

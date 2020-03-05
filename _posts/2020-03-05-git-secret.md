@@ -1,3 +1,10 @@
+---
+layout: post
+title:  'git-secret'
+date:   2020-03-05 17:51:54 -0600
+permalink: git-secret
+categories: usage
+---
 git-secret - bash tool to store private data inside a git repo.
 =============================================
 
