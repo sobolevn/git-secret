@@ -643,13 +643,14 @@ function _get_users_in_gpg_keyring {
   fi
 
   # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
-  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID" 
-  # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address 
+  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid',
+  # skips line if field 2 contains "r" (indicating a revoked identity), and selects field 10 "User-ID"
+  # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address
   #  (and maybe a comment) and the regex just passes it through.)
   # sed at the end removes any 'comment' that appears in parentheses, for #530
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
-      gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | \
+      gawk -F: '$1~/uid/{ if ($2 !~ /r/) print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | \
       sed 's/([^)]*)//g' 3>&-)
 
   echo "$result"
