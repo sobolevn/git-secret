@@ -23,14 +23,8 @@ function teardown {
   FILE_CONTENTS="hidden content юникод"
   set_state_secret_add "$FILE_TO_HIDE" "$FILE_CONTENTS"
 
-<<<<<<< HEAD
-  run_wrapper git secret hide   
-  # this will fail, because keychain has an expired key
-
-=======
   run git secret hide   
   # this will fail, because we're using an expired key
->>>>>>> dist/master
 
   #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
     # output will look like 'abort: problem encrypting file with gpg: exit code 2: space file'
