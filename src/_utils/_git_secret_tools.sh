@@ -303,7 +303,7 @@ function _git_normalize_filename {
   local filename="$1" # required
 
   local result
-  result=$(git ls-files --full-name -o "$filename" 3>&-)
+  result=$(git ls-files --full-name -o "$filename")
   echo "$result"
 }
 
@@ -338,7 +338,7 @@ function _add_ignored_file {
 function _is_inside_git_tree {
   # Checks if we are working inside the `git` tree.
   local result
-  result=$(git rev-parse --is-inside-work-tree > /dev/null 2>&1 3>&-; echo $?)
+  result=$(git rev-parse --is-inside-work-tree > /dev/null 2>&1; echo $?)
 
   echo "$result"
 }
@@ -346,7 +346,7 @@ function _is_inside_git_tree {
 function _is_tracked_in_git {
   local filename="$1" # required
   local result
-  result="$(git ls-files --error-unmatch "$filename" >/dev/null 2>&1 3>&-; echo $?)"
+  result="$(git ls-files --error-unmatch "$filename" >/dev/null 2>&1; echo $?)"
 
   if [[ "$result" -eq 0 ]]; then
     echo "1"
@@ -673,7 +673,8 @@ function _extract_emails_from_gpg_output {
   # gensub() outputs email from <> within field 10, "User-ID".  If there's no <>, then field is just an email address 
   #  (and maybe a comment) and we pass it through.
   # Sed at the end removes any 'comment' that appears in parentheses, for #530
-  emails=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' )
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  emails=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' 3>&-)
   echo "$emails"
     
 }
