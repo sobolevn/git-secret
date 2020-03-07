@@ -15,7 +15,7 @@ function teardown {
 
 
 @test "run 'usage'" {
-  run_wrapper git secret usage
+  run git secret usage
   [ "$status" -eq 0 ]
 }
 
@@ -24,7 +24,7 @@ function teardown {
   remove_git_repository
 
   # It's ok for 'usage' to succeed when there's no .git directory, but it doesn't
-  run_wrapper git secret usage
+  run git secret usage
   [ "$status" -eq 1 ]
 }
 
@@ -38,7 +38,7 @@ function teardown {
   #echo "# SECRETS_DIR is ${_SECRETS_DIR}" >&3
 
   # It's ok for 'usage' to succeed when the .gitsecret directory is ignored, but it doesn't
-  run_wrapper git secret usage
+  run git secret usage
   #echo "# git secret usage -> status $status" >&3
 
   [ "$status" -eq 1 ]

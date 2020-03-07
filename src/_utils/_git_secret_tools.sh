@@ -15,13 +15,12 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 # _SECRETS_VERBOSE is expected to be empty or '1'. 
 # Empty means 'off', any other value means 'on'.
 # shellcheck disable=SC2153
-if [[ -n "$SECRETS_VERBOSE" && "$SECRETS_VERBOSE" -ne 0 ]]; then
+if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
     # shellcheck disable=SC2034
-    _SECRETS_VERBOSE=1
+    _SECRETS_VERBOSE='1'
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
-
 
 # Commands:
 : "${SECRETS_GPG_COMMAND:="gpg"}"
@@ -472,7 +471,7 @@ function _find_and_clean_formatted {
 
   if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
       # shellcheck disable=SC2001
-      echo "$outputs" | sed "s/^/git-secret: removing: /" 
+      echo "$outputs" | sed "s/^/git-secret: cleaning: /" 
   fi
 }
 
@@ -560,8 +559,9 @@ function _user_required {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
+  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
   local keys_exist
-  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys)
+  keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
   local exit_code=$?
   if [[ -z "$keys_exist" ]]; then
     _abort "$error_message"
@@ -588,7 +588,8 @@ function _get_user_key_expiry {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
-  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub:)
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-)
 
   local expiry_epoch
   expiry_epoch=$(echo "$line" | cut -d: -f7)
@@ -642,8 +643,8 @@ function _get_users_in_gpg_keyring {
     args+=( "--homedir" "$homedir" )
   fi
 
-  # We use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
-  # Gawk splits on colon as --with-colon, matches field 1 as 'uid', 
+  ## We use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
+  ## Gawk splits on colon as --with-colon, matches field 1 as 'uid', 
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
       gawk -F: '$1=="uid"' )
 
@@ -745,10 +746,11 @@ function _decrypt {
   #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
-    echo "$passphrase" | ( _maybe_show_command; $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 0 "$encrypted_filename")
+    echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 0 \
+      "$encrypted_filename"
     exit_code=$?
   else
-    (_maybe_show_command; $SECRETS_GPG_COMMAND "${args[@]}" "$encrypted_filename")
+    $SECRETS_GPG_COMMAND "${args[@]}" "$encrypted_filename"
     exit_code=$?
   fi
 
@@ -765,12 +767,3 @@ function _decrypt {
   # at this point the file should be written to disk or output to stdout
 }
 
-function _maybe_show_command {
-    # _SECRETS_VERBOSE is expected to be empty or '1'. 
-    # Empty means 'off', any other value means 'on'.
-    # shellcheck disable=SC2153
-    if [[ -n "$_SECRETS_VERBOSE" ]]; then
-        set -x
-        export PS4="git-secret: running: "
-    fi
-}

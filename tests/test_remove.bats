@@ -39,7 +39,7 @@ function _has_line {
 
 
 @test "run 'remove' normally" {
-  run_wrapper git secret remove "$SECOND_FILE"
+  run git secret remove "$SECOND_FILE"
   [ "$status" -eq 0 ]
 
   # Test output:
@@ -64,7 +64,7 @@ function _has_line {
 
 
 @test "run 'remove' with multiple arguments" {
-  run_wrapper git secret remove "$FIRST_FILE" "$SECOND_FILE"
+  run git secret remove "$FIRST_FILE" "$SECOND_FILE"
   [ "$status" -eq 0 ]
 
   local first_line=$(_has_line "$FIRST_FILE")
@@ -95,7 +95,7 @@ function _has_line {
   set_state_secret_hide # running hide again to hide new data
 
   # Now it should remove filename with slashes from the mapping:
-  run_wrapper git secret remove "$file_in_folder"
+  run git secret remove "$file_in_folder"
   [ "$status" -eq 0 ]
 
   local mapping_contains=$(_has_line "$file_in_folder")
@@ -112,7 +112,7 @@ function _has_line {
 @test "run 'remove' with '-c'" {
   set_state_secret_hide
 
-  run_wrapper git secret remove -c "$SECOND_FILE"
+  run git secret remove -c "$SECOND_FILE"
   [ "$status" -eq 0 ]
 
   local mapping_contains=$(_has_line "$SECOND_FILE")
@@ -129,7 +129,7 @@ function _has_line {
 
 @test "run 'remove' with bad arg" {
   set_state_secret_hide
-  run_wrapper git secret remove -Z "$SECOND_FILE"
+  run git secret remove -Z "$SECOND_FILE"
   [ "$status" -ne 0 ]
 }
 

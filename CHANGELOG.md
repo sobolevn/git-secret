@@ -7,13 +7,15 @@
 - Warn about disabled, revoked, expired, or otherwise invalid keys (#552, #508, #317, #290, #283, #238)
 - Warn if 'tell' is used on an email address with multiple keys (#552)
 
-### Features
+### Bugfixes
 
-- Verbose mode shows gpg commands used for hide, reveal, tell, and killperson (#554)
+- Don't let reveal clobber secret files (#579)
 
 ### Misc
 
-- Fix tests from occasional hang when interrupting with cntl-c (#558)
+- Improve docs about using gpg with git-secret (#577)
+- Reflect changes in ruby bundler during build process
+- Upgrade build process to ansible 2.9
 
 ## Version 0.3.2
 
