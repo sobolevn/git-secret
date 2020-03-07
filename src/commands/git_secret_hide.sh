@@ -60,7 +60,7 @@ function _get_file_hash {
   local file_hash
 
   checksum_local="$(_get_checksum_local)"
-  file_hash=$($checksum_local "$input_path" | gawk '{print $1}' 3>&-)
+  file_hash=$($checksum_local "$input_path" | gawk '{print $1}')
 
   echo "$file_hash"
 }
