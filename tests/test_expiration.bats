@@ -18,7 +18,7 @@ function teardown {
   unset_current_state
 }
 
-@test "test 'hide' using expired key" {
+@test "run 'hide' using expired key" {
   FILE_TO_HIDE="$TEST_DEFAULT_FILENAME"
   FILE_CONTENTS="hidden content юникод"
   set_state_secret_add "$FILE_TO_HIDE" "$FILE_CONTENTS"
@@ -33,6 +33,11 @@ function teardown {
   [ $status -ne 0 ] # we expect failure here. Actual code is 2
 }
 
+
+@test "run 'whoknows' using expired key" {
+  run git secret whoknows
+  [ $status -eq 0 ] 
+}
 
 @test "run 'whoknows -l' on only expired user" {
   run git secret whoknows -l
@@ -50,7 +55,7 @@ function teardown {
 
 
 
-@test "run 'whoknows -l' on expired and normal user" {
+@test "run 'whoknows -l' on normal key and expired key" {
   install_fixture_key "$TEST_DEFAULT_USER"
   set_state_secret_tell "$TEST_DEFAULT_USER"
 
