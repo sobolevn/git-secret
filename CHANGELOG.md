@@ -4,12 +4,9 @@
 
 ### Bugfixes
 
-- Warn about disabled, revoked, expired, or otherwise invalid keys (#552, #508, #317, #290, #283, #238)
-- Warn if 'tell' is used on an email address with multiple keys (#552)
-
-### Bugfixes
-
-- Don't let reveal clobber secret files (#579)
+- In 'tell', warn about disabled, revoked, expired, or invalid keys (#552, #508, #317, #290, #283, #238)
+- Error if 'tell' is used on an email address with multiple keys (#552)
+- Don't let 'reveal' clobber secret files (#579)
 
 ### Misc
 
