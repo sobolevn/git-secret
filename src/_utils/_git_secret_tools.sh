@@ -674,9 +674,9 @@ function _extract_emails_from_gpg_output {
   #  (and maybe a comment) and we pass it through.
   # Sed at the end removes any 'comment' that appears in parentheses, for #530
   # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  local emails
   emails=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' 3>&-)
   echo "$emails"
-    
 }
 
 function _get_users_in_gitsecret_keyring {
