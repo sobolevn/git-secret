@@ -539,7 +539,7 @@ function _exe_is_busybox {
   echo "$is_busybox"
 }
 
-
+# this is used by just about every command
 function _user_required {
   # This function does a bunch of validations:
   # 1. It calls `_secrets_dir_exists` to verify that "$_SECRETS_DIR" exists.
@@ -606,18 +606,19 @@ function _assert_keychain_contains_emails {
   gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
   for email in "${emails[@]}"; do
     if [[ $email != *"@"* ]]; then
-        _abort "does not appear to be an email: $email"
+      _abort "does not appear to be an email: $email"
     fi
-    local email_ok=0
+    local emails_found=0
     for uid in $gpg_uids; do
-        if [[ "$uid" == "$email" ]]; then
-            email_ok=1
-            break
-        fi
+      if [[ "$uid" == "$email" ]]; then
+        emails_found=$((emails_found+1))
+      fi
     done
-    if [[ $email_ok -eq 0 ]]; then
-      _abort "email not found in gpg keyring: $email"
-    fi
+    if [[ $emails_found -eq 0 ]]; then
+      _abort "no key found in gpg keyring for: $email"
+    elif [[ $emails_found -gt 1 ]]; then
+      _abort "$emails_found keys found in gpg keyring for: $email"
+    fi 
   done
 }
 
@@ -630,7 +631,7 @@ function _get_encrypted_filename {
   echo "${filename}${SECRETS_EXTENSION}" | sed -e 's#^\./##'
 }
 
-
+# this is used throughout this file, and in 'whoknows'
 function _get_users_in_gpg_keyring {
   # show the users in the gpg keyring.
   # `whoknows` command uses it internally.
@@ -642,19 +643,41 @@ function _get_users_in_gpg_keyring {
     args+=( "--homedir" "$homedir" )
   fi
 
-  # we use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
-  # here gawk splits on colon as --with-colon, exact matches field 1 as 'uid', and selects field 10 "User-ID" 
-  # the gensub regex extracts email from <> within field 10. (If there's no <>, then field is just an email address 
-  #  (and maybe a comment) and the regex just passes it through.)
-  # sed at the end removes any 'comment' that appears in parentheses, for #530
-  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  ## We use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
+  ## Gawk splits on colon as --with-colon, matches field 1 as 'uid', 
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
-      gawk -F: '$1~/uid/{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | \
-      sed 's/([^)]*)//g' 3>&-)
+      gawk -F: '$1=="uid"' )
 
-  echo "$result"
+  # For #508 / #552: warn user if gpg indicates keys are one of:
+  # i=invalid, d=disabled, r=revoked, e=expired, n=not valid
+  # See https://github.com/gpg/gnupg/blob/master/doc/DETAILS#field-2---validity # for more on gpg 'validity codes'.
+  local invalid_lines
+  invalid_lines=$(echo "$result" | gawk -F: '$2=="i" || $2=="d" || $2=="r" || $2=="e" || $2=="n"')
+
+  local emails
+  emails=$(_extract_emails_from_gpg_output "$result")
+
+  local emails_with_invalid_keys
+  emails_with_invalid_keys=$(_extract_emails_from_gpg_output "$invalid_lines")
+
+  if [[ -n "$emails_with_invalid_keys" ]]; then
+     _warn "at least one key for email(s) is revoked, expired, or otherwise invalid: $emails_with_invalid_keys"
+  fi
+
+  echo "$emails"
 }
 
+function _extract_emails_from_gpg_output {
+  local result=$1
+
+  # gensub() outputs email from <> within field 10, "User-ID".  If there's no <>, then field is just an email address 
+  #  (and maybe a comment) and we pass it through.
+  # Sed at the end removes any 'comment' that appears in parentheses, for #530
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  local emails
+  emails=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' 3>&-)
+  echo "$emails"
+}
 
 function _get_users_in_gitsecret_keyring {
   # show the users in the gitsecret keyring.

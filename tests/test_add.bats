@@ -105,7 +105,8 @@ function teardown {
   run git secret add -i "$test_file"
   [ "$status" -eq 0 ]
 
-  run _file_has_line "$test_file" "../.gitignore"
+  [[ -f "$current_dir/.gitignore" ]]
+  run _file_has_line "$test_file" "$current_dir/.gitignore"
   [ "$status" -eq 0 ]
 
   # .gitignore was not created:
