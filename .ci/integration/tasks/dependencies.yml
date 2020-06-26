@@ -14,7 +14,7 @@
 
 - name: Get ShellCheck
   get_url:
-    url: https://storage.googleapis.com/shellcheck/shellcheck-latest.linux.x86_64.tar.xz
+    url: https://github.com/koalaman/shellcheck/releases/download/latest/shellcheck-latest.linux.x86_64.tar.xz
     dest: /tmp/shellcheck.tar.xz
 
 - name: Install ShellCheck
