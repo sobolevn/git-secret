@@ -26,7 +26,7 @@ By default, `git secret init` will add the file `.gitsecret/keys/random_seed` to
 
 4. Now it's time to add files you wish to encrypt inside the `git-secret` repository.
 This can be done by running `git secret add <filenames...>` command. Make sure these files are ignored by mentions in
-`.gitignore`, otherwise `git-secret` won't allow you to add them, as these files could be stored unencrypted. Actually, in the default configuration it will automatically add the files to `.gitignore` for you.
+`.gitignore`, otherwise `git-secret` won't allow you to add them, as these files could be stored unencrypted. In the default configuration, git-secret add will automatically add the unencrypted versions of the files to `.gitignore` for you.
 
 5. When done, run `git secret hide` to encrypt all files which you have added by the `git secret add` command.
 The data will be encrypted with the public-keys described by the `git secret tell` command.
@@ -77,7 +77,7 @@ To import the public key of someone else (to share the secret with them for inst
 gpg --import public-key.gpg
 ```
 
-To make sure you get the original public keys of the indicated persons, be sure to use a secure channel to transfer it, or use a service you trust like Keybase to retrieve their public key. Otherwise you could grant the wrong person access to your secrets by mistake!
+To make sure you get the original public keys of the indicated persons, be sure to use a secure channel to transfer it, or use a service you trust, preferably one that uses encryption such as Keybase, to retrieve their public key. Otherwise you could grant the wrong person access to your secrets by mistake!
 
 ### Using git-secret for Continuous Integration / Continuous Deployment (CI/CD)
 
@@ -120,7 +120,7 @@ echo $GPG_PRIVATE_KEY | tr ',' '\n' > ./private_key.gpg
 
 ## Environment Variables and Configuration
 
-You can configure the version of `gpg` used, or the extension your encrypted files use, to suit your workflow better.
+See the man page for `git-secret` for an explanation of the environment variables `git-secret` uses.
 To do so, just set the required variable to the value you need.
 This can be done in your shell environment file or with each `git-secret` command.
 
