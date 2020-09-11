@@ -120,8 +120,8 @@ echo $GPG_PRIVATE_KEY | tr ',' '\n' > ./private_key.gpg
 
 ## Environment Variables and Configuration
 
-See the man page for `git-secret` for an explanation of the environment variables `git-secret` uses.
-To do so, just set the required variable to the value you need.
+You can configure the version of `gpg` used, or the extension your encrypted files use, to suit your workflow better.
+To do so, just set the required variable to the value you need. See the man page for git-secret for an explanation of the environment variables git-secret uses.
 This can be done in your shell environment file or with each `git-secret` command.
 
 The settings available to be changed are:
