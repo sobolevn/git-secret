@@ -7,6 +7,7 @@
 - In 'tell', warn about disabled, revoked, expired, or invalid keys (#552, #508, #317, #290, #283, #238)
 - Error if 'tell' is used on an email address with multiple keys (#552)
 - Don't let 'reveal' clobber secret files (#579)
+- Updated test key fixture that had expired (#607)
 
 ### Misc
 
