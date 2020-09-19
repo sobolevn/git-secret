@@ -82,7 +82,7 @@ develop: clean build install-hooks
 
 .PHONY: lint
 lint:
-	find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
+	find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck disable=SC1091 {}
 	find tests -type f -name '*.bats' -o -name '*.bash' -print0 | xargs -0 -I {} shellcheck {}
 
 #
