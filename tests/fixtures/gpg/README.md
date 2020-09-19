@@ -19,7 +19,7 @@
   This user was created to fix 
   https://github.com/sobolevn/git-secret/issues/227,
   "keys with email address but no name not recognized by whoknows".
-  The passphrases is 'user3pass'.
+  The passphrase is 'user3pass'.
 
 * user4 was created with `gpg --gen-key`, using the name 'user4'
   and the email address user4@gitsecret.io, and is also set to 
