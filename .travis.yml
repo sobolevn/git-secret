@@ -8,18 +8,14 @@ matrix:
     #  sudo: required
     #  language: sh
     - os: osx
+      env: GITSECRET_DIST="brew"
+      sudo: required
+      language: shell
+    - os: osx
       name: osx-with-debug-output
       env: GITSECRET_DIST="brew"; SECRETS_TEST_VERBOSE=1
       sudo: required
       language: shell
-      #language: ruby
-      #rvm: 2.6
-    - os: osx
-      env: GITSECRET_DIST="brew"
-      sudo: required
-      language: shell
-      #language: ruby
-      #rvm: 2.6
     #- os: linux
     #  env: KITCHEN_REGEXP="gnupg1-alpine-latest"; SECRETS_TEST_VERBOSE=1
     #  services: docker
