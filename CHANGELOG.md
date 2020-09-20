@@ -14,7 +14,7 @@
 - Improve docs about using gpg with git-secret (#577)
 - Reflect changes in ruby bundler during build process
 - Upgrade build process to ansible 2.9
-- Disable new shellcheck rule SC1091 (#609)
+- Use shellcheck 0.7.1 with CI, not 'latest' (#609)
 
 ## Version 0.3.2
 
