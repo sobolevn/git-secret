@@ -38,18 +38,18 @@ matrix:
       sudo: required
       language: ruby
       rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg1-ubuntu-latest"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg1-ubuntu-rolling"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg1-ubuntu-latest"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg1-ubuntu-rolling"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
     #- os: linux
     #  env: KITCHEN_REGEXP="gnupg2-alpine-latest"
     #  services: docker
@@ -70,18 +70,18 @@ matrix:
       sudo: required
       language: ruby
       rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg2-ubuntu-latest"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
-    - os: linux
-      env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"
-      services: docker
-      sudo: required
-      language: ruby
-      rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg2-ubuntu-latest"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
+    #- os: linux
+    #  env: KITCHEN_REGEXP="gnupg2-ubuntu-rolling"
+    #  services: docker
+    #  sudo: required
+    #  language: ruby
+    #  rvm: 2.6
     - os: linux
       env: KITCHEN_REGEXP="gnupg-git-fedora-latest"
       services: docker
