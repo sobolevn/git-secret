@@ -139,6 +139,7 @@ but don't worry, it's easy to `squash` PRs into a small number of commits when t
 ### Branches
 
 We have two long-live branches: `master` for the git-secret code and man pages, and `gh-pages` for the static web site.
+The `gh-pages` branch tracks the `master` branch's `docs` folder, and is kept up-to-date using a GitHub Action.
 
 Development looks like this:
 
@@ -190,7 +191,7 @@ pre-commit and post-commit hooks will trigger three events.
 
 - `pre-commit`: generate and update the manuals and add them to the current commit with `make build-man`
 
-- `post-commit`: trigger `make build-gh-pages`, which will update and push manuals to the [git-secret site][git-secret-site].
+- `post-commit`: a GitHub Action will update the `gh-pages` branch to match the `docs` folder in the `master` branch, which will push updated manuals to the [git-secret site][git-secret-site].
 
 - `post-commit`: new `git` tag (such as v0.3.1) will be automatically created if the version is changed, using something like
 
