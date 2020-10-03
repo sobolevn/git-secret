@@ -237,10 +237,11 @@ function teardown {
 
   # Testing:
   run git secret add -v "$filename1" "$filename2"
-  local newline=$'\n'
-  local expected_message="git-secret: adding file: ${TEST_DEFAULT_FILENAME}${newline}git-secret: adding file: ${TEST_SECOND_FILENAME}${newline}git-secret: 2 item(s) added."
+
   [ "$status" -eq 0 ]
-  [ "$output" = "$expected_message" ]
+  [[ "$output" == *"git-secret: adding file: ${TEST_DEFAULT_FILENAME}"* ]]
+  [[ "$output" == *"git-secret: adding file: ${TEST_SECOND_FILENAME}"* ]]
+  [[ "$output" == *"git-secret: 2 item(s) added."* ]]
 
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
