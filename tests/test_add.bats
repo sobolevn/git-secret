@@ -191,7 +191,7 @@ function teardown {
   run git secret add "$filename"
   run git secret add "$filename"
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: 1 item(s) added." ]
+  [ "$output" = "git-secret: 0 item(s) added." ]
 
   # Ensuring that path mappings was set correctly:
   local path_mappings
@@ -217,8 +217,31 @@ function teardown {
 
   # Testing:
   run git secret add "$filename1" "$filename2"
+  local newline=$'\n'
   [ "$status" -eq 0 ]
   [ "$output" = "git-secret: 2 item(s) added." ]
+
+  # Cleaning up:
+  rm "$filename1" "$filename2" ".gitignore"
+}
+
+@test "run 'add -v' for multiple files" {
+  # Preparations:
+  local filename1="$TEST_DEFAULT_FILENAME"
+  echo "content1" > "$filename1"
+  echo "$filename1" > ".gitignore"
+
+  local filename2="$TEST_SECOND_FILENAME"
+  echo "content2" > "$filename2"
+  echo "$filename2" >> ".gitignore"
+
+  # Testing:
+  run git secret add -v "$filename1" "$filename2"
+
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"git-secret: adding file: ${TEST_DEFAULT_FILENAME}"* ]]
+  [[ "$output" == *"git-secret: adding file: ${TEST_SECOND_FILENAME}"* ]]
+  [[ "$output" == *"git-secret: 2 item(s) added."* ]]
 
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
