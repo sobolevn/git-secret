@@ -13,10 +13,9 @@ layout: default
 
 ## Supported platforms
 
-`git-secret` works with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04, `Debian` >= 8.3, and `Fedora`.
+`git-secret` works with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04, `Debian` >= 8.3, `Fedora` and `Cygwin`.
 You can check the full list [here](https://travis-ci.org/sobolevn/git-secret).
 You can add your platform to this list, if all the tests pass for you.
-`Cygwin` support [is planned](https://github.com/sobolevn/git-secret/issues/40).
 
 ## Installation process
 
