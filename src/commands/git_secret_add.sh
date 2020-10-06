@@ -5,11 +5,13 @@ function add {
   local auto_ignore=1
   OPTIND=1
 
-  while getopts "ih" opt; do
+  while getopts "ihv" opt; do
     case "$opt" in
       i) auto_ignore=1;;    # this doesn't change anything
 
       h) _show_manual_for "add";;
+
+      v) _SECRETS_VERBOSE=1;;
 
       *) _invalid_option_for "add";;
     esac
@@ -82,6 +84,8 @@ function add {
 
   local fsdb
   fsdb=$(_get_secrets_dir_paths_mapping)
+  local count
+  count=0
 
   for item in "${items[@]}"; do
     local path
@@ -94,8 +98,13 @@ function add {
     already_in=$(_fsdb_has_record "$key" "$fsdb")
     if [[ "$already_in" -eq 1 ]]; then
       echo "$key" >> "$fsdb"
+       if [[ -n "$_SECRETS_VERBOSE" ]]; then
+        _message "adding file: $key"
+      fi
+      
+      ((count=count+1))
     fi
   done
 
-  _message "${#@} item(s) added."
+  _message "$count item(s) added."
 }

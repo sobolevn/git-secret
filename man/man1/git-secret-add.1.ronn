@@ -3,7 +3,7 @@ git-secret-add - starts to track added files.
 
 ## SYNOPSIS
 
-    git secret add [-i] <pathspec>...
+    git secret add [-v] [-i] <pathspec>...
 
 
 ## DESCRIPTION
@@ -23,6 +23,7 @@ folder using the SECRETS_DIR environment variable.
 
 ## OPTIONS
 
+    -v  - verbose, shows extra information.
     -i  - does nothing, adding paths to .gitignore is now the default behavior.
     -h  - shows this help.
 
