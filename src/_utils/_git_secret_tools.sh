@@ -335,7 +335,7 @@ function _add_ignored_file {
   local full_path
   full_path=$(_append_root_path '.gitignore')
 
-  echo "$filename" >> "$full_path"
+  printf '%q' "$filename" >> "$full_path"
 }
 
 

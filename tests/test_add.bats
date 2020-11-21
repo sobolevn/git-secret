@@ -246,3 +246,27 @@ function teardown {
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
 }
+
+@test "run 'add' for file with special chars" {
+  # Preparations:
+  local filename="$TEST_FOURTH_FILENAME"
+  echo "content" > "$filename"
+  echo "$filename" > ".gitignore"
+
+  run git secret add "$filename"
+  [ "$status" -eq 0 ]
+
+  # Ensuring that path mappings was set correctly:
+  local path_mappings
+  path_mappings=$(_get_secrets_dir_paths_mapping)
+
+  local files_list=$(cat "$path_mappings")
+  [ "$files_list" = "$filename" ]
+
+  # Ensuring the file is correctly git-ignored
+  run git check-ignore "$filename"
+  [ "$status" -eq 0 ]
+
+  # Cleaning up:
+  rm "$filename" ".gitignore"
+}

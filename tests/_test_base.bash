@@ -60,6 +60,7 @@ export TEST_ATTACKER_USER="attacker1@gitsecret.io"
 export TEST_DEFAULT_FILENAME="space file" # has spaces
 export TEST_SECOND_FILENAME="space file two" # has spaces
 export TEST_THIRD_FILENAME="space file three"  # has spaces
+export TEST_FOURTH_FILENAME="space file three [] * $"  # has spaces and special chars
 
 
 function test_user_password {
@@ -303,6 +304,7 @@ function unset_current_state {
   rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_DEFAULT_FILENAME}"  2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_SECOND_FILENAME}"   2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_THIRD_FILENAME}"    2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_FOURTH_FILENAME}"   2>&1 | sed 's/^/# unset_current_state: rm /'
 
   # return to the base dir:
   cd "$SECRET_PROJECT_ROOT" || exit 1
