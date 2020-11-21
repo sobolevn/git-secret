@@ -75,7 +75,7 @@ Here are some packagings of git-secret that we're aware of:
 
 - https://formulae.brew.sh/formula/git-secret
 - https://packages.ubuntu.com/bionic/git-secret
-- https://apps.fedoraproject.org/packages/git-secret
+- https://src.fedoraproject.org/rpms/git-secret
 - https://aur.archlinux.org/packages/git-secret/
 - https://pkgs.alpinelinux.org/package/edge/testing/x86/git-secret
 - https://packages.debian.org/sid/git-secret
