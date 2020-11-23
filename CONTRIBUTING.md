@@ -181,7 +181,13 @@ output from commands.
 
 ### Release process
 
-The release process is defined in the `git`-hooks and `.travis.yml`.
+To create a new release, (you'll first need permission to commit to the repo, of course):
+
+Update the content of `CHANGELOG.md` for the release (this should be a matter of changing headers),
+and update the version string in `src/version.sh`.  Then, when you `commit` these changes, 
+the git-hooks described below will perform most of the steps needed for the github release.
+
+So a lot of the release process is defined in the `git`-hooks and `.travis.yml`.
 
 When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) the 
 pre-commit and post-commit hooks will trigger three events.
@@ -200,6 +206,16 @@ if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
 fi
 ```
 
+After all the above hooks have executed, travis-ci will test and build releases for specific platforms 
+(see  https://bintray.com/sobolevn/deb/git-secret, https://bintray.com/sobolevn/rpm/git-secret, etc).
+
+While travis is doing it's building and testing, finish the release on github by pushing the new tag with
+
+    git push --tags
+
+and then go to https://github.com/sobolevn/git-secret/releases and 'draft a new release',
+setting up a production release like the previous ones.
+
 #### About GnuPG
 
 Here are some links to gnupg documentation that might be useful for those working with git-secret:
@@ -212,7 +228,7 @@ Here are some links to gnupg documentation that might be useful for those workin
 After you commit a tag that matches the pattern '^v' and the tests succeed, scripts run on [Travis-CI](https://travis-ci.org/sobolevn/git-secret) 
 will publish new `deb` and `rpm` packages to [`bintray`][bintray].
 
-(If you wish to override a previous release (*be careful, this is discouraged*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`)
+(If you need to override a previous release (*this is highly discouraged*) you will need to add `"override": 1` into `matrixParams`, see `deb-deploy.sh` and `rpm-deploy.sh`)
 
 #### Manual releases
 

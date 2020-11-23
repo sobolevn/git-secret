@@ -1,5 +1,11 @@
 # Changelog
 
+## {{Next Version}}
+
+### Misc
+
+- Improve documentation about releases
+
 ## Version 0.3.3
 
 ### Bugfixes
