@@ -2,6 +2,10 @@
 
 ## {{Next Version}}
 
+### Bugfixes
+
+- Escape filenames with special characters before adding to .gitignore
+
 ### Misc
 
 - Improve documentation about releases
@@ -14,7 +18,6 @@
 - Error if 'tell' is used on an email address with multiple keys (#552)
 - Don't let 'reveal' clobber secret files (#579)
 - Updated test key fixture that had expired (#607)
-- Escape filenames with special characters before adding to .gitignore
 
 ### Misc
 
