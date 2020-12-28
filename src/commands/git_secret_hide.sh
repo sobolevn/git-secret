@@ -162,7 +162,7 @@ function hide {
       # encrypt file only if required
       if [[ "$update_only_modified" -eq 0 ]] || [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
-        local args=( --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes "--trust-model=always" --encrypt )
+        local args=( --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes "--trust-model=always" --encrypt --armor )
 
         # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2206
