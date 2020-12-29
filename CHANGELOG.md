@@ -9,6 +9,7 @@
 ### Misc
 
 - Improve documentation about releases
+- Use gpg --armor when encrypting files, so secret files are txt (#631)
 
 ## Version 0.3.3
 
