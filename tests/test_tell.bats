@@ -48,6 +48,15 @@ function teardown {
   
 }
 
+@test "run 'tell' on the same email twice" {
+  # first time should succeed
+  git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
+
+  # second time should fail because there's already a key for that email. See #634
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
+  [ "$status" -ne 0 ]
+}
+
 @test "fail on no users" {
   run _user_required
   [ "$status" -eq 1 ]
