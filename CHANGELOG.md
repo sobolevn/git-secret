@@ -5,10 +5,12 @@
 ### Bugfixes
 
 - Escape filenames with special characters before adding to .gitignore
+- Better error handling around telling an email twice (#634)
 
 ### Misc
 
 - Improve documentation about releases
+- Man page improvements
 
 ## Version 0.3.3
 
