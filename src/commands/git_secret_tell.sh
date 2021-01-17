@@ -67,7 +67,11 @@ function tell {
     _abort "you must use -m or provide at least one email address."
   fi
 
-  _assert_keychain_contains_emails "$homedir" "${emails[@]}"
+  local secrets_dir_keys
+  secrets_dir_keys=$(_get_secrets_dir_keys)
+
+  _assert_keyring_contains_emails "$homedir" "user keyring" "${emails[@]}"
+  _assert_keyring_doesnt_contain_emails "$secrets_dir_keys" "git-secret keyring" "${emails[@]}"
 
   local start_key_cnt
   start_key_cnt=$(get_gpg_key_count)
@@ -95,10 +99,7 @@ function tell {
       _abort "no keyfile found for '$email'. Check your key name: 'gpg --list-keys'."
     fi
 
-    # Importing public key to the local keychain:
-    local secrets_dir_keys
-    secrets_dir_keys=$(_get_secrets_dir_keys)
-
+    # Importing public key to the local keyring:
     local args=( --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" )
     if [[ -z "$_SECRETS_VERBOSE" ]]; then
       $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1 3>&-

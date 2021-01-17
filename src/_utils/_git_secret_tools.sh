@@ -602,9 +602,25 @@ function _get_user_key_expiry {
 }
 
 
-function _assert_keychain_contains_emails {
+function _assert_keyring_contains_emails {
   local homedir=$1
-  local emails=$2
+  local keyring_name=$2
+  local emails=$3
+  _assert_keyring_emails "$homedir" "$keyring_name" "$emails" 1 # 1 here means 'expect $emails in keyring'
+}
+function _assert_keyring_doesnt_contain_emails {
+  local homedir=$1
+  local keyring_name=$2
+  local emails=$3
+  _assert_keyring_emails "$homedir" "$keyring_name" "$emails" 0 # 0 here means 'don't expect $emails in keyring'
+}
+
+
+function _assert_keyring_emails {
+  local homedir=$1
+  local keyring_name=$2
+  local emails=$3
+  local expected=$4  # set this to 0 to not expect the email in the keyring; 1 to expect the email in the keyring
 
   local gpg_uids
   gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
@@ -618,11 +634,18 @@ function _assert_keychain_contains_emails {
         emails_found=$((emails_found+1))
       fi
     done
-    if [[ $emails_found -eq 0 ]]; then
-      _abort "no key found in gpg keyring for: $email"
-    elif [[ $emails_found -gt 1 ]]; then
-      _abort "$emails_found keys found in gpg keyring for: $email"
-    fi 
+    if [[ $expected -eq 1 ]]; then
+        if [[ $emails_found -eq 0 ]]; then
+          _abort "no key found in gpg $keyring_name for: $email"
+        elif [[ $emails_found -gt 1 ]]; then
+          _abort "$emails_found keys found in gpg $keyring_name for: $email"
+        fi 
+    else
+        if [[ $emails_found -gt 0 ]]; then
+          _abort "$emails_found keys found in gpg $keyring_name for: $email"
+        fi 
+    fi
+
   done
 }
 
