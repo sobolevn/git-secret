@@ -5,11 +5,13 @@
 ### Bugfixes
 
 - Escape filenames with special characters before adding to .gitignore
+- Better error handling around telling an email twice (#634)
 
 ### Misc
 
 - Improve documentation about releases
-- Use gpg --armor when encrypting files, so secret files are txt (#631)
+- Use gpg --armor when encrypting files, so secret files are text, not binary (#631)
+- Man page improvements
 
 ## Version 0.3.3
 
