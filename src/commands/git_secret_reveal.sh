@@ -47,6 +47,11 @@ function reveal {
 
   if [ ${#to_show[@]} -eq 0 ]; then
     while read -r record; do
+
+      if [[ "$record" == "" ]]; then
+        continue # skip new lines / empty strings
+      fi
+
       to_show+=("$record")  # add record to array
     done < "$path_mappings"
   fi
@@ -76,7 +81,7 @@ function reveal {
         chmod "$perms" "$path"
       fi
     fi
-  
+
   done
 
   _message "done. $counter of ${#to_show[@]} files are revealed."
