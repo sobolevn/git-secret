@@ -56,6 +56,22 @@ function teardown {
   [ "$status" -eq 1 ]
 }
 
+@test "run 'killperson' with duplicate email" {
+  # Preparations:
+  install_fixture_key "$TEST_DEFAULT_USER"
+
+  local email="$TEST_DEFAULT_USER"
+
+  run git secret killperson "$email"
+  [ "$status" -eq 0 ]
+
+  # Testing output:
+  [[ "$output" == *"$email"* ]]
+
+  # Then whoknows must return an error with status code 1:
+  run git secret whoknows
+  [ "$status" -eq 1 ]
+}
 
 @test "run 'killperson' with multiple arguments" {
   # Adding second user:
