@@ -60,7 +60,7 @@ export TEST_ATTACKER_USER="attacker1@gitsecret.io"
 export TEST_DEFAULT_FILENAME="space file" # has spaces
 export TEST_SECOND_FILENAME="space file two" # has spaces
 export TEST_THIRD_FILENAME="space file three"  # has spaces
-export TEST_FOURTH_FILENAME="space file three [] * $"  # has spaces and special chars
+export TEST_FOURTH_FILENAME="space file three [] * $ é"  # has spaces and special chars. é added for #642
 
 
 function test_user_password {
