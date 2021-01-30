@@ -11,6 +11,7 @@
 ### Bugfixes
 
 - Escape filenames with special characters before adding to `.gitignore`
+- Fix adding newlines to .gitignore entries
 - Better error handling around telling an email twice (#634)
 - Fix for `-P` (#647)
 
