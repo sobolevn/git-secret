@@ -620,7 +620,7 @@ function _assert_keyring_contains_emails_at_least_once {
   local homedir=$1
   local keyring_name=$2
   local emails=$3
-  _assert_keyring_emails "$homedir" "$keyring_name" "$emails" 1 1 # expect the email in the keyring and expect it to be duplicated 
+  _assert_keyring_emails "$homedir" "$keyring_name" "$emails" 1 1 # expect the email at least once in the keyring 
 }
 
 function _assert_keyring_emails {
@@ -628,7 +628,7 @@ function _assert_keyring_emails {
   local keyring_name=$2
   local emails=$3
   local expected=$4  # set this to 0 to not expect the email in the keyring; 1 to expect the email in the keyring
-  local expect_duplicates=$5 # set this to 0 to not allow duplicate emails in the keyring when processing assertion (optional)
+  local allow_duplicates=$5 # set this to 0 to not allow duplicate emails in the keyring when processing assertion (optional)
 
   local gpg_uids
   gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
@@ -646,7 +646,7 @@ function _assert_keyring_emails {
         if [[ $emails_found -eq 0 ]]; then
           _abort "no key found in gpg $keyring_name for: $email"
         elif [[ $emails_found -gt 1 ]]; then
-          if [[ $expect_duplicates -ne 1 ]]; then
+          if [[ $allow_duplicates -ne 1 ]]; then
             _abort "$emails_found keys found in gpg $keyring_name for: $email"
           fi
         fi 
