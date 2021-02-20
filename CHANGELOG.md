@@ -6,6 +6,7 @@
 
 - Escape filenames with special characters before adding to .gitignore
 - Better error handling around telling an email twice (#634)
+- Fix for killperson if same email is present multiple times (#638)
 
 ### Misc
 
