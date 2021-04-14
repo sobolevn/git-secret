@@ -12,13 +12,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-          submodules: recursive
-          persist-credentials: false
+        submodules: recursive
+        persist-credentials: false
 
     - name: Deploy to Pages
-      uses: JamesIves/github-pages-deploy-action@3.6.1
+      uses: JamesIves/github-pages-deploy-action@4.1.1
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: docs # The folder the action should deploy.
-        CLEAN: true # Automatically remove deleted files from the deploy branch
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages # The branch the action should deploy to.
+        folder: docs # The folder the action should deploy.
+        clean: true # Automatically remove deleted files from the deploy branch
