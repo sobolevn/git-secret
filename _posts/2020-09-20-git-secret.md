@@ -177,4 +177,4 @@ This directory contains data used by git-secret and PGP to allow and maintain th
 Generally speaking, all the files in this directory *except* `random_seed` should be checked into your repo.
 By default, `git secret init` will add the file `.gitsecret/keys/random_seed` to your `.gitignore` file.
 
-Again, you can change the name of this directory using the SECRETS_DIR environment variable.
+Again, you can change the name of this directory using the `SECRETS_DIR` environment variable.
