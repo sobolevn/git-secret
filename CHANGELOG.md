@@ -10,6 +10,7 @@
 
 ### Misc
 
+- Add security disclaimer for git-secret-killperson
 - Improve documentation about releases
 - Man page improvements
 
