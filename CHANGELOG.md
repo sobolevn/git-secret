@@ -4,9 +4,9 @@
 
 ### Bugfixes
 
-- Escape filenames with special characters before adding to .gitignore
+- Escape filenames with special characters before adding to `.gitignore`
 - Better error handling around telling an email twice (#634)
-- Fix for -P (#647)
+- Fix for `-P` (#647)
 
 ### Misc
 
@@ -29,7 +29,7 @@
 - Reflect changes in ruby bundler during build process
 - Upgrade build process to ansible 2.9
 - Use shellcheck 0.7.1 with CI, not 'latest' (#609)
-- Improve output of git-secret add
+- Improve output of `git-secret add`
 
 ## Version 0.3.2
 
