@@ -39,7 +39,8 @@ function teardown {
   cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
   rm "$FILE_TO_HIDE"
 
-  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  local password
+  password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
 
   [ "$status" -eq 0 ]

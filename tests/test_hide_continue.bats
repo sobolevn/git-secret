@@ -32,17 +32,19 @@ function teardown {
   mv "$FILE_TO_HIDE" "$FILE_TO_HIDE.was"  # move the first file out of the way
   run git secret hide -F
 
-  # echo "# output of 'git secret hide -F' is: $output" >&3
+  #echo "# output of 'git secret hide -F' is: $output" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
 
   # secret file for missing file should not be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  local encrypted_file
+  encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ ! -f "$encrypted_file" ]
 
   # this secret file should be created:
-  local encrypted_file2=$(_get_encrypted_filename "$FILE_TO_HIDE2")
+  local encrypted_file2
+  encrypted_file2=$(_get_encrypted_filename "$FILE_TO_HIDE2")
   [ -f "$encrypted_file2" ]
 
   # put back first file so teardown() succeeds
