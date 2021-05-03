@@ -27,13 +27,10 @@ For development of `git-secret` you should have these tools locally:
 
 - git
 - bash
-- bundler
 - gawk
 - gnupg (or gnupg2), see below if not packaged by your distribution/OS (i.e. MacOS)
-- ruby
 - sha256sum (on freebsd and MacOS `shasum` is used instead)
 - make
-- [shellcheck](https://github.com/koalaman/shellcheck)
 
 To test `git-secret` you will need:
 
@@ -118,14 +115,6 @@ Development looks like this:
 
 By convention, you can name your branches like `issue-###-short-description`, but that's not required.
 The `gh-pages` branch is used for the pages at `git-secret.io`. See 'Release Process' below.
-
-### Running local ci-tests with test-kitchen
-
-Ci-tests are only necessary if you want to test git-secret on multiple OS'es using docker and test-kitchen,
-like we do on travis-ci.
-
-1. Install required gems with `bundle install`.
-2. Run ci-tests with `bundle exec kitchen verify --test-base-path="$PWD/.ci/integration"`
 
 ### Writing tests
 

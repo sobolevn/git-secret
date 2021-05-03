@@ -31,7 +31,7 @@ uninstall:
 	"./utils/uninstall.sh" "${DESTDIR}${PREFIX}"
 
 #
-# Testing:
+# Testing and linting:
 #
 
 # The $(shell echo $${PWD}) construct is to access *nix paths under windows
@@ -61,12 +61,30 @@ docker-ci: clean
 		"gitsecret-$${GITSECRET_DOCKER_ENV}" \
 		make test
 
+.PHONY: lint-shell
+lint-shell:
+	docker pull koalaman/shellcheck:latest
+	docker run \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		-e SHELLCHECK_OPTS='-s bash -S warning -a' \
+		--rm koalaman/shellcheck \
+		$$(find src .ci utils tests -type f \
+			-name '*.sh' -o -name '*.bash' -o -name '*.bats')
+
+.PHONY: lint-docker
+lint-docker:
+	docker pull hadolint/hadolint:latest-alpine
+	docker run \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		--rm hadolint/hadolint \
+		hadolint \
+			--ignore=DL3008 --ignore=DL3018 --ignore=DL3041 \
+			.ci/docker/*/Dockerfile
+
 .PHONY: lint
-lint:
-	find src/ .ci/ utils/ -type f \
-		-name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
-	find tests/ -type f -name '*.bats' \
-		-o -name '*.bash' -print0 | xargs -0 -I {} shellcheck {}
+lint: lint-shell lint-docker
 
 #
 # Manuals:
