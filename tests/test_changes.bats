@@ -31,6 +31,7 @@ function teardown {
   unset_current_state
 }
 
+
 @test "run 'changes' on one file with no file changed" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
@@ -61,6 +62,7 @@ function teardown {
 
 }
 
+
 @test "run 'changes' with source file missing" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   rm "$FILE_TO_HIDE" || _abort "error removing: $FILE_TO_HIDE"
@@ -68,6 +70,7 @@ function teardown {
   run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -ne 0 ]
 }
+
 
 @test "run 'changes' with hidden file missing" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
@@ -104,7 +107,7 @@ function teardown {
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
-  [[ "$num_lines" -eq 2 ]]   
+  [[ "$num_lines" -eq 2 ]]
 }
 
 
@@ -152,17 +155,25 @@ function teardown {
   [[ "$output" == *"+$second_new_content"* ]]
 }
 
+
 @test "run 'changes' on file that does not exist" {
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_NON_EXISTENT"
+  run git secret changes \
+    -d "$TEST_GPG_HOMEDIR" \
+    -p "$password" \
+    "$FILE_NON_EXISTENT"
   [ "$status" -ne 0 ]
 }
+
 
 @test "run 'changes' on one file without newlines" {
   set_state_secret_add_without_newline "$THIRD_FILE_TO_HIDE" "$FILE_CONTENTS"
   set_state_secret_hide
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret changes -d "$TEST_GPG_HOMEDIR" -p "$password" "$THIRD_FILE_TO_HIDE"
+  run git secret changes \
+    -d "$TEST_GPG_HOMEDIR" \
+    -p "$password" \
+    "$THIRD_FILE_TO_HIDE"
   [ "$status" -eq 0 ]
 
   local num_lines=$(echo "$output" | wc -l)
