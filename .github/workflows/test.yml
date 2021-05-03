@@ -38,13 +38,6 @@ jobs:
     - name: Run checks
       run: brew install gawk gnupg && make test
 
-  windows-ci:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Run checks
-      run: choco install pstools make && make test
-
   build-man:
     runs-on: ubuntu-latest
     steps:
