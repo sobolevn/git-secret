@@ -136,3 +136,5 @@ build/
 # Kitchen files
 Gemfile.lock
 .kitchen/
+.gitsecret/keys/random_seed
+!*.secret

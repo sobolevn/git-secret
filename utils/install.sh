@@ -9,6 +9,7 @@ function resolve_link {
   $(type -p greadlink readlink | head -1) "$1"
 }
 
+
 function abs_dirname {
   local cwd
   local path="$1"
@@ -25,6 +26,7 @@ function abs_dirname {
   pwd
   cd "$cwd"
 }
+
 
 PREFIX="$1"
 if [ -z "$PREFIX" ]; then

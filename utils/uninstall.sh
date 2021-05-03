@@ -13,5 +13,5 @@ fi
 rm -f "$PREFIX"/bin/git-secret
 
 # Manuals:
-find "$PREFIX"/share/man/man1 -type f -name "git-secret-*.1" -exec rm -f {} \;
+find "$PREFIX"/share/man/man1 -type f -name 'git-secret-*.1' -exec rm -f {} \;
 rm -f "$PREFIX"/share/man/man7/git-secret.7

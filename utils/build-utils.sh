@@ -6,9 +6,9 @@ set -e
 READ_PEM=0644
 EXEC_PEM=0755
 
-SCRIPT_NAME="git-secret"
-SCRIPT_DESCRIPTION="A bash-tool to store your private data inside a git repository."
-SCRIPT_VERSION=$(bash "${PWD}"/git-secret --version)
+SCRIPT_NAME='git-secret'
+SCRIPT_DESCRIPTION='A bash-tool to store your private data inside a git repository.'
+SCRIPT_VERSION="$(bash "${PWD}"/git-secret --version)"
 
 # This might be overridden someday:
 : "${SCRIPT_EPOCH:=0}"
@@ -23,16 +23,16 @@ SCRIPT_DEST_DIR="${SCRIPT_BUILD_DIR}/buildroot"
 
 
 function locate_apk {
-  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name "*.apk" | head -1
-}
+  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name '*.apk' | head -1
+}  # TODO: use an argument instead
 
 function locate_deb {
-  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name "*.deb" | head -1
+  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name '*.deb' | head -1
 }
 
 
 function locate_rpm {
-  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name "*.rpm" | head -1
+  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name '*.rpm' | head -1
 }
 
 
@@ -45,7 +45,9 @@ function preinstall_files {
   mkdir -p "$SCRIPT_DEST_DIR"
 
   # Coping the files inside the build folder:
-  install -D "${dir_switch}" -b -m "$EXEC_PEM" "${dir_switch}" "git-secret" "${SCRIPT_DEST_DIR}/usr/bin/git-secret"
+  install -D "${dir_switch}" \
+    -b -m "$EXEC_PEM" "${dir_switch}" 'git-secret' \
+    "${SCRIPT_DEST_DIR}/usr/bin/git-secret"
   install -m "$EXEC_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man1"
   install -m "$EXEC_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man7"
   for file in man/man1/* ; do
@@ -53,9 +55,12 @@ function preinstall_files {
       continue
     fi
 
-    install -D "${dir_switch}" -b -m "$READ_PEM" "${dir_switch}" "$file" "${SCRIPT_DEST_DIR}/usr/share/$file"
+    install -D "${dir_switch}" \
+      -b -m "$READ_PEM" "${dir_switch}" "$file" \
+      "${SCRIPT_DEST_DIR}/usr/share/$file"
   done
-  install -D "${dir_switch}" -b -m "$READ_PEM" "${dir_switch}" "man/man7/git-secret.7" \
+  install -D "${dir_switch}" \
+    -b -m "$READ_PEM" "${dir_switch}" 'man/man7/git-secret.7' \
     "${SCRIPT_DEST_DIR}/usr/share/man/man7/git-secret.7"
 }
 
