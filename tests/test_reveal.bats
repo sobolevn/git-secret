@@ -1,4 +1,5 @@
 #!/usr/bin/env bats
+# shellcheck disable=SC2155
 
 load _test_base
 

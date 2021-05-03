@@ -59,7 +59,7 @@ function teardown {
   # Preparations
   local test_dir='test_dir'
   local nested_dir="$test_dir/nested/dirs"
-  local current_dir=$(pwd)
+  local current_dir="$PWD"
 
   mkdir -p "$nested_dir"
   cd "$nested_dir"

@@ -20,7 +20,7 @@ function setup {
 function teardown {
   rm "$FILE_TO_HIDE"
 
-  uninstall_fixture_key $TEST_DEFAULT_USER
+  uninstall_fixture_key "$TEST_DEFAULT_USER"
   unset_current_state
 }
 
@@ -34,9 +34,8 @@ function teardown {
   [ "$status" -eq 0 ]
   [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
-  # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
-  [ -f "$encrypted_file" ]
+  # New file must be created:
+  [ -f "$(_get_encrypted_filename "$FILE_TO_HIDE")" ]
 }
 
 
@@ -74,7 +73,8 @@ function teardown {
   [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  local encrypted_file
+  encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
 
   ## permissions should match.
@@ -159,8 +159,7 @@ function teardown {
   [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
 
   # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
-  [ -f "$encrypted_file" ]
+  [ -f "$(_get_encrypted_filename "$FILE_TO_HIDE")" ]
 }
 
 
@@ -192,8 +191,7 @@ function teardown {
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
   # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
-  [ -f "$encrypted_file" ]
+  [ -f "$(_get_encrypted_filename "$FILE_TO_HIDE")" ]
 }
 
 
@@ -225,14 +223,14 @@ function teardown {
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
   # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
-  [ -f "$encrypted_file" ]
+  [ -f "$(_get_encrypted_filename "$FILE_TO_HIDE")" ]
 }
 
 
 @test "run 'hide' with '-c' and '-v'" {
   # Preparations:
-  local encrypted_filename=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  local encrypted_filename
+  encrypted_filename=$(_get_encrypted_filename "$FILE_TO_HIDE")
   set_state_secret_hide # so it would be data to clean
 
   run git secret hide -v -c

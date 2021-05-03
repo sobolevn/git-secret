@@ -61,7 +61,7 @@ function teardown {
   fi
 
   # Preparations:
-  local current_dir=$(pwd)
+  local current_dir="$PWD"
   local root_dir='test_dir'
   local test_dir="$root_dir/subfolders/case"
 
