@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # https://github.com/travis-ci/dpl/issues/155
 # https://gist.github.com/Jaskaranbir/d5b065173b3a6f164e47a542472168c1
@@ -10,7 +10,7 @@ echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG"
 # An automatic changelog generator
 gem install github_changelog_generator
 
-# move the manual log out of the way else it will be used by the tool. 
+# move the manual log out of the way else it will be used by the tool.
 rm CHANGELOG.md
 
 # Generate CHANGELOG.md
