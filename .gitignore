@@ -133,6 +133,9 @@ build/
 *.deb
 *.fpm
 
+# Docs:
+docs/man
+
 # Kitchen files
 Gemfile.lock
 .kitchen/
