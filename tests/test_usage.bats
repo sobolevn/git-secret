@@ -29,17 +29,17 @@ function teardown {
 }
 
 
-#_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}   
+#_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}
 @test "run 'usage' with ignored '${_SECRETS_DIR}'" {
   echo "${_SECRETS_DIR}" >> ".gitignore"
-  
+
   # below shows how to send 'diagnostic' messages to bats-core.
-  #echo "# clear-line-output" >&3
-  #echo "# SECRETS_DIR is ${_SECRETS_DIR}" >&3
+  # echo "# clear-line-output" >&3
+  # echo "# SECRETS_DIR is ${_SECRETS_DIR}" >&3
 
   # It's ok for 'usage' to succeed when the .gitsecret directory is ignored, but it doesn't
   run git secret usage
-  #echo "# git secret usage -> status $status" >&3
+  # echo "# git secret usage -> status $status" >&3
 
   [ "$status" -eq 1 ]
 }

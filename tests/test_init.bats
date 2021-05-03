@@ -15,7 +15,7 @@ function teardown {
 
 
 @test "secrets dir env var set as expected" {
-  _TEST_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}   
+  _TEST_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}
   [ "${_TEST_SECRETS_DIR}" = "${_SECRETS_DIR}" ]
 }
 
@@ -40,6 +40,7 @@ function teardown {
   run git secret init extra_filename
   [ "$status" -ne 0 ]
 }
+
 
 @test "run 'init' with bad arg" {
   run git secret init -Z

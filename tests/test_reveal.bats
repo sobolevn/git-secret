@@ -43,6 +43,7 @@ function teardown {
   rm "${FILE_TO_HIDE}2"
 }
 
+
 @test "run 'reveal' with bad arg" {
   cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
   rm -f "$FILE_TO_HIDE"
@@ -52,11 +53,13 @@ function teardown {
   [ "$status" -ne 0 ]
 }
 
+
 @test "run 'reveal' on secret version of file" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE$SECRETS_EXTENSION"
   [ "$status" -ne 0 ]
 }
+
 
 @test "run 'reveal' with '-f'" {
   rm "$FILE_TO_HIDE"
@@ -67,6 +70,7 @@ function teardown {
   [ "$status" -eq 0 ]
   [ -f "$FILE_TO_HIDE" ]
 }
+
 
 @test "run 'reveal' with '-v'" {
   rm "$FILE_TO_HIDE"
@@ -96,11 +100,12 @@ function teardown {
   local file_perm
   file_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$FILE_TO_HIDE")
   secret_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$FILE_TO_HIDE$SECRETS_EXTENSION")
-  #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3    
+  #echo "# secret_perm: $secret_perm, file_perm: $file_perm" >&3
   [ "$secret_perm" = "$file_perm" ]
 
   [ -f "$FILE_TO_HIDE" ]
 }
+
 
 @test "run 'reveal' with wrong password" {
   rm "$FILE_TO_HIDE"
@@ -109,7 +114,6 @@ function teardown {
   [ "$status" -eq 2 ]
   [ ! -f "$FILE_TO_HIDE" ]
 }
-
 
 
 @test "run 'reveal' for attacker" {
@@ -129,6 +133,7 @@ function teardown {
   uninstall_fixture_full_key "$TEST_ATTACKER_USER" "$attacker_fingerprint"
 }
 
+
 @test "run 'reveal' for attacker with -F (force)" {
   # Preparations
   rm "$FILE_TO_HIDE"
@@ -144,12 +149,12 @@ function teardown {
   [ "$status" -eq 0 ]
   [ ! -f "$FILE_TO_HIDE" ]
 
-
   touch "$FILE_TO_HIDE"  #create this file so uninstall below works
 
   # Cleaning up:
   uninstall_fixture_full_key "$TEST_ATTACKER_USER" "$attacker_fingerprint"
 }
+
 
 @test "run 'reveal' for multiple users (with key deletion)" {
   # Preparations:
@@ -191,13 +196,17 @@ function teardown {
   uninstall_fixture_full_key "$TEST_SECOND_USER" "$second_fingerprint"
 }
 
+
 @test "run 'reveal' with SECRETS_PINENTRY=loopback" {
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  SECRETS_PINENTRY=loopback run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  SECRETS_PINENTRY=loopback run git secret reveal \
+    -d "$TEST_GPG_HOMEDIR" \
+    -p "$password"
   [ "$status" -eq 0 ]
 }
+
 
 @test "run 'reveal' with SECRETS_PINENTRY=error" {
   if [[ "$GPG_VER_MIN_21" -ne 1 ]]; then
@@ -207,6 +216,8 @@ function teardown {
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  SECRETS_PINENTRY=error run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+  SECRETS_PINENTRY=error run git secret reveal \
+    -d "$TEST_GPG_HOMEDIR" \
+    -p "$password"
   [ "$status" -ne 0 ]
 }

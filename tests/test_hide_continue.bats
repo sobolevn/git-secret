@@ -32,7 +32,7 @@ function teardown {
   mv "$FILE_TO_HIDE" "$FILE_TO_HIDE.was"  # move the first file out of the way
   run git secret hide -F
 
-  #echo "# output of 'git secret hide -F' is: $output" >&3
+  # echo "# output of 'git secret hide -F' is: $output" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
@@ -48,4 +48,3 @@ function teardown {
   # put back first file so teardown() succeeds
   mv "$FILE_TO_HIDE.was" "$FILE_TO_HIDE"
 }
-
