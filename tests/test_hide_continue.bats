@@ -27,8 +27,9 @@ function teardown {
   unset_current_state
 }
 
+
 @test "run 'hide -F' with missing input file" {
-  mv "$FILE_TO_HIDE" "$FILE_TO_HIDE.was"    # move the first file out of the way
+  mv "$FILE_TO_HIDE" "$FILE_TO_HIDE.was"  # move the first file out of the way
   run git secret hide -F
 
   #echo "# output of 'git secret hide -F' is: $output" >&3
@@ -45,6 +46,6 @@ function teardown {
   [ -f "$encrypted_file2" ]
 
   # put back first file so teardown() succeeds
-  mv "$FILE_TO_HIDE.was" "$FILE_TO_HIDE"  
+  mv "$FILE_TO_HIDE.was" "$FILE_TO_HIDE"
 }
 
