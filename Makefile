@@ -49,8 +49,8 @@ test: clean build
 # 1. We pass `GITSECRET_DOCKER_ENV` variable into this job
 # 2. Based on it, we select a proper `docker` image to run test on
 # 3. We execute `make test` inside the `docker` container
-.PHONY: ci
-ci: clean
+.PHONY: docker-ci
+docker-ci: clean
 	docker build \
 		-f ".ci/docker/$${GITSECRET_DOCKER_ENV}/Dockerfile" \
 		-t "gitsecret-$${GITSECRET_DOCKER_ENV}:latest" \
@@ -167,12 +167,3 @@ deploy-rpm: build-rpm
 	chmod +x "./utils/rpm/rpm-deploy.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	"./utils/rpm/rpm-deploy.sh"
-
-# make:
-
-.PHONY: test-make-ci
-test-make-ci: clean
-	chmod +x "./utils/make/make-ci.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
-	"./utils/make/make-ci.sh"
