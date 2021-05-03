@@ -2,22 +2,10 @@
 
 set -e
 
-# Linux helper functions:
-function update_linux() {
-  sudo apt-get update -qq
-  sudo apt-get install -qq python3-apt python3-pycurl git python3-pip build-essential autoconf rpm
-}
-
-function install_ansible {
-  bash .ci/ansible-setup.sh
-  # pyOpen, ndg-* and pyasn1 are for 'InsecurePlatformWarning' error
-  ~/.avm/v2.9/venv/bin/pip install netaddr ansible-lint   pyOpenSSL ndg-httpsclient pyasn1
-}
-
 
 # Mac:
 if [[ "$GITSECRET_DIST" == "brew" ]]; then
-  brew update 
+  brew update
 
   gnupg_installed="$(brew list | grep -c "gnupg")"
   [[ "$gnupg_installed" -ge 1 ]] || brew install gnupg
@@ -32,8 +20,3 @@ if [[ "$GITSECRET_DIST" == "windows" ]]; then
   choco install make shellcheck -y
 fi
 
-# Linux:
-if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ -n "$KITCHEN_REGEXP" ]]; then
-  update_linux
-  install_ansible
-fi

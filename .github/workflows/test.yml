@@ -22,3 +22,14 @@ jobs:
 
     - name: Run checks
       run: GITSECRET_DOCKER_ENV="${{ matrix.docker-based-test }}" make ci
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install shellcheck
+      run: apt-get install shellcheck make
+
+    - name: Run lint
+      run: make lint
