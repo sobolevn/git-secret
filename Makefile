@@ -44,6 +44,16 @@ test: clean build
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
 	"./utils/tests.sh"
 
+# We use this script in CI and you can do this too!
+# What happens here?
+# 1. We pass `GITSECRET_DOCKER_ENV` variable into this job
+# 2. Based on it, we select a proper `docker` image to run test on
+# 3. We execute `make test` inside the `docker` container
+.PHONY: ci
+ci: clean
+	docker build -f ".ci/docker/$${GITSECRET_DOCKER_ENV}/Dockerfile" -t "$${GITSECRET_DOCKER_ENV}:latest" .
+	docker run --rm --volume="$${PWD}:/code" -w /code "$${GITSECRET_DOCKER_ENV}" make test
+
 #
 # Manuals:
 #
@@ -157,7 +167,7 @@ deploy-rpm: build-rpm
 # make:
 
 .PHONY: test-make-ci
-test-make-ci: clean 
+test-make-ci: clean
 	chmod +x "./utils/make/make-ci.sh"; sync; \
 	export SECRET_PROJECT_ROOT="${PWD}"; \
 	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
