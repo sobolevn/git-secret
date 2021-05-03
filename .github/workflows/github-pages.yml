@@ -11,9 +11,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-        persist-credentials: false
+
+    - name: Build manuals
+      run: |
+        make build-man
+        cp -r man/ docs/man
 
     - name: Deploy to Pages
       uses: JamesIves/github-pages-deploy-action@4.1.1
