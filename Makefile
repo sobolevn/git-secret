@@ -51,30 +51,48 @@ test: clean build
 # 3. We execute `make test` inside the `docker` container
 .PHONY: ci
 ci: clean
-	docker build -f ".ci/docker/$${GITSECRET_DOCKER_ENV}/Dockerfile" -t "$${GITSECRET_DOCKER_ENV}:latest" .
-	docker run --rm --volume="$${PWD}:/code" -w /code "$${GITSECRET_DOCKER_ENV}" make test
+	docker build \
+		-f ".ci/docker/$${GITSECRET_DOCKER_ENV}/Dockerfile" \
+		-t "gitsecret-$${GITSECRET_DOCKER_ENV}:latest" \
+		.
+	docker run --rm \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		"gitsecret-$${GITSECRET_DOCKER_ENV}" \
+		make test
 
 .PHONY: lint
 lint:
-	find src/ .ci/ utils/ -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
-	find tests/ -type f -name '*.bats' -o -name '*.bash' -print0 | xargs -0 -I {} shellcheck {}
+	find src/ .ci/ utils/ -type f \
+		-name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
+	find tests/ -type f -name '*.bats' \
+		-o -name '*.bash' -print0 | xargs -0 -I {} shellcheck {}
 
 #
 # Manuals:
 #
 
-.PHONY: install-ronn
-install-ronn:
-	if [ ! `gem list ronn -i` == "true" ]; then gem install ronn; fi
-
 .PHONY: clean-man
 clean-man:
-	find "man/" -type f ! -name "*.ronn" -delete
+	find "man/" -type f -name "*.roff" -delete
 
 .PHONY: build-man
-build-man: install-ronn clean-man git-secret
+build-man: clean-man git-secret
+	# Prepare:
 	touch man/*/*.ronn
-	export GITSECRET_VERSION=`./git-secret --version` && ronn --roff --organization="sobolevn" --manual="git-secret $${GITSECRET_VERSION}" man/*/*.ronn
+
+	# Build docker image:
+	docker pull msoap/ruby-ronn
+
+	# Do the manual generation:
+	GITSECRET_VERSION=`./git-secret --version` docker run \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		--rm msoap/ruby-ronn \
+		ronn --roff \
+			--organization=sobolevn \
+			--manual="git-secret $${GITSECRET_VERSION}" \
+			man/*/*.ronn
 
 #
 # Packaging:

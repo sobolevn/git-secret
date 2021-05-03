@@ -8,6 +8,15 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install shellcheck
+      run: sudo apt-get update && sudo apt-get install -y shellcheck make
+    - name: Run lint
+      run: make lint
+
   docker-ci:
     runs-on: ubuntu-latest
     strategy:
@@ -21,17 +30,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
     - name: Run checks
       run: GITSECRET_DOCKER_ENV="${{ matrix.docker-based-test }}" make ci
 
-  lint:
+  build-man:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
-
-    - name: Install shellcheck
-      run: sudo apt-get update && sudo apt-get install -y shellcheck make
-
-    - name: Run lint
-      run: make lint
+    - name: Checks that manual generation works
+      run: make build-man
