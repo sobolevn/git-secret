@@ -198,7 +198,8 @@ function teardown {
 @test "run 'tell' on non-email" {
   install_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
 
-  local name=$(echo "$TEST_NOEMAIL_COMMENT_USER" | sed -e 's/@.*//')
+  local name
+  name=$(echo "$TEST_NOEMAIL_COMMENT_USER" | sed -e 's/@.*//')
   # echo "$name" | sed "s/^/# '$BATS_TEST_DESCRIPTION' name is: /" >&3
 
   # Testing the command itself, should fail because you must use email
@@ -225,7 +226,7 @@ function teardown {
   # Preparations
   local root_dir='test_dir'
   local test_dir="$root_dir/telling"
-  local current_dir=$(pwd)
+  local current_dir="$PWD"
 
   mkdir -p "$test_dir"
   cd "$test_dir"

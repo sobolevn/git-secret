@@ -29,9 +29,8 @@ function teardown {
 
 
 function _secret_files_exists {
-  local result=$(find . -type f -name "*.$SECRETS_EXTENSION" \
-    -print0 2>/dev/null | grep -q .; echo "$?")
-  echo "$result"
+  echo "$(find . -type f -name "*.$SECRETS_EXTENSION" \
+    -print0 2>/dev/null | grep -q .; echo "$?")"
 }
 
 
@@ -40,14 +39,15 @@ function _secret_files_exists {
   [ "$status" -eq 0 ]
 
   # There must be no .secret files:
-  local exists=$(_secret_files_exists)
-  [ "$exists" -ne 0 ]
+  [ "$(_secret_files_exists)" -ne 0 ]
 }
+
 
 @test "run 'clean' with extra filename" {
   run git secret clean extra_filename
   [ "$status" -ne 0 ]
 }
+
 
 @test "run 'clean' with bad arg" {
   run git secret clean -Z
@@ -60,11 +60,12 @@ function _secret_files_exists {
   [ "$status" -eq 0 ]
 
   # There must be no .secret files:
-  local exists=$(_secret_files_exists)
-  [ "$exists" -ne 0 ]
+  [ "$(_secret_files_exists)" -ne 0 ]
 
-  local first_filename=$(_get_encrypted_filename "$FIRST_FILE")
-  local second_filename=$(_get_encrypted_filename "$SECOND_FILE")
+  local first_filename
+  local second_filename
+  first_filename=$(_get_encrypted_filename "$FIRST_FILE")
+  second_filename=$(_get_encrypted_filename "$SECOND_FILE")
 
   # Output must be verbose:
   [[ "$output" == *"cleaning"* ]]

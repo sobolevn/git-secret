@@ -7,8 +7,7 @@ ENV DEBIAN_FRONTEND='noninteractive'
 ENV SECRETS_GPG_COMMAND='gpg1'
 
 RUN apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y \
+  && apt-get install --no-install-recommends -y \
     # Direct dependencies:
     gawk \
     git \
