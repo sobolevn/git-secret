@@ -28,7 +28,7 @@ function teardown {
 
 @test "run 'cat' with password argument" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE" 
+  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
 
   [ "$status" -eq 0 ]
 
@@ -38,11 +38,12 @@ function teardown {
 
 @test "run 'cat' with password argument and SECRETS_VERBOSE=1" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  SECRETS_VERBOSE=1 run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE" 
+  SECRETS_VERBOSE=1 run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
 
   [ "$status" -eq 0 ]
 
-  # $output _contains_ the output from 'git secret cat', may have extra output from gpg
+  # $output _contains_ the output from 'git secret cat',
+  # may have extra output from gpg
   [[ "$output" == *"$FILE_CONTENTS"* ]]
 }
 
@@ -52,7 +53,7 @@ function teardown {
 }
 @test "run 'cat' with bad arg" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret cat -Z -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE" 
+  run git secret cat -Z -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -ne 0 ]
 }
 
