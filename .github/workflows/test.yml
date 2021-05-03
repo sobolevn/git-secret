@@ -22,20 +22,26 @@ jobs:
     strategy:
       matrix:
         docker-based-test:
-          - debian
+          - debian-gnupg1  # We need to test legacy version of gnupg
+          - debian-gnupg2
           - ubuntu
           - alpine
           - fedora
           - centos
-
     steps:
     - uses: actions/checkout@v2
     - name: Run checks
-      run: GITSECRET_DOCKER_ENV="${{ matrix.docker-based-test }}" make ci
+      run: GITSECRET_DOCKER_ENV="${{ matrix.docker-based-test }}" make docker-ci
+
+  osx-ci:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run checks
+      run: brew install gawk gnupg && make test
 
   build-man:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Checks that manual generation works

@@ -3,7 +3,7 @@ FROM debian:10.9-slim
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
 
-ENV DEBIAN_FRONTEND="noninteractive"
+ENV DEBIAN_FRONTEND='noninteractive'
 
 RUN apt-get update \
   && apt-get upgrade -y \
