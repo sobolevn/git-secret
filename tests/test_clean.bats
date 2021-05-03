@@ -74,8 +74,7 @@ function _secret_files_exists {
 
 # this test is like above, but uses SECRETS_VERBOSE env var
 @test "run 'clean' with 'SECRETS_VERBOSE=1'" {
-  export SECRETS_VERBOSE=1
-  run git secret clean 
+  SECRETS_VERBOSE=1 run git secret clean
   [ "$status" -eq 0 ]
 
   # Output must be verbose:
@@ -85,11 +84,9 @@ function _secret_files_exists {
 # this test is like above, but sets SECRETS_VERBOSE env var to 0
 # and expected non-verbose output
 @test "run 'clean' with 'SECRETS_VERBOSE=0'" {
-  export SECRETS_VERBOSE=0
-  run git secret clean 
+  SECRETS_VERBOSE=0 run git secret clean
   [ "$status" -eq 0 ]
 
   # Output must not be verbose:
   [[ "$output" != *"cleaning"* ]]
 }
-

@@ -5,10 +5,11 @@ bats(1) -- Bash Automated Testing System
 SYNOPSIS
 --------
 
-bats [-c] [-p | -t] <test> [<test> ...]
+Usage: bats [OPTIONS] <tests>
+       bats [-h | -v]
 
-<test> is the path to a Bats test file, or the path to a directory
-containing Bats test files.
+  <tests> is the path to a Bats test file, or the path to a directory
+  containing Bats test files (ending with ".bats")
 
 
 DESCRIPTION
@@ -48,14 +49,32 @@ OPTIONS
 
   * `-c`, `--count`:
     Count the number of test cases without running any tests
+  * `-f`, `--filter <regex>`:
+    Filter test cases by names matching the regular expression
+  * `-F`, `--formatter <type>`:
+    Switch between formatters: pretty (default), tap (default w/o term), tap13, junit
   * `-h`, `--help`:
-    Display help message
+    Display this help message
+  * `-j`, `--jobs <jobs>`:
+    Number of parallel jobs (requires GNU parallel)
+  * `--no-tempdir-cleanup`:
+    Preserve test output temporary directory
+  * `--no-parallelize-across-files`
+    Serialize test file execution instead of running them in parallel (requires --jobs >1)
+  * `--no-parallelize-within-files`
+    Serialize test execution within files instead of running them in parallel (requires --jobs >1)
+  * `--report-formatter <type>`:
+    Switch between reporters (same options as --formatter)
+  * `-o`, `--output <dir>`:
+    Directory to write report files
   * `-p`, `--pretty`:
-    Show results in pretty format (default for terminals)
+    Shorthand for "--formatter pretty"
   * `-r`, `--recursive`:
     Include tests in subdirectories
   * `-t`, `--tap`:
-    Show results in TAP format
+    Shorthand for "--formatter tap"
+  * `-T`, `--timing`:
+    Add timing information to tests
   * `-v`, `--version`:
     Display the version number
 
@@ -103,8 +122,8 @@ Bats wiki: _https://github.com/bats\-core/bats\-core/wiki/_
 COPYRIGHT
 ---------
 
-(c) 2017 Bianca Tamayo (bats-core organization)
-(c) 2014 Sam Stephenson
+(c) 2017-2018 bats-core organization<br/>
+(c) 2011-2016 Sam Stephenson
 
 Bats is released under the terms of an MIT-style license.
 
