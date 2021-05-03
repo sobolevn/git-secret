@@ -15,7 +15,7 @@ jobs:
         docker-based-test:
           - debian
           - ubuntu
-          # - alpine
+          - alpine
           # - fedora
           # - centos
 
