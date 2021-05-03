@@ -135,9 +135,3 @@ build/
 
 # Docs:
 docs/man
-
-# Kitchen files
-Gemfile.lock
-.kitchen/
-.gitsecret/keys/random_seed
-!*.secret
