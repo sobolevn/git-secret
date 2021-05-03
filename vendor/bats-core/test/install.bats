@@ -3,24 +3,24 @@
 load test_helper
 
 INSTALL_DIR=
-BATS_ROOT=
+PATH_TO_INSTALL_SHELL=
 
 setup() {
   make_bats_test_suite_tmpdir
   INSTALL_DIR="$BATS_TEST_SUITE_TMPDIR/bats-core"
-  BATS_ROOT="${BATS_TEST_DIRNAME%/*}"
+  PATH_TO_INSTALL_SHELL="${BATS_TEST_DIRNAME%/*}/install.sh"
 }
 
 @test "install.sh creates a valid installation" {
-  run "$BATS_ROOT/install.sh" "$INSTALL_DIR"
-  emit_debug_output
+  run "$PATH_TO_INSTALL_SHELL" "$INSTALL_DIR"
   [ "$status" -eq 0 ]
   [ "$output" == "Installed Bats to $INSTALL_DIR/bin/bats" ]
   [ -x "$INSTALL_DIR/bin/bats" ]
   [ -x "$INSTALL_DIR/libexec/bats-core/bats" ]
   [ -x "$INSTALL_DIR/libexec/bats-core/bats-exec-suite" ]
   [ -x "$INSTALL_DIR/libexec/bats-core/bats-exec-test" ]
-  [ -x "$INSTALL_DIR/libexec/bats-core/bats-format-tap-stream" ]
+  [ -x "$INSTALL_DIR/libexec/bats-core/bats-format-junit" ]
+  [ -x "$INSTALL_DIR/libexec/bats-core/bats-format-pretty" ]
   [ -x "$INSTALL_DIR/libexec/bats-core/bats-preprocess" ]
   [ -f "$INSTALL_DIR/share/man/man1/bats.1" ]
   [ -f "$INSTALL_DIR/share/man/man7/bats.7" ]
@@ -39,7 +39,7 @@ setup() {
   local dummy_libexec="$INSTALL_DIR/libexec/bats-core/dummy"
   printf 'dummy' >"$dummy_libexec"
 
-  run "$BATS_ROOT/install.sh" "$INSTALL_DIR"
+  run "$PATH_TO_INSTALL_SHELL" "$INSTALL_DIR"
   [ "$status" -eq 0 ]
   [ -f "$dummy_bin" ]
   [ ! -x "$dummy_bin" ]
@@ -48,14 +48,14 @@ setup() {
 }
 
 @test "bin/bats is resilient to symbolic links" {
-  run "$BATS_ROOT/install.sh" "$INSTALL_DIR"
+  run "$PATH_TO_INSTALL_SHELL" "$INSTALL_DIR"
   [ "$status" -eq 0 ]
 
   # Simulate a symlink to bin/bats (without using a symlink, for Windows sake)
   # by creating a wrapper script that executes bin/bats via a relative path.
   #
   # root.bats contains tests that use real symlinks on platforms that support
-  # them, as does the .travis.yml script that exercises the Dockerfile.
+  # them.
   local bats_symlink="$INSTALL_DIR/bin/bats-link"
   printf '%s\n' '#! /usr/bin/env bash' \
     "cd '$INSTALL_DIR/bin'" \

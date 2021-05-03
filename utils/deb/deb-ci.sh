@@ -23,13 +23,13 @@ function integration_tests {
   apt-get -f -y install
 
   # Testing the installation:
-  dpkg --get-selections | grep "git-secret"
+  dpkg --get-selections | grep 'git-secret'
   # lint says to use 'command -v' and not 'which'
-  command -v "git-secret"
+  command -v 'git-secret'
 
   # Test the manuals:
-  man --where "git-secret" # .7
-  man --where "git-secret-init" # .1
+  man --where 'git-secret' # .7
+  man --where 'git-secret-init' # .1
 }
 
 integration_tests
