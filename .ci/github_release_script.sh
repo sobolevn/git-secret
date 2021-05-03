@@ -3,7 +3,7 @@
 # https://github.com/travis-ci/dpl/issues/155
 # https://gist.github.com/Jaskaranbir/d5b065173b3a6f164e47a542472168c1
 
-LAST_RELEASE_TAG=$(curl https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/latest 2>/dev/null | jq .name | sed 's/"//g')
+LAST_RELEASE_TAG=$(curl "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases/latest" 2>/dev/null | jq .name | sed 's/"//g')
 
 echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG"
 
@@ -15,10 +15,10 @@ rm CHANGELOG.md
 
 # Generate CHANGELOG.md
 github_changelog_generator \
-  -u $(cut -d "/" -f1 <<< $TRAVIS_REPO_SLUG) \
-  -p $(cut -d "/" -f2 <<< $TRAVIS_REPO_SLUG) \
-  --token $GITHUB_OAUTH_TOKEN \
-  --since-tag ${LAST_RELEASE_TAG}
+  -u "$(cut -d "/" -f1 <<< "$TRAVIS_REPO_SLUG")" \
+  -p "$(cut -d "/" -f2 <<< "$TRAVIS_REPO_SLUG")" \
+  --token "$GITHUB_OAUTH_TOKEN" \
+  --since-tag "$LAST_RELEASE_TAG"
 
 body="$(cat CHANGELOG.md)"
 
