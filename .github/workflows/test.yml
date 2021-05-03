@@ -43,7 +43,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run checks
-      run: choco install make && make test
+      run: choco install pstools make && make test
 
   build-man:
     runs-on: ubuntu-latest
