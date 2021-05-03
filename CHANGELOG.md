@@ -9,6 +9,11 @@
 
 ### Misc
 
+- Removed `test-kitchen`
+- Moved from `travis` to GitHub Actions
+- Changed almost all infrastructure code
+- Moved away from Bintray
+- Changes how GitHub Pages work
 - Add security disclaimer for git-secret-killperson
 - Improve documentation about releases
 - Use gpg --armor when encrypting files, so secret files are text, not binary (#631)
@@ -61,7 +66,7 @@
 
 - Use OSX's mktemp on OSX, even if there's another version in PATH. (#485)
 - Make rsync a build requirement on debian (#500)
-- Use gnupg1, not gnupg2, when tests specify gnupg1 (#241) 
+- Use gnupg1, not gnupg2, when tests specify gnupg1 (#241)
 - Note dependencies gawk, bash, and coreutils in linux packages (#493)
 - Handle case of key having no email and a comment (#527)
 - Avoid blank lines from output of 'clean -v'
@@ -185,7 +190,7 @@
 
 - Added `-m` option to `hide` command, files will only be hidden when modifications are detected (#92)
 - Changed how path mappings file works: colon delimited FSDB in `.gitsecret/paths/mapping.cfg', so git-secret
-  can store checksums of hidden files. Note this means git-secret repos modified by git-secret 0.2.3 
+  can store checksums of hidden files. Note this means git-secret repos modified by git-secret 0.2.3
   or later are not backward compatible with pre-0.2.3 versions of git-secret. (#92)
 - `git secret init` now adds `random_seed` to `.gitignore` (#93)
 
