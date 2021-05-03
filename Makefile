@@ -54,6 +54,11 @@ ci: clean
 	docker build -f ".ci/docker/$${GITSECRET_DOCKER_ENV}/Dockerfile" -t "$${GITSECRET_DOCKER_ENV}:latest" .
 	docker run --rm --volume="$${PWD}:/code" -w /code "$${GITSECRET_DOCKER_ENV}" make test
 
+.PHONY: lint
+lint:
+	find src/ .ci/ utils/ -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
+	find tests/ -type f -name '*.bats' -o -name '*.bash' -print0 | xargs -0 -I {} shellcheck {}
+
 #
 # Manuals:
 #
@@ -70,25 +75,6 @@ clean-man:
 build-man: install-ronn clean-man git-secret
 	touch man/*/*.ronn
 	export GITSECRET_VERSION=`./git-secret --version` && ronn --roff --organization="sobolevn" --manual="git-secret $${GITSECRET_VERSION}" man/*/*.ronn
-
-#
-# Development:
-#
-
-.PHONY: install-hooks
-install-hooks:
-	ln -fs "${PWD}/utils/hooks/pre-commit.sh" "${PWD}/.git/hooks/pre-commit"; \
-	chmod +x "${PWD}/.git/hooks/pre-commit"; sync; \
-	ln -fs "${PWD}/utils/hooks/post-commit.sh" "${PWD}/.git/hooks/post-commit"; \
-	chmod +x "${PWD}/.git/hooks/post-commit"; sync
-
-.PHONY: develop
-develop: clean build install-hooks
-
-.PHONY: lint
-lint:
-	find src/ .ci/ utils/ -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
-	find tests/ -type f -name '*.bats' -o -name '*.bash' -print0 | xargs -0 -I {} shellcheck {}
 
 #
 # Packaging:

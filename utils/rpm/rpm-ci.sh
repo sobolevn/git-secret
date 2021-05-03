@@ -23,13 +23,13 @@ function integration_tests {
   dnf install -y "$RPM_FILE_LOCATION"
 
   # Testing the installation:
-  dnf info "git-secret"
+  dnf info 'git-secret'
   # 'command -v' is like 'which'
-  command -v "git-secret"
+  command -v 'git-secret'
 
   # Test the manuals:
-  man --where "git-secret" # .7
-  man --where "git-secret-init" # .1
+  man --where 'git-secret' # .7
+  man --where 'git-secret-init' # .1
 }
 
 integration_tests

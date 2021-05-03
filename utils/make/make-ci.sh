@@ -19,11 +19,11 @@ function integration_tests {
 
   # Testing the installation:
   # 'command -v' is like 'which'
-  command -v "git-secret"
+  command -v 'git-secret'
 
   # Test the manuals:
-  man --where "git-secret" # .7
-  man --where "git-secret-init" # .1
+  man --where 'git-secret' # .7
+  man --where 'git-secret-init' # .1
 }
 
 integration_tests

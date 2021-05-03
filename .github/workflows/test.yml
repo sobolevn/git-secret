@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  docker-ci:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,7 +16,7 @@ jobs:
           - debian
           - ubuntu
           - alpine
-          # - fedora
+          - fedora
           # - centos
 
     steps:
