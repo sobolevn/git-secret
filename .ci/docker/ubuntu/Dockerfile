@@ -1,12 +1,14 @@
 FROM ubuntu:20.04
 
+LABEL maintainer="mail@sobolevn.me"
+LABEL vendor="git-secret team"
+
 ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN apt-get update \
   && apt-get upgrade -y \
   && apt-get install -y \
     # Direct dependencies:
-    curl \
     gawk \
     git \
     gnupg \

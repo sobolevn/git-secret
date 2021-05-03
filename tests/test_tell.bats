@@ -17,9 +17,10 @@ function teardown {
   unset_current_state
 }
 
+
 @test "run 'tell' with '-v'" {
   run git secret tell -d "$TEST_GPG_HOMEDIR" -v "$TEST_DEFAULT_USER"
-  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  # echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   [[ "$output" == *"created"* ]]
   [[ "$output" == *"gpg:"* ]]
@@ -27,26 +28,29 @@ function teardown {
   [ "$status" -eq 0 ]
 }
 
+
 @test "run 'tell' without '-v'" {
   run git secret tell -d "$TEST_GPG_HOMEDIR"  "$TEST_DEFAULT_USER"
-  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  # echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   [[ "$output" != *"imported:"* ]]
   [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
   [ "$status" -eq 0 ]
 }
 
+
 @test "run 'tell' on substring of emails" {
   run git secret tell -d "$TEST_GPG_HOMEDIR" user
-  # this should give an error because there is no user named 'user', 
+  # this should give an error because there is no user named 'user',
   # even though there are users with the substring 'user'.
-  # See issue https://github.com/sobolevn/git-secret/issues/176 
+  # See issue https://github.com/sobolevn/git-secret/issues/176
   [ "$status" -eq 1 ]
 
-  run git secret whoknows 
+  run git secret whoknows
   [ "$status" -eq 1 ]   # should error when there are no users told
-  
+
 }
+
 
 @test "run 'tell' on the same email twice" {
   # first time should succeed
@@ -56,6 +60,7 @@ function teardown {
   run git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
   [ "$status" -ne 0 ]
 }
+
 
 @test "fail on no users" {
   run _user_required
@@ -107,6 +112,7 @@ function teardown {
   run git secret tell
   [ "$status" -eq 1 ]
 }
+
 
 @test "run 'init' with bad arg" {
   run git secret tell -Z -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
@@ -184,15 +190,16 @@ function teardown {
 
   [[ "$output" != *"$TEST_NOEMAIL_COMMENT_USER"* ]]
 
-  # Cleaning up: can't clean up by email 
-  #uninstall_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
+  # Cleaning up: can't clean up by email
+  # uninstall_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
 }
+
 
 @test "run 'tell' on non-email" {
   install_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
 
   local name=$(echo "$TEST_NOEMAIL_COMMENT_USER" | sed -e 's/@.*//')
-  #echo "$name" | sed "s/^/# '$BATS_TEST_DESCRIPTION' name is: /" >&3
+  # echo "$name" | sed "s/^/# '$BATS_TEST_DESCRIPTION' name is: /" >&3
 
   # Testing the command itself, should fail because you must use email
   run git secret tell -d "$TEST_GPG_HOMEDIR" "$name"
@@ -207,7 +214,7 @@ function teardown {
   [[ "$output" != *"$name"* ]]
 
   # Cleaning up: can't clean up by email because key doesn't hold it
-  #uninstall_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
+  # uninstall_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
 }
 
 @test "run 'tell' in subfolder" {

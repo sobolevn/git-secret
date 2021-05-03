@@ -19,4 +19,3 @@ fi
 if [[ "$GITSECRET_DIST" == "windows" ]]; then
   choco install make shellcheck -y
 fi
-

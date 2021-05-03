@@ -77,9 +77,9 @@ function teardown {
   [ "$status" -eq 1 ]
 }
 
+
 @test "run 'killperson' with bad arg" {
   local email="$TEST_DEFAULT_USER"
   run git secret killperson -Z "$email"
   [ "$status" -ne 0 ]
 }
-
