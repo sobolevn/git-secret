@@ -38,9 +38,10 @@ You can find the `deb` repository [here](https://bintray.com/sobolevn/deb/git-se
 Pre-requirements: make sure you have installed `apt-transport-https` and `ca-certificates`
 
 ```bash
-echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | sudo tee -a /etc/apt/sources.list
+sudo sh -c "echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list"
 wget -qO - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | sudo apt-key add -
-sudo apt-get update && sudo apt-get install git-secret
+sudo apt-get update
+sudo apt-get install git-secret
 ```
 
 ---
@@ -50,8 +51,9 @@ sudo apt-get update && sudo apt-get install git-secret
 You can find the `rpm` repository [here](https://bintray.com/sobolevn/rpm/git-secret).
 
 ```bash
-wget https://bintray.com/sobolevn/rpm/rpm -O bintray-sobolevn-rpm.repo
-sudo mv bintray-sobolevn-rpm.repo /etc/yum.repos.d/
+wget https://raw.githubusercontent.com/sobolevn/git-secret/master/utils/rpm/git-secret.repo -O git-secret-rpm.repo
+# Inspect what's inside! You can also enable `gpg` check on repo level.
+sudo mv git-secret-rpm.repo /etc/yum.repos.d/
 sudo yum install git-secret
 ```
 
