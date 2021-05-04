@@ -7,7 +7,7 @@ source "$SECRET_PROJECT_ROOT/utils/build-utils.sh"
 
 preinstall_files '-c'
 
-# Building .deb package:
+# Building .apk package:
 cd "$SCRIPT_DEST_DIR" && build_package 'apk'
 
 # Cleaning up:
