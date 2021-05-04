@@ -3,36 +3,24 @@
 set -e
 
 # Initializing and settings:
-READ_PEM=0644
-EXEC_PEM=0755
+READ_PERM=0644
+EXEC_PERM=0755
 
 SCRIPT_NAME='git-secret'
 SCRIPT_DESCRIPTION='A bash-tool to store your private data inside a git repository.'
 SCRIPT_VERSION="$(bash "${PWD}"/git-secret --version)"
 
-# This might be overridden someday:
-: "${SCRIPT_EPOCH:=0}"
-: "${SCRIPT_ITERATION:=1}"
-
 # This may be overridden:
 if [[ -z "$SCRIPT_BUILD_DIR" ]]; then
-  SCRIPT_BUILD_DIR="${PWD}/build"
+  SCRIPT_BUILD_DIR="$PWD/build"
 fi
 
-SCRIPT_DEST_DIR="${SCRIPT_BUILD_DIR}/buildroot"
+SCRIPT_DEST_DIR="$SCRIPT_BUILD_DIR/buildroot"
 
 
-function locate_apk {
-  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name '*.apk' | head -1
-}  # TODO: use an argument instead
-
-function locate_deb {
-  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name '*.deb' | head -1
-}
-
-
-function locate_rpm {
-  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name '*.rpm' | head -1
+function locate_release {
+  local release_type="$1"
+  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name "*.$release_type" | head -1
 }
 
 
@@ -45,28 +33,30 @@ function preinstall_files {
   mkdir -p "$SCRIPT_DEST_DIR"
 
   # Coping the files inside the build folder:
-  install -D "${dir_switch}" \
-    -b -m "$EXEC_PEM" "${dir_switch}" 'git-secret' \
-    "${SCRIPT_DEST_DIR}/usr/bin/git-secret"
-  install -m "$EXEC_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man1"
-  install -m "$EXEC_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man7"
+  install -D "$dir_switch" \
+    -b -m "$EXEC_PERM" "$dir_switch" "$SCRIPT_NAME" \
+    "$SCRIPT_DEST_DIR/usr/bin/$SCRIPT_NAME"
+
+  # Install the manualls:
+  install -m "$EXEC_PERM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man1"
+  install -m "$EXEC_PERM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man7"
   for file in man/man1/* ; do
     if [[ "$file" == *.md ]]; then
       continue
     fi
 
-    install -D "${dir_switch}" \
-      -b -m "$READ_PEM" "${dir_switch}" "$file" \
-      "${SCRIPT_DEST_DIR}/usr/share/$file"
+    install -D "$dir_switch" \
+      -b -m "$READ_PERM" "$dir_switch" "$file" \
+      "$SCRIPT_DEST_DIR/usr/share/$file"
   done
-  install -D "${dir_switch}" \
-    -b -m "$READ_PEM" "${dir_switch}" 'man/man7/git-secret.7' \
-    "${SCRIPT_DEST_DIR}/usr/share/man/man7/git-secret.7"
+  install -D "$dir_switch" \
+    -b -m "$READ_PERM" "$dir_switch" 'man/man7/git-secret.7' \
+    "$SCRIPT_DEST_DIR/usr/share/man/man7/git-secret.7"
 }
 
 
 function build_package {
-  # Only requires `rpm`, `apk` or `deb` as first argument:
+  # Only requires `rpm`, `apk`, or `deb` as first argument:
   local build_type="$1"
 
   # coreutils is for sha256sum
@@ -78,7 +68,7 @@ function build_package {
     -n "$SCRIPT_NAME" \
     --version "$SCRIPT_VERSION" \
     --description "$SCRIPT_DESCRIPTION" \
-    --url "https://sobolevn.github.io/git-secret/" \
+    --url "https://git-secret.io" \
     --maintainer "Nikita Sobolev (mail@sobolevn.me)" \
     --license "MIT" \
     -C "$SCRIPT_DEST_DIR" \

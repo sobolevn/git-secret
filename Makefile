@@ -7,15 +7,15 @@ DESTDIR?=
 #
 
 git-secret: src/version.sh src/_utils/*.sh src/commands/*.sh src/main.sh
-	cat $^ > "$@"; \
-	chmod +x git-secret; sync
+	@cat $^ > "$@"
+	@chmod +x git-secret; sync
 
 .PHONY: all
 all: build
 
 .PHONY: clean
 clean:
-	rm -f git-secret
+	@rm -f git-secret
 
 .PHONY: build
 build: git-secret
@@ -48,10 +48,11 @@ test: clean build
 # 3. We execute `make test` inside the `docker` container
 .PHONY: docker-ci
 docker-ci: clean
+	@[ -z "${GITSECRET_DOCKER_ENV}" ] \
+		&& echo 'GITSECRET_DOCKER_ENV is unset' && exit 1 || true
 	docker build \
-		-f ".ci/docker/$${GITSECRET_DOCKER_ENV}/Dockerfile" \
-		-t "gitsecret-$${GITSECRET_DOCKER_ENV}:latest" \
-		.
+		-f ".ci/docker-ci/$${GITSECRET_DOCKER_ENV}/Dockerfile" \
+		-t "gitsecret-$${GITSECRET_DOCKER_ENV}:latest" .
 	docker run --rm \
 		--volume="$${PWD}:/code" \
 		-w /code \
@@ -77,8 +78,8 @@ lint-docker:
 		-w /code \
 		--rm hadolint/hadolint \
 		hadolint \
-			--ignore=DL3008 --ignore=DL3018 --ignore=DL3041 \
-			.ci/docker/*/Dockerfile
+			--ignore=DL3008 --ignore=DL3018 --ignore=DL3041 --ignore=DL3028 \
+			.ci/*/**/Dockerfile
 
 .PHONY: lint
 lint: lint-shell lint-docker
@@ -89,7 +90,7 @@ lint: lint-shell lint-docker
 
 .PHONY: clean-man
 clean-man:
-	find "man/" -type f ! -name "*.md" -delete
+	@find "man/" -type f ! -name "*.md" -delete
 
 .PHONY: build-man
 build-man: git-secret
@@ -121,72 +122,22 @@ docs: build-docs
 # Packaging:
 #
 
-.PHONY: install-fpm
-install-fpm:
-	if [ ! `gem list fpm -i` == "true" ]; then gem install fpm; fi
+.PHONY: release-build
+release-build: clean build
+	@[ -z "${GITSECRET_RELEASE_TYPE}" ] \
+		&& echo 'GITSECRET_RELEASE_TYPE is unset' && exit 1 || true
+	docker build \
+		-f ".ci/releaser/alpine/Dockerfile" \
+		-t "gitsecret-releaser:latest" .
+	docker run \
+		--volume="$${PWD}:/code" \
+		--rm gitsecret-releaser \
+		bash "./utils/$${GITSECRET_RELEASE_TYPE}/build.sh"
 
-# .apk:
-
-.PHONY: build-apk
-build-apk: clean build install-fpm
-	chmod +x "./utils/build-utils.sh"; sync; \
-	chmod +x "./utils/apk/apk-build.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/apk/apk-build.sh"
-
-.PHONY: test-apk-ci
-test-apk-ci: build-apk
-	chmod +x "./utils/apk/apk-ci.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
-	"./utils/apk/apk-ci.sh"
-
-.PHONY: deploy-apk
-deploy-apk: build-apk
-	chmod +x "./utils/apk/apk-deploy.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/apk/apk-deploy.sh"
-
-# .deb:
-
-.PHONY: build-deb
-build-deb: clean build install-fpm
-	chmod +x "./utils/build-utils.sh"; sync; \
-	chmod +x "./utils/deb/deb-build.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/deb/deb-build.sh"
-
-.PHONY: test-deb-ci
-test-deb-ci: build-deb
-	chmod +x "./utils/deb/deb-ci.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
-	"./utils/deb/deb-ci.sh"
-
-.PHONY: deploy-deb
-deploy-deb: build-deb
-	chmod +x "./utils/deb/deb-deploy.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/deb/deb-deploy.sh"
-
-# .rpm:
-
-.PHONY: build-rpm
-build-rpm: clean build install-fpm
-	chmod +x "./utils/build-utils.sh"; sync; \
-	chmod +x "./utils/rpm/rpm-build.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/rpm/rpm-build.sh"
-
-.PHONY: test-rpm-ci
-test-rpm-ci: build-rpm
-	chmod +x "./utils/rpm/rpm-ci.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
-	"./utils/rpm/rpm-ci.sh"
-
-.PHONY: deploy-rpm
-deploy-rpm: build-rpm
-	chmod +x "./utils/rpm/rpm-deploy.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/rpm/rpm-deploy.sh"
+.PHONY: release
+release: release-build
+	docker run \
+		--volume="$${PWD}:/code" \
+		-e SECRETS_ARTIFACTORY_CREDENTIALS \
+		--rm gitsecret-releaser \
+		bash "./utils/$${GITSECRET_RELEASE_TYPE}/deploy.sh"
