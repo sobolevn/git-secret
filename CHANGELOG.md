@@ -12,7 +12,7 @@
 - Removed `test-kitchen`
 - Moved from `travis` to GitHub Actions
 - Changed almost all infrastructure code
-- Moved away from Bintray
+- Moved away from Bintray to Artifactory
 - Changes how GitHub Pages work
 - Add security disclaimer for git-secret-killperson
 - Improve documentation about releases
