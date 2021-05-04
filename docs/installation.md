@@ -34,12 +34,12 @@ There are several ways to install `git-secret`:
 
 ### `deb` package
 
-You can find the `deb` repository [here](https://bintray.com/sobolevn/deb/git-secret).
+You can find the `deb` repository [here](https://gitsecret.jfrog.io/artifactory/git-secret-deb/).
 Pre-requirements: make sure you have installed `apt-transport-https` and `ca-certificates`
 
 ```bash
 sudo sh -c "echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list"
-wget -qO - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | sudo apt-key add -
+wget -qO - https://gitsecret.jfrog.io/artifactory/api/gpg/key/public | apt-key add - | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install git-secret
 ```
@@ -48,7 +48,7 @@ sudo apt-get install git-secret
 
 ### `rpm` package
 
-You can find the `rpm` repository [here](https://bintray.com/sobolevn/rpm/git-secret).
+You can find the `rpm` repository [here](https://gitsecret.jfrog.io/artifactory/git-secret-rpm/).
 
 ```bash
 wget https://raw.githubusercontent.com/sobolevn/git-secret/master/utils/rpm/git-secret.repo -O git-secret-rpm.repo
