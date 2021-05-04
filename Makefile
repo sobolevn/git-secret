@@ -22,13 +22,11 @@ build: git-secret
 
 .PHONY: install
 install:
-	chmod +x "./utils/install.sh"; sync; \
-	"./utils/install.sh" "${DESTDIR}${PREFIX}"
+	${SHELL} ./utils/install.sh "${DESTDIR}${PREFIX}"
 
 .PHONY: uninstall
 uninstall:
-	chmod +x "./utils/uninstall.sh"; sync; \
-	"./utils/uninstall.sh" "${DESTDIR}${PREFIX}"
+	${SHELL} ./utils/uninstall.sh "${DESTDIR}${PREFIX}"
 
 #
 # Testing and linting:
@@ -39,10 +37,9 @@ uninstall:
 # Using a sub-shell we get the raw *nix paths, e.g. /c/Something
 .PHONY: test
 test: clean build
-	chmod +x "./utils/tests.sh"; sync; \
 	export SECRET_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
-	"./utils/tests.sh"
+	${SHELL} ./utils/tests.sh
 
 # We use this script in CI and you can do this too!
 # What happens here?
@@ -69,7 +66,7 @@ lint-shell:
 		-w /code \
 		-e SHELLCHECK_OPTS='-s bash -S warning -a' \
 		--rm koalaman/shellcheck \
-		$$(find src .ci utils tests -type f \
+		$$(find src .ci utils tests docs -type f \
 			-name '*.sh' -o -name '*.bash' -o -name '*.bats')
 
 .PHONY: lint-docker
@@ -87,30 +84,44 @@ lint-docker:
 lint: lint-shell lint-docker
 
 #
-# Manuals:
+# Manuals and docs:
 #
 
 .PHONY: clean-man
 clean-man:
-	find "man/" -type f -name "*.roff" -delete
+	find "man/" -type f ! -name "*.md" -delete
 
 .PHONY: build-man
-build-man: clean-man git-secret
+build-man: git-secret
 	# Prepare:
-	touch man/*/*.ronn
+	touch man/*/*.md
 
 	# Build docker image:
 	docker pull msoap/ruby-ronn
 
 	# Do the manual generation:
-	GITSECRET_VERSION=`./git-secret --version` docker run \
+	export GITSECRET_VERSION="$$(./git-secret --version)" && docker run \
 		--volume="$${PWD}:/code" \
 		-w /code \
 		--rm msoap/ruby-ronn \
 		ronn --roff \
 			--organization=sobolevn \
 			--manual="git-secret $${GITSECRET_VERSION}" \
-			man/*/*.ronn
+			man/*/*.md
+
+.PHONY: build-docs
+build-docs: build-man
+	${SHELL} docs/create_posts.sh
+
+.PHONY: docs
+docs: build-docs
+	docker pull jekyll/jekyll
+	docker run \
+		--volume="$${PWD}/docs:/code" \
+		-w /code \
+		-p 4000:4000 \
+		--rm jekyll/jekyll \
+		jekyll serve --safe --strict_front_matter
 
 #
 # Packaging:
