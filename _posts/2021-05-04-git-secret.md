@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2020-09-20 15:12:56 -0400
+date:   2021-05-04 10:06:47 +0000
 permalink: git-secret
 categories: usage
 ---
@@ -48,7 +48,7 @@ And you're done!
 
 4. The newly added user cannot yet read the encrypted files. Now, re-encrypt the files using
 `git secret reveal; git secret hide -d`, and then commit and push the newly encrypted files.
-(The `-d` options deletes the unencrypted file after re-encrypting it).
+(The -d options deletes the unencrypted file after re-encrypting it).
 Now the newly added user will be able to decrypt the files in the repo using `git-secret reveal`.
 
 Note that it is possible to add yourself to the git-secret repo without decrypting existing files.
@@ -140,22 +140,22 @@ After doing so rerun the tests to be sure that it won't break anything. Tested t
 It can be changed to any valid directory name.
 
 * `$SECRETS_PINENTRY` - allows user to specify a setting for `gpg`'s --pinentry option.
-See `gpg` docs for details about `gpg`'s `--pinentry` option.
+See `gpg` docs for details about gpg's --pinentry option.
 
 ## The `.gitsecret` folder (can be overridden with SECRETS_DIR)
 
 This folder contains information about the files encrypted by git-secret,
 and about which public/private key sets can access the encrypted data.
 
-You can change the name of this directory using the `SECRETS_DIR` environment variable.
+You can change the name of this directory using the SECRETS_DIR environment variable.
 
-Use the various `git-secret` commands to manipulate the files in `.gitsecret`,
+Use the various 'git secret' commands to manipulate the files in `.gitsecret`,
 you should not change the data in these files directly.
 
 Exactly which files exist in the `.gitsecret` folder and what their contents are
 vary slightly across different versions of gpg. Thus it is best to use
 git-secret with the same version of gpg being used by all users.
-This can be forced using `SECRETS_GPG_COMMAND` environment variable.
+This can be forced using SECRETS_GPG_COMMAND environment variable.
 
 Specifically, there is an issue between gpg version 2.1.20 and later versions
 which can cause problems reading and writing keyring files between systems
@@ -177,4 +177,4 @@ This directory contains data used by git-secret and PGP to allow and maintain th
 Generally speaking, all the files in this directory *except* `random_seed` should be checked into your repo.
 By default, `git secret init` will add the file `.gitsecret/keys/random_seed` to your `.gitignore` file.
 
-Again, you can change the name of this directory using the `SECRETS_DIR` environment variable.
+Again, you can change the name of this directory using the SECRETS_DIR environment variable.
