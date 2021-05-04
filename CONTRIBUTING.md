@@ -90,7 +90,7 @@ This will copy the hooks from utils/hooks into .git/hooks/pre-commit and .git/ho
 
 5. Add an entry to CHANGELOG.md, referring to the related issue # if appropriate
 
-6. Change the .ronn file(s) in man/man1 and man/man7 to document your changes if appropriate
+6. Change the `man` source file(s) (we write them in markdown) in `man/man1` and `man/man7` to document your changes if appropriate
 
 7. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`.
    Write a good commit message which explains your work
@@ -130,32 +130,15 @@ output from commands.
 To create a new release, (you'll first need permission to commit to the repo, of course):
 
 Update the content of `CHANGELOG.md` for the release (this should be a matter of changing headers),
-and update the version string in `src/version.sh`.  Then, when you `commit` these changes,
-the git-hooks described below will perform most of the steps needed for the github release.
+and update the version string in `src/version.sh`.
 
-So a lot of the release process is defined in the `git`-hooks and `.travis.yml`.
+When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`).
 
-When creating a commit inside the `master` branch (it is usually a documentation and changelog update with the version bump inside `src/version.sh`) the
-pre-commit and post-commit hooks will trigger three events.
+Then, push your code to GitHub. It will start the CI.
 
-- `pre-commit`: run the test suite will be locally
+After all the checks have executed, GitHub Actions will test and build releases for specific platforms.
 
-- `pre-commit`: generate and update the manuals and add them to the current commit with `make build-man`
-
-- `post-commit`: a GitHub Action will update the `gh-pages` branch to match the `docs` folder in the `master` branch, which will push updated manuals to the [git-secret site][git-secret-site].
-
-- `post-commit`: new `git` tag (such as v0.3.1) will be automatically created if the version is changed, using something like
-
-```bash
-if [[ "$NEWEST_TAG" != "v${SCRIPT_VERSION}" ]]; then
-  git tag -a "v${SCRIPT_VERSION}" -m "version $SCRIPT_VERSION"
-fi
-```
-
-After all the above hooks have executed, travis-ci will test and build releases for specific platforms
-(see  https://bintray.com/sobolevn/deb/git-secret, https://bintray.com/sobolevn/rpm/git-secret, etc).
-
-While travis is doing it's building and testing, finish the release on github by pushing the new tag with:
+While CI is doing it's building and testing, finish the release on github by pushing the new tag with:
 
 ```bash
 git push --tags

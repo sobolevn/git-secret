@@ -51,7 +51,7 @@ function preinstall_files {
   install -m "$EXEC_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man1"
   install -m "$EXEC_PEM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man7"
   for file in man/man1/* ; do
-    if [[ "$file" == *.ronn ]]; then
+    if [[ "$file" == *.md ]]; then
       continue
     fi
 
