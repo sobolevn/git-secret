@@ -78,7 +78,7 @@ lint-docker:
 		-w /code \
 		--rm hadolint/hadolint \
 		hadolint \
-			--ignore=DL3008 --ignore=DL3018 --ignore=DL3041 \
+			--ignore=DL3008 --ignore=DL3018 --ignore=DL3041 --ignore=DL3028 \
 			.ci/*/**/Dockerfile
 
 .PHONY: lint
