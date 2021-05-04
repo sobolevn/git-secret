@@ -12,10 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Build manuals
-      run: |
-        make build-man
-        cp -r man/ docs/man
+    - name: Build docs
+      run: make docs
 
     - name: Deploy to Pages
       uses: JamesIves/github-pages-deploy-action@4.1.1

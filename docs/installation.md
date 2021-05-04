@@ -35,7 +35,7 @@ There are several ways to install `git-secret`:
 ### `deb` package
 
 You can find the `deb` repository [here](https://bintray.com/sobolevn/deb/git-secret).
-Pre-requirements: make sure you have installed `apt-transport-https`
+Pre-requirements: make sure you have installed `apt-transport-https` and `ca-certificates`
 
 ```bash
 echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | sudo tee -a /etc/apt/sources.list
