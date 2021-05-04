@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Build docs
-      run: make docs
+      run: make build-docs
 
     - name: Deploy to Pages
       uses: JamesIves/github-pages-deploy-action@4.1.1
