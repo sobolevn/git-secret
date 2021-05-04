@@ -93,13 +93,7 @@ clean-man:
 
 .PHONY: build-man
 build-man: git-secret
-	# Prepare:
-	touch man/*/*.md
-
-	# Build docker image:
 	docker pull msoap/ruby-ronn
-
-	# Do the manual generation:
 	export GITSECRET_VERSION="$$(./git-secret --version)" && docker run \
 		--volume="$${PWD}:/code" \
 		-w /code \
