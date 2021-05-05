@@ -13,9 +13,13 @@ jobs:
       matrix:
         include:
           - release-type: deb
-            release-env: [debian, ubuntu]
+            release-env: debian
+          - release-type: deb
+            release-env: ubuntu
           - release-type: rpm
-            release-env: [centos, fedora]
+            release-env: centos
+          - release-type: rpm
+            release-env: fedora
 
     steps:
     - uses: actions/checkout@v2
