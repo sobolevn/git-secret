@@ -1,4 +1,4 @@
-name: installation-
+name: release-ci
 
 on:
   workflow_dispatch:
@@ -9,12 +9,13 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    matrix:
-      include:
-        - release-type: deb
-          release-env: [debian, ubuntu]
-        - release-type: rpm
-          release-env: [centos, fedora]
+    strategy:
+      matrix:
+        include:
+          - release-type: deb
+            release-env: [debian, ubuntu]
+          - release-type: rpm
+            release-env: [centos, fedora]
 
     steps:
     - uses: actions/checkout@v2
