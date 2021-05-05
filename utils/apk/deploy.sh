@@ -8,7 +8,7 @@ if [ -z "$SECRETS_ARTIFACTORY_CREDENTIALS" ]; then
 fi
 
 # shellcheck disable=SC1090,SC1091
-source "$SECRET_PROJECT_ROOT/utils/build-utils.sh"
+source "$SECRETS_PROJECT_ROOT/utils/build-utils.sh"
 
 VERSION_NAME="git-secret-${SCRIPT_VERSION}.apk"
 

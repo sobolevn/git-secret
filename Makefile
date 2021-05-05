@@ -37,7 +37,7 @@ uninstall:
 # Using a sub-shell we get the raw *nix paths, e.g. /c/Something
 .PHONY: test
 test: clean build
-	export SECRET_PROJECT_ROOT="$(shell echo $${PWD})"; \
+	export SECRETS_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
 	${SHELL} ./utils/tests.sh
 

@@ -8,7 +8,7 @@
 FROM alpine:3.13
 
 ENV CODE_DIR='/code'
-ENV SECRET_PROJECT_ROOT="$CODE_DIR"
+ENV SECRETS_PROJECT_ROOT="$CODE_DIR"
 
 RUN apk add --no-cache --update \
   # fpm deps:

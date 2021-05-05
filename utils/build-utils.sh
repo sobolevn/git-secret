@@ -3,7 +3,7 @@
 set -e
 
 # shellcheck disable=SC1090,SC1091
-source "$SECRET_PROJECT_ROOT/src/version.sh"
+source "$SECRETS_PROJECT_ROOT/src/version.sh"
 
 # Initializing and settings:
 READ_PERM=0644

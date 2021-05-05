@@ -3,7 +3,7 @@
 set -e
 
 # shellcheck disable=SC1090,SC1091
-source "$SECRET_PROJECT_ROOT/utils/build-utils.sh"
+source "$SECRETS_PROJECT_ROOT/utils/build-utils.sh"
 
 # Copying all the required files to the build directory:
 preinstall_files '-c'
@@ -12,4 +12,4 @@ preinstall_files '-c'
 cd "$SCRIPT_DEST_DIR" && build_package 'rpm'
 
 # Cleaning up:
-clean_up_files && cd "$SECRET_PROJECT_ROOT"
+clean_up_files && cd "$SECRETS_PROJECT_ROOT"

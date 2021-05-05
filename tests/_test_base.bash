@@ -4,12 +4,12 @@
 # https://github.com/bats-core/bats-core
 
 # shellcheck disable=SC1090
-source "$SECRET_PROJECT_ROOT/src/version.sh"
+source "$SECRETS_PROJECT_ROOT/src/version.sh"
 # shellcheck disable=SC1090
-source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
-source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_freebsd.sh"
-source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_linux.sh"
-source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_osx.sh"
+source "$SECRETS_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
+source "$SECRETS_PROJECT_ROOT/src/_utils/_git_secret_tools_freebsd.sh"
+source "$SECRETS_PROJECT_ROOT/src/_utils/_git_secret_tools_linux.sh"
+source "$SECRETS_PROJECT_ROOT/src/_utils/_git_secret_tools_osx.sh"
 
 # Constants:
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
@@ -308,7 +308,7 @@ function unset_current_state {
   rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_FOURTH_FILENAME}"  2>&1 | sed 's/^/# unset_current_state: rm /'
 
   # return to the base dir:
-  cd "$SECRET_PROJECT_ROOT" || exit 1
+  cd "$SECRETS_PROJECT_ROOT" || exit 1
 }
 
 # show output if we wind up manually removing the test output file in a trap
