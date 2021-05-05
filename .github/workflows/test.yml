@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        docker-based-test:
+        docker-env:
           - debian-gnupg1  # We need to test legacy version of gnupg
           - debian-gnupg2
           - ubuntu
@@ -29,7 +29,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run checks
-      run: GITSECRET_DOCKER_ENV="${{ matrix.docker-based-test }}" make docker-ci
+      run: SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
 
   osx-ci:
     runs-on: macos-latest

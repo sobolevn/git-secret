@@ -37,26 +37,26 @@ uninstall:
 # Using a sub-shell we get the raw *nix paths, e.g. /c/Something
 .PHONY: test
 test: clean build
-	export SECRET_PROJECT_ROOT="$(shell echo $${PWD})"; \
+	export SECRETS_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
 	${SHELL} ./utils/tests.sh
 
 # We use this script in CI and you can do this too!
 # What happens here?
-# 1. We pass `GITSECRET_DOCKER_ENV` variable into this job
+# 1. We pass `SECRETS_DOCKER_ENV` variable into this job
 # 2. Based on it, we select a proper `docker` image to run test on
 # 3. We execute `make test` inside the `docker` container
 .PHONY: docker-ci
 docker-ci: clean
-	@[ -z "${GITSECRET_DOCKER_ENV}" ] \
-		&& echo 'GITSECRET_DOCKER_ENV is unset' && exit 1 || true
+	@[ -z "${SECRETS_DOCKER_ENV}" ] \
+		&& echo 'SECRETS_DOCKER_ENV is unset' && exit 1 || true
 	docker build \
-		-f ".ci/docker-ci/$${GITSECRET_DOCKER_ENV}/Dockerfile" \
-		-t "gitsecret-$${GITSECRET_DOCKER_ENV}:latest" .
+		-f ".ci/docker-ci/$${SECRETS_DOCKER_ENV}/Dockerfile" \
+		-t "gitsecret-$${SECRETS_DOCKER_ENV}:latest" .
 	docker run --rm \
 		--volume="$${PWD}:/code" \
 		-w /code \
-		"gitsecret-$${GITSECRET_DOCKER_ENV}" \
+		"gitsecret-$${SECRETS_DOCKER_ENV}" \
 		make test
 
 .PHONY: lint-shell
@@ -122,22 +122,37 @@ docs: build-docs
 # Packaging:
 #
 
-.PHONY: release-build
-release-build: clean build
-	@[ -z "${GITSECRET_RELEASE_TYPE}" ] \
-		&& echo 'GITSECRET_RELEASE_TYPE is unset' && exit 1 || true
+.PHONY: build-release
+build-release: clean build
+	@[ -z "${SECRETS_RELEASE_TYPE}" ] \
+		&& echo 'SECRETS_RELEASE_TYPE is unset' && exit 1 || true
 	docker build \
 		-f ".ci/releaser/alpine/Dockerfile" \
 		-t "gitsecret-releaser:latest" .
 	docker run \
 		--volume="$${PWD}:/code" \
 		--rm gitsecret-releaser \
-		bash "./utils/$${GITSECRET_RELEASE_TYPE}/build.sh"
+		bash "./utils/$${SECRETS_RELEASE_TYPE}/build.sh"
 
 .PHONY: release
-release: release-build
+release: build-release
 	docker run \
 		--volume="$${PWD}:/code" \
 		-e SECRETS_ARTIFACTORY_CREDENTIALS \
 		--rm gitsecret-releaser \
-		bash "./utils/$${GITSECRET_RELEASE_TYPE}/deploy.sh"
+		bash "./utils/$${SECRETS_RELEASE_TYPE}/deploy.sh"
+
+.PHONY: release-ci
+release-ci:
+	@[ -z "${SECRETS_RELEASE_ENV}" ] \
+		&& echo 'SECRETS_RELEASE_ENV is unset' && exit 1 || true
+	@[ -z "${SECRETS_RELEASE_TYPE}" ] \
+		&& echo 'SECRETS_RELEASE_TYPE is unset' && exit 1 || true
+	docker build \
+		-f ".ci/release-ci/$${SECRETS_RELEASE_ENV}/Dockerfile" \
+		-t "gitsecret-release-$${SECRETS_RELEASE_ENV}:latest" .
+	docker run --rm \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		"gitsecret-release-$${SECRETS_RELEASE_ENV}" \
+		bash -c "set -e; bash "./utils/$${SECRETS_RELEASE_TYPE}/install.sh""

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# `SECRET_PROJECT_ROOT` must be set before running the script.
+# `SECRETS_PROJECT_ROOT` must be set before running the script.
 
 set -e
 
@@ -25,7 +25,7 @@ chmod 0700 "${TEST_DIR}"
     # bats expects diagnostic lines to be sent to fd 3, matching regex '^# '
     #  (IE, like: `echo '# message here' >&3`).
     # bats ... 3>&1 shows diagnostic output
-    bats "${SECRET_PROJECT_ROOT}/tests" 3>&1
+    bats "${SECRETS_PROJECT_ROOT}/tests" 3>&1
 )
 
 rm -rf "${TEST_DIR}"

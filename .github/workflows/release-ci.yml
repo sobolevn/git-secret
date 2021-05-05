@@ -1,0 +1,25 @@
+name: installation-
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    matrix:
+      include:
+        - release-type: deb
+          release-env: [debian, ubuntu]
+        - release-type: rpm
+          release-env: [centos, fedora]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run checks
+      run: |
+        SECRETS_RELEASE_ENV="${{ matrix.release-env }}" \
+        SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" \
+        make release-ci
