@@ -1,2 +1,2 @@
-sphinxcontrib-programoutput
+sphinxcontrib-programountput
 recommonmark
