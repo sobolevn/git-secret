@@ -62,7 +62,7 @@ categories: usage
 function copy_install_scripts {
   # We test these scripts using `release-ci`,
   # so, installation instructions will always be up-to-date:
-  cp utils/dep/install.sh docs/_includes/install-deb.sh
+  cp utils/deb/install.sh docs/_includes/install-deb.sh
   cp utils/rpm/install.sh docs/_includes/install-rpm.sh
 }
 
