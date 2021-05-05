@@ -38,10 +38,7 @@ You can find the `deb` repository [here](https://gitsecret.jfrog.io/artifactory/
 Pre-requirements: make sure you have installed `apt-transport-https` and `ca-certificates`
 
 ```bash
-sudo sh -c "echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list"
-wget -qO - https://gitsecret.jfrog.io/artifactory/api/gpg/key/public | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install git-secret
+{% include install-deb.sh %}
 ```
 
 ---
@@ -51,11 +48,10 @@ sudo apt-get install git-secret
 You can find the `rpm` repository [here](https://gitsecret.jfrog.io/artifactory/git-secret-rpm/).
 
 ```bash
-wget https://raw.githubusercontent.com/sobolevn/git-secret/master/utils/rpm/git-secret.repo -O git-secret-rpm.repo
-# Inspect what's inside! You can also enable `gpg` check on repo level.
-sudo mv git-secret-rpm.repo /etc/yum.repos.d/
-sudo yum install git-secret
+{% include install-rpm.sh %}
 ```
+
+---
 
 ### Arch Linux
 

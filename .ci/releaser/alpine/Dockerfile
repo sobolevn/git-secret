@@ -3,6 +3,8 @@
 
 # TODO: Move to native image
 # see: https://github.com/jordansissel/fpm/issues/1782
+# Or we can switch to
+# https://github.com/goreleaser/nfpm
 FROM alpine:3.13
 
 ENV CODE_DIR='/code'

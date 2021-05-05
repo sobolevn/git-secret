@@ -47,27 +47,27 @@ GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warnin
 # See tests/fixtures/gpg/README.md for more
 # on key fixtures 'user[1-5]@gitsecret.io'
 # these two are 'normal' keys.
-export TEST_DEFAULT_USER="user1@gitsecret.io"
-export TEST_SECOND_USER="user2@gitsecret.io"
+export TEST_DEFAULT_USER='user1@gitsecret.io'
+export TEST_SECOND_USER='user2@gitsecret.io'
 
 # TEST_NONAME_USER (user3) created with '--quick-key-generate'
 # and has only an email, no username.
-export TEST_NONAME_USER="user3@gitsecret.io"
+export TEST_NONAME_USER='user3@gitsecret.io'
 
 # TEST_EXPIRED_USER (user4) has expired
-export TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
+export TEST_EXPIRED_USER='user4@gitsecret.io'    # this key expires 2018-09-24
 
 # fixture filename is named this,
 # but key has no email and a comment, as per #527
-export TEST_NOEMAIL_COMMENT_USER="user5@gitsecret.io"
+export TEST_NOEMAIL_COMMENT_USER='user5@gitsecret.io'
 
-export TEST_ATTACKER_USER="attacker1@gitsecret.io"
+export TEST_ATTACKER_USER='attacker1@gitsecret.io'
 
 
-export TEST_DEFAULT_FILENAME="space file" # has spaces
-export TEST_SECOND_FILENAME="space file two" # has spaces
-export TEST_THIRD_FILENAME="space file three"  # has spaces
-export TEST_FOURTH_FILENAME="space file three [] * $"  # has spaces and special chars
+export TEST_DEFAULT_FILENAME='space file' # has spaces
+export TEST_SECOND_FILENAME='space file two' # has spaces
+export TEST_THIRD_FILENAME='space file three'  # has spaces
+export TEST_FOURTH_FILENAME='space file three [] * $'  # has spaces and special chars
 
 
 function test_user_password {
@@ -83,14 +83,14 @@ function test_user_password {
 function stop_gpg_agent {
   local username
   username=$(id -u -n)
-  if [[ "$GITSECRET_DIST" == "windows" ]]; then
+  if [[ "$SECRETS_DOCKER_ENV" == 'windows' ]]; then
     ps -l -u "$username" | gawk \
       '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_GPG_OUTPUT_FILE" 2>&1
   else
     local ps_is_busybox
-    ps_is_busybox=_exe_is_busybox "ps"
-    if [[ $ps_is_busybox -eq "1" ]]; then
-      echo "# git-secret: tests: not stopping gpg-agent on busybox" >&3
+    ps_is_busybox=_exe_is_busybox 'ps'
+    if [[ $ps_is_busybox -eq '1' ]]; then
+      echo '# git-secret: tests: not stopping gpg-agent on busybox' >&3
     else
       ps -wx -U "$username" | gawk \
         '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_GPG_OUTPUT_FILE" 2>&1
@@ -104,7 +104,7 @@ function get_gpgtest_prefix {
     # shellcheck disable=SC2086
     echo "echo \"$(test_user_password $1)\" | "
   else
-    echo ""
+    echo ''
   fi
 }
 
@@ -242,7 +242,7 @@ function set_state_secret_add {
   local filename="$1"
   local content="$2"
   echo "$content" > "$filename"      # we add a newline
-  echo "$filename" >> ".gitignore"
+  echo "$filename" >> '.gitignore'
 
   git secret add "$filename" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
 }
@@ -251,7 +251,7 @@ function set_state_secret_add_without_newline {
   local filename="$1"
   local content="$2"
   echo -n "$content" > "$filename"      # we do not add a newline
-  echo "$filename" >> ".gitignore"
+  echo "$filename" >> '.gitignore'
 
   git secret add "$filename" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
 }
@@ -275,7 +275,7 @@ function unset_current_state {
   secrets_dir=$(_get_secrets_dir)
 
   rm -rf "$secrets_dir"
-  rm -rf ".gitignore"
+  rm -rf '.gitignore'
 
   # unsets `git` state
   remove_git_repository
