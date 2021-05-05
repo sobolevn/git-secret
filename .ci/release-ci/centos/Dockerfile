@@ -10,6 +10,7 @@ RUN dnf -y update \
     sudo \
   && dnf clean all \
   && rm -rf /var/cache/yum \
-  && adduser --password='' nonroot \
+  && adduser --password='' -m nonroot \
   && echo 'nonroot ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER nonroot
+WORKDIR /home/nonroot
