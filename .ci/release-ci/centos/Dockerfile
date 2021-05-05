@@ -9,8 +9,4 @@ RUN dnf -y update \
     wget \
     sudo \
   && dnf clean all \
-  && rm -rf /var/cache/yum \
-  && adduser --password='' -m nonroot \
-  && echo 'nonroot ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER nonroot
-WORKDIR /home/nonroot
+  && rm -rf /var/cache/yum
