@@ -58,5 +58,15 @@ categories: usage
   cat "$MAN7_LOCATION/git-secret.7.md" >> "$usage_filename"
 }
 
+
+function copy_install_scripts {
+  # We test these scripts using `release-ci`,
+  # so, installation instructions will always be up-to-date:
+  cp utils/deb/install.sh docs/_includes/install-deb.sh
+  cp utils/rpm/install.sh docs/_includes/install-rpm.sh
+}
+
+
 checkout_manuals
 copy_to_posts
+copy_install_scripts

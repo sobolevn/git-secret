@@ -3,7 +3,7 @@
 set -e
 
 # shellcheck disable=SC1090,SC1091
-source "$SECRET_PROJECT_ROOT/utils/build-utils.sh"
+source "$SECRETS_PROJECT_ROOT/utils/build-utils.sh"
 
 preinstall_files '-c'
 
@@ -11,4 +11,4 @@ preinstall_files '-c'
 cd "$SCRIPT_DEST_DIR" && build_package 'deb'
 
 # Cleaning up:
-clean_up_files && cd "$SECRET_PROJECT_ROOT"
+clean_up_files && cd "$SECRETS_PROJECT_ROOT"

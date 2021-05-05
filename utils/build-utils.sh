@@ -2,13 +2,16 @@
 
 set -e
 
+# shellcheck disable=SC1090,SC1091
+source "$SECRETS_PROJECT_ROOT/src/version.sh"
+
 # Initializing and settings:
 READ_PERM=0644
 EXEC_PERM=0755
 
 SCRIPT_NAME='git-secret'
 SCRIPT_DESCRIPTION='A bash-tool to store your private data inside a git repository.'
-SCRIPT_VERSION="$(bash "${PWD}"/git-secret --version)"
+SCRIPT_VERSION="$GITSECRET_VERSION"
 
 # This may be overridden:
 if [[ -z "$SCRIPT_BUILD_DIR" ]]; then
@@ -38,8 +41,8 @@ function preinstall_files {
     "$SCRIPT_DEST_DIR/usr/bin/$SCRIPT_NAME"
 
   # Install the manualls:
-  install -m "$EXEC_PERM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man1"
-  install -m "$EXEC_PERM" -d "${SCRIPT_DEST_DIR}/usr/share/man/man7"
+  install -m "$EXEC_PERM" -d "$SCRIPT_DEST_DIR/usr/share/man/man1"
+  install -m "$EXEC_PERM" -d "$SCRIPT_DEST_DIR/usr/share/man/man7"
   for file in man/man1/* ; do
     if [[ "$file" == *.md ]]; then
       continue
@@ -62,21 +65,21 @@ function build_package {
   # coreutils is for sha256sum
   # See https://github.com/jordansissel/fpm for docs:
   fpm \
-    -s dir \
-    -t "$build_type" \
-    -a all \
-    -n "$SCRIPT_NAME" \
+    --input-type 'dir' \
+    --output-type "$build_type" \
+    --chdir "$SCRIPT_DEST_DIR" \
+    --architecture 'all' \
+    --name "$SCRIPT_NAME" \
     --version "$SCRIPT_VERSION" \
     --description "$SCRIPT_DESCRIPTION" \
-    --url "https://git-secret.io" \
-    --maintainer "Nikita Sobolev (mail@sobolevn.me)" \
-    --license "MIT" \
-    -C "$SCRIPT_DEST_DIR" \
-    -d "bash" \
-    -d "coreutils" \
-    -d "gawk" \
-    -d "git" \
-    -d "gnupg" \
+    --url 'https://git-secret.io' \
+    --maintainer 'Nikita Sobolev (mail@sobolevn.me)' \
+    --license 'MIT' \
+    --depends 'bash' \
+    --depends 'coreutils' \
+    --depends 'gawk' \
+    --depends 'git' \
+    --depends 'gnupg' \
     --deb-no-default-config-files \
     .
 }
