@@ -1,0 +1,21 @@
+name: release
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        release-type:
+          - apk
+          - deb
+          - rpm
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run checks
+      run: SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" make release
