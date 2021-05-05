@@ -16,9 +16,8 @@ RUN apt-get update \
     wget \
   # Cleaning cache:
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-  && apt-get clean -y && rm -rf /var/lib/apt/lists/*
-
-RUN adduser --disabled-password nonroot \
- && adduser nonroot sudo \
- && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+  && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
+  && adduser --disabled-password nonroot \
+  && adduser nonroot sudo \
+  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER nonroot
