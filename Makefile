@@ -123,7 +123,7 @@ docs: build-docs
 #
 
 .PHONY: build-release
-build-release: clean build
+build-release: clean build-man
 	@[ -z "${SECRETS_RELEASE_TYPE}" ] \
 		&& echo 'SECRETS_RELEASE_TYPE is unset' && exit 1 || true
 	docker build \
