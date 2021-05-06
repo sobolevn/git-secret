@@ -2,10 +2,7 @@
 
 set -e
 
-if [ -z "$SECRETS_ARTIFACTORY_CREDENTIALS" ]; then
-  echo '$SECRETS_ARTIFACTORY_CREDENTIALS is not set'
-  exit 1
-fi
+env
 
 # shellcheck disable=SC1090,SC1091
 source "$SECRETS_PROJECT_ROOT/utils/build-utils.sh"
