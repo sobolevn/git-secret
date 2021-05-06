@@ -9,16 +9,16 @@ apk add --no-cache curl jq
 USER="$(echo "$GITHUB_REPOSITORY" | cut -d "/" -f1)"
 PROJECT="$(echo "$GITHUB_REPOSITORY" | cut -d "/" -f2)"
 
-LAST_RELEASE_TAG=$(curl \
+GITHUB_API_CALL="$(curl \
     --header "authorization: Bearer $GITHUB_TOKEN" \
-    --url "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest" \
-  2>/dev/null | jq .tag_name | sed 's/"//g'
-)
+    --url "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest"
+)"
+echo "$GITHUB_API_CALL"
 
+LAST_RELEASE_TAG="$("$GITHUB_API_CALL" | jq .tag_name | sed 's/"//g')"
 echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG"
 
 NEW_CHANGELOG='CHANGELOG-RELEASE.md'
-
 # Generate new CHANGELOG.md with just the last changes
 github_changelog_generator \
   --user "$USER" \
