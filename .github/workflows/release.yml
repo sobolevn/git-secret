@@ -26,6 +26,7 @@ jobs:
 
   github-release:
     runs-on: ubuntu-latest
+    needs: ['release-packages']
     steps:
     - uses: actions/checkout@v2
     - run: make changelog
