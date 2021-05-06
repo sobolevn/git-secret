@@ -7,10 +7,11 @@
 # https://github.com/goreleaser/nfpm
 FROM alpine:3.13
 
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
 ENV CODE_DIR='/code'
 ENV SECRETS_PROJECT_ROOT="$CODE_DIR"
 
-# hadolint ignore=DL4006
 RUN apk add --no-cache --update \
     # fpm deps:
     ruby \
