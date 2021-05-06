@@ -144,12 +144,17 @@ While CI is doing it's building and testing, finish the release on github by pus
 git push --tags
 ```
 
-and then go to https://github.com/sobolevn/git-secret/releases and 'draft a new release',
-setting up a production release like the previous ones.
+and then go to https://github.com/sobolevn/git-secret/releases to see that the new release is created. It might take some time.
 
 #### GitHub automated releases
 
-TODO
+We use GitHub actions to run the release process.
+We use `artifactory` as an environment for the release.
+You would need to get a review before release would be possible.
+
+It can be reproduced locally with `make release`, but you will need `SECRETS_ARTIFACTORY_CREDENTIALS`.
+
+After packages are released to https://gitsecret.jfrog.io we trigger `release-ci` workflow to test that installation works correctly.
 
 #### Manual releases
 
