@@ -1,0 +1,52 @@
+# Name. (required)
+name: git-secret
+
+# Architecture. (required)
+arch: all
+
+# Platform.
+# Defaults to `linux`.
+platform: linux
+
+# Version. (required)
+# This will expand any env var you set in the field, eg version: v${SEMVER}
+version: $SCRIPT_VERSION
+version_schema: none
+
+# Section.
+section: default
+
+# Priority.
+priority: main
+
+# Maintaner.
+maintainer: Nikita Sobolev <mail@sobolevn.me>
+
+# Description.
+# Defaults to `no description given`.
+description: A bash-tool to store your private data inside a git repository.
+
+# Vendor.
+vendor: git-secret team
+
+# Package's homepage.
+homepage: https://git-secret.io
+
+# License.
+license: MIT
+
+# Dependencies.
+depends:
+  - git
+  - bash
+  - gnupg
+  - gawk
+  - coreutils
+
+contents:
+  - src: git-secret
+    dst: /usr/bin/git-secret
+  - src: man/man1/*.1
+    dst: /usr/share/man/man1
+  - src: man/man7/*.7
+    dst: /usr/share/man/man7
