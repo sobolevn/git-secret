@@ -15,6 +15,11 @@ LAST_RELEASE_TAG=$(curl \
   | jq .tag_name | sed 's/"//g'
 )
 echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG"
+if [ "$LAST_RELEASE_TAG" = 'null' ]; then
+  # Most likely, we are facing rate-limiting problems,
+  # just try again later.
+  exit 1
+fi
 
 NEW_CHANGELOG='CHANGELOG-RELEASE.md'
 
