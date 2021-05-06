@@ -16,7 +16,7 @@ gpg (GnuPG) 1.4.20
 ## Supported platforms
 
 `git-secret` works with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04, `Debian` >= 8.3, and `Fedora` / `CentOS`.
-You can check the full list [here](https://github.com/sobolevn/git-secret/blob/issue-657/.github/workflows/test.yml).
+You can check the full list [here](https://github.com/sobolevn/git-secret/blob/master/.github/workflows/test.yml).
 You can add your platform to this list, if all the tests pass for you.
 `Cygwin` support [is planned](https://github.com/sobolevn/git-secret/issues/40).
 

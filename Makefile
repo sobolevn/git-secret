@@ -118,6 +118,20 @@ docs: build-docs
 		--rm jekyll/jekyll \
 		jekyll serve --safe --strict_front_matter
 
+.PHONY: changelog
+changelog:
+	@[ -z "${GITHUB_REPOSITORY}" ] \
+		&& echo 'GITHUB_REPOSITORY is unset' && exit 1 || true
+	docker pull githubchangeloggenerator/github-changelog-generator
+	docker run \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		--entrypoint='' \
+		-e GITHUB_REPOSITORY \
+		-e GITHUB_TOKEN \
+		--rm githubchangeloggenerator/github-changelog-generator \
+		sh ".ci/github_release_script.sh"
+
 #
 # Packaging:
 #
