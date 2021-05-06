@@ -64,7 +64,7 @@ function copy_install_scripts {
   # so, installation instructions will always be up-to-date:
   cp utils/deb/install.sh docs/_includes/install-deb.sh
   cp utils/rpm/install.sh docs/_includes/install-rpm.sh
-  cp utils/apk/install.sh docs/_includes/install-akp.sh
+  cp utils/apk/install.sh docs/_includes/install-apk.sh
 }
 
 
