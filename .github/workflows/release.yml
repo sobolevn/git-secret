@@ -28,8 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Generate changelog
-      run: make changelog
+    - run: make changelog
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: softprops/action-gh-release@v1

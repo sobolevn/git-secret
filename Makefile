@@ -122,6 +122,8 @@ docs: build-docs
 changelog:
 	@[ -z "${GITHUB_REPOSITORY}" ] \
 		&& echo 'GITHUB_REPOSITORY is unset' && exit 1 || true
+	@[ -z "${GITHUB_TOKEN}" ] \
+		&& echo 'GITHUB_TOKEN is unset' && exit 1 || true
 	docker pull githubchangeloggenerator/github-changelog-generator
 	docker run \
 		--volume="$${PWD}:/code" \
