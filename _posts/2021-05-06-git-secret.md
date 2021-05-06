@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2021-05-05 17:13:15 +0000
+date:   2021-05-06 08:36:03 +0000
 permalink: git-secret
 categories: usage
 ---
@@ -93,10 +93,9 @@ if your app is called MyApp and your CI/CD provider is CodeShip. It is easier no
 4. Then write your Continuous Deployment build script. For instance:
 
 ```shell
-# Install git-secret (https://git-secret.io/installation), for instance, for debian:
-echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | sudo tee -a /etc/apt/sources.list
-wget -qO - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | sudo apt-key add -
-sudo apt-get update && sudo apt-get install git-secret
+# As the first step: install git-secret,
+# see: https://git-secret.io/installation
+
 # Create private key file
 echo $GPG_PRIVATE_KEY > ./private_key.gpg
 # Import private key
