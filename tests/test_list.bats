@@ -20,7 +20,7 @@ function setup {
 function teardown {
   rm "$FILE_TO_HIDE"
 
-  uninstall_fixture_key $TEST_DEFAULT_USER
+  uninstall_fixture_key "$TEST_DEFAULT_USER"
   unset_current_state
 }
 
@@ -31,15 +31,18 @@ function teardown {
   [ "$output" = "$FILE_TO_HIDE" ]
 }
 
+
 @test "run 'list' with extra filename" {
   run git secret list extra_filename
   [ "$status" -ne 0 ]
 }
 
+
 @test "run 'list' with bad arg" {
   run git secret list -Z
   [ "$status" -ne 0 ]
 }
+
 
 @test "run 'list' with multiple files" {
   # Preparations:

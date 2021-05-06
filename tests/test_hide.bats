@@ -20,7 +20,7 @@ function setup {
 function teardown {
   rm "$FILE_TO_HIDE"
 
-  uninstall_fixture_key $TEST_DEFAULT_USER
+  uninstall_fixture_key "$TEST_DEFAULT_USER"
   unset_current_state
 }
 
@@ -28,34 +28,37 @@ function teardown {
 @test "run 'hide' normally" {
   run git secret hide
 
-  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  # echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
   [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
-  # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
-  [ -f "$encrypted_file" ]
+  # New file must be created:
+  [ -f "$(_get_encrypted_filename "$FILE_TO_HIDE")" ]
 }
+
 
 @test "run 'hide' with extra filename" {
   run git secret hide extra_filename
   [ "$status" -ne 0 ]
 }
 
+
 @test "run 'hide' with bad arg" {
   run git secret hide -Z
   [ "$status" -ne 0 ]
 }
 
-@test "run 'hide' normally with SECRETS_VERBOSE=1" {
-  SECRETS_VERBOSE=1 run git secret hide 
 
-  # Command must execute normally. 
+@test "run 'hide' normally with SECRETS_VERBOSE=1" {
+  SECRETS_VERBOSE=1 run git secret hide
+
+  # Command must execute normally.
   [ "$status" -eq 0 ]
   [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 }
+
 
 @test "run 'hide' with '-P'" {
   # attempt to alter permissions on input file
@@ -63,27 +66,28 @@ function teardown {
 
   run git secret hide -P
 
-  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  # echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
   [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  local encrypted_file
+  encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
   [ -f "$encrypted_file" ]
 
   ## permissions should match.
   local secret_perm
-  local file_perm   
+  local file_perm
   file_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$FILE_TO_HIDE")
   secret_perm=$($SECRETS_OCTAL_PERMS_COMMAND "$encrypted_file")
-  #echo "# '$BATS_TEST_DESCRIPTION': $secret_perm, file_perm: $file_perm" >&3
+  # echo "# '$BATS_TEST_DESCRIPTION': $secret_perm, file_perm: $file_perm" >&3
   [ "$secret_perm" = "$file_perm" ]
 }
 
-@test "run 'hide' from inside subdirectory" {
 
+@test "run 'hide' from inside subdirectory" {
   if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
     # See #334 for more about this
     skip "this test is skipped while 'git commit'"
@@ -110,6 +114,7 @@ function teardown {
   cd ".."
   rm -rf "$root_dir"
 }
+
 
 @test "run 'hide' with missing file" {
   # Preparations:
@@ -149,12 +154,12 @@ function teardown {
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
+  # git secret hide -m: uses temp file so cleaning should take place,
+  # but we only show tmp file cleanup in VERBOSE mode
   [ "${lines[0]}" = "git-secret: done. 1 of 1 files are hidden." ]
 
   # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
-  [ -f "$encrypted_file" ]
+  [ -f "$(_get_encrypted_filename "$FILE_TO_HIDE")" ]
 }
 
 
@@ -163,11 +168,12 @@ function teardown {
   path_mappings=$(_get_secrets_dir_paths_mapping)
   run git secret hide -m
 
-  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  # echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
+  # git secret hide -m: uses temp file so cleaning should take place,
+  # but we only show tmp file cleanup in VERBOSE mode
   [[ "${lines[0]}" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # back path mappings
@@ -177,15 +183,15 @@ function teardown {
   # compare
   [ "$status" -eq 0 ]
   [[ "${#lines[@]}" -eq 1 ]]
-  
-  # output says 0 of 1 files are hidden because checksum didn't change and we didn't need to hide it again.
+
+  # output says 0 of 1 files are hidden because checksum didn't change
+  # and we didn't need to hide it again.
   [[ "$output" == *"git-secret: done. 0 of 1 files are hidden."* ]]
   # no changes should occur to path_mappings files
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
   # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
-  [ -f "$encrypted_file" ]
+  [ -f "$(_get_encrypted_filename "$FILE_TO_HIDE")" ]
 }
 
 
@@ -198,7 +204,8 @@ function teardown {
 
   # Command must execute normally:
   [ "$status" -eq 0 ]
-  # git secret hide -m: uses temp file so cleaning should take place, but we only show tmp file cleanup in VERBOSE mode
+  # git secret hide -m: uses temp file so cleaning should take place,
+  # but we only show tmp file cleanup in VERBOSE mode
   [[ "${lines[0]}" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # back path mappings
@@ -208,21 +215,22 @@ function teardown {
   # compare
   [ "$status" -eq 0 ]
   [[ "${#lines[@]}" -eq 1 ]]
-  
-  # output says 0 of 1 files are hidden because checksum didn't change and we didn't need to hide it again.
+
+  # output says 0 of 1 files are hidden because checksum didn't change
+  # and we didn't need to hide it again.
   [[ "$output" == *"git-secret: done. 0 of 1 files are hidden."* ]]
   # no changes should occur to path_mappings files
   cmp -s "${path_mappings}" "${path_mappings}.bak"
 
   # New files should be created:
-  local encrypted_file=$(_get_encrypted_filename "$FILE_TO_HIDE")
-  [ -f "$encrypted_file" ]
+  [ -f "$(_get_encrypted_filename "$FILE_TO_HIDE")" ]
 }
 
 
 @test "run 'hide' with '-c' and '-v'" {
   # Preparations:
-  local encrypted_filename=$(_get_encrypted_filename "$FILE_TO_HIDE")
+  local encrypted_filename
+  encrypted_filename=$(_get_encrypted_filename "$FILE_TO_HIDE")
   set_state_secret_hide # so it would be data to clean
 
   run git secret hide -v -c

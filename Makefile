@@ -7,31 +7,29 @@ DESTDIR?=
 #
 
 git-secret: src/version.sh src/_utils/*.sh src/commands/*.sh src/main.sh
-	cat $^ > "$@"; \
-	chmod +x git-secret; sync
+	@cat $^ > "$@"
+	@chmod +x git-secret; sync
 
 .PHONY: all
 all: build
 
 .PHONY: clean
 clean:
-	rm -f git-secret
+	@rm -f git-secret
 
 .PHONY: build
 build: git-secret
 
 .PHONY: install
 install:
-	chmod +x "./utils/install.sh"; sync; \
-	"./utils/install.sh" "${DESTDIR}${PREFIX}"
+	${SHELL} ./utils/install.sh "${DESTDIR}${PREFIX}"
 
 .PHONY: uninstall
 uninstall:
-	chmod +x "./utils/uninstall.sh"; sync; \
-	"./utils/uninstall.sh" "${DESTDIR}${PREFIX}"
+	${SHELL} ./utils/uninstall.sh "${DESTDIR}${PREFIX}"
 
 #
-# Testing:
+# Testing and linting:
 #
 
 # The $(shell echo $${PWD}) construct is to access *nix paths under windows
@@ -39,126 +37,138 @@ uninstall:
 # Using a sub-shell we get the raw *nix paths, e.g. /c/Something
 .PHONY: test
 test: clean build
-	chmod +x "./utils/tests.sh"; sync; \
-	export SECRET_PROJECT_ROOT="$(shell echo $${PWD})"; \
+	export SECRETS_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
-	"./utils/tests.sh"
+	${SHELL} ./utils/tests.sh
+
+# We use this script in CI and you can do this too!
+# What happens here?
+# 1. We pass `SECRETS_DOCKER_ENV` variable into this job
+# 2. Based on it, we select a proper `docker` image to run test on
+# 3. We execute `make test` inside the `docker` container
+.PHONY: docker-ci
+docker-ci: clean
+	@[ -z "${SECRETS_DOCKER_ENV}" ] \
+		&& echo 'SECRETS_DOCKER_ENV is unset' && exit 1 || true
+	docker build \
+		-f ".ci/docker-ci/$${SECRETS_DOCKER_ENV}/Dockerfile" \
+		-t "gitsecret-$${SECRETS_DOCKER_ENV}:latest" .
+	docker run --rm \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		"gitsecret-$${SECRETS_DOCKER_ENV}" \
+		make test
+
+.PHONY: lint-shell
+lint-shell:
+	docker pull koalaman/shellcheck:latest
+	docker run \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		-e SHELLCHECK_OPTS='-s bash -S warning -a' \
+		--rm koalaman/shellcheck \
+		$$(find src .ci utils tests docs -type f \
+			-name '*.sh' -o -name '*.bash' -o -name '*.bats')
+
+.PHONY: lint-docker
+lint-docker:
+	docker pull hadolint/hadolint:latest-alpine
+	docker run \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		--rm hadolint/hadolint \
+		hadolint \
+			--ignore=DL3008 --ignore=DL3018 --ignore=DL3041 --ignore=DL3028 \
+			.ci/*/**/Dockerfile
+
+.PHONY: lint
+lint: lint-shell lint-docker
 
 #
-# Manuals:
+# Manuals and docs:
 #
-
-.PHONY: install-ronn
-install-ronn:
-	if [ ! `gem list ronn -i` == "true" ]; then gem install ronn; fi
 
 .PHONY: clean-man
 clean-man:
-	find "man/" -type f ! -name "*.ronn" -delete
+	@find "man/" -type f ! -name "*.md" -delete
 
 .PHONY: build-man
-build-man: install-ronn clean-man git-secret
-	touch man/*/*.ronn
-	export GITSECRET_VERSION=`./git-secret --version` && ronn --roff --organization="sobolevn" --manual="git-secret $${GITSECRET_VERSION}" man/*/*.ronn
+build-man: git-secret
+	docker pull msoap/ruby-ronn
+	export GITSECRET_VERSION="$$(./git-secret --version)" && docker run \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		--rm msoap/ruby-ronn \
+		ronn --roff \
+			--organization=sobolevn \
+			--manual="git-secret $${GITSECRET_VERSION}" \
+			man/*/*.md
 
-#
-# Development:
-#
+.PHONY: build-docs
+build-docs: build-man
+	${SHELL} docs/create_posts.sh
 
-.PHONY: install-hooks
-install-hooks:
-	ln -fs "${PWD}/utils/hooks/pre-commit.sh" "${PWD}/.git/hooks/pre-commit"; \
-	chmod +x "${PWD}/.git/hooks/pre-commit"; sync; \
-	ln -fs "${PWD}/utils/hooks/post-commit.sh" "${PWD}/.git/hooks/post-commit"; \
-	chmod +x "${PWD}/.git/hooks/post-commit"; sync
+.PHONY: docs
+docs: build-docs
+	docker pull jekyll/jekyll
+	docker run \
+		--volume="$${PWD}/docs:/code" \
+		-w /code \
+		-p 4000:4000 \
+		--rm jekyll/jekyll \
+		jekyll serve --safe --strict_front_matter
 
-.PHONY: develop
-develop: clean build install-hooks
-
-.PHONY: lint
-lint:
-	find src utils -type f -name '*.sh' -print0 | xargs -0 -I {} shellcheck {}
-	find tests -type f -name '*.bats' -o -name '*.bash' -print0 | xargs -0 -I {} shellcheck {}
+.PHONY: changelog
+changelog:
+	@[ -z "${GITHUB_REPOSITORY}" ] \
+		&& echo 'GITHUB_REPOSITORY is unset' && exit 1 || true
+	@[ -z "${GITHUB_TOKEN}" ] \
+		&& echo 'GITHUB_TOKEN is unset' && exit 1 || true
+	docker pull githubchangeloggenerator/github-changelog-generator
+	docker run \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		--entrypoint='' \
+		-e GITHUB_REPOSITORY \
+		-e GITHUB_TOKEN \
+		--rm githubchangeloggenerator/github-changelog-generator \
+		sh ".ci/github_release_script.sh"
 
 #
 # Packaging:
 #
 
-.PHONY: install-fpm
-install-fpm:
-	if [ ! `gem list fpm -i` == "true" ]; then gem install fpm; fi
+.PHONY: build-release
+build-release: clean build-man
+	@[ -z "${SECRETS_RELEASE_TYPE}" ] \
+		&& echo 'SECRETS_RELEASE_TYPE is unset' && exit 1 || true
+	docker build \
+		-f ".ci/releaser/alpine/Dockerfile" \
+		-t "gitsecret-releaser:latest" .
+	docker run \
+		--volume="$${PWD}:/code" \
+		--rm gitsecret-releaser \
+		bash "./utils/$${SECRETS_RELEASE_TYPE}/build.sh"
 
-# .apk:
+.PHONY: release
+release: build-release
+	docker run \
+		--volume="$${PWD}:/code" \
+		-e SECRETS_ARTIFACTORY_CREDENTIALS \
+		--rm gitsecret-releaser \
+		bash "./utils/$${SECRETS_RELEASE_TYPE}/deploy.sh"
 
-.PHONY: build-apk
-build-apk: clean build install-fpm
-	chmod +x "./utils/build-utils.sh"; sync; \
-	chmod +x "./utils/apk/apk-build.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/apk/apk-build.sh"
-
-.PHONY: test-apk-ci
-test-apk-ci: build-apk
-	chmod +x "./utils/apk/apk-ci.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
-	"./utils/apk/apk-ci.sh"
-
-.PHONY: deploy-apk
-deploy-apk: build-apk
-	chmod +x "./utils/apk/apk-deploy.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/apk/apk-deploy.sh"
-
-# .deb:
-
-.PHONY: build-deb
-build-deb: clean build install-fpm
-	chmod +x "./utils/build-utils.sh"; sync; \
-	chmod +x "./utils/deb/deb-build.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/deb/deb-build.sh"
-
-.PHONY: test-deb-ci
-test-deb-ci: build-deb
-	chmod +x "./utils/deb/deb-ci.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
-	"./utils/deb/deb-ci.sh"
-
-.PHONY: deploy-deb
-deploy-deb: build-deb
-	chmod +x "./utils/deb/deb-deploy.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/deb/deb-deploy.sh"
-
-# .rpm:
-
-.PHONY: build-rpm
-build-rpm: clean build install-fpm
-	chmod +x "./utils/build-utils.sh"; sync; \
-	chmod +x "./utils/rpm/rpm-build.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/rpm/rpm-build.sh"
-
-.PHONY: test-rpm-ci
-test-rpm-ci: build-rpm
-	chmod +x "./utils/rpm/rpm-ci.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
-	"./utils/rpm/rpm-ci.sh"
-
-.PHONY: deploy-rpm
-deploy-rpm: build-rpm
-	chmod +x "./utils/rpm/rpm-deploy.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	"./utils/rpm/rpm-deploy.sh"
-
-# make:
-
-.PHONY: test-make-ci
-test-make-ci: clean 
-	chmod +x "./utils/make/make-ci.sh"; sync; \
-	export SECRET_PROJECT_ROOT="${PWD}"; \
-	export PATH="${PWD}/vendor/bats-core/bin:${PATH}"; \
-	"./utils/make/make-ci.sh"
+.PHONY: release-ci
+release-ci:
+	@[ -z "${SECRETS_RELEASE_ENV}" ] \
+		&& echo 'SECRETS_RELEASE_ENV is unset' && exit 1 || true
+	@[ -z "${SECRETS_RELEASE_TYPE}" ] \
+		&& echo 'SECRETS_RELEASE_TYPE is unset' && exit 1 || true
+	docker build \
+		-f ".ci/release-ci/$${SECRETS_RELEASE_ENV}/Dockerfile" \
+		-t "gitsecret-release-$${SECRETS_RELEASE_ENV}:latest" .
+	docker run --rm \
+		--volume="$${PWD}:/code" \
+		-w /code \
+		"gitsecret-release-$${SECRETS_RELEASE_ENV}" \
+		bash -c "set -e; bash "./utils/$${SECRETS_RELEASE_TYPE}/install.sh""

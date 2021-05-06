@@ -1,0 +1,40 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release-packages:
+    environment:
+      name: artifactory
+      url: https://gitsecret.jfrog.io/artifactory
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        release-type:
+          - apk
+          - deb
+          - rpm
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run checks
+      run: SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" make release
+
+  github-release:
+    runs-on: ubuntu-latest
+    needs: ['release-packages']
+    steps:
+    - uses: actions/checkout@v2
+    - run: make changelog
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: softprops/action-gh-release@v1
+      with:
+        # Generated above by `make changelog`:
+        body_path: CHANGELOG-RELEASE.md
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

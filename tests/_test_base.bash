@@ -4,22 +4,25 @@
 # https://github.com/bats-core/bats-core
 
 # shellcheck disable=SC1090
-source "$SECRET_PROJECT_ROOT/src/version.sh"
+source "$SECRETS_PROJECT_ROOT/src/version.sh"
 # shellcheck disable=SC1090
-source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
-source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_freebsd.sh"
-source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_linux.sh"
-source "$SECRET_PROJECT_ROOT/src/_utils/_git_secret_tools_osx.sh"
+source "$SECRETS_PROJECT_ROOT/src/_utils/_git_secret_tools.sh"
+source "$SECRETS_PROJECT_ROOT/src/_utils/_git_secret_tools_freebsd.sh"
+source "$SECRETS_PROJECT_ROOT/src/_utils/_git_secret_tools_linux.sh"
+source "$SECRETS_PROJECT_ROOT/src/_utils/_git_secret_tools_osx.sh"
 
 # Constants:
 FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
-# TODO: factor out tempdir creation. On osx TEST_GPG_OUTPUT_FILE, still has 'XXXXXX's, like
+# TODO: factor out tempdir creation.
+# On osx TEST_GPG_OUTPUT_FILE, still has 'XXXXXX's, like
 #   /var/folders/mm/_f0j67x10l92b4zznyx4ylzh00017w/T/gitsecret_output.XXXXXX.RaqyGYqL
-TEST_GPG_OUTPUT_FILE=$(TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output.XXXXXX')
-#echo "# TEST_GPG_OUTPUT_FILE=$TEST_GPG_OUTPUT_FILE" >&3
+TEST_GPG_OUTPUT_FILE=$(
+  TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output.XXXXXX'
+)
+
 
 # shellcheck disable=SC2016
 AWK_GPG_GET_FP='
@@ -34,42 +37,45 @@ BEGIN { OFS=":"; FS=":"; }
 '
 
 # GPG-based stuff:
-: "${SECRETS_GPG_COMMAND:="gpg"}"
+: "${SECRETS_GPG_COMMAND:='gpg'}"
 
 # This command is used with absolute homedir set and disabled warnings:
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
 
 # Test key fixture data. Fixtures are at tests/fixtures/gpg/$email
 
-# See tests/fixtures/gpg/README.md for more on key fixtures 'user[1-5]@gitsecret.io'
-# these two are 'normal' keys. 
-export TEST_DEFAULT_USER="user1@gitsecret.io"
-export TEST_SECOND_USER="user2@gitsecret.io"
+# See tests/fixtures/gpg/README.md for more
+# on key fixtures 'user[1-5]@gitsecret.io'
+# these two are 'normal' keys.
+export TEST_DEFAULT_USER='user1@gitsecret.io'
+export TEST_SECOND_USER='user2@gitsecret.io'
 
-# TEST_NONAME_USER (user3) created with '--quick-key-generate' and has only an email, no username.
-export TEST_NONAME_USER="user3@gitsecret.io"
+# TEST_NONAME_USER (user3) created with '--quick-key-generate'
+# and has only an email, no username.
+export TEST_NONAME_USER='user3@gitsecret.io'
 
 # TEST_EXPIRED_USER (user4) has expired
-export TEST_EXPIRED_USER="user4@gitsecret.io"    # this key expires 2018-09-24
+export TEST_EXPIRED_USER='user4@gitsecret.io'    # this key expires 2018-09-24
 
-export TEST_NOEMAIL_COMMENT_USER="user5@gitsecret.io"    # fixture filename is named this, but key has no email and a comment, as per #527
+# fixture filename is named this,
+# but key has no email and a comment, as per #527
+export TEST_NOEMAIL_COMMENT_USER='user5@gitsecret.io'
 
-export TEST_ATTACKER_USER="attacker1@gitsecret.io"
+export TEST_ATTACKER_USER='attacker1@gitsecret.io'
 
 
-export TEST_DEFAULT_FILENAME="space file" # has spaces
-export TEST_SECOND_FILENAME="space file two" # has spaces
-export TEST_THIRD_FILENAME="space file three"  # has spaces
-export TEST_FOURTH_FILENAME="space file three [] * $ é"  # has spaces and special chars. é added for #642
+export TEST_DEFAULT_FILENAME='space file' # has spaces
+export TEST_SECOND_FILENAME='space file two' # has spaces
+export TEST_THIRD_FILENAME='space file three'  # has spaces
+export TEST_FOURTH_FILENAME='space file three [] * $ é'  # has spaces and special chars.  é added for #642
 
 
 function test_user_password {
   # Password for 'user3@gitsecret.io' is 'user3pass'
-  # As it was set on key creation. 
+  # As it was set on key creation.
   # shellcheck disable=SC2001
-  echo "$1" | sed -e 's/@.*/pass/' 
+  echo "$1" | sed -e 's/@.*/pass/'
 }
-
 
 
 # GPG:
@@ -77,14 +83,14 @@ function test_user_password {
 function stop_gpg_agent {
   local username
   username=$(id -u -n)
-  if [[ "$GITSECRET_DIST" == "windows" ]]; then
+  if [[ "$SECRETS_DOCKER_ENV" == 'windows' ]]; then
     ps -l -u "$username" | gawk \
       '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_GPG_OUTPUT_FILE" 2>&1
   else
     local ps_is_busybox
-    ps_is_busybox=_exe_is_busybox "ps"
-    if [[ $ps_is_busybox -eq "1" ]]; then
-      echo "# git-secret: tests: not stopping gpg-agent on busybox" >&3
+    ps_is_busybox=_exe_is_busybox 'ps'
+    if [[ $ps_is_busybox -eq '1' ]]; then
+      echo '# git-secret: tests: not stopping gpg-agent on busybox' >&3
     else
       ps -wx -U "$username" | gawk \
         '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_GPG_OUTPUT_FILE" 2>&1
@@ -98,7 +104,7 @@ function get_gpgtest_prefix {
     # shellcheck disable=SC2086
     echo "echo \"$(test_user_password $1)\" | "
   else
-    echo ""
+    echo ''
   fi
 }
 
@@ -126,7 +132,7 @@ function install_fixture_key {
 function install_fixture_full_key {
   local private_key="$BATS_TMPDIR/private-${1}.key"
   local gpgtest_prefix
-  gpgtest_prefix=$(get_gpgtest_prefix "$1") 
+  gpgtest_prefix=$(get_gpgtest_prefix "$1")
   local gpgtest_import="$gpgtest_prefix $GPGTEST"
   local email
   local fingerprint
@@ -236,7 +242,7 @@ function set_state_secret_add {
   local filename="$1"
   local content="$2"
   echo "$content" > "$filename"      # we add a newline
-  echo "$filename" >> ".gitignore"
+  echo "$filename" >> '.gitignore'
 
   git secret add "$filename" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
 }
@@ -245,7 +251,7 @@ function set_state_secret_add_without_newline {
   local filename="$1"
   local content="$2"
   echo -n "$content" > "$filename"      # we do not add a newline
-  echo "$filename" >> ".gitignore"
+  echo "$filename" >> '.gitignore'
 
   git secret add "$filename" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
 }
@@ -269,7 +275,7 @@ function unset_current_state {
   secrets_dir=$(_get_secrets_dir)
 
   rm -rf "$secrets_dir"
-  rm -rf ".gitignore"
+  rm -rf '.gitignore'
 
   # unsets `git` state
   remove_git_repository
@@ -278,7 +284,7 @@ function unset_current_state {
   stop_gpg_agent
 
   # SECRETS_TEST_VERBOSE is experimental
-  if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then 
+  if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then
     # display the captured output as bats diagnostic (fd3, preceded by '# ')
     sed "s/^/# $BATS_TEST_DESCRIPTION: /" < "$TEST_GPG_OUTPUT_FILE" >&3
 
@@ -287,27 +293,22 @@ function unset_current_state {
     echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' final output: /" >&3
   fi
 
-  rm "$TEST_GPG_OUTPUT_FILE"
+  rm -f "$TEST_GPG_OUTPUT_FILE"
 
-  ## old code to remove tmp gpg homedir: TODO: remove.
-  #find "$TEST_GPG_HOMEDIR" \
-  #  -regex ".*\/random_seed\|.*\.gpg\|.*\.kbx.?\|.*private-keys.*\|.*test_sub_dir\|.*S.gpg-agent\|.*file_to_hide.*" \
-  #  -exec rm -rf {} +
-
-  # new code to remove temporary gpg homedir artifacts. 
+  # new code to remove temporary gpg homedir artifacts.
   # For #360, 'find and rm only relevant files when test fails'.
   # ${VAR:?} will cause command to fail if VAR is 0 length, as per shellcheck SC2115
   rm -vrf "${TEST_GPG_HOMEDIR:?}/private-keys*" 2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR:?}/*.kbx"         2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR:?}/*.kbx~"        2>&1 | sed 's/^/# unset_current_state: rm /'
   rm -vrf "${TEST_GPG_HOMEDIR:?}/*.gpg"         2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_DEFAULT_FILENAME}"  2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_SECOND_FILENAME}"   2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_THIRD_FILENAME}"    2>&1 | sed 's/^/# unset_current_state: rm /'
-  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_FOURTH_FILENAME}"   2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_DEFAULT_FILENAME}" 2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_SECOND_FILENAME}"  2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_THIRD_FILENAME}"   2>&1 | sed 's/^/# unset_current_state: rm /'
+  rm -vrf "${TEST_GPG_HOMEDIR:?}/${TEST_FOURTH_FILENAME}"  2>&1 | sed 's/^/# unset_current_state: rm /'
 
   # return to the base dir:
-  cd "$SECRET_PROJECT_ROOT" || exit 1
+  cd "$SECRETS_PROJECT_ROOT" || exit 1
 }
 
 # show output if we wind up manually removing the test output file in a trap

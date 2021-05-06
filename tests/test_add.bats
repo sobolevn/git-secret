@@ -32,7 +32,8 @@ function teardown {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
-  local files_list=$(cat "$path_mappings")
+  local files_list
+  files_list=$(cat "$path_mappings")
   [ "$files_list" = "$filename" ]
 
   # Cleaning up:
@@ -92,7 +93,7 @@ function teardown {
   # Preparations:
   local test_dir='test_dir'
   local nested_dir="$test_dir/adding"
-  local current_dir=$(pwd)
+  local current_dir="$PWD"
 
   mkdir -p "$nested_dir"
   cd "$nested_dir"
@@ -128,7 +129,7 @@ function teardown {
   local node="$root/node"
   local sibling="$root/sibling"
   local test_file="$node/$TEST_DEFAULT_FILENAME"
-  local current_dir=$(pwd)
+  local current_dir="$PWD"
 
   mkdir -p "$node"
   mkdir -p "$sibling"
@@ -147,7 +148,8 @@ function teardown {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
-  local files_list=$(cat "$path_mappings")
+  local files_list
+  files_list=$(cat "$path_mappings")
   [ "$files_list" = "$test_file" ]
 
   # Cleaning up:
@@ -197,7 +199,8 @@ function teardown {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
-  local files_list=$(cat "$path_mappings")
+  local files_list
+  files_list=$(cat "$path_mappings")
   [ "$files_list" = "$filename" ]
 
   # Cleaning up:
@@ -217,7 +220,6 @@ function teardown {
 
   # Testing:
   run git secret add "$filename1" "$filename2"
-  local newline=$'\n'
   [ "$status" -eq 0 ]
   [ "$output" = "git-secret: 2 item(s) added." ]
 
@@ -260,7 +262,8 @@ function teardown {
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
-  local files_list=$(cat "$path_mappings")
+  local files_list
+  files_list=$(cat "$path_mappings")
   [ "$files_list" = "$filename" ]
 
   # Ensuring the file is correctly git-ignored

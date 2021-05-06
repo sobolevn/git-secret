@@ -9,7 +9,7 @@ Here's how it's done:
 4. You can also spell check your code using 'aspell -c {filename}'
 5. If you are adding or changing features, please add tests that cover the new behavior (in addition to the unchanged behavior if appropriate)
 6. Make sure that all tests pass
-7. Change the .ronn file(s) in man/man*/ to document your changes if appropriate 
+7. Change the .md file(s) in man/man*/ to document your changes if appropriate
    (regenerating man pages with 'make build-man' is optional)
 8. Add an entry to CHANGELOG.md explaining the change briefly and, if appropriate, referring to the related issue #
 

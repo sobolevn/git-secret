@@ -1,0 +1,46 @@
+name: test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Shellcheck and Hadolint
+      run: make lint
+
+  docker-ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        docker-env:
+          - debian-gnupg1  # We need to test legacy version of gnupg
+          - debian-gnupg2
+          - ubuntu
+          - alpine
+          - fedora
+          - centos
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run checks
+      run: SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
+
+  osx-ci:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run checks
+      run: brew install gawk gnupg && make test
+
+  build-man:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checks that manual generation works
+      run: make build-man

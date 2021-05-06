@@ -133,6 +133,8 @@ build/
 *.deb
 *.fpm
 
-# Kitchen files
-Gemfile.lock
-.kitchen/
+# Docs:
+docs/man
+docs/_posts
+docs/_includes/install-*.sh
+CHANGELOG-RELEASE.md

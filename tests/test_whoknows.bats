@@ -45,8 +45,9 @@ function teardown {
   run git secret whoknows -l
   [ "$status" -eq 0 ]
 
-  #echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
-    # output should look like 'abort: problem encrypting file with gpg: exit code 2: space file'
+  # echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' output: /" >&3
+  # output should look like
+  # 'abort: problem encrypting file with gpg: exit code 2: space file'
   #echo "# '$BATS_TEST_DESCRIPTION' status: $status" >&3
 
   # Now test the output, both users should be present and without expiration
@@ -60,7 +61,7 @@ function teardown {
   fi
 
   # Preparations:
-  local current_dir=$(pwd)
+  local current_dir="$PWD"
   local root_dir='test_dir'
   local test_dir="$root_dir/subfolders/case"
 

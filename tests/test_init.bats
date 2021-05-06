@@ -15,7 +15,7 @@ function teardown {
 
 
 @test "secrets dir env var set as expected" {
-  _TEST_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}   
+  _TEST_SECRETS_DIR=${SECRETS_DIR:-".gitsecret"}
   [ "${_TEST_SECRETS_DIR}" = "${_SECRETS_DIR}" ]
 }
 
@@ -41,6 +41,7 @@ function teardown {
   [ "$status" -ne 0 ]
 }
 
+
 @test "run 'init' with bad arg" {
   run git secret init -Z
   [ "$status" -ne 0 ]
@@ -58,7 +59,7 @@ function teardown {
   # Preparations
   local test_dir='test_dir'
   local nested_dir="$test_dir/nested/dirs"
-  local current_dir=$(pwd)
+  local current_dir="$PWD"
 
   mkdir -p "$nested_dir"
   cd "$nested_dir"

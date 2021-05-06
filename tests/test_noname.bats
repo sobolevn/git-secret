@@ -1,7 +1,8 @@
 #!/usr/bin/env bats
 
-## this tests using TEST_NONAME_USER, which has a email but no username.
-#  This test is copied from the start of test_remove.bats, and exercises an add and a remove.
+# These tests using TEST_NONAME_USER, which has a email but no username.
+# This test is copied from the start of test_remove.bats,
+# and exercises an add and a remove.
 
 load _test_base
 
@@ -34,9 +35,7 @@ function _has_line {
 
   local path_mappings
   path_mappings=$(_get_secrets_dir_paths_mapping)
-
-  local result=$(grep -q "$line" "$path_mappings"; echo $?)
-  echo "$result"
+  echo "$(grep -q "$line" "$path_mappings"; echo $?)"
 }
 
 
@@ -49,17 +48,12 @@ function _has_line {
   [[ "$output" == *"ensure that files: [$SECOND_FILE] are now not ignored."* ]]
 
   # Mapping should not contain the second file:
-  local mapping_contains=$(_has_line "$SECOND_FILE")
-  [ "$mapping_contains" -eq 1 ]
+  [ "$(_has_line "$SECOND_FILE")" -eq 1 ]
 
   # But the first file must not change:
-  local other_files=$(_has_line "$FIRST_FILE")
-  [ "$other_files" -eq 0 ]
+  [ "$(_has_line "$FIRST_FILE")" -eq 0 ]
 
   # Both files should be present:
-  local first_encrypted_file=$(_get_encrypted_filename "$FIRST_FILE")
-  local second_encrypted_file=$(_get_encrypted_filename "$SECOND_FILE")
-
-  [ -f "$first_encrypted_file" ]
-  [ -f "$second_encrypted_file" ]
+  [ -f "$(_get_encrypted_filename "$FIRST_FILE")" ]
+  [ -f "$(_get_encrypted_filename "$SECOND_FILE")" ]
 }
