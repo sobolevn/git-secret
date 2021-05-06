@@ -136,3 +136,4 @@ build/
 # Docs:
 docs/man
 docs/_posts
+docs/_includes/install-*.sh
