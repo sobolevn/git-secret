@@ -4,14 +4,11 @@ set -e
 
 # shellcheck disable=SC1090,SC1091
 source "$SECRETS_PROJECT_ROOT/utils/build-utils.sh"
-
-# preinstall_files '-c'
-
-# Building .apk package:
-# cd "$SCRIPT_DEST_DIR"
-
 # We need this export for `config.yml` to expand the version properly.
 export SCRIPT_VERSION
+
+# Create dest dir:
+mkdir -p "$SCRIPT_DEST_DIR"
 
 # Here's the deal. We use a custom builder here,
 # because `fpm` produces a broken package.
