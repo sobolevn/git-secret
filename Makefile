@@ -152,7 +152,7 @@ build-release: clean build-man
 
 .PHONY: release
 release: build-release
-    env
+	env
 	@[ -z "${SECRETS_ARTIFACTORY_CREDENTIALS}" ] \
 		&& echo 'SECRETS_ARTIFACTORY_CREDENTIALS is unset' && exit 1 || true
 	docker run \
