@@ -29,7 +29,7 @@ github_changelog_generator \
   --project "$PROJECT" \
   --token "$GITHUB_OAUTH_TOKEN" \
   --since-tag "$LAST_RELEASE_TAG" \
-  --max-issues 450 \
+  --max-issues 100 \
   --no-issues \
   --release-branch 'master' \
   --token "$GITHUB_TOKEN" \
