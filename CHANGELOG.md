@@ -1,6 +1,6 @@
 # Changelog
 
-## {{Next Version}}
+## 0.4.0
 
 ### Bugfixes
 
