@@ -23,7 +23,7 @@ SCRIPT_DEST_DIR="$SCRIPT_BUILD_DIR/buildroot"
 
 function locate_release {
   local release_type="$1"
-  local arch="${2:-all}"
+  local arch="${2:-}"
 
   find "$SCRIPT_DEST_DIR" \
     -maxdepth 1 \
