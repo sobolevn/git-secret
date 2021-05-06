@@ -8,6 +8,10 @@ on:
 
 jobs:
   release:
+    environment:
+      name: artifactory
+      url: https://gitsecret.jfrog.io/artifactory
+
     runs-on: ubuntu-latest
     strategy:
       matrix:

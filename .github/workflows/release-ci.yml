@@ -20,6 +20,8 @@ jobs:
             release-env: centos
           - release-type: rpm
             release-env: fedora
+          - release-type: apk
+            release-env: alpine
 
     steps:
     - uses: actions/checkout@v2

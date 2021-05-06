@@ -43,11 +43,7 @@ function preinstall_files {
   # Install the manualls:
   install -m "$EXEC_PERM" -d "$SCRIPT_DEST_DIR/usr/share/man/man1"
   install -m "$EXEC_PERM" -d "$SCRIPT_DEST_DIR/usr/share/man/man7"
-  for file in man/man1/* ; do
-    if [[ "$file" == *.md ]]; then
-      continue
-    fi
-
+  for file in man/man1/*.1 ; do
     install -D "$dir_switch" \
       -b -m "$READ_PERM" "$dir_switch" "$file" \
       "$SCRIPT_DEST_DIR/usr/share/$file"

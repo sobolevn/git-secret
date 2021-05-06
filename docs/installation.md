@@ -53,6 +53,16 @@ You can find the `rpm` repository [here](https://gitsecret.jfrog.io/artifactory/
 
 ---
 
+### Alpine
+
+You can find the `apk` repository [here](https://gitsecret.jfrog.io/artifactory/git-secret-apk/).
+
+```bash
+{% include install-apk.sh %}
+```
+
+---
+
 ### Arch Linux
 
 The _Arch_ way to install git-secret is to use the directions for
