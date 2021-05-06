@@ -2,8 +2,6 @@
 
 set -e
 
-env
-
 # shellcheck disable=SC1090,SC1091
 source "$SECRETS_PROJECT_ROOT/utils/build-utils.sh"
 
