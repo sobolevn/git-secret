@@ -7,28 +7,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  release-packages:
-    environment:
-      name: artifactory
-      url: https://gitsecret.jfrog.io/artifactory
+  # release-packages:
+  #   environment:
+  #     name: artifactory
+  #     url: https://gitsecret.jfrog.io/artifactory
 
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        release-type:
-          - apk
-          - deb
-          - rpm
-    steps:
-    - uses: actions/checkout@v2
-    - name: Run checks
-      run: SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" make release
-      env:
-        SECRETS_ARTIFACTORY_CREDENTIALS: ${{ secrets.SECRETS_ARTIFACTORY_CREDENTIALS }}
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       release-type:
+  #         - apk
+  #         - deb
+  #         - rpm
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Run checks
+  #     run: SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" make release
+  #     env:
+  #       SECRETS_ARTIFACTORY_CREDENTIALS: ${{ secrets.SECRETS_ARTIFACTORY_CREDENTIALS }}
 
   github-release:
     runs-on: ubuntu-latest
-    needs: ['release-packages']
+    # needs: ['release-packages']
     steps:
     - uses: actions/checkout@v2
     - run: make changelog
