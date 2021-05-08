@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-hide'
-date:   2021-05-08 09:14:53 +0000
+date:   2021-05-08 09:16:05 +0000
 permalink: git-secret-hide
 categories: command
 ---
