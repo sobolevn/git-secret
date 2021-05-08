@@ -1,10 +1,10 @@
 # git-secret
 
-[![Backers on Open Collective](https://opencollective.com/git-secret/backers/badge.svg)](#backers)
-[![Sponsors on Open Collective](https://opencollective.com/git-secret/sponsors/badge.svg)](#sponsors)
+
 [![test](https://github.com/sobolevn/git-secret/actions/workflows/test.yml/badge.svg?branch=master&event=push)](https://github.com/sobolevn/git-secret/actions/workflows/test.yml)
 [![release-ci](https://github.com/sobolevn/git-secret/actions/workflows/release-ci.yml/badge.svg)](https://github.com/sobolevn/git-secret/actions/workflows/release-ci.yml)
 [![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](https://formulae.brew.sh/formula/git-secret)
+[![Supporters](https://img.shields.io/opencollective/all/git-secret.svg?color=gold&label=supporters)](https://opencollective.com/git-secret)
 
 [![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](http://git-secret.io/)
 
