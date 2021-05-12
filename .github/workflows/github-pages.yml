@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'man/'
+      - 'docs/'
+      - 'README.md'
 
 jobs:
   build:
