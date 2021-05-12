@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2021-05-08 18:01:39 +0000
+date:   2021-05-12 15:28:11 +0000
 permalink: git-secret
 categories: usage
 ---
@@ -14,7 +14,7 @@ These steps cover the basic process of using `git-secret`:
 
 0. Before starting, [make sure you have created a `gpg` RSA key-pair](#using-gpg): a public and a secret key identified by your email address.
 
-1. Begin with an existing or new git repository. You'll use the 'git secret' commands to add the keyrings and information
+1. Begin with an existing or new git repository. You'll use the 'git-secret' commands to add the keyrings and information
 to make `git-secret` hide and reveal files in this repository.
 
 2. Initialize the `git-secret` repository by running `git secret init` command. The `.gitsecret/` folder will be created.
@@ -148,7 +148,7 @@ and about which public/private key sets can access the encrypted data.
 
 You can change the name of this directory using the SECRETS_DIR environment variable.
 
-Use the various 'git secret' commands to manipulate the files in `.gitsecret`,
+Use the various 'git-secret' commands to manipulate the files in `.gitsecret`,
 you should not change the data in these files directly.
 
 Exactly which files exist in the `.gitsecret` folder and what their contents are

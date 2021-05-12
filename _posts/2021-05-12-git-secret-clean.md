@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-clean'
-date:   2021-05-08 18:01:39 +0000
+date:   2021-05-12 15:28:11 +0000
 permalink: git-secret-clean
 categories: command
 ---
