@@ -14,29 +14,29 @@ function teardown {
 }
 
 
-@test "run 'git-secret' without command" {
-  run git-secret
+@test "run 'git secret' without command" {
+  run git secret
   [ "$status" -eq 126 ]
 }
 
 
-@test "run 'git-secret' with bad command" {
-  run git-secret notacommand
+@test "run 'git secret' with bad command" {
+  run git secret notacommand
   [ "$status" -eq 126 ]
 }
 
 
-@test "run 'git-secret --version'" {
-  run git-secret --version
+@test "run 'git secret --version'" {
+  run git secret --version
   [ "$output" == "$GITSECRET_VERSION" ]
 }
 
 
-@test "run 'git-secret --dry-run'" {
+@test "run 'git secret --dry-run'" {
   # We will break things apart, so normally it won't run:
   rm -r "./.git"
 
-  # test of 'git-secret usage' here removed as it's duplicated in test_usage.bats
+  # test of 'git secret usage' here removed as it's duplicated in test_usage.bats
 
   # Dry run won't fail:
   run git secret --dry-run
