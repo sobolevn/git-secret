@@ -7,7 +7,6 @@ on:
     paths:
       - 'man/'
       - 'docs/'
-      - 'README.md'
 
 jobs:
   build:
