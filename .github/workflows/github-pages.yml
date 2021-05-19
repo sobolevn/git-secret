@@ -5,8 +5,8 @@ on:
     branches:
       - master
     paths:
-      - 'man/'
-      - 'docs/'
+      - 'man/**'
+      - 'docs/**'
 
 jobs:
   build:
