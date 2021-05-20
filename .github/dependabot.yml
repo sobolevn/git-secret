@@ -1,0 +1,83 @@
+# GitHub-native dependabot setup, configuration:
+# https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates
+version: 2
+
+updates:
+
+# Docs and GitHub Actions:
+
+- package-ecosystem: bundler
+  directory: "/docs"
+  schedule:
+    interval: daily
+
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
+
+# Our CI and release docker images:
+
+- package-ecosystem: docker
+  directory: ".ci/releaser/alpine"
+  schedule:
+    interval: weekly
+
+# Release CI:
+
+- package-ecosystem: docker
+  directory: ".ci/release-ci/alpine"
+  schedule:
+    interval: weekly
+
+- package-ecosystem: docker
+  directory: ".ci/release-ci/debian"
+  schedule:
+    interval: weekly
+
+- package-ecosystem: docker
+  directory: ".ci/release-ci/ubuntu"
+  schedule:
+    interval: weekly
+
+- package-ecosystem: docker
+  directory: ".ci/release-ci/centos"
+  schedule:
+    interval: weekly
+
+- package-ecosystem: docker
+  directory: ".ci/release-ci/fedora"
+  schedule:
+    interval: weekly
+
+# Docker CI:
+
+- package-ecosystem: docker
+  directory: ".ci/docker-ci/alpine"
+  schedule:
+    interval: weekly
+
+- package-ecosystem: docker
+  directory: ".ci/docker-ci/debian-gnupg1"
+  schedule:
+    interval: weekly
+
+- package-ecosystem: docker
+  directory: ".ci/docker-ci/debian-gnupg2"
+  schedule:
+    interval: weekly
+
+- package-ecosystem: docker
+  directory: ".ci/docker-ci/ubuntu"
+  schedule:
+    interval: weekly
+
+- package-ecosystem: docker
+  directory: ".ci/docker-ci/centos"
+  schedule:
+    interval: weekly
+
+- package-ecosystem: docker
+  directory: ".ci/docker-ci/fedora"
+  schedule:
+    interval: weekly
