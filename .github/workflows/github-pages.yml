@@ -19,7 +19,7 @@ jobs:
       run: make build-docs
 
     - name: Deploy to Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.3
+      uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: gh-pages # The branch the action should deploy to.
