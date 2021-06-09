@@ -101,7 +101,7 @@ git secret reveal
 Note: your CI/CD might not allow you to create a multiline value. In that case, you can export it on one line with
 
 ```shell
-gpg --export-secret-key myapp@codeship.com --armor | tr '\n' ','
+gpg --armor --export-secret-key myapp@codeship.com | tr '\n' ','
 ```
 
 You can then create your private key file with:
