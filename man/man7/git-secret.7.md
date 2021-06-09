@@ -61,7 +61,7 @@ gpg --gen-key
 To export your public key, run:
 
 ```shell
-gpg --export your.email@address.com --armor > public-key.gpg
+gpg --armor --export your.email@address.com > public-key.gpg
 ```
 
 To import the public key of someone else (to share the secret with them for instance), run:
