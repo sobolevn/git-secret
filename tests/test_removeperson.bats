@@ -19,18 +19,18 @@ function teardown {
 }
 
 
-@test "run 'killperson' without arguments" {
-  run git secret killperson
+@test "run 'removeperson' without arguments" {
+  run git secret removeperson
   [ "$status" -eq 1 ]
 }
 
 
-@test "run 'killperson' with short name" {
+@test "run 'removeperson' with short name" {
   local name
   name=$(echo "$TEST_DEFAULT_USER" | sed -e 's/@.*//')
 
-  # killperson must use full email, not short name
-  run git secret killperson "$name"
+  # removeperson must use full email, not short name
+  run git secret removeperson "$name"
   [ "$status" -eq 1 ]
 
   # Then whoknows will be ok because user3@gitsecret.io still knows
@@ -42,10 +42,10 @@ function teardown {
 }
 
 
-@test "run 'killperson' with email" {
+@test "run 'removeperson' with email" {
   local email="$TEST_DEFAULT_USER"
 
-  run git secret killperson "$email"
+  run git secret removeperson "$email"
   [ "$status" -eq 0 ]
 
   # Testing output:
@@ -57,7 +57,7 @@ function teardown {
 }
 
 
-@test "run 'killperson' with multiple arguments" {
+@test "run 'removeperson' with multiple arguments" {
   # Adding second user:
   install_fixture_key "$TEST_SECOND_USER"
   set_state_secret_tell "$TEST_SECOND_USER"
@@ -65,7 +65,7 @@ function teardown {
   local default_email="$TEST_DEFAULT_USER"
   local second_email="$TEST_SECOND_USER"
 
-  run git secret killperson "$default_email" "$second_email"
+  run git secret removeperson "$default_email" "$second_email"
   [ "$status" -eq 0 ]
 
   # Testing output:
@@ -78,8 +78,8 @@ function teardown {
 }
 
 
-@test "run 'killperson' with bad arg" {
+@test "run 'removeperson' with bad arg" {
   local email="$TEST_DEFAULT_USER"
-  run git secret killperson -Z "$email"
+  run git secret removeperson -Z "$email"
   [ "$status" -ne 0 ]
 }

@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 
-function killperson {
+function removeperson {
   OPTIND=1
 
   while getopts 'h' opt; do
     case "$opt" in
-      h) _show_manual_for 'killperson';;
+      h) _show_manual_for 'removeperson';;
 
-      *) _invalid_option_for 'killperson';;
+      *) _invalid_option_for 'removeperson';;
     esac
   done
 
@@ -22,7 +22,7 @@ function killperson {
   local emails=( "$@" )
 
   if [[ ${#emails[@]} -eq 0 ]]; then
-    _abort "at least one email is required for killperson."
+    _abort "at least one email is required for removeperson."
   fi
   # Getting the local git-secret `gpg` key directory:
   local secrets_dir_keys

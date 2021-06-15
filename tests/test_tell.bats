@@ -75,7 +75,7 @@ function teardown {
 
   # Preparations:
   git secret tell -d "$TEST_GPG_HOMEDIR" "$TEST_DEFAULT_USER"
-  git secret killperson "$TEST_DEFAULT_USER"
+  git secret removeperson "$TEST_DEFAULT_USER"
 
   # It was showing something like `tru::1:1289775241:0:2:1:6`
   # after the preparations done and the error was not generated.

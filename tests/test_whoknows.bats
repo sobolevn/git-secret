@@ -86,7 +86,7 @@ function teardown {
   # Preparations, removing users:
   local email1="$TEST_DEFAULT_USER"
   local email2="$TEST_SECOND_USER"
-  git secret killperson "$email1" "$email2"
+  git secret removeperson "$email1" "$email2"
 
   # Now whoknows should raise an error: there are no users.
   run git secret whoknows
