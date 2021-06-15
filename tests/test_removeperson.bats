@@ -83,3 +83,9 @@ function teardown {
   run git secret removeperson -Z "$email"
   [ "$status" -ne 0 ]
 }
+
+
+@test "run the 'killperson' alias" {
+  run git secret killperson
+  [ "$status" -eq 1 ]
+}

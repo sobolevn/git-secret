@@ -43,3 +43,9 @@ function removeperson {
   _message "now [$*] do not have an access to the repository."
   _message 'make sure to hide the existing secrets again.'
 }
+
+function killperson {
+  echo 'Warning: `killperson` has been renamed to `removeperson`. This alias will be removed in the next version, please switch to call `removeperson` going forward.'
+
+  removeperson $@
+}
