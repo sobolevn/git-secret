@@ -1,21 +1,21 @@
 ---
 layout: post
-title:  'git-secret-killperson'
-date:   2021-06-09 17:15:52 +0000
-permalink: git-secret-killperson
+title:  'git-secret-removeperson'
+date:   2021-06-16 07:32:25 +0000
+permalink: git-secret-removeperson
 categories: command
 ---
-git-secret-killperson - deletes key identified by an email from the inner keyring.
+git-secret-removeperson - deletes key identified by an email from the inner keyring.
 ==================================================================================
 
 ## SYNOPSIS
 
-    git secret killperson <emails>...
+    git secret removeperson <emails>...
 
 
 ## DESCRIPTION
 This command removes the keys associated with the selected email addresses from the keyring. 
-If you remove a keypair's access with `git-secret-killperson`, and run `git-secret-reveal` and `git-secret-hide -r`,
+If you remove a keypair's access with `git-secret-removeperson`, and run `git-secret-reveal` and `git-secret-hide -r`,
 it will be impossible for given users to decrypt the hidden files.
 
 
@@ -26,7 +26,7 @@ it will be impossible for given users to decrypt the hidden files.
 
 ## MANUAL
 
-Run `man git-secret-killperson` to see this note.
+Run `man git-secret-removeperson` to see this note.
 
 
 ## SEE ALSO

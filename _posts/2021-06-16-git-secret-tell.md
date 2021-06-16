@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-tell'
-date:   2021-06-09 17:15:52 +0000
+date:   2021-06-16 07:32:25 +0000
 permalink: git-secret-tell
 categories: command
 ---
@@ -45,4 +45,4 @@ Run `man git-secret-tell` to see this note.
 
 [git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-add(1)](http://git-secret.io/git-secret-add), 
 [git-secret-hide(1)](http://git-secret.io/git-secret-hide), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal), 
-[git-secret-cat(1)](http://git-secret.io/git-secret-cat), [git-secret-killperson(1)](http://git-secret.io/git-secret-killperson)
+[git-secret-cat(1)](http://git-secret.io/git-secret-cat), [git-secret-removeperson(1)](http://git-secret.io/git-secret-removeperson)
