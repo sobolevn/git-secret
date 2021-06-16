@@ -45,7 +45,7 @@ function removeperson {
 }
 
 function killperson {
-  echo 'Warning: `killperson` has been renamed to `removeperson`. This alias will be removed in the next version, please switch to call `removeperson` going forward.'
+  echo 'Warning: `killperson` has been renamed to `removeperson`. This alias will be removed in the future versions, please switch to call `removeperson` going forward.'
 
-  removeperson $@
+  removeperson "$@"
 }
