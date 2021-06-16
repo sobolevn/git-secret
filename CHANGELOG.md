@@ -1,5 +1,11 @@
 # Changelog
 
+## {{Next Version}}
+
+### Misc
+
+- Rename `killperson` command to `removeperson` (#684)
+
 ## 0.4.0
 
 ### Bugfixes
