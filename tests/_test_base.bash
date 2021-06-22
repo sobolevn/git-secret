@@ -78,6 +78,22 @@ function test_user_password {
 }
 
 
+# Files:
+
+function file_has_line {
+  # First parameter is the key, second is the filename.
+
+  local key="$1" # required
+  local filename="$2" # required
+
+  local contains
+  contains=$(grep -Fqw "$key" "$filename"; echo $?)
+
+  # 0 on contains, 1 or 2 for error.
+  echo "$contains"
+}
+
+
 # GPG:
 
 function stop_gpg_agent {

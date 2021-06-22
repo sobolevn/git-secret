@@ -65,19 +65,27 @@ function teardown {
 }
 
 
-@test "run 'add' for file ignored with '-i'" {
+@test "run 'add' for file ignored with '-i' and '.gitignore' contents" {
   local test_file="$TEST_DEFAULT_FILENAME"
   touch "$test_file"
   echo "content" > "$test_file"
+
+  local quoted_name
+  quoted_name=$(printf '%q' "$test_file")
 
   # add -i is now a no-op (See #225) so this tests that -i does nothing.
   run git secret add -i "$test_file"
   [ "$status" -eq 0 ]
 
-  run _file_has_line "$test_file" ".gitignore"
-  [ "$status" -eq 0 ]
+  run file_has_line "$quoted_name" ".gitignore"
+  [ "$output" = '0' ]
 
-  rm "$test_file"
+  local expected=.gitsec/keys/random_seed$'\n'\!\*.sec$'\n'$quoted_name
+  echo "$expected" > '.expected'
+
+  [ "$(cmp '.expected' '.gitignore'; echo $?)" -eq 0 ]
+
+  rm "$test_file" '.expected'
 }
 
 
@@ -107,8 +115,8 @@ function teardown {
   [ "$status" -eq 0 ]
 
   [[ -f "$current_dir/.gitignore" ]]
-  run _file_has_line "$test_file" "$current_dir/.gitignore"
-  [ "$status" -eq 0 ]
+  run file_has_line "$test_file" "$current_dir/.gitignore"
+  [ "$output" = '0' ]
 
   # .gitignore was not created:
   [[ ! -f ".gitignore" ]]
