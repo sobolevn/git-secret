@@ -4,7 +4,7 @@
 
 ### Bugfixes
 
-- Fix adding newlines to `.gitignore` entries
+- Fix adding newlines to `.gitignore` entries (#643)
 
 ### Misc
 
