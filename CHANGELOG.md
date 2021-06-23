@@ -2,9 +2,15 @@
 
 ## {{Next Version}}
 
+### Bugfixes
+
+- Fix adding newlines to `.gitignore` entries (#643)
+
 ### Misc
 
 - Rename `killperson` command to `removeperson` (#684)
+- Moves `file_has_line` utility to tests and fixes how it is used
+
 
 ## 0.4.0
 

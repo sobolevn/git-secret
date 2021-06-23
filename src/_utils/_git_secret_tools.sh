@@ -181,20 +181,6 @@ function _set_config {
 }
 
 
-function _file_has_line {
-  # First parameter is the key, second is the filename.
-
-  local key="$1" # required
-  local filename="$2" # required
-
-  local contains
-  contains=$(grep -qw "$key" "$filename"; echo $?)
-
-  # 0 on contains, 1 for error.
-  echo "$contains"
-}
-
-
 # this sets the global variable 'temporary_filename'
 # currently this function is only used by 'hide'
 function _temporary_file {
@@ -339,7 +325,7 @@ function _add_ignored_file {
   local full_path
   full_path=$(_append_root_path '.gitignore')
 
-  printf '%q' "$filename" >> "$full_path"
+  printf '%q\n' "$filename" >> "$full_path"
 }
 
 
