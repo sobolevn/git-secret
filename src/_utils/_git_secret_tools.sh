@@ -17,8 +17,8 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 # Empty means 'off', any other value means 'on'.
 # shellcheck disable=SC2153
 if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
-    # shellcheck disable=SC2034
-    _SECRETS_VERBOSE='1'
+  # shellcheck disable=SC2034
+  _SECRETS_VERBOSE='1'
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
@@ -34,10 +34,11 @@ fi
 # See: https://github.com/sobolevn/git-secret/pull/661
 # shellcheck disable=SC2153
 if [[ -n "$SECRETS_GPG_ARMOR" ]] && [[ "$SECRETS_GPG_ARMOR" -ne 0 ]]; then
-    # shellcheck disable=SC2034
-    _SECRETS_GPG_ARMOR='--armor'
+  # shellcheck disable=SC2034
+  _SECRETS_GPG_ARMOR='--armor'
 else
-    _SECRETS_GPG_ARMOR=''
+  # shellcheck disable=SC2034
+  _SECRETS_GPG_ARMOR=''
 fi
 
 # Temp Dir:
