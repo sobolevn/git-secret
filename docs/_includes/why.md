@@ -15,4 +15,4 @@ There's a known problem in server configuration and deploying, when you have to 
 
 `git-secret` is a bash tool to store your private data inside a `git` repo. How's that? Basically, it just encrypts, using `gpg`, the tracked files with the public keys of all the users that you trust. So everyone of them can decrypt these files using only their personal secret key. Why deal with all this private-public keys stuff? Well, to make it easier for everyone to manage access rights. There are no passwords that change. When someone is out - just delete their public key, reencrypt the files, and they won't be able to decrypt secrets anymore.
 
-[![git-secret terminal preview](git-secret.gif)](https://asciinema.org/a/41811?autoplay=1)
+[![git-secret terminal preview](https://raw.githubusercontent.com/sobolevn/git-secret/master/git-secret.gif)](https://asciinema.org/a/41811?autoplay=1)

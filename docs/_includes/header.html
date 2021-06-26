@@ -2,7 +2,9 @@
 
   <div class="wrapper">
 
-    <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
+    <a class="site-title" href="{{ site.baseurl }}/">
+      {{ site.title }} v{% include version.txt %}
+    </a>
 
     <div class="site-nav">
       <a href="#" class="menu-icon">

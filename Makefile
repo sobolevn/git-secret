@@ -106,7 +106,7 @@ build-man: git-secret
 
 .PHONY: build-docs
 build-docs: build-man
-	${SHELL} docs/create_posts.sh
+	 ${SHELL} docs/build.sh
 
 .PHONY: docs
 docs: build-docs
