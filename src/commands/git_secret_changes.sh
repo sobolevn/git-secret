@@ -47,7 +47,7 @@ function changes {
       # Path was already normalized
       path=$(_append_root_path "$filename")
     fi
-    
+
     if [[ ! -f "$path" ]]; then
         _abort "file not found. Consider using 'git secret reveal': $filename"
     fi

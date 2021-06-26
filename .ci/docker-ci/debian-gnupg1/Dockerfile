@@ -13,6 +13,7 @@ RUN apt-get update \
     git \
     gnupg1 \
     # Assumed to be present:
+    file \
     procps \
     make \
   # Cleaning cache:

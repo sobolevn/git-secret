@@ -76,7 +76,7 @@ function reveal {
         chmod "$perms" "$path"
       fi
     fi
-  
+
   done
 
   _message "done. $counter of ${#to_show[@]} files are revealed."

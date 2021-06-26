@@ -12,5 +12,6 @@ RUN apk add --no-cache --update \
   git \
   gnupg \
   # Assumed to be present:
+  file \
   make \
   procps

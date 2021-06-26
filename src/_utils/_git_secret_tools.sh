@@ -17,8 +17,8 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 # Empty means 'off', any other value means 'on'.
 # shellcheck disable=SC2153
 if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
-    # shellcheck disable=SC2034
-    _SECRETS_VERBOSE='1'
+  # shellcheck disable=SC2034
+  _SECRETS_VERBOSE='1'
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
@@ -29,7 +29,7 @@ fi
 : "${SECRETS_OCTAL_PERMS_COMMAND:="_os_based __get_octal_perms"}"
 : "${SECRETS_EPOCH_TO_DATE:="_os_based __epoch_to_date"}"
 
-# Temp Dir
+# Temp Dir:
 : "${TMPDIR:=/tmp}"
 
 # AWK scripts:

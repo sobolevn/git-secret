@@ -274,7 +274,8 @@ function set_state_secret_add_without_newline {
 
 
 function set_state_secret_hide {
-  git secret hide >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  local armor="$1"
+  SECRETS_GPG_ARMOR="$armor" git secret hide >> "$TEST_GPG_OUTPUT_FILE" 2>&1
 }
 
 

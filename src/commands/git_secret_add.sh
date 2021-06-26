@@ -101,7 +101,7 @@ function add {
        if [[ -n "$_SECRETS_VERBOSE" ]]; then
         _message "adding file: $key"
       fi
-      
+
       ((count=count+1))
     fi
   done
