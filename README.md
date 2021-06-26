@@ -6,7 +6,7 @@
 [![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](https://formulae.brew.sh/formula/git-secret)
 [![Supporters](https://img.shields.io/opencollective/all/git-secret.svg?color=gold&label=supporters)](https://opencollective.com/git-secret)
 
-[![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](http://git-secret.io/)
+[![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](https://git-secret.io/)
 
 
 ## What is `git-secret`?
@@ -34,7 +34,7 @@ you should also change the secrets.
 `git-secret` supports `brew`, just type: `brew install git-secret`
 
 It also supports `apt` and `yum`. You can also use `make` if you want to.
-See the [installation section](http://git-secret.io/installation) for the details.
+See the [installation section](installation) for the details.
 
 ### Requirements
 

@@ -8,13 +8,10 @@ url: "git-secret.io" # the base hostname & protocol for your site
 # Github links:
 github_username: sobolevn
 github_changelog: "https://github.com/sobolevn/git-secret/blob/master/CHANGELOG.md"
-github_plugins: "https://github.com/sobolevn/git-secret/wiki/Third-party-plugins"
-github_using: "https://github.com/sobolevn/git-secret/wiki/Who-uses"
 
 # Seo settings:
 plugins:
   - jekyll-seo-tag
-  - jekyll-environment-variables
 
 # Build settings
 markdown: kramdown

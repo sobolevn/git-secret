@@ -16,6 +16,7 @@
 
 - Rename `killperson` command to `removeperson` (#684)
 - Moves `file_has_line` utility to tests and fixes how it is used
+- Refactors docs: new pages, new content
 
 
 ## 0.4.0

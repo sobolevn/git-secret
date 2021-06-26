@@ -1,1 +1,6 @@
+# Excluding from GitHub languages:
 vendor/ linguist-vendored
+
+# Excluding from `git diff`:
+*.1 -diff
+*.7 -diff
