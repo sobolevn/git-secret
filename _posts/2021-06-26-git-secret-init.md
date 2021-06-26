@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-init'
-date: 2021-06-26 13:58:55 +0000
+date: 2021-06-26 14:18:02 +0000
 permalink: git-secret-init
 categories: command
 ---
@@ -22,7 +22,7 @@ Otherwise, a .gitsecret directory is created with appropriate sub-directories,
 and patterns to ignore `git-secret`'s `random_seed_file`
 and not ignore `.secret` files are added to `.gitignore`.
 
-(See [git-secret(7)](http://git-secret.io/git-secret) for information about renaming the .gitsecret
+(See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
 folder with the `SECRETS_DIR` environment variable, and changing the extension `git-secret` uses for secret files
 with the `SECRETS_EXTENSION` environment variable.
 
@@ -39,4 +39,4 @@ Run `man git-secret-init` to see this note.
 
 ## SEE ALSO
 
-[git-secret-usage(1)](http://git-secret.io/git-secret-usage), [git-secret-tell(1)](http://git-secret.io/git-secret-tell)
+[git-secret-usage(1)](https://git-secret.io/git-secret-usage), [git-secret-tell(1)](https://git-secret.io/git-secret-tell)

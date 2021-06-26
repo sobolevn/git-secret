@@ -18,7 +18,7 @@ If there's no users in the `git-secret`'s keyring, when adding a file, an except
 Use the `git secret add` command to add filenames to this file.
 It is not recommended to add filenames directly into `.gitsecret/paths/mapping.cfg`.
 
-(See [git-secret(7)](http://git-secret.io/git-secret) for information about renaming the .gitsecret
+(See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
 folder using the SECRETS_DIR environment variable.
 
 ## OPTIONS
@@ -35,5 +35,5 @@ Run `man git-secret-add` to see this note.
 
 ## SEE ALSO
 
-[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-tell(1)](http://git-secret.io/git-secret-tell),
-[git-secret-hide(1)](http://git-secret.io/git-secret-hide), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal)
+[git-secret-init(1)](https://git-secret.io/git-secret-init), [git-secret-tell(1)](https://git-secret.io/git-secret-tell),
+[git-secret-hide(1)](https://git-secret.io/git-secret-hide), [git-secret-reveal(1)](https://git-secret.io/git-secret-reveal)

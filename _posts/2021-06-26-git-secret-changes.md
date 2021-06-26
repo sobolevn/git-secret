@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-changes'
-date: 2021-06-26 13:58:55 +0000
+date: 2021-06-26 14:18:02 +0000
 permalink: git-secret-changes
 categories: command
 ---
@@ -20,7 +20,7 @@ Note that files must be specified by their encrypted names, typically `filename.
 If no arguments are provided, information about all hidden files will be shown.
 
 Note also that this command can be affected by the `SECRETS_PINENTRY` environment variable. See
-(See [git-secret(7)](http://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
+(See [git-secret(7)](https://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
 
 
 ## OPTIONS
@@ -37,6 +37,6 @@ Run `man git-secret-changes` to see this note.
 
 ## SEE ALSO
 
-[git-secret-add(1)](http://git-secret.io/git-secret-add), [git-secret-tell(1)](http://git-secret.io/git-secret-tell),
-[git-secret-hide(1)](http://git-secret.io/git-secret-hide), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal),
-[git-secret-cat(1)](http://git-secret.io/git-secret-cat)
+[git-secret-add(1)](https://git-secret.io/git-secret-add), [git-secret-tell(1)](https://git-secret.io/git-secret-tell),
+[git-secret-hide(1)](https://git-secret.io/git-secret-hide), [git-secret-reveal(1)](https://git-secret.io/git-secret-reveal),
+[git-secret-cat(1)](https://git-secret.io/git-secret-cat)

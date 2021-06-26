@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-cat'
-date: 2021-06-26 13:58:55 +0000
+date: 2021-06-26 14:18:02 +0000
 permalink: git-secret-cat
 categories: command
 ---
@@ -19,7 +19,7 @@ As with `git-secret-reveal`, you'll need to have a public/private keypair that i
 decrypt this repo.
 
 Note also that this command can be affected by the `SECRETS_PINENTRY` environment variable. See
-(See [git-secret(7)](http://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
+(See [git-secret(7)](https://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
 
 
 ## OPTIONS
@@ -36,4 +36,4 @@ Run `man git-secret-cat` to see this note.
 
 ## SEE ALSO
 
-[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-tell(1)](http://git-secret.io/git-secret-tell), [git-secret-add(1)](http://git-secret.io/git-secret-add), [git-secret-hide(1)](http://git-secret.io/git-secret-hide), [git-secret-reveal(1)](http://git-secret.io/git-secret-cat)
+[git-secret-init(1)](https://git-secret.io/git-secret-init), [git-secret-tell(1)](https://git-secret.io/git-secret-tell), [git-secret-add(1)](https://git-secret.io/git-secret-add), [git-secret-hide(1)](https://git-secret.io/git-secret-hide), [git-secret-reveal(1)](https://git-secret.io/git-secret-cat)
