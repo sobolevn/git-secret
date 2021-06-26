@@ -163,19 +163,24 @@ function hide {
       if [[ "$update_only_modified" -eq 0 ]] ||
          [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
-        local args=( --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes "--trust-model=always" --encrypt )
+        local args=( --homedir "$secrets_dir_keys" '--no-permission-warning' --use-agent --yes '--trust-model=always' --encrypt )
 
-        if [[ ! -z "$_SECRETS_GPG_ARMOR" ]]; then
-          args+=( "$_SECRETS_GPG_ARMOR" )
+        # SECRETS_GPG_ARMOR is expected to be empty or '1'.
+        # Empty means 'off', any other value means 'on'.
+        # See: https://github.com/sobolevn/git-secret/pull/661
+        # shellcheck disable=SC2153
+        if [[ -n "$SECRETS_GPG_ARMOR" ]] &&
+           [[ "$SECRETS_GPG_ARMOR" -ne 0 ]]; then
+          args+=( '--armor' )
         fi
 
         # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2206
         args+=( $recipients -o "$output_path" "$input_path" )
 
-        set +e   # disable 'set -e' so we can capture exit_code
+        set +e  # disable 'set -e' so we can capture exit_code
 
-     	  # for info about `3>&-` see:
+     	  # For info about `3>&-` see:
         # https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
         local gpg_output
         gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}" 3>&-)  # we leave stderr alone

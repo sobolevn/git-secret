@@ -29,18 +29,6 @@ fi
 : "${SECRETS_OCTAL_PERMS_COMMAND:="_os_based __get_octal_perms"}"
 : "${SECRETS_EPOCH_TO_DATE:="_os_based __epoch_to_date"}"
 
-# _SECRETS_GPG_ARMOR is expected to be empty or '1'.
-# Empty means 'off', any other value means 'on'.
-# See: https://github.com/sobolevn/git-secret/pull/661
-# shellcheck disable=SC2153
-if [[ -n "$SECRETS_GPG_ARMOR" ]] && [[ "$SECRETS_GPG_ARMOR" -ne 0 ]]; then
-  # shellcheck disable=SC2034
-  _SECRETS_GPG_ARMOR='--armor'
-else
-  # shellcheck disable=SC2034
-  _SECRETS_GPG_ARMOR=''
-fi
-
 # Temp Dir:
 : "${TMPDIR:=/tmp}"
 

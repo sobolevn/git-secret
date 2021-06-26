@@ -27,12 +27,12 @@ Under the hood, this uses the `gpg --decrypt` command.
 
 ## ENV VARIABLES
 
-- `SECRETS_GPG_COMMAND` to change the default `gpg` command to anything else
-- `SECRETS_GPG_ARMOR` boolean to enable [`--armor` mode](https://www.gnupg.org/gph/en/manual/r1290.html) to store secrets in text format over binary
-- `SECRETS_DIR` to change the default `.gitsecret/` folder to another name as documented at [git-secret(7)](http://git-secret.io/)
-- `SECRETS_EXTENSION` to change the default `.secret` file extension
-- `SECRETS_VERBOSE` to change the output verbosity as documented at [git-secret(7)](http://git-secret.io/)
-- `SECRETS_PINENTRY` to change the [`gpg --pinentry` mode](https://github.com/gpg/pinentry) as documented at [git-secret(7)](http://git-secret.io/)
+- `SECRETS_GPG_COMMAND` changes the default `gpg` command to anything else
+- `SECRETS_GPG_ARMOR` is a boolean to enable [`--armor` mode](https://www.gnupg.org/gph/en/manual/r1290.html) to store secrets in text format over binary
+- `SECRETS_DIR` changes the default `.gitsecret/` folder to another name as documented at [git-secret(7)](http://git-secret.io/)
+- `SECRETS_EXTENSION` changes the default `.secret` file extension
+- `SECRETS_VERBOSE` changes the output verbosity as documented at [git-secret(7)](http://git-secret.io/)
+- `SECRETS_PINENTRY` changes the [`gpg --pinentry` mode](https://github.com/gpg/pinentry) as documented at [git-secret(7)](http://git-secret.io/)
 
 
 ## MANUAL
