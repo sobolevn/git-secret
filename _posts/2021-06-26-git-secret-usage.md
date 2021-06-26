@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-usage'
-date:   2021-06-16 07:32:25 +0000
+date:   2021-06-26 13:24:48 +0000
 permalink: git-secret-usage
 categories: command
 ---
@@ -29,6 +29,6 @@ Run `man git-secret-usage` to see this note.
 
 ## SEE ALSO
 
-[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-add(1)](http://git-secret.io/git-secret-add), 
-[git-secret-hide(1)](http://git-secret.io/git-secret-hide), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal), 
+[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-add(1)](http://git-secret.io/git-secret-add),
+[git-secret-hide(1)](http://git-secret.io/git-secret-hide), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal),
 [git-secret-cat(1)](http://git-secret.io/git-secret-cat)

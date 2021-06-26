@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-add'
-date:   2021-06-16 07:32:25 +0000
+date:   2021-06-26 13:24:48 +0000
 permalink: git-secret-add
 categories: command
 ---
@@ -15,10 +15,10 @@ git-secret-add - starts to track added files.
 
 ## DESCRIPTION
 `git-secret-add` adds a filepath(s) into `.gitsecret/paths/mapping.cfg`
-and ensures the filepath is mentioned .gitignore.
+and ensures the filepath is mentioned `.gitignore`.
 
 When adding files to encrypt, `git-secret-add` (as of 0.2.6) will ensure that they are ignored by `git` by mentioning
-them in .gitignore, since they must be secure and not be committed into the remote repository unencrypted.
+them in `.gitignore`, since they must be secure and not be committed into the remote repository unencrypted.
 
 If there's no users in the `git-secret`'s keyring, when adding a file, an exception will be raised.
 
@@ -42,5 +42,5 @@ Run `man git-secret-add` to see this note.
 
 ## SEE ALSO
 
-[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-tell(1)](http://git-secret.io/git-secret-tell), 
+[git-secret-init(1)](http://git-secret.io/git-secret-init), [git-secret-tell(1)](http://git-secret.io/git-secret-tell),
 [git-secret-hide(1)](http://git-secret.io/git-secret-hide), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal)

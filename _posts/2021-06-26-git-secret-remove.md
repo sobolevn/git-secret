@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret-remove'
-date:   2021-06-16 07:32:25 +0000
+date:   2021-06-26 13:24:48 +0000
 permalink: git-secret-remove
 categories: command
 ---
@@ -14,12 +14,12 @@ git-secret-remove - removes files from index.
 
 
 ## DESCRIPTION
-`git-secret-remove` deletes files from `.gitsecret/paths/mapping.cfg`, 
-so they won't be encrypted or decrypted in the future. 
+`git-secret-remove` deletes files from `.gitsecret/paths/mapping.cfg`,
+so they won't be encrypted or decrypted in the future.
 There's also a -c option to delete existing encrypted versions of the files provided.
 
 (See [git-secret(7)](http://git-secret.io/git-secret) for information about renaming the .gitsecret
-folder using the SECRETS_DIR environment variable.
+folder using the `SECRETS_DIR` environment variable.
 
 
 ## OPTIONS
@@ -35,5 +35,5 @@ Run `man git-secret-remove` to see this note.
 
 ## SEE ALSO
 
-[git-secret-add(1)](http://git-secret.io/git-secret-add), [git-secret-clean(1)](http://git-secret.io/git-secret-clean), 
+[git-secret-add(1)](http://git-secret.io/git-secret-add), [git-secret-clean(1)](http://git-secret.io/git-secret-clean),
 [git-secret-removeperson(1)](http://git-secret.io/git-secret-removeperson)

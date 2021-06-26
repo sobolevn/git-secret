@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'git-secret'
-date:   2021-06-16 07:32:25 +0000
+date:   2021-06-26 13:24:48 +0000
 permalink: git-secret
 categories: usage
 ---
@@ -126,41 +126,40 @@ See below, or the man page of `git-secret` for an explanation of the environment
 
 The settings available to be changed are:
 
-* `$SECRETS_VERBOSE` - sets the verbose flag to on for all `git-secret` commands; is identical
-to using `-v` on each command that supports it.
+* `$SECRETS_VERBOSE` - sets the verbose flag to on for all `git-secret` commands; is identical to using `-v` on each command that supports it.
 
 * `$SECRETS_GPG_COMMAND` - sets the `gpg` alternatives, defaults to `gpg`.
 It can be changed to `gpg`, `gpg2`, `pgp`, `/usr/local/gpg` or any other value.
 After doing so rerun the tests to be sure that it won't break anything. Tested to be working with: `gpg`, `gpg2`.
 
+* `$SECRETS_GPG_ARMOR` - sets the `gpg` [`--armor` mode](https://www.gnupg.org/gph/en/manual/r1290.html). Can be set to `1` to store secrets file as text. By default is `0` and store files as binaries.
+
 * `$SECRETS_EXTENSION` - sets the secret files extension, defaults to `.secret`. It can be changed to any valid file extension.
 
-* `$SECRETS_DIR` - sets the directory where git-secret stores its files, defaults to .gitsecret.
-It can be changed to any valid directory name.
+* `$SECRETS_DIR` - sets the directory where `git-secret` stores its files, defaults to `.gitsecret`. It can be changed to any valid directory name.
 
-* `$SECRETS_PINENTRY` - allows user to specify a setting for `gpg`'s --pinentry option.
-See `gpg` docs for details about gpg's --pinentry option.
+* `$SECRETS_PINENTRY` - allows user to specify a setting for `gpg`'s `--pinentry` option. See [`gpg` docs](https://github.com/gpg/pinentry) for details about gpg's `--pinentry` option.
 
-## The `.gitsecret` folder (can be overridden with SECRETS_DIR)
+## The `.gitsecret` folder (can be overridden with `SECRETS_DIR`)
 
 This folder contains information about the files encrypted by git-secret,
 and about which public/private key sets can access the encrypted data.
 
 You can change the name of this directory using the SECRETS_DIR environment variable.
 
-Use the various 'git-secret' commands to manipulate the files in `.gitsecret`,
+Use the various `git-secret` commands to manipulate the files in `.gitsecret`,
 you should not change the data in these files directly.
 
 Exactly which files exist in the `.gitsecret` folder and what their contents are
 vary slightly across different versions of gpg. Thus it is best to use
 git-secret with the same version of gpg being used by all users.
-This can be forced using SECRETS_GPG_COMMAND environment variable.
+This can be forced using `SECRETS_GPG_COMMAND` environment variable.
 
-Specifically, there is an issue between gpg version 2.1.20 and later versions
+Specifically, there is an issue between `gpg` version 2.1.20 and later versions
 which can cause problems reading and writing keyring files between systems
 (this shows up in errors like 'gpg: skipped packet of type 12 in keybox').
 
-The git-secret internal data is separated into two directories:
+The `git-secret` internal data is separated into two directories:
 
 ### `.gitsecret/paths`
 
