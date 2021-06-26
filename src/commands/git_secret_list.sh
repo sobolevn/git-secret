@@ -15,7 +15,7 @@ function list {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
-  if [ $# -ne 0 ]; then 
+  if [ $# -ne 0 ]; then
     _abort "list does not understand params: $*"
   fi
 

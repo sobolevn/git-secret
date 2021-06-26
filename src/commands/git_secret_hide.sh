@@ -108,7 +108,7 @@ function hide {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
-  if [ $# -ne 0 ]; then 
+  if [ $# -ne 0 ]; then
     _abort "hide does not understand params: $*"
   fi
 
@@ -158,11 +158,16 @@ function hide {
       _warn_or_abort "file not found: $input_path" "1" "$force_continue"
     else
       file_hash=$(_get_file_hash "$input_path")
-  
-      # encrypt file only if required
-      if [[ "$update_only_modified" -eq 0 ]] || [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
-        local args=( --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes "--trust-model=always" --encrypt --armor )
+      # encrypt file only if required
+      if [[ "$update_only_modified" -eq 0 ]] ||
+         [[ "$fsdb_file_hash" != "$file_hash" ]]; then
+
+        local args=( --homedir "$secrets_dir_keys" "--no-permission-warning" --use-agent --yes "--trust-model=always" --encrypt )
+
+        if [[ ! -z "$_SECRETS_GPG_ARMOR" ]]; then
+          args+=( "$_SECRETS_GPG_ARMOR" )
+        fi
 
         # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2206
@@ -170,7 +175,8 @@ function hide {
 
         set +e   # disable 'set -e' so we can capture exit_code
 
-     	  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
+     	  # for info about `3>&-` see:
+        # https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
         local gpg_output
         gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}" 3>&-)  # we leave stderr alone
         local exit_code=$?
@@ -179,13 +185,13 @@ function hide {
 
         local error=0
         if [[ "$exit_code" -ne 0 ]] || [[ ! -f "$output_path" ]]; then
-          error=1 
+          error=1
         fi
 
         if [[ "$error" -ne 0 ]] || [[ -n "$_SECRETS_VERBOSE" ]]; then
           if [[ -n "$gpg_output" ]]; then
             echo "$gpg_output"
-          fi  
+          fi
         fi
 
         if [[ ! -f "$output_path" ]]; then
@@ -199,7 +205,7 @@ function hide {
             chmod "$perms" "$output_path"
           fi
         fi
-  
+
         # Update file hash for future use of -m
         local key="$filename"
         local hash="$file_hash"

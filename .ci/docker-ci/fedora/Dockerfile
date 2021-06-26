@@ -12,6 +12,7 @@ RUN dnf -y update \
     gnupg \
     # Assumed to be present:
     diffutils \
+    file \
     findutils \
     procps \
     make \

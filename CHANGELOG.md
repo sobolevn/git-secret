@@ -2,6 +2,12 @@
 
 ## {{Next Version}}
 
+### Features
+
+- Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
+  when encrypting files, so secret files will stored
+  in text format rather than binary (#631)
+
 ### Bugfixes
 
 - Fix adding newlines to `.gitignore` entries (#643)
@@ -30,7 +36,7 @@
 - Add security disclaimer for git-secret-killperson
 - Improve documentation about releases
 - Man page improvements
-- Use gpg --armor when encrypting files, so secret files are txt (#631)
+
 
 ## Version 0.3.3
 
