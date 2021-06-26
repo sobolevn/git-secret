@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-hide'
-date: 2021-06-26 14:18:02 +0000
+date: 2021-06-26 14:36:18 +0000
 permalink: git-secret-hide
 categories: command
 ---
@@ -16,7 +16,7 @@ git-secret-hide - encrypts all added files with the inner keyring.
 ## DESCRIPTION
 `git-secret-hide` creates an encrypted version (typically called `filename.txt.secret`)
 of each file added by `git-secret-add` command.
-Now anyone enabled via 'git secret tell' can can decrypt these files. Under the hood,
+Now anyone enabled via `git secret tell` can can decrypt these files. Under the hood,
 `git-secret` uses the keyring in `.gitsecret/keys` and user's secret keys to decrypt the files.
 
 It is recommended to encrypt (or re-encrypt) all the files in a `git-secret` repo each
