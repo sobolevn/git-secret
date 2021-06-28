@@ -1,4 +1,4 @@
-FROM debian:10.9-slim
+FROM ubuntu:20.04
 
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
