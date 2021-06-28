@@ -11,9 +11,11 @@ on:
       - master
     paths:
       - 'utils/*/install.sh'
+      - '.ci/release-ci/**'
   pull_request:
     paths:
       - 'utils/*/install.sh'
+      - '.ci/release-ci/**'
 
 jobs:
   build:
