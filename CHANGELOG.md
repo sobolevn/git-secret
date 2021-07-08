@@ -11,6 +11,7 @@
 ### Bugfixes
 
 - Fix adding newlines to `.gitignore` entries (#643)
+- Fix for removeperson if same email is present multiple times (#638)
 
 ### Misc
 
