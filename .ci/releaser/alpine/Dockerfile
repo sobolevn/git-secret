@@ -1,11 +1,6 @@
 # Initially copied from
 # https://github.com/jordansissel/fpm/blob/master/Dockerfile
-
-# TODO: Move to native image
-# see: https://github.com/jordansissel/fpm/issues/1782
-# Or we can completely switch to
-# https://github.com/goreleaser/nfpm
-FROM alpine:3.13
+FROM alpine:3.14.0
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
@@ -30,9 +25,11 @@ RUN apk add --no-cache --update \
     gnupg \
     # Assumed to be present:
     curl \
+    # envsubst for `nfpm`:
+    gettext \
   # Installing `nfpm`, it builds alpine packages:
   && curl -sfL https://install.goreleaser.com/github.com/goreleaser/nfpm.sh | sh \
-  # Installing `fpm`, it build all other packages:
+  # Installing `fpm`, it builds all other packages:
   && gem install --no-document fpm
 
 WORKDIR $CODE_DIR

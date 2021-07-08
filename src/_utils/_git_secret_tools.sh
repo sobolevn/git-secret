@@ -17,8 +17,8 @@ _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 # Empty means 'off', any other value means 'on'.
 # shellcheck disable=SC2153
 if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
-    # shellcheck disable=SC2034
-    _SECRETS_VERBOSE='1'
+  # shellcheck disable=SC2034
+  _SECRETS_VERBOSE='1'
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
@@ -29,7 +29,7 @@ fi
 : "${SECRETS_OCTAL_PERMS_COMMAND:="_os_based __get_octal_perms"}"
 : "${SECRETS_EPOCH_TO_DATE:="_os_based __epoch_to_date"}"
 
-# Temp Dir
+# Temp Dir:
 : "${TMPDIR:=/tmp}"
 
 # AWK scripts:
@@ -181,20 +181,6 @@ function _set_config {
 }
 
 
-function _file_has_line {
-  # First parameter is the key, second is the filename.
-
-  local key="$1" # required
-  local filename="$2" # required
-
-  local contains
-  contains=$(grep -qw "$key" "$filename"; echo $?)
-
-  # 0 on contains, 1 for error.
-  echo "$contains"
-}
-
-
 # this sets the global variable 'temporary_filename'
 # currently this function is only used by 'hide'
 function _temporary_file {
@@ -339,7 +325,7 @@ function _add_ignored_file {
   local full_path
   full_path=$(_append_root_path '.gitignore')
 
-  printf '%q' "$filename" >> "$full_path"
+  printf '%q\n' "$filename" >> "$full_path"
 }
 
 

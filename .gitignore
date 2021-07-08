@@ -137,4 +137,5 @@ build/
 docs/man
 docs/_posts
 docs/_includes/install-*.sh
+docs/_includes/version.txt
 CHANGELOG-RELEASE.md

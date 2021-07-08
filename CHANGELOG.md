@@ -1,11 +1,31 @@
 # Changelog
 
+## {{Next Version}}
+
+### Features
+
+- Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
+  when encrypting files, so secret files will stored
+  in text format rather than binary (#631)
+
+### Bugfixes
+
+- Fix adding newlines to `.gitignore` entries (#643)
+
+### Misc
+
+- Rename `killperson` command to `removeperson` (#684)
+- Moves `file_has_line` utility to tests and fixes how it is used
+- Refactors docs: new pages, new content
+
+
 ## 0.4.0
 
 ### Bugfixes
 
-- Escape filenames with special characters before adding to .gitignore
+- Escape filenames with special characters before adding to `.gitignore`
 - Better error handling around telling an email twice (#634)
+- Fix for `-P` (#647)
 
 ### Misc
 
@@ -17,6 +37,7 @@
 - Add security disclaimer for git-secret-killperson
 - Improve documentation about releases
 - Man page improvements
+
 
 ## Version 0.3.3
 
@@ -34,7 +55,7 @@
 - Reflect changes in ruby bundler during build process
 - Upgrade build process to ansible 2.9
 - Use shellcheck 0.7.1 with CI, not 'latest' (#609)
-- Improve output of git-secret add
+- Improve output of `git-secret add`
 
 ## Version 0.3.2
 

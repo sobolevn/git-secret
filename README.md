@@ -1,11 +1,12 @@
 # git-secret
 
-[![Backers on Open Collective](https://opencollective.com/git-secret/backers/badge.svg)](#backers)
-[![Sponsors on Open Collective](https://opencollective.com/git-secret/sponsors/badge.svg)](#sponsors)
-[![test](https://github.com/sobolevn/git-secret/actions/workflows/test.yml/badge.svg?branch=master&event=push)](https://github.com/sobolevn/git-secret/actions/workflows/test.yml)
-[![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](https://formulae.brew.sh/formula/git-secret)
 
-[![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](http://git-secret.io/)
+[![test](https://github.com/sobolevn/git-secret/actions/workflows/test.yml/badge.svg?branch=master&event=push)](https://github.com/sobolevn/git-secret/actions/workflows/test.yml)
+[![release-ci](https://github.com/sobolevn/git-secret/actions/workflows/release-ci.yml/badge.svg)](https://github.com/sobolevn/git-secret/actions/workflows/release-ci.yml)
+[![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](https://formulae.brew.sh/formula/git-secret)
+[![Supporters](https://img.shields.io/opencollective/all/git-secret.svg?color=gold&label=supporters)](https://opencollective.com/git-secret)
+
+[![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](https://git-secret.io/)
 
 
 ## What is `git-secret`?
@@ -17,7 +18,7 @@ allowing users you trust to access encrypted data using pgp and their secret key
 With `git-secret`, changes to access rights are simplified, and private-public key issues are handled for you.
 
 When someone's permission is revoked, secrets do not need to be changed with `git-secret` -
-just remove their key from the keychain using `git secret killperson their@email.com`,
+just remove their key from the keychain using `git secret removeperson their@email.com`,
 re-encrypt the files, and they won't be able to decrypt secrets anymore.
 If you think the user might have copied the secrets or keys when they had access, then
 you should also change the secrets.
@@ -33,7 +34,7 @@ you should also change the secrets.
 `git-secret` supports `brew`, just type: `brew install git-secret`
 
 It also supports `apt` and `yum`. You can also use `make` if you want to.
-See the [installation section](http://git-secret.io/installation) for the details.
+See the [installation section](installation) for the details.
 
 ### Requirements
 

@@ -34,8 +34,8 @@ function copy_to_posts {
     short_name=$(echo "$com" | sed -n "s|$MAN_LOCATION/\(.*\)\.1\.md|\1|p")
     local command_header="---
 layout: post
-title:  '${short_name}'
-date:   ${timestamp}
+title: '${short_name}'
+date: ${timestamp}
 permalink: ${short_name}
 categories: command
 ---"
@@ -48,8 +48,8 @@ categories: command
   # Creating main usage file:
   local usage_header="---
 layout: post
-title:  'git-secret'
-date:   ${timestamp}
+title: 'git-secret'
+date: ${timestamp}
 permalink: git-secret
 categories: usage
 ---"
@@ -68,6 +68,12 @@ function copy_install_scripts {
 }
 
 
+function copy_version {
+   echo "$(./git-secret --version)" > docs/_includes/version.txt
+}
+
+
 checkout_manuals
 copy_to_posts
 copy_install_scripts
+copy_version

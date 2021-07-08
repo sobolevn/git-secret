@@ -23,6 +23,6 @@ Run `man git-secret-whoknows` to see this note.
 
 ## SEE ALSO
 
-[git-secret-list(1)](http://git-secret.io/git-secret-list), [git-secret-tell(1)](http://git-secret.io/git-secret-tell), 
-[git-secret-hide(1)](http://git-secret.io/git-secret-hide), [git-secret-reveal(1)](http://git-secret.io/git-secret-reveal), 
-[git-secret-cat(1)](http://git-secret.io/git-secret-cat)
+[git-secret-list(1)](https://git-secret.io/git-secret-list), [git-secret-tell(1)](https://git-secret.io/git-secret-tell),
+[git-secret-hide(1)](https://git-secret.io/git-secret-hide), [git-secret-reveal(1)](https://git-secret.io/git-secret-reveal),
+[git-secret-cat(1)](https://git-secret.io/git-secret-cat)

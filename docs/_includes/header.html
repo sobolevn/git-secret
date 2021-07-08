@@ -2,7 +2,9 @@
 
   <div class="wrapper">
 
-    <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
+    <a class="site-title" href="{{ site.baseurl }}/">
+      {{ site.title }} v{% include version.txt %}
+    </a>
 
     <div class="site-nav">
       <a href="#" class="menu-icon">
@@ -25,8 +27,8 @@
 
   <nav class="site-navigation">
     <a href="/installation">Installation</a>
-    <a href="{{ site.github_plugins }}">External plugins</a>
-    <a href="{{ site.github_using }}">Projects using it</a>
+    <a href="{{ "/#commands" | prepend: site.baseurl }}">Commands</a>
+    <a href="/plugins">External plugins</a>
     <a href="{{ site.github_changelog }}">Changelog</a>
   </nav>
 

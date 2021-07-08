@@ -4,6 +4,18 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
+    
+  # In case we change the `install.sh` scripts:
+  push:
+    branches:
+      - master
+    paths:
+      - 'utils/*/install.sh'
+      - '.ci/release-ci/**'
+  pull_request:
+    paths:
+      - 'utils/*/install.sh'
+      - '.ci/release-ci/**'
 
 jobs:
   build:

@@ -28,7 +28,7 @@ function usage {
   echo " clean                     - deletes all encrypted files"
   echo " hide                      - encrypts (or re-encrypts) the files to be hidden"
   echo " init                      - initializes the  git-secret repository"
-  echo " killperson [emails]       - deletes a person's public key from the keyring"
+  echo " removeperson [emails]     - deletes a person's public key from the keyring"
   echo " list                      - prints all the added files"
   echo " remove [files]            - removes files from the list of hidden files"
   echo " reveal                    - decrypts all hidden files"

@@ -1,4 +1,4 @@
-FROM debian:10.9-slim
+FROM debian:10.10-slim
 
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
@@ -12,6 +12,7 @@ RUN apt-get update \
     git \
     gnupg \
     # Assumed to be present:
+    file \
     procps \
     make \
   # Cleaning cache:

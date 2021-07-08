@@ -23,6 +23,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run checks
       run: SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" make release
+      env:
+        SECRETS_ARTIFACTORY_CREDENTIALS: ${{ secrets.SECRETS_ARTIFACTORY_CREDENTIALS }}
 
   github-release:
     runs-on: ubuntu-latest

@@ -53,7 +53,7 @@ function init {
   shift $((OPTIND-1))
   [ "$1" = '--' ] && shift
 
-  if [ $# -ne 0 ]; then 
+  if [ $# -ne 0 ]; then
     _abort "init does not understand params: $*"
   fi
 

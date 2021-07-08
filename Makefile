@@ -106,7 +106,7 @@ build-man: git-secret
 
 .PHONY: build-docs
 build-docs: build-man
-	${SHELL} docs/create_posts.sh
+	 ${SHELL} docs/build.sh
 
 .PHONY: docs
 docs: build-docs
@@ -152,6 +152,8 @@ build-release: clean build-man
 
 .PHONY: release
 release: build-release
+	@[ -z "${SECRETS_ARTIFACTORY_CREDENTIALS}" ] \
+		&& echo 'SECRETS_ARTIFACTORY_CREDENTIALS is unset' && exit 1 || true
 	docker run \
 		--volume="$${PWD}:/code" \
 		-e SECRETS_ARTIFACTORY_CREDENTIALS \

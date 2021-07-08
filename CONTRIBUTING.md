@@ -78,28 +78,24 @@ lean heavily on git and widely-used Unix command features instead of re-implemen
 
 ### Development Process
 
-1. Firstly, you should setup git-secret's development git hooks with `make install-hooks`
-This will copy the hooks from utils/hooks into .git/hooks/pre-commit and .git/hooks/post-commit
+1. Make changes to the git secret files that need to be changed
 
-2. Make changes to the git secret files that need to be changed
+2. When making changes to any files inside `src/`, for changes to take effect you will need to rebuild the `git-secret` script with `make clean && make build`
 
-3. When making changes to any files inside `src/`, for changes to take effect you will need to rebuild the `git-secret` script with `make clean && make build`
-
-4. Run `shellcheck` against all your changes with `make lint`.
+3. Run `shellcheck` against all your changes with `make lint`.
    You should also check your changes for spelling errors using 'aspell -c filename'.
 
-5. Add an entry to CHANGELOG.md, referring to the related issue # if appropriate
+4. Add an entry to CHANGELOG.md, referring to the related issue # if appropriate
 
-6. Change the `man` source file(s) (we write them in markdown) in `man/man1` and `man/man7` to document your changes if appropriate
+5. Change the `man` source file(s) (we write them in markdown) in `man/man1` and `man/man7` to document your changes if appropriate
 
-7. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`.
+6. Now, add all your files to the commit with `git add --all` and commit changes with `git commit`.
    Write a good commit message which explains your work
 
-8. When running `git commit` the tests will run automatically, your commit will be canceled if they fail.
+7. When running `git commit` the tests will run automatically, your commit will be canceled if they fail.
    You can run the tests manually with `make clean build test`.
-   If you want to make a commit and not run the pre- and post-commit hooks, use 'git commit -n'
 
-9. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request,
+8. Push to your repository, and make a pull-request against `master` branch. It's ideal to have one commit per pull-request,
 but don't worry, it's easy to `squash` PRs into a small number of commits when they're merged.
 
 ### Branches
@@ -144,12 +140,17 @@ While CI is doing it's building and testing, finish the release on github by pus
 git push --tags
 ```
 
-and then go to https://github.com/sobolevn/git-secret/releases and 'draft a new release',
-setting up a production release like the previous ones.
+and then go to https://github.com/sobolevn/git-secret/releases to see that the new release is created. It might take some time.
 
 #### GitHub automated releases
 
-TODO
+We use GitHub actions to run the release process.
+We use `artifactory` as an environment for the release.
+You would need to get a review before release would be possible.
+
+It can be reproduced locally with `make release`, but you will need `SECRETS_ARTIFACTORY_CREDENTIALS`.
+
+After packages are released to https://gitsecret.jfrog.io we trigger `release-ci` workflow to test that installation works correctly.
 
 #### Manual releases
 

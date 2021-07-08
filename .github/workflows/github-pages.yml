@@ -1,9 +1,13 @@
-name: Deploy Documentation to Github Pages
+name: github-pages
 
 on:
   push:
     branches:
       - master
+    paths:
+      - 'man/**'
+      - 'docs/**'
+      - 'utils/*/install.sh'
 
 jobs:
   build:
@@ -16,7 +20,7 @@ jobs:
       run: make build-docs
 
     - name: Deploy to Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.1
+      uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: gh-pages # The branch the action should deploy to.

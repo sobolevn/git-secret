@@ -12,4 +12,4 @@ preinstall_files '-c'
 cd "$SCRIPT_DEST_DIR" && build_package 'rpm'
 
 # Cleaning up:
-clean_up_files && cd "$SECRETS_PROJECT_ROOT"
+clean_up_files

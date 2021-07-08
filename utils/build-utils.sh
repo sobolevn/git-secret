@@ -23,7 +23,11 @@ SCRIPT_DEST_DIR="$SCRIPT_BUILD_DIR/buildroot"
 
 function locate_release {
   local release_type="$1"
-  find "$SCRIPT_DEST_DIR" -maxdepth 1 -name "*.$release_type" | head -1
+  local arch="${2:-}"
+
+  find "$SCRIPT_DEST_DIR" \
+    -maxdepth 1 \
+    -name "*${arch}.$release_type" | head -1
 }
 
 
@@ -38,33 +42,34 @@ function preinstall_files {
   # Coping the files inside the build folder:
   install -D "$dir_switch" \
     -b -m "$EXEC_PERM" "$dir_switch" "$SCRIPT_NAME" \
-    "$SCRIPT_DEST_DIR/usr/bin/$SCRIPT_NAME"
+    "$SCRIPT_BUILD_DIR/usr/bin/$SCRIPT_NAME"
 
   # Install the manualls:
-  install -m "$EXEC_PERM" -d "$SCRIPT_DEST_DIR/usr/share/man/man1"
-  install -m "$EXEC_PERM" -d "$SCRIPT_DEST_DIR/usr/share/man/man7"
+  install -m "$EXEC_PERM" -d "$SCRIPT_BUILD_DIR/usr/share/man/man1"
+  install -m "$EXEC_PERM" -d "$SCRIPT_BUILD_DIR/usr/share/man/man7"
   for file in man/man1/*.1 ; do
     install -D "$dir_switch" \
       -b -m "$READ_PERM" "$dir_switch" "$file" \
-      "$SCRIPT_DEST_DIR/usr/share/$file"
+      "$SCRIPT_BUILD_DIR/usr/share/$file"
   done
   install -D "$dir_switch" \
     -b -m "$READ_PERM" "$dir_switch" 'man/man7/git-secret.7' \
-    "$SCRIPT_DEST_DIR/usr/share/man/man7/git-secret.7"
+    "$SCRIPT_BUILD_DIR/usr/share/man/man7/git-secret.7"
 }
 
 
 function build_package {
   # Only requires `rpm`, `apk`, or `deb` as first argument:
   local build_type="$1"
+  local arch_type="${2:-all}"
 
   # coreutils is for sha256sum
   # See https://github.com/jordansissel/fpm for docs:
   fpm \
     --input-type 'dir' \
     --output-type "$build_type" \
-    --chdir "$SCRIPT_DEST_DIR" \
-    --architecture 'all' \
+    --chdir "$SCRIPT_BUILD_DIR" \
+    --architecture "$arch_type" \
     --name "$SCRIPT_NAME" \
     --version "$SCRIPT_VERSION" \
     --description "$SCRIPT_DESCRIPTION" \
@@ -82,5 +87,8 @@ function build_package {
 
 
 function clean_up_files {
-  rm -rf "${SCRIPT_DEST_DIR:?}/usr"
+  # Pre-installed files:
+  rm -rf "${SCRIPT_BUILD_DIR:?}/usr"
+  # nfpm configs:
+  rm -rf "$SCRIPT_BUILD_DIR"/*.yml
 }

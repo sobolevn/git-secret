@@ -2,7 +2,7 @@
 name: git-secret
 
 # Architecture. (required)
-arch: all
+arch: $ALPINE_ARCHITECTURE
 
 # Platform.
 # Defaults to `linux`.

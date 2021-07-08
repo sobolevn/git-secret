@@ -35,7 +35,33 @@ function teardown {
   [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
 
   # New file must be created:
-  [ -f "$(_get_encrypted_filename "$FILE_TO_HIDE")" ]
+  local new_file
+  new_file="$(_get_encrypted_filename "$FILE_TO_HIDE")"
+  [ -f "$new_file" ]
+
+  # File must be a binary:
+  local mime
+  mime="$(file --mime-type --mime-encoding "$new_file" | grep 'charset=binary')"
+  [ ! -z "$mime" ]
+}
+
+
+@test "run 'hide' with SECRETS_GPG_ARMOR=1" {
+  SECRETS_GPG_ARMOR=1 run git secret hide
+
+  # Command must execute normally:
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"git-secret: done. 1 of 1 files are hidden."* ]]
+
+  # New file must be created:
+  local new_file
+  new_file="$(_get_encrypted_filename "$FILE_TO_HIDE")"
+  [ -f "$new_file" ]
+
+  # File must be a text:
+  local mime
+  mime="$(file --mime-type --mime-encoding "$new_file" | grep 'charset=us-ascii')"
+  [ ! -z "$mime" ]
 }
 
 

@@ -73,6 +73,54 @@ function teardown {
 }
 
 
+@test "run 'reveal' binary with 'SECRETS_GPG_ARMOR=1'" {
+  rm "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  # Armor should not change anything here:
+  SECRETS_GPG_ARMOR=1 run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ -f "$FILE_TO_HIDE" ]
+}
+
+
+@test "run 'reveal' armored with 'SECRETS_GPG_ARMOR=1'" {
+  # We need to clean existing binary files:
+  git secret clean
+
+  # Now, let's hide files once again with `--armor` enabled:
+  set_state_secret_hide '1'
+
+  rm "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  # Armor should not change anything here:
+  SECRETS_GPG_ARMOR=1 run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ -f "$FILE_TO_HIDE" ]
+}
+
+
+@test "run 'reveal' armored with 'SECRETS_GPG_ARMOR=0'" {
+  # We need to clean existing binary files:
+  git secret clean
+
+  # Now, let's hide files once again with `--armor` enabled:
+  set_state_secret_hide '1'
+
+  rm "$FILE_TO_HIDE"
+
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  # Armor should not change anything here:
+  SECRETS_GPG_ARMOR=0 run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password"
+
+  [ "$status" -eq 0 ]
+  [ -f "$FILE_TO_HIDE" ]
+}
+
+
 @test "run 'reveal' with '-v'" {
   rm "$FILE_TO_HIDE"
 

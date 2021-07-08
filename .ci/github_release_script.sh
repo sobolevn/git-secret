@@ -12,10 +12,14 @@ PROJECT="$(echo "$GITHUB_REPOSITORY" | cut -d "/" -f2)"
 LAST_RELEASE_TAG=$(curl \
     --header "authorization: Bearer $GITHUB_TOKEN" \
     --url "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest" \
-  2>/dev/null | jq .tag_name | sed 's/"//g'
+  | jq .tag_name | sed 's/"//g'
 )
-
 echo "LAST_RELEASE_TAG=$LAST_RELEASE_TAG"
+if [ "$LAST_RELEASE_TAG" = 'null' ]; then
+  # Most likely, we are facing rate-limiting problems,
+  # just try again later.
+  exit 1
+fi
 
 NEW_CHANGELOG='CHANGELOG-RELEASE.md'
 
@@ -25,6 +29,9 @@ github_changelog_generator \
   --project "$PROJECT" \
   --token "$GITHUB_OAUTH_TOKEN" \
   --since-tag "$LAST_RELEASE_TAG" \
+  --max-issues 100 \
+  --no-issues \
+  --release-branch 'master' \
   --token "$GITHUB_TOKEN" \
   --output "$NEW_CHANGELOG"
 
