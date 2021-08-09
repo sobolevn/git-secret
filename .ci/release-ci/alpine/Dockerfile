@@ -1,4 +1,4 @@
-FROM alpine:3.14.0
+FROM alpine:3.14.1
 
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
