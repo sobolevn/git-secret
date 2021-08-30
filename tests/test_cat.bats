@@ -71,6 +71,9 @@ function teardown {
   echo "content2" > subdir/new_filename.txt
   cd subdir
   run git secret add new_filename.txt
+  [ "$status" -eq 0 ]
   run git secret hide
+  [ "$status" -eq 0 ]
   run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" filename.txt
+  [ "$status" -eq 0 ]
 }
