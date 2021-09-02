@@ -73,7 +73,7 @@ If you found any security related issues, please do not disclose it in public. S
 
 ## Packagers
 
-Thanks to all the people and groups who package `git-secret` fir easier install on particular OSes and distributions!
+Thanks to all the people and groups who package `git-secret` for easier install on particular OSes and distributions!
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/git-secret.svg)](https://repology.org/project/git-secret/versions)
 
