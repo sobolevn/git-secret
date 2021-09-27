@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-removeperson'
-date: 2021-07-13 19:47:46 +0000
+date: 2021-09-27 15:21:47 +0000
 permalink: git-secret-removeperson
 categories: command
 ---
