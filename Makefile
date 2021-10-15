@@ -6,10 +6,6 @@ DESTDIR?=
 # Building:
 #
 
-git-secret: src/version.sh src/_utils/*.sh src/commands/*.sh src/main.sh
-	@cat $^ > "$@"
-	@chmod +x git-secret; sync
-
 .PHONY: all
 all: build
 
@@ -18,7 +14,11 @@ clean:
 	@rm -f git-secret
 
 .PHONY: build
-build: git-secret
+build:
+	@cat src/version.sh > git-secret
+	@cat src/_utils/*.sh src/commands/*.sh >> git-secret
+	@cat src/main.sh >> git-secret
+	@chmod +x git-secret; sync
 
 .PHONY: install
 install:
@@ -93,7 +93,7 @@ clean-man:
 	@find "man/" -type f ! -name "*.md" -delete
 
 .PHONY: build-man
-build-man: git-secret
+build-man: build
 	docker pull msoap/ruby-ronn
 	export GITSECRET_VERSION="$$(./git-secret --version)" && docker run \
 		--volume="$${PWD}:/code" \
