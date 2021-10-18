@@ -1,4 +1,4 @@
-SHELL:=/usr/bin/env bash
+SHELL:=bash
 PREFIX?="/usr"
 DESTDIR?=
 
@@ -22,11 +22,11 @@ build:
 
 .PHONY: install
 install:
-	${SHELL} ./utils/install.sh "${DESTDIR}${PREFIX}"
+	"${SHELL}" ./utils/install.sh "${DESTDIR}${PREFIX}"
 
 .PHONY: uninstall
 uninstall:
-	${SHELL} ./utils/uninstall.sh "${DESTDIR}${PREFIX}"
+	"${SHELL}" ./utils/uninstall.sh "${DESTDIR}${PREFIX}"
 
 #
 # Testing and linting:
@@ -39,7 +39,7 @@ uninstall:
 test: clean build
 	export SECRETS_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
-	${SHELL} ./utils/tests.sh
+	"${SHELL}" ./utils/tests.sh
 
 # We use this script in CI and you can do this too!
 # What happens here?
@@ -106,7 +106,7 @@ build-man: build
 
 .PHONY: build-docs
 build-docs: build-man
-	 ${SHELL} docs/build.sh
+	 "${SHELL}" docs/build.sh
 
 .PHONY: docs
 docs: build-docs
