@@ -1,4 +1,3 @@
-SHELL:=/usr/bin/env bash
 PREFIX?="/usr"
 DESTDIR?=
 
@@ -22,19 +21,11 @@ build:
 
 .PHONY: install
 install:
-	ifeq ($(OS),Windows_NT)
-		"${SHELL}" ./utils/install.sh "${DESTDIR}${PREFIX}"
-	else
-		${SHELL} ./utils/install.sh "${DESTDIR}${PREFIX}"
-	endif
+	bash ./utils/install.sh "${DESTDIR}${PREFIX}"
 
 .PHONY: uninstall
 uninstall:
-	ifeq ($(OS),Windows_NT)
-		"${SHELL}" ./utils/uninstall.sh "${DESTDIR}${PREFIX}"
-	else
-		${SHELL} ./utils/uninstall.sh "${DESTDIR}${PREFIX}"
-	endif
+	bash ./utils/uninstall.sh "${DESTDIR}${PREFIX}"
 
 #
 # Testing and linting:
@@ -47,11 +38,7 @@ uninstall:
 test: clean build
 	export SECRETS_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
-	ifeq ($(OS),Windows_NT)
-		"${SHELL}" ./utils/tests.sh
-	else
-		${SHELL} ./utils/tests.sh
-	endif
+	bash ./utils/tests.sh
 
 # We use this script in CI and you can do this too!
 # What happens here?
@@ -118,11 +105,7 @@ build-man: build
 
 .PHONY: build-docs
 build-docs: build-man
-	ifeq ($(OS),Windows_NT)
-		"${SHELL}" docs/build.sh
-	else
-		${SHELL} docs/build.sh
-	endif
+	 bash docs/build.sh
 
 .PHONY: docs
 docs: build-docs
