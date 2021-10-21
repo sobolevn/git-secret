@@ -30,6 +30,7 @@ jobs:
           - alpine
           - fedora
           - centos
+          - windows
     steps:
     - uses: actions/checkout@v2
     - name: Run checks
