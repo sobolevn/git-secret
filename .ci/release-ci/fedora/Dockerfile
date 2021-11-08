@@ -1,4 +1,4 @@
-FROM fedora:34
+FROM fedora:35
 
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
