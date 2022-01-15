@@ -80,6 +80,6 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # try it without -d and -p
-  run bash -x git secret cat new_filename.txt
+  git secret cat new_filename.txt
   [ "$status" -eq 0 ]
 }
