@@ -378,6 +378,23 @@ function _append_root_path {
 }
 
 
+# if passed a name like 'filename.txt', returns a full path in the repo
+# For #710: if we are in a subdir, fixup the path with the subdir
+function _append_relative_root_path {
+  local path="$1" # required
+
+  local full_path
+  full_path=$(_append_root_path "$path")
+    
+  local subdir
+  subdir=$(git rev-parse --show-prefix)   # get the subdir of repo, like "subdir/"
+  if [ ! -z "$subdir" ]; then
+    full_path="$(dirname $full_path)/${subdir}/$(basename $full_path)" 
+  fi
+
+  echo "$full_path"
+}
+
 function _get_secrets_dir {
   _append_root_path "${_SECRETS_DIR}"
 }

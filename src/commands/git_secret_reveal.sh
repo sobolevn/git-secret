@@ -55,7 +55,7 @@ function reveal {
     local filename
     local path
     filename=$(_get_record_filename "$line")
-    path=$(_append_root_path "$filename")
+    path=$(_append_relative_root_path "$filename")  # this uses the _relative version because of #710
 
     if [[ "$filename" == *"$SECRETS_EXTENSION" ]]; then
       _abort "cannot decrypt to secret version of file: $filename"

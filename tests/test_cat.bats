@@ -63,3 +63,24 @@ function teardown {
   run git secret cat -Z -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE"
   [ "$status" -ne 0 ]
 }
+
+@test "run 'cat' from subdir" {
+  local password
+  password=$(test_user_password "$TEST_DEFAULT_USER")
+
+  mkdir subdir
+  echo "content2" > subdir/new_filename.txt
+
+  cd subdir
+  run git secret add new_filename.txt
+  [ "$status" -eq 0 ]
+  run git secret hide
+  [ "$status" -eq 0 ]
+
+  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" new_filename.txt
+  [ "$status" -eq 0 ]
+
+  # clean up
+  cd ..
+  rm -rf subdir
+}
