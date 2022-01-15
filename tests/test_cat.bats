@@ -74,6 +74,6 @@ function teardown {
   [ "$status" -eq 0 ]
   run git secret hide
   [ "$status" -eq 0 ]
-  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" filename.txt
+  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" new_filename.txt
   [ "$status" -eq 0 ]
 }
