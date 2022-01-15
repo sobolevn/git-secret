@@ -378,6 +378,22 @@ function _append_root_path {
 }
 
 
+function _append_relative_root_path {
+  local path="$1" # required
+
+  local root_path
+  root_path=$(_append_root_path "$path")
+    
+  # For #710: if we are in a subdir, fixup the path with the subdir
+  local subdir
+  subdir=$(git rev-parse --show-prefix)   # get the subdir of repo, like "subdir/"
+  if [ ! -z "$subdir" ]; then
+    root_path="$(dirname $root_path)/${subdir}/$(basename $root_path)" 
+  fi
+
+  echo "$root_path"
+}
+
 function _get_secrets_dir {
   _append_root_path "${_SECRETS_DIR}"
 }
