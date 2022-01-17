@@ -28,12 +28,32 @@ nonexistent filename, exits with a `1` status code and prints an error message.
   run foo nonexistent_filename
   [ "$status" -eq 1 ]
   [ "$output" = "foo: no such file 'nonexistent_filename'" ]
+  [ "$BATS_RUN_COMMAND" = "foo nonexistent_filename" ]
+
 }
 ```
 
-The `$status` variable contains the status code of the command, and the
+The `$status` variable contains the status code of the command, the
 `$output` variable contains the combined contents of the command's standard
-output and standard error streams.
+output and standard error streams, and the `$BATS_RUN_COMMAND` string contains the
+command and command arguments passed to `run` for execution.
+
+If invoked with one of the following as the first argument, `run`
+will perform an implicit check on the exit status of the invoked command:
+
+```pre
+    =N  expect exit status N (0-255), fail if otherwise
+    ! expect nonzero exit status (1-255), fail if command succeeds
+```
+
+We can then write the above more elegantly as:
+
+```bash
+@test "invoking foo with a nonexistent file prints an error" {
+  run -1 foo nonexistent_filename
+  [ "$output" = "foo: no such file 'nonexistent_filename'" ]
+}
+```
 
 A third special variable, the `$lines` array, is available for easily accessing
 individual lines of output. For example, if you want to test that invoking `foo`
@@ -41,8 +61,7 @@ without any arguments prints usage information on the first line:
 
 ```bash
 @test "invoking foo without arguments prints usage" {
-  run foo
-  [ "$status" -eq 1 ]
+  run -1 foo
   [ "${lines[0]}" = "usage: foo <filename>" ]
 }
 ```
@@ -51,63 +70,21 @@ __Note:__ The `run` helper executes its argument(s) in a subshell, so if
 writing tests against environmental side-effects like a variable's value
 being changed, these changes will not persist after `run` completes.
 
-### When not to use `run`
+By default `run` leaves out empty lines in `${lines[@]}`. Use
+`run --keep-empty-lines` to retain them.
 
-In some cases, using `run` is redundant and results in a longer and less readable code.
-Here are a few examples.
+Additionally, you can use `--separate-stderr` to split stdout and stderr
+into `$output`/`$stderr` and `${lines[@]}`/`${stderr_lines[@]}`.
 
-#### 1. In case you only need to check the command succeeded, it is better to not use run, since
+All additional parameters to run should come before the command.
+If you want to run a command that starts with `-`, prefix it with `--` to
+prevent `run` from parsing it as an option.
 
-```bash
-run command args ...
-echo "$output"
-[ "$status" -eq 0 ]
-```
-
-is equivalent to
-
-```bash
-command args ...
-```
-
-since bats sets `set -e` for all tests.
-
-#### 2. In case you want to hide the command output (which `run` does), use output redirection instead
-
-This
-
-```bash
-run command ...
-[ "$status" -eq 0 ]
-```
-
-is equivalent to
-
-```bash
-command ... >/dev/null
-```
-
-Note that the output is only shown if the test case fails.
-
-#### 3. In case you need to assign command output to a variable (and maybe check the command exit status), it is better to not use run, since
-
-```bash
-run command args ...
-[ "$status" -eq 0 ]
-var="$output"
-```
-
-is equivalent to
-
-```bash
-var=$(command args ...)
-```
-
-#### Comment syntax
+## Comment syntax
 
 External tools (like `shellcheck`, `shfmt`, and various IDE's) may not support
 the standard `.bats` syntax.  Because of this, we provide a valid `bash`
-alterntative:
+alternative:
 
 ```bash
 function invoking_foo_without_arguments_prints_usage { #@test
@@ -120,7 +97,7 @@ function invoking_foo_without_arguments_prints_usage { #@test
 When using this syntax, the function name will be the title in the result output
 and the value checked when using `--filter`.
 
-### `load`: Share common code
+## `load`: Share common code
 
 You may want to share common code across multiple test files. Bats includes a
 convenient `load` command for sourcing a Bash source file relative to the
@@ -146,7 +123,7 @@ will _not_ be made available to callers of `load`.
 > it looks for `test_helper`). This behaviour is deprecated and subject to
 > change, please use exact filenames instead.
 
-### `skip`: Easily skip tests
+## `skip`: Easily skip tests
 
 Tests can be skipped by using the `skip` command at the point in a test you wish
 to skip.
@@ -184,7 +161,7 @@ Or you can skip conditionally:
 
 __Note:__ `setup` and `teardown` hooks still run for skipped tests.
 
-### `setup` and `teardown`: Pre- and post-test hooks
+## `setup` and `teardown`: Pre- and post-test hooks
 
 You can define special `setup` and `teardown` functions, which run before and
 after each test case, respectively. Use these to load fixtures, set up your
@@ -216,7 +193,7 @@ teardown_file # from file 2,  on leaving file 2
 </details>
 <!-- markdownlint-enable MD033 -->
 
-### Code outside of test cases
+## Code outside of test cases
 
 You can include code in your test file outside of `@test` functions.  For
 example, this may be useful if you want to check for dependencies and fail
@@ -225,7 +202,7 @@ outside of `@test`, `setup` or `teardown` functions must be redirected to
 `stderr` (`>&2`). Otherwise, the output may cause Bats to fail by polluting the
 TAP stream on `stdout`.
 
-### File descriptor 3 (read this if Bats hangs)
+## File descriptor 3 (read this if Bats hangs)
 
 Bats makes a separation between output from the code under test and output that
 forms the TAP stream (which is produced by Bats internals). This is done in
@@ -246,7 +223,7 @@ amount of time.
 **To prevent this from happening, close FD 3 explicitly when running any command
 that may launch long-running child processes**, e.g. `command_name 3>&-` .
 
-### Printing to the terminal
+## Printing to the terminal
 
 Bats produces output compliant with [version 12 of the TAP protocol][TAP]. The
 produced TAP stream is by default piped to a pretty formatter for human
@@ -259,20 +236,17 @@ bats provides a special file descriptor, `&3`, that you should use to print
 your custom text. Here are some detailed guidelines to refer to:
 
 - Printing **from within a test function**:
-  - To have text printed from within a test function you need to redirect the
-    output to file descriptor 3, eg `echo 'text' >&3`. This output will become
-    part of the TAP stream. You are encouraged to prepend text printed this way
-    with a hash (eg `echo '# text' >&3`) in order to produce 100% TAP compliant
+  - First you should consider if you want the text to be always visible or only
+    when the test fails. Text that is output directly to stdout or stderr (file
+    descriptor 1 or 2), ie `echo 'text'` is considered part of the test function
+    output and is printed only on test failures for diagnostic purposes,
+    regardless of the formatter used (TAP or pretty).
+  - To have text printed unconditionally from within a test function you need to
+    redirect the output to file descriptor 3, eg `echo 'text' >&3`. This output
+    will become part of the TAP stream. You are encouraged to prepend text printed
+    this way with a hash (eg `echo '# text' >&3`) in order to produce 100% TAP compliant
     output. Otherwise, depending on the 3rd-party tools you use to analyze the
     TAP stream, you can encounter unexpected behavior or errors.
-
-  - The pretty formatter that Bats uses by default to process the TAP stream
-    will filter out and not print text output to file descriptor 3.
-
-  - Text that is output directly to stdout or stderr (file descriptor 1 or 2),
-    ie `echo 'text'` is considered part of the test function output and is
-    printed only on test failures for diagnostic purposes, regardless of the
-    formatter used (TAP or pretty).
 
 - Printing **from within the `setup` or `teardown` functions**: The same hold
   true as for printing with test functions.
@@ -293,10 +267,11 @@ your custom text. Here are some detailed guidelines to refer to:
 
 [tap-plan]: https://testanything.org/tap-specification.html#the-plan
 
-### Special variables
+## Special variables
 
 There are several global variables you can use to introspect on Bats tests:
 
+- `$BATS_RUN_COMMAND` is the run command used in your test case.
 - `$BATS_TEST_FILENAME` is the fully expanded path to the Bats test file.
 - `$BATS_TEST_DIRNAME` is the directory in which the Bats test file is located.
 - `$BATS_TEST_NAMES` is an array of function names for each test case.
@@ -304,10 +279,21 @@ There are several global variables you can use to introspect on Bats tests:
 - `$BATS_TEST_DESCRIPTION` is the description of the current test case.
 - `$BATS_TEST_NUMBER` is the (1-based) index of the current test case in the test file.
 - `$BATS_SUITE_TEST_NUMBER` is the (1-based) index of the current test case in the test suite (over all files).
-- `$BATS_TMPDIR` is the location to a directory that may be used to store temporary files.
+- `$BATS_TMPDIR` is the base temporary directory used by bats to create its
+   temporary files / directories.
+   (default: `$TMPDIR`. If `$TMPDIR` is not set, `/tmp` is used.)
+- `$BATS_RUN_TMPDIR` is the location to the temporary directory used by bats to
+   store all its internal temporary files during the tests.
+   (default: `$BATS_TMPDIR/bats-run-$BATS_ROOT_PID-XXXXXX`)
 - `$BATS_FILE_EXTENSION` (default: `bats`) specifies the extension of test files that should be found when running a suite (via `bats [-r] suite_folder/`)
+- `$BATS_SUITE_TMPDIR` is a temporary directory common to all tests of a suite.
+  Could be used to create files required by multiple tests.
+- `$BATS_FILE_TMPDIR` is a temporary directory common to all tests of a test file.
+  Could be used to create files required by multiple tests in the same test file.
+- `$BATS_TEST_TMPDIR` is a temporary directory unique for each test.
+  Could be used to create files required only for specific tests.
 
-### Libraries and Add-ons
+## Libraries and Add-ons
 
 Bats supports loading external assertion libraries and helpers. Those under `bats-core` are officially supported libraries (integration tests welcome!):
 

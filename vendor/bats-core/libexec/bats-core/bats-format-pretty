@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 set -e
 
+# shellcheck source=lib/bats-core/formatter.bash
+source "$BATS_ROOT/lib/bats-core/formatter.bash"
+
+BASE_PATH=.
+BATS_ENABLE_TIMING=
+
 while [[ "$#" -ne 0 ]]; do
   case "$1" in
   -T)
     BATS_ENABLE_TIMING="-T"
+    ;;
+  --base-path)
+    shift
+    normalize_base_path BASE_PATH "$1"
     ;;
   esac
   shift
@@ -30,10 +40,16 @@ update_count_column_left() {
   count_column_left=$((screen_width - count_column_width))
 }
 
-trap update_screen_width WINCH
+# avoid unset variables
+count=0
+screen_width=80
+update_count_column_width
 update_screen_width
 
+trap update_screen_width WINCH
+
 begin() {
+  line_backoff_count=0
   go_to_column 0
   update_count_column_width
   buffer_with_truncation $((count_column_left - 1)) '   %s' "$name"
@@ -47,14 +63,22 @@ begin() {
   go_to_column 1
 }
 
-pass() {
+finish_test() {
+  move_up $line_backoff_count
   go_to_column 0
-  buffer ' ✓ %s' "$name"
+  buffer "$@"
   if [[ -n "$BATS_ENABLE_TIMING" ]]; then
     set_color 2
-    buffer ' [%s]' "$1"
+    buffer ' [%s]' "$TIMING"
   fi
   advance
+  move_down $(( line_backoff_count - 1 ))
+}
+
+pass() {
+  TIMING="${1:-}"
+  finish_test ' ✓ %s' "$name"
+  test_result=pass
 }
 
 skip() {
@@ -62,29 +86,37 @@ skip() {
   if [[ -n "$reason" ]]; then
     reason=": $reason"
   fi
-  go_to_column 0
-  buffer ' - %s (skipped%s)' "$name" "$reason"
-  advance
+  BATS_ENABLE_TIMING='' finish_test ' - %s (skipped%s)' "$name" "$reason"
+  test_result=skip
 }
 
 fail() {
-  go_to_column 0
   set_color 1 bold
-  buffer ' ✗ %s' "$name"
-  if [[ -n "$BATS_ENABLE_TIMING" ]]; then
-    set_color 2
-    buffer ' [%s]' "$1"
-  fi
-  advance
+  TIMING="${1:-}"
+  finish_test ' ✗ %s' "$name"
+  test_result=fail
 }
 
 log() {
-  set_color 1
+  case $test_result in
+    pass)
+    clear_color
+    ;;
+    fail)
+    set_color 1
+    ;;
+  esac
   buffer '   %s\n' "$1"
   clear_color
 }
 
 summary() {
+  if  [ "$failures" -eq 0 ] ; then
+    set_color 2 bold
+  else
+    set_color 1 bold
+  fi
+
   buffer '\n%d test' "$count"
   if [[ "$count" -ne 1 ]]; then
     buffer 's'
@@ -109,6 +141,7 @@ summary() {
   fi
 
   buffer '\n'
+  clear_color
 }
 
 buffer_with_truncation() {
@@ -123,6 +156,18 @@ buffer_with_truncation() {
     buffer '%s...' "${string:0:$((width - 4))}"
   else
     buffer '%s' "$string"
+  fi
+}
+
+move_up() {
+  if [[ $1 -gt 0 ]]; then # avoid moving if we got 0
+    buffer '\x1B[%dA' "$1"
+  fi
+}
+
+move_down() {
+  if [[ $1 -gt 0 ]]; then # avoid moving if we got 0
+    buffer '\x1B[%dB' "$1"
   fi
 }
 
@@ -145,7 +190,7 @@ set_color() {
   local color="$1"
   local weight=22
 
-  if [[ "$2" == 'bold' ]]; then
+  if [[ "${2:-}" == 'bold' ]]; then
     weight=1
   fi
   buffer '\x1B[%d;%dm' "$((30 + color))" "$weight"
@@ -164,6 +209,13 @@ buffer() {
   _buffer+="$content"
 }
 
+prefix_buffer_with() {
+  local old_buffer="$_buffer"
+  _buffer=''
+  "$@"
+  _buffer="$_buffer$old_buffer"
+}
+
 flush() {
   printf '%s' "$_buffer"
   _buffer=
@@ -175,9 +227,7 @@ finish() {
 }
 
 trap finish EXIT
-
-# shellcheck source=lib/bats-core/formatter.bash
-source "$BATS_ROOT/lib/bats-core/formatter.bash"
+trap '' INT
 
 bats_tap_stream_plan() {
   count="$1"
@@ -195,7 +245,7 @@ bats_tap_stream_begin() {
   begin
   flush
 }
-  
+
 bats_tap_stream_ok() {
   index="$1"
   ((++passed))
@@ -222,12 +272,42 @@ bats_tap_stream_not_ok() {
   fi
 }
 
-bats_tap_stream_comment() {
+bats_tap_stream_comment() { # <comment> <scope>
+  local scope=$2
+  # count the lines we printed after the begin text,
+  if [[ $line_backoff_count -eq 0 && $scope == begin ]]; then
+    # if this is the first line after begin, go down one line
+    buffer "\n"
+    (( ++line_backoff_count )) # prefix-increment to avoid "error" due to returning 0
+  fi
+
+  (( ++line_backoff_count ))
+  (( line_backoff_count += ${#1} / screen_width)) # account for linebreaks due to length
   log "$1"
 }
 
 bats_tap_stream_suite() {
-  : #test_file="$1"
+  #test_file="$1"
+  line_backoff_count=0
+  index=
+  # indicate filename for failures
+  name="File $(remove_prefix "$BASE_PATH" "$1")"
+}
+
+line_backoff_count=0
+bats_tap_stream_unknown() { # <full line> <scope>
+    local scope=$2
+    # count the lines we printed after the begin text, (or after suite, in case of syntax errors)
+    if [[ $line_backoff_count -eq 0 && ( $scope == begin ||  $scope == suite )]]; then
+      # if this is the first line after begin, go down one line
+      buffer "\n"
+      (( ++line_backoff_count )) # prefix-increment to avoid "error" due to returning 0
+    fi
+
+    (( ++line_backoff_count ))
+    (( line_backoff_count += ${#1} / screen_width)) # account for linebreaks due to length
+    buffer "%s\n" "$1"
+    flush
 }
 
 bats_parse_internal_extended_tap

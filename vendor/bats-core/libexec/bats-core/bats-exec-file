@@ -5,6 +5,7 @@ export flags=()
 num_jobs=1
 filter=''
 extended_syntax=''
+BATS_TRACE_LEVEL="${BATS_TRACE_LEVEL:-0}"
 
 while [[ "$#" -ne 0 ]]; do
   case "$1" in
@@ -32,6 +33,22 @@ while [[ "$#" -ne 0 ]]; do
     ;;
   --dummy-flag)
     ;;
+  --trace)
+    flags+=('--trace')
+    ;;
+  --print-output-on-failure)
+    flags+=(--print-output-on-failure)
+    ;;
+  --show-output-of-passing-tests)
+    flags+=(--show-output-of-passing-tests)
+    ;;
+  --verbose-run)
+    flags+=(--verbose-run)
+    ;;
+  --gather-test-outputs-in)
+    shift
+    flags+=(--gather-test-outputs-in "$1")
+    ;;
   *)
     break
     ;;
@@ -47,7 +64,7 @@ if [[ ! -f "$filename" ]]; then
   exit 1
 fi
 
-BATS_TEST_FILENAME="$filename"
+export BATS_TEST_FILENAME="$filename"
 
 # shellcheck source=lib/bats-core/preprocessing.bash
 # shellcheck disable=SC2153
@@ -73,21 +90,35 @@ bats_run_setup_file() {
   # shellcheck disable=2034
   BATS_TEST_COMPLETED= # used in tracing.bash
 
+  BATS_SOURCE_FILE_COMPLETED=
   BATS_SETUP_FILE_COMPLETED=
   BATS_TEARDOWN_FILE_COMPLETED=
   # shellcheck disable=2034
   BATS_ERROR_STATUS= # used in tracing.bash
-  trap 'bats_debug_trap "$BASH_SOURCE"' DEBUG
-  trap 'bats_error_trap' ERR
+  touch "$BATS_OUT"
+  bats_setup_tracing
   trap 'bats_file_teardown_trap' EXIT
 
-  touch "$BATS_OUT"
+  local status=0
   # get the setup_file/teardown_file functions for this file (if it has them)
   # shellcheck disable=SC1090
-  source "$BATS_TEST_SOURCE"
-  setup_file >>"$BATS_OUT" 2>&1
+  source "$BATS_TEST_SOURCE"  >  >(bats_replace_filename) 2>&1
+
+  BATS_SOURCE_FILE_COMPLETED=1
+
+  setup_file > >(bats_replace_filename >>"$BATS_OUT") 2>&1
 
   BATS_SETUP_FILE_COMPLETED=1
+}
+
+function bats_replace_filename() {
+  local line
+  while read -r line; do
+    printf "%s\n" "${line//$BATS_TEST_SOURCE/$filename}"
+  done
+  if [[ -n "$line" ]]; then
+    printf "%s\n" "${line//$BATS_TEST_SOURCE/$filename}"
+  fi
 }
 
 bats_run_teardown_file() {
@@ -108,23 +139,25 @@ bats_file_teardown_trap() {
   bats_file_exit_trap
 }
 
+# shellcheck source=lib/bats-core/common.bash
+source "$BATS_ROOT/lib/bats-core/common.bash"
+
 bats_file_exit_trap() {
   trap - ERR EXIT
   if [[ -z "$BATS_SETUP_FILE_COMPLETED" || -z "$BATS_TEARDOWN_FILE_COMPLETED" ]]; then
     if [[ -z "$BATS_SETUP_FILE_COMPLETED" ]]; then
       FAILURE_REASON='setup_file'
-    else
+    elif [[ -z "$BATS_TEARDOWN_FILE_COMPLETED" ]]; then
       FAILURE_REASON='teardown_file'
+    elif [[ -z "$BATS_SOURCE_FILE_COMPLETED" ]]; then
+      FAILURE_REASON='source'
+    else
+      FAILURE_REASON='unknown internal'
     fi
     printf "not ok %d %s\n" "$((test_number_in_suite + 1))" "$FAILURE_REASON failed" >&3
     bats_print_stack_trace "${BATS_STACK_TRACE[@]}" >&3
     bats_print_failed_command >&3
-    while IFS= read -r line; do
-      printf "# %s\n" "$line"
-    done <"$BATS_OUT" >&3
-    if [[ -n "$line" ]]; then
-      printf '# %s\n' "$line"
-    fi
+    bats_prefix_lines_for_tap_output < "$BATS_OUT" >&3
     rm -rf "$BATS_OUT"
     status=1
   fi
@@ -185,6 +218,7 @@ bats_run_tests_in_parallel() {
   mkdir -p "$output_folder"
   # shellcheck source=lib/bats-core/semaphore.bash
   source "$BATS_ROOT/lib/bats-core/semaphore.bash"
+  bats_semaphore_setup
   # the test_number_in_file is not yet incremented -> one before the next test to run
   local test_number_in_suite_of_last_finished_test="$test_number_in_suite" # stores which test was printed last
   for test_name in "${tests_to_run[@]}"; do
@@ -204,10 +238,9 @@ bats_run_tests_in_parallel() {
   return $status
 }
 
-bats_run_tests() {
-  status=0
-  tests_to_run=()
+bats_read_tests_list_file() {
   local line_number=0
+  tests_to_run=()
   # the global test number must be visible to traps -> not local
   first_test_number_in_suite=''
   while read -r test_line; do
@@ -229,11 +262,20 @@ bats_run_tests() {
 
   test_number_in_suite="$first_test_number_in_suite"
   test_number_in_file=0
+}
+
+bats_run_tests() {
+  status=0
+
   if [[ "$num_jobs" != 1 && "${BATS_NO_PARALLELIZE_WITHIN_FILE-False}" == False ]]; then
     export BATS_SEMAPHORE_NUMBER_OF_SLOTS="$num_jobs"
     bats_run_tests_in_parallel "$BATS_RUN_TMPDIR/parallel_output" || status=1
   else
     for test_name in "${tests_to_run[@]}"; do
+      if [[ "${BATS_INTERRUPTED-NOTSET}" != NOTSET ]]; then
+        status=130 # bash's code for SIGINT exits
+        break
+      fi
       # Only handle non-empty lines
       if [[ $test_name ]]; then
         ((++test_number_in_suite))
@@ -250,9 +292,37 @@ bats_run_tests() {
   export status
 }
 
+bats_create_file_tempdirs() {
+  local bats_files_tmpdir="${BATS_RUN_TMPDIR}/file"
+  if ! mkdir -p "$bats_files_tmpdir"; then
+    printf 'Failed to create %s\n' "$bats_files_tmpdir" >&2
+    exit 1
+  fi
+  BATS_FILE_TMPDIR="$bats_files_tmpdir/$first_test_number_in_suite"
+  if ! mkdir "$BATS_FILE_TMPDIR"; then
+    printf 'Failed to create BATS_FILE_TMPDIR=%s\n' "$BATS_FILE_TMPDIR" >&2
+    exit 1
+  fi
+  ln -s "$BATS_TEST_FILENAME" "$BATS_FILE_TMPDIR-$(basename "$BATS_TEST_FILENAME").source_file"
+  export BATS_FILE_TMPDIR
+}
+
+trap 'BATS_INTERRUPTED=true' INT
+
 if [[ -n "$extended_syntax" ]]; then
   printf "suite %s\n" "$filename"
 fi
+
+bats_read_tests_list_file
+
+# don't run potentially expensive setup/teardown_file
+# when there are no tests to run
+if [[ ${#tests_to_run[@]} -eq 0 ]]; then
+  exit 0
+fi
+
+# requires the test list to be read but not empty
+bats_create_file_tempdirs
 
 bats_preprocess_source "$filename"
 bats_run_setup_file

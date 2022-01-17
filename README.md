@@ -31,10 +31,10 @@ you should also change the secrets.
 
 ## Installation
 
-`git-secret` supports `brew`, just type: `brew install git-secret`
+`git-secret` [supports `brew`](https://formulae.brew.sh/formula/git-secret), just type: `brew install git-secret`
 
 It also supports `apt` and `yum`. You can also use `make` if you want to.
-See the [installation section](installation) for the details.
+See the [installation section](https://git-secret.io/installation) for the details.
 
 ### Requirements
 
@@ -73,9 +73,11 @@ If you found any security related issues, please do not disclose it in public. S
 
 ## Packagers
 
-Thanks also to all the people and groups who package git-secret to be easier to install on particular OSes or distributions!
+Thanks to all the people and groups who package `git-secret` for easier install on particular OSes and distributions!
 
-Here are some packagings of git-secret that we're aware of:
+[![Packaging status](https://repology.org/badge/vertical-allrepos/git-secret.svg)](https://repology.org/project/git-secret/versions)
+
+Here are some packagings of `git-secret` that we're aware of:
 
 - https://formulae.brew.sh/formula/git-secret
 - https://packages.ubuntu.com/bionic/git-secret
@@ -85,7 +87,7 @@ Here are some packagings of git-secret that we're aware of:
 - https://packages.debian.org/sid/git-secret
 - https://github.com/void-linux/void-packages/blob/master/srcpkgs/git-secret/template
 
-Such packages are considered 'downstream' because the git-secret code 'flows' from the git-secret repository
+Such packages are considered 'downstream' because the git-secret code 'flows' from the `git-secret` [repository](https://git-secret.io/installation)
 to the various rpm/deb/dpkg/etc packages that are created for specific OSes and distributions.
 
 We have also added notes specifically for packagers in [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -1,14 +1,10 @@
-SHELL:=/usr/bin/env bash
+SHELL:=bash
 PREFIX?="/usr"
 DESTDIR?=
 
 #
 # Building:
 #
-
-git-secret: src/version.sh src/_utils/*.sh src/commands/*.sh src/main.sh
-	@cat $^ > "$@"
-	@chmod +x git-secret; sync
 
 .PHONY: all
 all: build
@@ -18,15 +14,19 @@ clean:
 	@rm -f git-secret
 
 .PHONY: build
-build: git-secret
+build:
+	@cat src/version.sh > git-secret
+	@cat src/_utils/*.sh src/commands/*.sh >> git-secret
+	@cat src/main.sh >> git-secret
+	@chmod +x git-secret; sync
 
 .PHONY: install
 install:
-	${SHELL} ./utils/install.sh "${DESTDIR}${PREFIX}"
+	"${SHELL}" ./utils/install.sh "${DESTDIR}${PREFIX}"
 
 .PHONY: uninstall
 uninstall:
-	${SHELL} ./utils/uninstall.sh "${DESTDIR}${PREFIX}"
+	"${SHELL}" ./utils/uninstall.sh "${DESTDIR}${PREFIX}"
 
 #
 # Testing and linting:
@@ -39,7 +39,7 @@ uninstall:
 test: clean build
 	export SECRETS_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
-	${SHELL} ./utils/tests.sh
+	"${SHELL}" ./utils/tests.sh
 
 # We use this script in CI and you can do this too!
 # What happens here?
@@ -93,7 +93,7 @@ clean-man:
 	@find "man/" -type f ! -name "*.md" -delete
 
 .PHONY: build-man
-build-man: git-secret
+build-man: build
 	docker pull msoap/ruby-ronn
 	export GITSECRET_VERSION="$$(./git-secret --version)" && docker run \
 		--volume="$${PWD}:/code" \
@@ -106,7 +106,7 @@ build-man: git-secret
 
 .PHONY: build-docs
 build-docs: build-man
-	 ${SHELL} docs/build.sh
+	 "${SHELL}" docs/build.sh
 
 .PHONY: docs
 docs: build-docs

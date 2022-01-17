@@ -2,9 +2,9 @@
 
 [![Latest release](https://img.shields.io/github/release/bats-core/bats-core.svg)](https://github.com/bats-core/bats-core/releases/latest)
 [![npm package](https://img.shields.io/npm/v/bats.svg)](https://www.npmjs.com/package/bats)
-[![License](https://img.shields.io/github/license/bats-core/bats-core.svg)](https://github.com/bats-core/bats-core/blob/master/LICENSE.md)
-[[![Continuous integration status](https://github.com/bats-core/bats-core/workflows/Tests/badge.svg)](https://github.com/bats-core/bats-core/actions?query=workflow%3ATests)](https://github.com/bats-core/bats-core/actions?query=workflow%3ATests)
-[![Read the docs status](https://readthedocs.org/projects/bats-core/badge/?version=latest&style=plastic)](https://bats-core.readthedocs.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/bats-core/bats-core/blob/master/LICENSE.md)
+[![Continuous integration status](https://github.com/bats-core/bats-core/workflows/Tests/badge.svg)](https://github.com/bats-core/bats-core/actions?query=workflow%3ATests)
+[![Read the docs status](https://readthedocs.org/projects/bats-core/badge/)](https://bats-core.readthedocs.io)
 
 [![Join the chat in bats-core/bats-core on gitter](https://badges.gitter.im/bats-core/bats-core.svg)][gitter]
 
@@ -50,8 +50,8 @@ each line is an assertion of truth.
 - [Contact](#contact)
 - [Version history](#version-history)
 - [Background](#background)
-  - [What's the plan and why?](#whats-the-plan-and-why)
-  - [Why was this fork created?](#why-was-this-fork-created)
+  * [What's the plan and why?](#whats-the-plan-and-why)
+  * [Why was this fork created?](#why-was-this-fork-created)
 - [Copyright](#copyright)
 
 <!-- tocstop -->
@@ -118,7 +118,7 @@ There was an initial [call for maintainers][call-maintain] for the original Bats
 
 ## Copyright
 
-© 2017-2020 bats-core organization
+© 2017-2021 bats-core organization
 
 © 2011-2016 Sam Stephenson
 

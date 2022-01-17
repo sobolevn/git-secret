@@ -6,6 +6,11 @@ BATS_COUNT_ONLY=''
 BATS_TEST_FILTER=''
 BATS_ENABLE_TIMING=''
 BATS_EXTENDED_SYNTAX=''
+BATS_TRACE_LEVEL="${BATS_TRACE_LEVEL:-0}"
+BATS_PRINT_OUTPUT_ON_FAILURE="${BATS_PRINT_OUTPUT_ON_FAILURE:-}"
+BATS_SHOW_OUTPUT_OF_SUCCEEDING_TESTS="${BATS_SHOW_OUTPUT_OF_SUCCEEDING_TESTS:-}"
+BATS_VERBOSE_RUN="${BATS_VERBOSE_RUN:-}"
+BATS_GATHER_TEST_OUTPUTS_IN="${BATS_GATHER_TEST_OUTPUTS_IN:-}"
 
 while [[ "$#" -ne 0 ]]; do
   case "$1" in
@@ -20,11 +25,26 @@ while [[ "$#" -ne 0 ]]; do
     ;;
   -T)
     BATS_ENABLE_TIMING='-T'
-    BATS_PERFORM_TEST_CMD+=('-T')
     ;;
   -x)
     # shellcheck disable=SC2034
     BATS_EXTENDED_SYNTAX='-x'
+    ;;
+  --trace)
+    (( ++BATS_TRACE_LEVEL )) # avoid returning 0
+    ;;
+  --print-output-on-failure)
+    BATS_PRINT_OUTPUT_ON_FAILURE=1
+    ;;
+  --show-output-of-passing-tests)
+    BATS_SHOW_OUTPUT_OF_SUCCEEDING_TESTS=1
+    ;;
+  --verbose-run)
+    BATS_VERBOSE_RUN=1
+    ;;
+  --gather-test-outputs-in)
+    shift
+    BATS_GATHER_TEST_OUTPUTS_IN="$1"
     ;;
   *)
     break
@@ -33,8 +53,11 @@ while [[ "$#" -ne 0 ]]; do
   shift
 done
 
-BATS_TEST_FILENAME="$1"
-shift
+export BATS_TEST_FILENAME="$1"
+export BATS_TEST_NAME="$2"
+export BATS_SUITE_TEST_NUMBER="$3"
+export BATS_TEST_NUMBER="$4"
+
 if [[ -z "$BATS_TEST_FILENAME" ]]; then
   printf 'usage: bats-exec-test <filename>\n' >&2
   exit 1
@@ -42,6 +65,24 @@ elif [[ ! -f "$BATS_TEST_FILENAME" ]]; then
   printf 'bats: %s does not exist\n' "$BATS_TEST_FILENAME" >&2
   exit 1
 fi
+
+bats_create_test_tmpdirs() {
+  local tests_tmpdir="${BATS_RUN_TMPDIR}/test/"
+  if ! mkdir -p "$tests_tmpdir"; then
+    printf 'Failed to create: %s\n' "$tests_tmpdir" >&2
+    exit 1
+  fi
+
+  BATS_TEST_TMPDIR="$tests_tmpdir/$BATS_SUITE_TEST_NUMBER"
+  if ! mkdir "$BATS_TEST_TMPDIR"; then
+    printf 'Failed to create BATS_TEST_TMPDIR: %s\n' "$BATS_TEST_TMPDIR" >&2
+    exit 1
+  fi
+
+  printf "%s\n" "$BATS_TEST_NAME" > "$BATS_TEST_TMPDIR.name"
+
+  export BATS_TEST_TMPDIR
+}
 
 # load the test helper functions like `load` or `run` that are needed to run a (preprocessed) .bats file without bash errors
 # shellcheck source=lib/bats-core/test_functions.bash disable=SC2153
@@ -67,6 +108,9 @@ bats_teardown_trap() {
   bats_exit_trap
 }
 
+# shellcheck source=lib/bats-core/common.bash
+source "$BATS_ROOT/lib/bats-core/common.bash"
+
 bats_exit_trap() {
   local line
   local status
@@ -85,7 +129,9 @@ bats_exit_trap() {
     BATS_TEST_TIME=" in "$(( $(get_mills_since_epoch) - BATS_TEST_START_TIME ))"ms"
   fi
 
-  if [[ -z "$BATS_TEST_COMPLETED" || -z "$BATS_TEARDOWN_COMPLETED" ]]; then
+  local print_bats_out="${BATS_SHOW_OUTPUT_OF_SUCCEEDING_TESTS}"
+
+  if [[ -z "$BATS_TEST_COMPLETED" || -z "$BATS_TEARDOWN_COMPLETED" || "${BATS_INTERRUPTED-NOTSET}" != NOTSET ]]; then
     if [[ "$BATS_ERROR_STATUS" -eq 0 ]]; then
       # For some versions of bash, `$?` may not be set properly for some error
       # conditions before triggering the EXIT trap directly (see #72 and #81).
@@ -103,17 +149,24 @@ bats_exit_trap() {
     bats_print_stack_trace "${BATS_STACK_TRACE[@]}" >&3
     bats_print_failed_command >&3
 
-    while IFS= read -r line; do
-      printf '# %s\n' "$line" || break # avoid feedback loop when errors are redirected into BATS_OUT (see #353)
-    done <"$BATS_OUT" >&3
-    if [[ -n "$line" ]]; then
-      printf '# %s\n' "$line"
-    fi
+    if [[ $BATS_PRINT_OUTPUT_ON_FAILURE && -n "${output:-}" ]]; then
+      printf "Last output:\n%s\n" "$output" >> "$BATS_OUT"
+    fi 
+
+    print_bats_out=1
     status=1
   else
     printf 'ok %d %s%s\n' "$BATS_SUITE_TEST_NUMBER" "${BATS_TEST_DESCRIPTION}${BATS_TEST_TIME}" \
       "$skipped" >&3
     status=0
+  fi
+
+  if [[ $print_bats_out ]]; then
+    bats_prefix_lines_for_tap_output < "$BATS_OUT" >&3
+  fi
+
+  if [[ $BATS_GATHER_TEST_OUTPUTS_IN ]]; then
+    cp "$BATS_OUT" "$BATS_GATHER_TEST_OUTPUTS_IN/$BATS_SUITE_TEST_NUMBER-$BATS_TEST_DESCRIPTION.log"
   fi
 
   rm -f "$BATS_OUT"
@@ -133,10 +186,6 @@ get_mills_since_epoch() {
 }
 
 bats_perform_test() {
-  export BATS_TEST_NAME="$1"
-  export BATS_SUITE_TEST_NUMBER="$2"
-  export BATS_TEST_NUMBER="$3"
-
   if ! declare -F "$BATS_TEST_NAME" &>/dev/null; then
     printf "bats: unknown test name \`%s'\n" "$BATS_TEST_NAME" >&2
     exit 1
@@ -156,24 +205,43 @@ bats_perform_test() {
   BATS_TEST_SKIPPED=
   BATS_TEARDOWN_COMPLETED=
   BATS_ERROR_STATUS=
-  trap 'bats_debug_trap "$BASH_SOURCE"' DEBUG
-  trap 'bats_error_trap' ERR
+  BATS_ERROR_SUFFIX=
+  bats_setup_tracing
   # mark this call as trap call
   trap 'bats_teardown_trap as-exit-trap' EXIT
 
   BATS_TEST_START_TIME=$(get_mills_since_epoch)
-  "$BATS_TEST_NAME" >>"$BATS_OUT" 2>&1
+  "$BATS_TEST_NAME" >>"$BATS_OUT" 2>&1 4>&1
 
   BATS_TEST_COMPLETED=1
   trap 'bats_exit_trap' EXIT
   bats_teardown_trap "" # pass empty parameter to signify call outside trap
 }
 
+bats_interrupt_trap() {
+  # mark the interruption, to handle during exit
+  BATS_INTERRUPTED=true
+  exit 130
+}
+
+# keep in sync with bats_interrupt_trap
+# this is used inside run()
+bats_interrupt_trap_in_run() {
+  BATS_INTERRUPTED=true
+  # we don't get a second stack trace when interrupted in run, 
+  # so we have to use the first!
+  BATS_CURRENT_STACK_TRACE=("${BATS_STACK_TRACE[@]+"${BATS_STACK_TRACE[@]}"}")
+  exit 130
+}
+
+trap bats_interrupt_trap INT
+
 # shellcheck source=lib/bats-core/preprocessing.bash
 source "$BATS_ROOT/lib/bats-core/preprocessing.bash"
 
 exec 3<&1
 
+bats_create_test_tmpdirs
 # Run the given test.
 bats_evaluate_preprocessed_source
-bats_perform_test "$@"
+bats_perform_test
