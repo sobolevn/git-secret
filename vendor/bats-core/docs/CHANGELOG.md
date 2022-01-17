@@ -8,7 +8,89 @@ The format is based on [Keep a Changelog][kac] and this project adheres to
 [kac]: https://keepachangelog.com/en/1.0.0/
 [semver]: https://semver.org/
 
-## [Unreleased]
+## [1.5.0] - 2021-10-22
+
+### Added
+
+* new command line flags (#488)
+  * `--verbose-run`: Make `run` print `$output` by default
+  * `-x`, `--trace`: Print test commands as they are executed (like `set -x`)`
+  * `--show-output-of-passing-tests`: Print output of passing tests
+  * `--print-output-on-failure`: Automatically print the value of  `$output` on
+    failed tests
+  * `--gather-test-outputs-in <directory>`: Gather the output of failing **and**
+    passing tests as files in directory
+* Experimental: add return code checks to `run` via `!`/`-<N>` (#367, #507)
+* `install.sh` and `uninstall.sh` take an optional second parameter for the lib
+  folder name to allow for multilib install, e.g. into lib64 (#452)
+* add `run` flag `--keep-empty-lines` to retain empty lines in `${lines[@]}` (#224,
+  a894fbfa)
+* add `run` flag `--separate-stderr` which also fills `$stderr` and
+  `$stderr_lines` (#47, 5c9b173d, #507)
+
+### Fixed
+
+* don't glob `run`'s `$output` when splitting into `${lines[@]}`
+  (#151, #152, #158, #156, #281, #289)
+* remove empty line after test with pretty formatter on some terminals (#481)
+* don't run setup_file/teardown_file on files without tests, e.g. due to
+  filtering (#484)
+* print final line without newline on Bash 3.2 for midtest (ERREXIT) failures
+  too (#495, #145)
+* abort with error on missing flock/shlock when running in parallel mode  (#496)
+* improved `set -u` test and fixed some unset variable accesses (#498, #501)
+* shorten suite/file/test temporary folder paths to leave enough space even on
+  restricted systems (#503)
+
+#### Documentation
+
+* minor edits (#478)
+
+## [1.4.1] - 2021-07-24
+
+### Added
+
+* Docker image architectures amd64, 386, arm64, arm/v7, arm/v6, ppc64le, s390x (#438)
+
+### Fixed
+
+* automatic push to Dockerhub (#438)
+
+## [1.4.0] - 2021-07-23
+
+### Added
+
+* added BATS_TEST_TMPDIR, BATS_FILE_TMPDIR, BATS_SUITE_TMPDIR (#413)
+* added checks and improved documentation for `$BATS_TMPDIR` (#410)
+* the docker container now uses [tini](https://github.com/krallin/tini) as the
+  container entrypoint to improve signal forwarding (#407)
+* script to uninstall bats from a given prefix (#400)
+* replace preprocessed file path (e.g. `/tmp/bats-run-22908-NP0f9h/bats.23102.src`)
+  with original filename in stdout/err (but not FD3!) (#429)
+* print aborted command on SIGINT/CTRL+C (#368)
+* print error message when BATS_RUN_TMPDIR could not be created (#422)
+
+#### Documentation
+
+* added tutorial for new users (#397)
+* fixed example invocation of docker container (#440)
+* minor edits (#431, #439, #445, #463, #464, #465)
+
+### Fixed
+
+* fix `bats_tap_stream_unknown: command not found` with pretty formatter, when
+  writing non compliant extended output (#412)
+* avoid collisions on `$BATS_RUN_TMPDIR` with `--no-tempdir-cleanup` and docker
+  by using `mktemp` additionally to PID (#409)
+* pretty printer now puts text that is printed to FD 3 below the test name (#426)
+* `rm semaphores/slot-: No such file or directory` in parallel mode on MacOS
+  (#434, #433)
+* fix YAML blocks in TAP13 formatter using `...` instead of `---` to start
+  a block (#442)
+* fixed some typos in comments (#441, #447)
+* ensure `/code` exists in docker container, to make examples work again  (#440)
+* also display error messages from free code (#429)
+* npm installed version on Windows: fix broken internal LIBEXEC paths (#459)
 
 ## [1.3.0] - 2021-03-08
 

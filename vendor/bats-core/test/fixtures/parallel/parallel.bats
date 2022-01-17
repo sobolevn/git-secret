@@ -1,5 +1,5 @@
 setup() {
-  load 'helper'
+  load '../../concurrent-coordination'
   echo "start $BATS_TEST_NAME $BATS_TEST_FILENAME" >> "$FILE_MARKER"
 }
 
@@ -8,13 +8,13 @@ teardown() {
 }
 
 @test "slow test 1" {
-  single-use-barrier "parallel" $PARALLELITY
+  single-use-barrier "parallel" "$PARALLELITY"
 }
 
 @test "slow test 2" {
-  single-use-barrier "parallel" $PARALLELITY
+  single-use-barrier "parallel" "$PARALLELITY"
 }
 
 @test "slow test 3" {
-  single-use-barrier "parallel" $PARALLELITY
+  single-use-barrier "parallel" "$PARALLELITY"
 }

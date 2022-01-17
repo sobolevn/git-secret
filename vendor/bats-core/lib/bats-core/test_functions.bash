@@ -29,19 +29,125 @@ load() {
   source "${file}"
 }
 
-run() {
+bats_redirect_stderr_into_file() {
+  "$@" 2>>"$bats_run_separate_stderr_file" # use >> to see collisions' content
+}
+
+bats_merge_stdout_and_stderr() {
+  "$@" 2>&1
+}
+
+# write separate lines from <input-var> into <output-array>
+bats_separate_lines() { # <output-array> <input-var>
+  output_array_name="$1"
+  input_var_name="$2"
+  if [[ $keep_empty_lines ]]; then
+    local bats_separate_lines_lines=()
+    while IFS= read -r line; do
+      bats_separate_lines_lines+=("$line")
+    done <<<"${!input_var_name}"
+    eval "${output_array_name}=(\"\${bats_separate_lines_lines[@]}\")"
+  else
+    # shellcheck disable=SC2034,SC2206
+    IFS=$'\n' read -d '' -r -a "$output_array_name" <<<"${!input_var_name}"
+  fi
+}
+
+run() { # [!|-N] [--keep-empty-lines] [--separate-stderr] [--] <command to run...>
+  trap bats_interrupt_trap_in_run INT
+  local expected_rc=
+  local keep_empty_lines=
+  local output_case=merged
+  # parse options starting with -
+  while [[ $# -gt 0 ]] && [[ $1 == -* || $1 == '!' ]]; do
+    case "$1" in
+      '!')
+        expected_rc=-1
+      ;;
+      -[0-9]*)
+        expected_rc=${1#-}
+        if [[ $expected_rc =~ [^0-9] ]]; then
+          printf "Usage error: run: '=NNN' requires numeric NNN (got: %s)\n" "$expected_rc" >&2
+          return 1
+        elif [[ $expected_rc -gt 255 ]]; then
+          printf "Usage error: run: '=NNN': NNN must be <= 255 (got: %d)\n" "$expected_rc" >&2
+          return 1
+        fi
+      ;;
+      --keep-empty-lines)
+        keep_empty_lines=1
+      ;;
+      --separate-stderr)
+        output_case="separate"
+      ;;
+      --)
+        shift # eat the -- before breaking away
+        break
+      ;;
+    esac
+    shift
+  done
+
+  local pre_command=
+
+  case "$output_case" in
+    merged) # redirects stderr into stdout and fills only $output/$lines
+      pre_command=bats_merge_stdout_and_stderr
+    ;;
+    separate) # splits stderr into own file and fills $stderr/$stderr_lines too
+      local bats_run_separate_stderr_file
+      bats_run_separate_stderr_file="$(mktemp "${BATS_TEST_TMPDIR}/separate-stderr-XXXXXX")"
+      pre_command=bats_redirect_stderr_into_file
+    ;;
+  esac
+
   local origFlags="$-"
   set +eET
   local origIFS="$IFS"
-  # 'output', 'status', 'lines' are global variables available to tests.
+  status=0
+  if [[ $keep_empty_lines ]]; then
+    # 'output', 'status', 'lines' are global variables available to tests.
+    # preserve trailing newlines by appending . and removing it later
+    # shellcheck disable=SC2034
+    output="$($pre_command "$@"; status=$?; printf .; exit $status)" || status="$?"
+    output="${output%.}"
+  else
+    # 'output', 'status', 'lines' are global variables available to tests.
+    # shellcheck disable=SC2034
+    output="$($pre_command "$@")" || status="$?"
+  fi
+
+  bats_separate_lines lines output
+
+  if [[ "$output_case" == separate ]]; then
+      # shellcheck disable=SC2034
+      read -d '' -r stderr < "$bats_run_separate_stderr_file"
+      bats_separate_lines stderr_lines stderr
+  fi
+
   # shellcheck disable=SC2034
-  output="$("$@" 2>&1)"
-  # shellcheck disable=SC2034
-  status="$?"
-  # shellcheck disable=SC2034,SC2206
-  IFS=$'\n' lines=($output)
+  BATS_RUN_COMMAND="${*}"
   IFS="$origIFS"
   set "-$origFlags"
+
+  if [[ ${BATS_VERBOSE_RUN:-} ]]; then
+    printf "%s\n" "$output" 
+  fi
+
+  if [[ -n "$expected_rc" ]]; then
+    if [[ "$expected_rc" = "-1" ]]; then
+      if [[ "$status" -eq 0 ]]; then
+        bats_capture_stack_trace # fix backtrace
+        BATS_ERROR_SUFFIX=", expected nonzero exit code!"
+        return 1
+      fi
+    elif [ "$status" -ne "$expected_rc" ]; then
+      bats_capture_stack_trace # fix backtrace
+      # shellcheck disable=SC2034
+      BATS_ERROR_SUFFIX=", expected exit code $expected_rc, got $status"
+      return 1
+    fi
+  fi
 }
 
 setup() {
