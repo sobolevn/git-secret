@@ -28,7 +28,7 @@ function removeperson {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
-  _assert_keyring_contains_emails "$secrets_dir_keys" "git-secret keyring" "${emails[@]}"
+  _assert_keyring_contains_emails_at_least_once "$secrets_dir_keys" "git-secret keyring" "${emails[@]}"
 
   for email in "${emails[@]}"; do
     # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-

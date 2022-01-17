@@ -12,6 +12,7 @@
 
 - Fix adding newlines to `.gitignore` entries (#643)
 - Fix `cat` and `reveal` on named files while in repo subdir (#710)
+- Fix for `removeperson` if same email is present multiple times (#638)
 
 ### Misc
 
