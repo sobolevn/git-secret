@@ -111,23 +111,3 @@ function _has_line {
   run git secret remove -Z "$SECOND_FILE"
   [ "$status" -ne 0 ]
 }
-
-@test "run 'removeperson' with email added twice" {
-  local email="$TEST_DEFAULT_USER"
-
-  # This should fail because you can't add the same email twice
-  run git secret tell "$email"
-  [ "$status" -ne 0 ]
-
-  # Then test that the normal remove test runs
-  run git secret removeperson "$email"
-  [ "$status" -eq 0 ]
-
-  # Testing output:
-  [[ "$output" == *"$email"* ]]
-
-  # Then whoknows must return an error with status code 1, because no one is in list
-  run git secret whoknows
-  [ "$status" -eq 1 ]
-}
-
