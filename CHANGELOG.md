@@ -5,7 +5,7 @@
 ### Features
 
 - Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
-  when encrypting files, so secret files will stored
+  when encrypting files, so secret files are stored
   in text format rather than binary (#631)
 
 ### Bugfixes
@@ -19,6 +19,7 @@
 - Rename `killperson` command to `removeperson` (#684)
 - Moves `file_has_line` utility to tests and fixes how it is used
 - Refactors docs: new pages, new content
+- Upgrade bats-core to v1.5.0 (#755)
 
 
 ## 0.4.0
