@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret'
-date: 2022-01-17 22:09:22 +0000
+date: 2022-01-24 22:46:39 +0000
 permalink: git-secret
 categories: usage
 ---
@@ -118,8 +118,7 @@ You can then create your private key file with:
 echo "$GPG_PRIVATE_KEY" | tr ',' '\n' > ./private_key.gpg
 ```
 
-Also note: the `gpg` version on the CI/CD server **MUST MATCH** the one used locally. Otherwise, `gpg` decryption can fail silently, which leads to `git secret reveal` reporting `cannot find decrypted version of file` error. To be specific, `apt-get install gnupg` points to version [2.2.20](https://packages.ubuntu.com/impish/gnupg), yet `brew install gnupg` points to version [2.3.4](https://formulae.brew.sh/formula/gnupg) (as of 2022-01-17). Thus a `git-secret` encrypted file on macOS using the latest `gpg` installed from `brew` cannot be decrypted on Ubuntu (e.g. GitHub Actions' latest Ubuntu machine) using the latest `gpg` installed from `apt-get`. The work-around for this specific case is to downgrade `gpg` with `brew install gnupg@2.2.33`.
-
+Also note: the `gpg` version on the CI/CD server **MUST INTEROPERATE** with the one used locally. Otherwise, `gpg` decryption can fail, which leads to `git secret reveal` reporting `cannot find decrypted version of file` error. The best way to ensure this is to use the same version of gnupg on different systems.
 
 ## Environment Variables and Configuration
 
