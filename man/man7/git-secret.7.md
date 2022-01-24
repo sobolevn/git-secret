@@ -111,7 +111,7 @@ You can then create your private key file with:
 echo "$GPG_PRIVATE_KEY" | tr ',' '\n' > ./private_key.gpg
 ```
 
-Also note: the `gpg` version on the CI/CD server **MUST MATCH** the one used locally. Otherwise, `gpg` decryption can fail silently, which leads to `git secret reveal` reporting `cannot find decrypted version of file` error. 
+Also note: the `gpg` version on the CI/CD server **MUST INTEROPERATE** the one used locally. Otherwise, `gpg` decryption can fail, which leads to `git secret reveal` reporting `cannot find decrypted version of file` error. 
 
 ## Environment Variables and Configuration
 
