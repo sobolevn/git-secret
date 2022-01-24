@@ -20,6 +20,8 @@
 - Moves `file_has_line` utility to tests and fixes how it is used
 - Refactors docs: new pages, new content
 - Upgrade bats-core to v1.5.0 (#755)
+- Refactor docs: new pages, new content 
+- Update docs for use with CI/CD server (#675)
 
 
 ## 0.4.0

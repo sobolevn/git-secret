@@ -80,9 +80,9 @@ with the changes in your code.
 One way of doing it is the following:
 
 1. [create a gpg key](#using-gpg) for your CI/CD environment. You can chose any name and email address you want: for instance `MyApp CodeShip <myapp@codeship.com>`
-if your app is called MyApp and your CI/CD provider is CodeShip. It is easier not to define a password for that key.
+if your app is called MyApp and your CI/CD provider is CodeShip. It is easier not to define a passphrase for that key. However, if defining a passphrase is unavoidable, use a unique passphrase for the private key.
 2. run `gpg --armor --export-secret-key myapp@codeship.com` to get your private key value
-3. Create an env var on your CI/CD server `GPG_PRIVATE_KEY` and assign it the private key value.
+3. Create an env var on your CI/CD server `GPG_PRIVATE_KEY` and assign it the private key value. If a passphrase has been setup for the private key, create another env var on the CI/CD server `GPG_PASSPHRASE` and assign it the passphrase of the private key.
 4. Then write your Continuous Deployment build script. For instance:
 
 ```shell
@@ -90,11 +90,12 @@ if your app is called MyApp and your CI/CD provider is CodeShip. It is easier no
 # see: https://git-secret.io/installation
 
 # Create private key file
-echo $GPG_PRIVATE_KEY > ./private_key.gpg
-# Import private key
-gpg --import ./private_key.gpg
-# Reveal secrets
-git secret reveal
+echo "$GPG_PRIVATE_KEY" > ./private_key.gpg
+# Import private key and avoid the "Inappropriate ioctl for device" error
+gpg --batch --yes --pinentry-mode loopback --import private_key.gpg
+# Reveal secrets without user interaction and with passphrase. If no passphrase
+# is created for the key, remove `-p $GPG_PASSPHRASE`
+git secret reveal -p "$GPG_PASSPHRASE"
 # carry on with your build script, secret files are available ...
 ```
 
@@ -107,8 +108,11 @@ gpg --armor --export-secret-key myapp@codeship.com | tr '\n' ','
 You can then create your private key file with:
 
 ```shell
-echo $GPG_PRIVATE_KEY | tr ',' '\n' > ./private_key.gpg
+echo "$GPG_PRIVATE_KEY" | tr ',' '\n' > ./private_key.gpg
 ```
+
+Also note: the `gpg` version on the CI/CD server **MUST MATCH** the one used locally. Otherwise, `gpg` decryption can fail silently, which leads to `git secret reveal` reporting `cannot find decrypted version of file` error. To be specific, `apt-get install gnupg` points to version [2.2.20](https://packages.ubuntu.com/impish/gnupg), yet `brew install gnupg` points to version [2.3.4](https://formulae.brew.sh/formula/gnupg) (as of 2022-01-17). Thus a `git-secret` encrypted file on macOS using the latest `gpg` installed from `brew` cannot be decrypted on Ubuntu (e.g. GitHub Actions' latest Ubuntu machine) using the latest `gpg` installed from `apt-get`. The work-around for this specific case is to downgrade `gpg` with `brew install gnupg@2.2.33`.
+
 
 ## Environment Variables and Configuration
 
