@@ -33,7 +33,6 @@ jobs:
           - ubuntu
           - alpine
           - fedora
-          - centos
     steps:
     - uses: actions/checkout@v2
     - name: Run checks
