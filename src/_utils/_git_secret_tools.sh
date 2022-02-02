@@ -389,7 +389,7 @@ function _append_relative_root_path {
   local subdir
   subdir=$(git rev-parse --show-prefix)   # get the subdir of repo, like "subdir/"
   if [ ! -z "$subdir" ]; then
-    full_path="$(dirname $full_path)/${subdir}/$(basename $full_path)"
+    full_path="$(dirname "$full_path")/${subdir}/$(basename "$full_path")"
   fi
 
   echo "$full_path"
