@@ -32,7 +32,7 @@ function __get_octal_perms_freebsd {
   filename=$1
   local perms
   perms=$(stat -f "%04OLp" "$filename")
-  # perms is a string like '0644'. 
+  # perms is a string like '0644'.
   # In the "%04OLp':
   #   the '04' means 4 digits, 0 padded.  So we get 0644, not 644.
   #   the 'O' means Octal.
