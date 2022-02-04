@@ -32,8 +32,6 @@ jobs:
           - release-type: deb
             release-env: ubuntu
           - release-type: rpm
-            release-env: centos
-          - release-type: rpm
             release-env: fedora
           - release-type: apk
             release-env: alpine
