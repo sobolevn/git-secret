@@ -62,6 +62,6 @@ jobs:
             await github.issues.create({
               owner: "sobolevn",
               repo: "git-secret",
-              title: `release-ci on ${new Date().toDateString()}`,
+              title: `release-ci failure on ${new Date().toDateString()}`,
               body: "Details: https://github.com/sobolevn/git-secret/actions/workflows/release-ci.yml",
             })
