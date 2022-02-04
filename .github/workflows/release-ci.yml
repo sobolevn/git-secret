@@ -48,16 +48,16 @@ jobs:
 
   # https://github.community/t/run-github-actions-job-only-if-previous-job-has-failed/174786/2
   create-issue-on-failure:
-    name: Create an issue if release-ci failed
+    name: Create an issue if release-ci cron failed
     runs-on: ubuntu-latest
     needs: [build]
-    if: ${{ github.repository == 'sobolevn/git-secret' && always() && needs.build.result == 'failure' }}
+    if: ${{ github.event_name == 'schedule' && github.repository == 'sobolevn/git-secret' && always() && needs.build.result == 'failure' }}
     permissions:
       issues: write
     steps:
       - uses: actions/github-script@v3
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             await github.issues.create({
               owner: "sobolevn",
