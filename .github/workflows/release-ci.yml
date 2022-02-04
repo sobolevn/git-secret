@@ -43,3 +43,23 @@ jobs:
         SECRETS_RELEASE_ENV="${{ matrix.release-env }}" \
         SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" \
         make release-ci
+
+  # https://github.community/t/run-github-actions-job-only-if-previous-job-has-failed/174786/2
+  create-issue-on-failure:
+    name: Create an issue if release-ci failed
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: ${{ github.repository == 'sobolevn/git-secret' && always() && (needs.stubtest-stdlib.result == 'failure' || needs.stubtest-third-party.result == 'failure') }}
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            await github.issues.create({
+              owner: "sobolevn",
+              repo: "git-secret",
+              title: `release-ci on ${new Date().toDateString()}`,
+              body: "Details: https://github.com/sobolevn/git-secret/actions/workflows/release-ci.yml",
+            })
