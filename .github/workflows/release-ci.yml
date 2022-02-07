@@ -55,7 +55,7 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v5.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
