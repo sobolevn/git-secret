@@ -33,6 +33,7 @@ jobs:
           - ubuntu
           - alpine
           - fedora
+          - rocky
     steps:
     - uses: actions/checkout@v2
     - name: Run checks
