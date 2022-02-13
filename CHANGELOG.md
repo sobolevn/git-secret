@@ -21,6 +21,7 @@
 - Refactor docs: new pages, new content 
 - Upgrade bats-core to v1.5.0 (#755)
 - Update docs for use with CI/CD server (#675)
+- Test with RockyLinux instead of CentOS in Github Actions (#765)
 
 
 ## 0.4.0
