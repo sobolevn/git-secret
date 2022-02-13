@@ -1,4 +1,4 @@
-FROM centos:8
+FROM rockylinux:8
 
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
