@@ -35,6 +35,8 @@ jobs:
             release-env: ubuntu
           - release-type: rpm
             release-env: fedora
+          - release-type: rpm
+            release-env: rocky
           - release-type: apk
             release-env: alpine
 
