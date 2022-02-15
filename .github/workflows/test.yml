@@ -34,6 +34,7 @@ jobs:
           - alpine
           - fedora
           - rocky
+          - alma
     steps:
     - uses: actions/checkout@v2
     - name: Run checks
