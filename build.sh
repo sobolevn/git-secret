@@ -29,7 +29,7 @@ function copy_to_posts {
   current_date=$(date "+%Y-%m-%d")
 
   # Creating command refernce:
-  for com in $MAN_LOCATION/git-secret-*.1.md; do
+  for com in "$MAN_LOCATION"/git-secret-*.1.md; do
     local short_name
     short_name=$(echo "$com" | sed -n "s|$MAN_LOCATION/\(.*\)\.1\.md|\1|p")
     local command_header="---
@@ -69,7 +69,7 @@ function copy_install_scripts {
 
 
 function copy_version {
-   echo "$(./git-secret --version)" > docs/_includes/version.txt
+   ./git-secret --version > docs/_includes/version.txt
 }
 
 
