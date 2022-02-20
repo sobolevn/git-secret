@@ -385,11 +385,11 @@ function _append_relative_root_path {
 
   local full_path
   full_path=$(_append_root_path "$path")
-    
+
   local subdir
   subdir=$(git rev-parse --show-prefix)   # get the subdir of repo, like "subdir/"
   if [ ! -z "$subdir" ]; then
-    full_path="$(dirname $full_path)/${subdir}/$(basename $full_path)" 
+    full_path="$(dirname "$full_path")/${subdir}/$(basename "$full_path")"
   fi
 
   echo "$full_path"
@@ -641,9 +641,9 @@ function _assert_keyring_contains_emails_at_least_once {
   local homedir=$1
   local keyring_name=$2
   local emails=$3
-  _assert_keyring_emails "$homedir" "$keyring_name" "$emails" 1 1 # expect the email at least once in the keyring 
+  _assert_keyring_emails "$homedir" "$keyring_name" "$emails" 1 1 # expect the email at least once in the keyring
 }
- 
+
 
 
 function _assert_keyring_emails {

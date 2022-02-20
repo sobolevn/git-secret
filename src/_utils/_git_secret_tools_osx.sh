@@ -9,7 +9,7 @@ function __replace_in_file_osx {
 
 function __temp_file_osx {
   local filename
-  # man mktemp on OSX: 
+  # man mktemp on OSX:
   # ...
   # "If the -t prefix option is given, mktemp will generate a template string
   #   based on the prefix and the _CS_DARWIN_USER_TEMP_DIR configuration vari-
@@ -17,8 +17,8 @@ function __temp_file_osx {
   #   available are TMPDIR and /tmp."
 
   # we use /usr/bin/mktemp in case there's another mktemp available. See #485
-  filename=$(/usr/bin/mktemp -t _git_secret )    
-  # On OSX this can make a filename like 
+  filename=$(/usr/bin/mktemp -t _git_secret )
+  # On OSX this can make a filename like
   # '/var/folders/nz/vv4_91234569k3tkvyszvwg90009gn/T/_git_secret.HhvUPlUI'
   echo "$filename";
 }
