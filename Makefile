@@ -65,7 +65,7 @@ lint-shell:
 	docker run \
 		--volume="$${PWD}:/code" \
 		-w /code \
-		-e SHELLCHECK_OPTS='-s bash -S warning -a' \
+		-e SHELLCHECK_OPTS='-s bash -S style -a' \
 		--rm koalaman/shellcheck \
 		$$(find src .ci utils tests docs -type f \
 			-name '*.sh' -o -name '*.bash' -o -name '*.bats')

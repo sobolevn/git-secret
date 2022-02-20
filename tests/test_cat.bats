@@ -1,4 +1,6 @@
 #!/usr/bin/env bats
+# shellcheck disable=SC2030,SC2031
+# above is to avoid shellcheck info warnings that we don't understand
 
 load _test_base
 
@@ -71,16 +73,17 @@ function teardown {
   mkdir subdir
   echo "content2" > subdir/new_filename.txt
 
-  cd subdir
-  run git secret add new_filename.txt
-  [ "$status" -eq 0 ]
-  run git secret hide
-  [ "$status" -eq 0 ]
+  ( # start subshell for subdir tests
+    cd subdir
+    run git secret add new_filename.txt
+    [ "$status" -eq 0 ]
+    run git secret hide
+    [ "$status" -eq 0 ]
 
-  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" new_filename.txt
-  [ "$status" -eq 0 ]
+    run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" new_filename.txt
+    [ "$status" -eq 0 ]
+  ) # end subshell, cd back up
 
   # clean up
-  cd ..
   rm -rf subdir
 }

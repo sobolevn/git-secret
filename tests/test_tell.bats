@@ -199,6 +199,8 @@ function teardown {
   install_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
 
   local name
+  # don't complain about sed
+  # shellcheck disable=SC2001 
   name=$(echo "$TEST_NOEMAIL_COMMENT_USER" | sed -e 's/@.*//')
   # echo "$name" | sed "s/^/# '$BATS_TEST_DESCRIPTION' name is: /" >&3
 
