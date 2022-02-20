@@ -69,7 +69,7 @@ function copy_install_scripts {
 
 
 function copy_version {
-   echo "$(./git-secret --version)" > docs/_includes/version.txt
+   ./git-secret --version > docs/_includes/version.txt
 }
 
 
