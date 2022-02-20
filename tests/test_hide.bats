@@ -42,7 +42,7 @@ function teardown {
   # File must be a binary:
   local mime
   mime="$(file --mime-type --mime-encoding "$new_file" | grep 'charset=binary')"
-  [ ! -z "$mime" ]
+  [ -n "$mime" ]
 }
 
 
@@ -61,7 +61,7 @@ function teardown {
   # File must be a text:
   local mime
   mime="$(file --mime-type --mime-encoding "$new_file" | grep 'charset=us-ascii')"
-  [ ! -z "$mime" ]
+  [ -n "$mime" ]
 }
 
 
@@ -129,15 +129,17 @@ function teardown {
   # Verify that the second file is there:
   [ -f "$second_file" ]
 
-  # cd into the subdir
-  cd "$root_dir"
+  ( # start subshell for following commands
 
-  # Now it should hide 2 files:
-  run git secret hide
-  [ "$status" -eq 0 ]
+    # cd into the subdir
+    cd "$root_dir"
 
-  # cd back and clean up
-  cd ".."
+    # Now it should hide 2 files:
+    run git secret hide
+    [ "$status" -eq 0 ]
+  ) # end subshell, return to ..
+
+  # clean up
   rm -rf "$root_dir"
 }
 
