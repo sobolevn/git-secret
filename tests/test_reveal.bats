@@ -278,16 +278,17 @@ function teardown {
   mkdir subdir
   echo "content2" > subdir/new_filename.txt
 
-  cd subdir
-  run git secret add new_filename.txt
-  [ "$status" -eq 0 ]
-  run git secret hide
-  [ "$status" -eq 0 ]
-
-  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" new_filename.txt
-  [ "$status" -eq 0 ]
+  ( # start subshell for subdir tests
+    cd subdir
+    run git secret add new_filename.txt
+    [ "$status" -eq 0 ]
+    run git secret hide
+    [ "$status" -eq 0 ]
+  
+    run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" new_filename.txt
+    [ "$status" -eq 0 ]
+  ) # end subshell
 
   # clean up
-  cd ..
   rm -rf subdir
 }
