@@ -25,13 +25,11 @@ function _check_setup {
   fi
 }
 
-
 function _incorrect_usage {
   echo "git-secret: abort: $1"
   usage
   exit "$2"
 }
-
 
 function _show_version {
   echo "$GITSECRET_VERSION"
