@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-# shellcheck disable=SC2030,SC20301
+# shellcheck disable=SC2030,SC2031
 # above is to avoid shellcheck info warnings that we don't understand
 
 load _test_base
