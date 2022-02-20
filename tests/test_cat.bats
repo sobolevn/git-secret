@@ -1,4 +1,6 @@
 #!/usr/bin/env bats
+# shellcheck disable=SC2155
+# above is to avoid SC2030/SC2031 info warnings
 
 load _test_base
 
