@@ -27,6 +27,8 @@ function teardown {
 
 @test "run 'removeperson' with short name" {
   local name
+  # don't complain about sed
+  # shellcheck disable=SC2001 
   name=$(echo "$TEST_DEFAULT_USER" | sed -e 's/@.*//')
 
   # removeperson must use full email, not short name
