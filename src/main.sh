@@ -26,9 +26,12 @@ function _check_setup {
 }
 
 function _incorrect_usage {
-  echo "git-secret: abort: $1"
-  usage
-  exit "$2"
+  local message="$1"
+  local exitcode="$2"
+  shift 2
+  echo "git-secret: abort: ${message}"
+  usage "$@"
+  exit "${exitcode}"
 }
 
 function _show_version {
@@ -39,7 +42,7 @@ function _show_version {
 
 function _init_script {
   if [[ $# == 0 ]]; then
-    _incorrect_usage 'no input parameters provided.' 126
+    _incorrect_usage 'no input parameters provided.' 126 "$@"
   fi
 
   # Parse plugin-level options:
@@ -71,7 +74,7 @@ function _init_script {
     if [[ "$function_exists" == 0 ]] && [[ ! $1 == _* ]]; then
       $1 "${@:2}"
     else  # TODO: elif [[ $(_plugin_exists $1) == 0 ]]; then
-      _incorrect_usage "command $1 not found." 126
+      _incorrect_usage "command $1 not found." 126 "$@"
     fi
   fi
 }
