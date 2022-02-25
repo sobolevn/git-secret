@@ -31,7 +31,7 @@ function remove {
     local path # absolute path
     local normalized_path # relative to .git folder
     normalized_path=$(_git_normalize_filename "$item")
-    path=$(_append_root_path "$normalized_path")
+    path=$(_prepend_root_path "$normalized_path")
 
     # Checking if file exists:
     if [[ ! -f "$path" ]]; then

@@ -149,8 +149,8 @@ function hide {
 
     local input_path
     local output_path
-    input_path=$(_append_root_path "$filename")
-    output_path=$(_append_root_path "$encrypted_filename")
+    input_path=$(_prepend_root_path "$filename")
+    output_path=$(_prepend_root_path "$encrypted_filename")
 
     # Checking that file is valid:
     if [[ ! -f "$input_path" ]]; then

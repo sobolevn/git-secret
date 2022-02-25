@@ -306,7 +306,7 @@ function _maybe_create_gitignore {
   # This function creates '.gitignore' if it was missing.
 
   local full_path
-  full_path=$(_append_root_path '.gitignore')
+  full_path=$(_prepend_root_path '.gitignore')
 
   if [[ ! -f "$full_path" ]]; then
     touch "$full_path"
@@ -323,7 +323,7 @@ function _add_ignored_file {
   _maybe_create_gitignore
 
   local full_path
-  full_path=$(_append_root_path '.gitignore')
+  full_path=$(_prepend_root_path '.gitignore')
 
   printf '%q\n' "$filename" >> "$full_path"
 }
@@ -366,7 +366,7 @@ function _get_git_root_path {
 
 # Relative paths:
 
-function _append_root_path {
+function _prepend_root_path {
   # This function adds root path to any other path.
 
   local path="$1" # required
@@ -380,11 +380,11 @@ function _append_root_path {
 
 # if passed a name like 'filename.txt', returns a full path in the repo
 # For #710: if we are in a subdir, fixup the path with the subdir
-function _append_relative_root_path {
+function _prepend_relative_root_path {
   local path="$1" # required
 
   local full_path
-  full_path=$(_append_root_path "$path")
+  full_path=$(_prepend_root_path "$path")
 
   local subdir
   subdir=$(git rev-parse --show-prefix)   # get the subdir of repo, like "subdir/"
@@ -396,27 +396,27 @@ function _append_relative_root_path {
 }
 
 function _get_secrets_dir {
-  _append_root_path "${_SECRETS_DIR}"
+  _prepend_root_path "${_SECRETS_DIR}"
 }
 
 
 function _get_secrets_dir_keys {
-  _append_root_path "${_SECRETS_DIR_KEYS}"
+  _prepend_root_path "${_SECRETS_DIR_KEYS}"
 }
 
 
 function _get_secrets_dir_path {
-  _append_root_path "${_SECRETS_DIR_PATHS}"
+  _prepend_root_path "${_SECRETS_DIR_PATHS}"
 }
 
 
 function _get_secrets_dir_keys_trustdb {
-  _append_root_path "${_SECRETS_DIR_KEYS_TRUSTDB}"
+  _prepend_root_path "${_SECRETS_DIR_KEYS_TRUSTDB}"
 }
 
 
 function _get_secrets_dir_paths_mapping {
-  _append_root_path "${_SECRETS_DIR_PATHS_MAPPING}"
+  _prepend_root_path "${_SECRETS_DIR_PATHS_MAPPING}"
 }
 
 

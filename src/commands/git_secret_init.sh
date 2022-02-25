@@ -33,7 +33,7 @@ function gitignore_add_pattern {
   local gitignore_file_path
 
   pattern="$1"
-  gitignore_file_path=$(_append_root_path '.gitignore')
+  gitignore_file_path=$(_prepend_root_path '.gitignore')
 
   _maybe_create_gitignore
   _gawk_inplace -v pattern="$pattern" "'$AWK_ADD_TO_GITIGNORE'" "$gitignore_file_path"
