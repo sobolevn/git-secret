@@ -710,14 +710,14 @@ function _get_users_in_gpg_keyring {
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
       gawk -F: '$1=="uid"' )
 
+  local emails
+  emails=$(_extract_emails_from_gpg_output "$result")
+
   # For #508 / #552: warn user if gpg indicates keys are one of:
   # i=invalid, d=disabled, r=revoked, e=expired, n=not valid
   # See https://github.com/gpg/gnupg/blob/master/doc/DETAILS#field-2---validity # for more on gpg 'validity codes'.
   local invalid_lines
   invalid_lines=$(echo "$result" | gawk -F: '$2=="i" || $2=="d" || $2=="r" || $2=="e" || $2=="n"')
-
-  local emails
-  emails=$(_extract_emails_from_gpg_output "$result")
 
   local emails_with_invalid_keys
   emails_with_invalid_keys=$(_extract_emails_from_gpg_output "$invalid_lines")
