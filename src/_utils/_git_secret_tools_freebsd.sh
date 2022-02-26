@@ -3,7 +3,7 @@
 # support for freebsd. Mostly the same as MacOS.
 
 
-# shellcheck disable=1117
+# shellcheck disable=SC1117
 function __replace_in_file_freebsd {
   sed -i.bak "s/^\($1[[:space:]]*=[[:space:]]*\).*\$/\1$2/" "$3"
 }

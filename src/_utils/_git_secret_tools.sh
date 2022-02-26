@@ -33,7 +33,7 @@ fi
 : "${TMPDIR:=/tmp}"
 
 # AWK scripts:
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_FSDB_HAS_RECORD='
 BEGIN { FS=":"; OFS=":"; cnt=0; }
 {
@@ -45,7 +45,7 @@ BEGIN { FS=":"; OFS=":"; cnt=0; }
 END { if ( cnt > 0 ) print "0"; else print "1"; }
 '
 
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_FSDB_RM_RECORD='
 BEGIN { FS=":"; OFS=":"; }
 {
@@ -56,7 +56,7 @@ BEGIN { FS=":"; OFS=":"; }
 }
 '
 
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_FSDB_CLEAR_HASHES='
 BEGIN { FS=":"; OFS=":"; }
 {
@@ -64,7 +64,7 @@ BEGIN { FS=":"; OFS=":"; }
 }
 '
 
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_GPG_VER_CHECK='
 /^gpg/{
   version=$3
@@ -103,6 +103,7 @@ GPG_VER_MIN_21="$($SECRETS_GPG_COMMAND --version | gawk "$AWK_GPG_VER_CHECK")"
 
 # Bash:
 
+# echos 0 if function exists, otherwise non-zero
 function _function_exists {
   local function_name="$1" # required
 
@@ -475,7 +476,7 @@ function _find_and_clean {
   local root
   root=$(_get_git_root_path)
 
-  # shellcheck disable=2086
+  # shellcheck disable=SC2086
   find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose_opt
 }
 

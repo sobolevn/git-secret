@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_ADD_TO_GITIGNORE='
 BEGIN {
   cnt=0

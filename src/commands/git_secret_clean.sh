@@ -4,7 +4,7 @@
 function clean {
   OPTIND=1
 
-  # shellcheck disable=2034
+  # shellcheck disable=SC2034
   while getopts 'vh' opt; do
     case "$opt" in
       v) _SECRETS_VERBOSE=1;;
