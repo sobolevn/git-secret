@@ -32,7 +32,7 @@ function add {
     local path # absolute path
     local normalized_path # relative to the .git dir
     normalized_path=$(_git_normalize_filename "$item")
-    path=$(_append_root_path "$normalized_path")
+    path=$(_prepend_root_path "$normalized_path")
 
     # check that the file is not tracked
     local in_git

@@ -57,7 +57,7 @@ function teardown {
 
   # Testing that output has both filename and changes:
   local fullpath
-  fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  fullpath=$(_prepend_root_path "$FILE_TO_HIDE")
   [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"hidden content юникод"* ]]
   [[ "$output" == *"+$new_content"* ]]
@@ -102,7 +102,7 @@ function teardown {
 
   # Testing that output has both filename and changes:
   local fullpath
-  fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  fullpath=$(_prepend_root_path "$FILE_TO_HIDE")
   [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"-$FILE_CONTENTS"* ]]
   [[ "$output" == *"+$new_content"* ]]
@@ -137,13 +137,13 @@ function teardown {
 
   # Testing that output has both filename and changes:
   local fullpath
-  fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  fullpath=$(_prepend_root_path "$FILE_TO_HIDE")
 
   [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"+$new_content"* ]]
 
   local second_path
-  second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
+  second_path=$(_prepend_root_path "$SECOND_FILE_TO_HIDE")
   [[ "$output" == *"changes in $second_path"* ]]
   [[ "$output" == *"+$second_new_content"* ]]
 }
@@ -165,12 +165,12 @@ function teardown {
 
   # Testing that output has both filename and changes:
   local fullpath
-  fullpath=$(_append_root_path "$FILE_TO_HIDE")
+  fullpath=$(_prepend_root_path "$FILE_TO_HIDE")
   [[ "$output" == *"changes in $fullpath"* ]]
   [[ "$output" == *"+$new_content"* ]]
 
   local second_path
-  second_path=$(_append_root_path "$SECOND_FILE_TO_HIDE")
+  second_path=$(_prepend_root_path "$SECOND_FILE_TO_HIDE")
   [[ "$output" == *"changes in $second_path"* ]]
   [[ "$output" == *"+$second_new_content"* ]]
 }

@@ -33,7 +33,7 @@ fi
 : "${TMPDIR:=/tmp}"
 
 # AWK scripts:
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_FSDB_HAS_RECORD='
 BEGIN { FS=":"; OFS=":"; cnt=0; }
 {
@@ -45,7 +45,7 @@ BEGIN { FS=":"; OFS=":"; cnt=0; }
 END { if ( cnt > 0 ) print "0"; else print "1"; }
 '
 
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_FSDB_RM_RECORD='
 BEGIN { FS=":"; OFS=":"; }
 {
@@ -56,7 +56,7 @@ BEGIN { FS=":"; OFS=":"; }
 }
 '
 
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_FSDB_CLEAR_HASHES='
 BEGIN { FS=":"; OFS=":"; }
 {
@@ -64,7 +64,7 @@ BEGIN { FS=":"; OFS=":"; }
 }
 '
 
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_GPG_VER_CHECK='
 /^gpg/{
   version=$3
@@ -103,6 +103,7 @@ GPG_VER_MIN_21="$($SECRETS_GPG_COMMAND --version | gawk "$AWK_GPG_VER_CHECK")"
 
 # Bash:
 
+# echos 0 if function exists, otherwise non-zero
 function _function_exists {
   local function_name="$1" # required
 
@@ -306,7 +307,7 @@ function _maybe_create_gitignore {
   # This function creates '.gitignore' if it was missing.
 
   local full_path
-  full_path=$(_append_root_path '.gitignore')
+  full_path=$(_prepend_root_path '.gitignore')
 
   if [[ ! -f "$full_path" ]]; then
     touch "$full_path"
@@ -323,7 +324,7 @@ function _add_ignored_file {
   _maybe_create_gitignore
 
   local full_path
-  full_path=$(_append_root_path '.gitignore')
+  full_path=$(_prepend_root_path '.gitignore')
 
   printf '%q\n' "$filename" >> "$full_path"
 }
@@ -366,7 +367,7 @@ function _get_git_root_path {
 
 # Relative paths:
 
-function _append_root_path {
+function _prepend_root_path {
   # This function adds root path to any other path.
 
   local path="$1" # required
@@ -380,11 +381,11 @@ function _append_root_path {
 
 # if passed a name like 'filename.txt', returns a full path in the repo
 # For #710: if we are in a subdir, fixup the path with the subdir
-function _append_relative_root_path {
+function _prepend_relative_root_path {
   local path="$1" # required
 
   local full_path
-  full_path=$(_append_root_path "$path")
+  full_path=$(_prepend_root_path "$path")
 
   local subdir
   subdir=$(git rev-parse --show-prefix)   # get the subdir of repo, like "subdir/"
@@ -396,27 +397,27 @@ function _append_relative_root_path {
 }
 
 function _get_secrets_dir {
-  _append_root_path "${_SECRETS_DIR}"
+  _prepend_root_path "${_SECRETS_DIR}"
 }
 
 
 function _get_secrets_dir_keys {
-  _append_root_path "${_SECRETS_DIR_KEYS}"
+  _prepend_root_path "${_SECRETS_DIR_KEYS}"
 }
 
 
 function _get_secrets_dir_path {
-  _append_root_path "${_SECRETS_DIR_PATHS}"
+  _prepend_root_path "${_SECRETS_DIR_PATHS}"
 }
 
 
 function _get_secrets_dir_keys_trustdb {
-  _append_root_path "${_SECRETS_DIR_KEYS_TRUSTDB}"
+  _prepend_root_path "${_SECRETS_DIR_KEYS_TRUSTDB}"
 }
 
 
 function _get_secrets_dir_paths_mapping {
-  _append_root_path "${_SECRETS_DIR_PATHS_MAPPING}"
+  _prepend_root_path "${_SECRETS_DIR_PATHS_MAPPING}"
 }
 
 
@@ -475,7 +476,7 @@ function _find_and_clean {
   local root
   root=$(_get_git_root_path)
 
-  # shellcheck disable=2086
+  # shellcheck disable=SC2086
   find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose_opt
 }
 
@@ -710,14 +711,14 @@ function _get_users_in_gpg_keyring {
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
       gawk -F: '$1=="uid"' )
 
+  local emails
+  emails=$(_extract_emails_from_gpg_output "$result")
+
   # For #508 / #552: warn user if gpg indicates keys are one of:
   # i=invalid, d=disabled, r=revoked, e=expired, n=not valid
   # See https://github.com/gpg/gnupg/blob/master/doc/DETAILS#field-2---validity # for more on gpg 'validity codes'.
   local invalid_lines
   invalid_lines=$(echo "$result" | gawk -F: '$2=="i" || $2=="d" || $2=="r" || $2=="e" || $2=="n"')
-
-  local emails
-  emails=$(_extract_emails_from_gpg_output "$result")
 
   local emails_with_invalid_keys
   emails_with_invalid_keys=$(_extract_emails_from_gpg_output "$invalid_lines")

@@ -42,10 +42,10 @@ function changes {
         _abort "cannot find encrypted version of file: $filename"
     fi
     if [[ -n "$normalized_path" ]]; then
-      path=$(_append_root_path "$normalized_path")
+      path=$(_prepend_root_path "$normalized_path")
     else
       # Path was already normalized
-      path=$(_append_root_path "$filename")
+      path=$(_prepend_root_path "$filename")
     fi
 
     if [[ ! -f "$path" ]]; then

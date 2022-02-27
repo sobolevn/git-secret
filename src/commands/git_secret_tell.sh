@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=2016
+# shellcheck disable=SC2016
 AWK_GPG_KEY_CNT='
 BEGIN { cnt=0; OFS=":"; FS=":"; }
 flag=0; $1 == "pub" { cnt++ }
@@ -77,7 +77,7 @@ function tell {
   start_key_cnt=$(get_gpg_key_count)
   for email in "${emails[@]}"; do
     _temporary_file  # note that `_temporary_file` will export `temporary_filename` var.
-    # shellcheck disable=2154
+    # shellcheck disable=SC2154
     local keyfile="$temporary_filename"
 
     # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
