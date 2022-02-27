@@ -28,13 +28,14 @@ jobs:
     strategy:
       matrix:
         docker-env:
+          - alma
+          - alpine
+          - arch
           - debian-gnupg1  # We need to test legacy version of gnupg
           - debian-gnupg2
-          - ubuntu
-          - alpine
           - fedora
           - rocky
-          - alma
+          - ubuntu
     steps:
     - uses: actions/checkout@v2
     - name: Run checks
