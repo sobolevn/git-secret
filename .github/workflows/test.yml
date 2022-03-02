@@ -19,7 +19,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Shellcheck and Hadolint
       run: make lint
 
@@ -37,20 +37,20 @@ jobs:
           - rocky
           - ubuntu
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Run checks
       run: SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
 
   osx-ci:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Run checks
       run: brew install gawk gnupg && make test
 
   build-man:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Checks that manual generation works
       run: make build-man

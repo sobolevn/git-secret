@@ -43,7 +43,7 @@ jobs:
             release-env: alpine
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Run checks
       run: |
         SECRETS_RELEASE_ENV="${{ matrix.release-env }}" \
