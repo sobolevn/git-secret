@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 concurrency: 
-  group: ${{ github.head_ref || github.run_id }}
+  group: ${{ github.head_ref || github.run_id }}-test
   cancel-in-progress: true
 
 jobs:
@@ -47,10 +47,3 @@ jobs:
     - uses: actions/checkout@v3
     - name: Run checks
       run: brew install gawk gnupg && make test
-
-  build-man:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Checks that manual generation works
-      run: make build-man
