@@ -813,8 +813,8 @@ function _decrypt {
   #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
-    echo "$passphrase" | $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 0 \
-      "$encrypted_filename"
+    exec 4<<<"$passphrase"  # use 4, because descriptor 3 is used by bats
+    $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 4 "$encrypted_filename"
     exit_code=$?
   else
     $SECRETS_GPG_COMMAND "${args[@]}" "$encrypted_filename"
