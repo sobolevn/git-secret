@@ -23,7 +23,7 @@ function teardown {
   # Preparations:
   local filename="$TEST_DEFAULT_FILENAME"
   echo "content" > "$filename"
-  echo "$filename" > ".gitignore"
+  #echo "$filename" > ".gitignore"  # this is performed by 'add' now
 
   run git secret add "$filename"
   [ "$status" -eq 0 ]
@@ -143,7 +143,7 @@ function teardown {
   mkdir -p "$sibling"
 
   echo "content" > "$test_file"
-  echo "$test_file" > ".gitignore"
+  #echo "$test_file" > ".gitignore"  # this is performed by 'add' now
 
   cd "$sibling"
 
@@ -179,7 +179,7 @@ function teardown {
   mkdir -p "$test_dir"
   touch "$test_dir/$test_file"
   echo "content" > "$test_dir/$test_file"
-  echo "$test_dir/$test_file" > ".gitignore"
+  #echo "$test_dir/$test_file" > ".gitignore"    # this is performed by 'add' now
 
   # Testing:
   run git secret add "$test_dir/$test_file"
@@ -195,7 +195,7 @@ function teardown {
   # Preparations:
   local filename="$TEST_DEFAULT_FILENAME"
   echo "content" > "$filename"
-  echo "$filename" > ".gitignore"
+  #echo "$filename" > ".gitignore"   # this is performed by 'add' now
 
   # Testing:
   run git secret add "$filename"
@@ -220,11 +220,14 @@ function teardown {
   # Preparations:
   local filename1="$TEST_DEFAULT_FILENAME"
   echo "content1" > "$filename1"
-  echo "$filename1" > ".gitignore"
+  #echo "$filename1" > ".gitignore"  # this is performed by 'add' now
 
   local filename2="$TEST_SECOND_FILENAME"
   echo "content2" > "$filename2"
-  echo "$filename2" >> ".gitignore"
+  #echo "$filename2" >> ".gitignore" # this is performed by 'add' now
+  
+  # ADD TEST for .gitignore contents here
+  # This fails now because of #789
 
   # Testing:
   run git secret add "$filename1" "$filename2"
@@ -239,11 +242,11 @@ function teardown {
   # Preparations:
   local filename1="$TEST_DEFAULT_FILENAME"
   echo "content1" > "$filename1"
-  echo "$filename1" > ".gitignore"
+  #echo "$filename1" > ".gitignore"  # this is performed by 'add' now
 
   local filename2="$TEST_SECOND_FILENAME"
   echo "content2" > "$filename2"
-  echo "$filename2" >> ".gitignore"
+  #echo "$filename2" >> ".gitignore" # this is performed by 'add' now
 
   # Testing:
   run git secret add -v "$filename1" "$filename2"
@@ -261,7 +264,7 @@ function teardown {
   # Preparations:
   local filename="$TEST_FOURTH_FILENAME"
   echo "content" > "$filename"
-  echo "$filename" > ".gitignore"
+  #echo "$filename" > ".gitignore"   # this is performed by 'add' now
 
   run git secret add "$filename"
   [ "$status" -eq 0 ]
