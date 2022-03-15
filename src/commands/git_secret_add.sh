@@ -61,7 +61,7 @@ function add {
   if [[ ! "${#not_ignored[@]}" -eq 0 ]]; then
     # And show them all at once.
     local message
-    message="these files are not in .gitignore: $*"
+    message="these files are not in .gitignore: $*"     # should this be showing not_ignored?
 
     if [[ "$auto_ignore" -eq 0 ]]; then
       # This file is not ignored. user don't want it to be added automatically.
@@ -74,6 +74,9 @@ function add {
       # see https://github.com/sobolevn/git-secret/issues/18 for more.
       _message "$message"
       _message "auto adding them to .gitignore"
+
+      # we need changes below for #789
+      # because this adds multiple filenames on one line
       for item in "${not_ignored[@]}"; do
         _add_ignored_file "$item"
       done
