@@ -201,7 +201,7 @@ function teardown {
   run git secret add "$filename"
   run git secret add "$filename"
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: 0 item(s) added." ]
+  [[ "$output" = *"git-secret: 0 item(s) added."* ]]
 
   # Ensuring that path mappings was set correctly:
   local path_mappings
