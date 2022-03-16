@@ -233,8 +233,8 @@ function teardown {
   run git secret add "$filename1" "$filename2"
 
   # debugging code
-  echo "$output" | sed 's/^/# DEBUG: output from git secret add: /' >&3  # fd 3 for bats
-  cat .gitignore | sed 's/^/# DEBUG: .gitignore: /' >&3  # show .gitignore through bats
+  sed 's/^/# DEBUG: output from git secret add: /' < .gitignore >&3  # fd 3 for bats
+  sed 's/^/# DEBUG: .gitignore: /' < .gitignore >&3  # show .gitignore through bats
 
   [ "$status" -eq 0 ]
   [[ "$output" = *"git-secret: 2 item(s) added."* ]]   # there may be additional lines too

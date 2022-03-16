@@ -326,7 +326,7 @@ function _add_ignored_file {
   local full_path
   full_path=$(_prepend_root_path '.gitignore')
 
-  echo "# DEBUG: appending filename to .gitignore: $item" >&3  # fd 3 for bats
+  echo "# DEBUG: appending filename to .gitignore: $filename" >&3  # fd 3 for bats
   printf '%q\n' "$filename" >> "$full_path"
 }
 
