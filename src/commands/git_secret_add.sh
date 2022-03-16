@@ -78,6 +78,7 @@ function add {
       # we need changes below for #789
       # because this adds multiple filenames on one line
       for item in "${not_ignored[@]}"; do
+        echo "# DEBUG: adding filename to .gitignore: $item" >&3  # fd 3 for bats
         _add_ignored_file "$item"
       done
     fi
