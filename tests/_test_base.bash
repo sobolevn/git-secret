@@ -87,7 +87,7 @@ function file_has_line {
   local filename="$2" # required
 
   local contains
-  contains=$(grep -Fqw "$key" "$filename"; echo $?)
+  contains=$(grep -Fqw "$key" "$filename"; echo $?) # i'm not convinced this is always correct
 
   # 0 on contains, 1 or 2 for error.
   echo "$contains"
