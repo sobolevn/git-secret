@@ -61,7 +61,8 @@ function add {
   if [[ ! "${#not_ignored[@]}" -eq 0 ]]; then
     # And show them all at once.
     local message
-    message="these files are not in .gitignore: $*"     # should this be showing not_ignored?
+    message="these files are not in .gitignore: ${not_ignored[@]}"     
+    # messages has spaces between filenames, which can be ambiguous if files have spaces
 
     if [[ "$auto_ignore" -eq 0 ]]; then
       # This file is not ignored. user don't want it to be added automatically.
@@ -78,7 +79,7 @@ function add {
       # we need changes below for #789
       # because this adds multiple filenames on one line
       for item in "${not_ignored[@]}"; do
-        echo "# DEBUG: adding filename to .gitignore: $item" >&3  # fd 3 for bats
+        echo "# DEBUG: calling _add_ignored_file on: $item" >&3  # fd 3 for bats
         _add_ignored_file "$item"
       done
     fi
