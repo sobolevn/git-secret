@@ -87,9 +87,12 @@ function file_has_line {
   local filename="$2" # required
 
   local contains
-  contains=$(grep -Fqw "$key" "$filename"; echo $?) # i'm not convinced this is always correct
+  # -F means 'Interpret PATTERN as a list of fixed strings' (not regexen)
+  # -q means 'do not write anything to standard output.  Exit immediately with zero status if any match or error is found'
+  # -w means 'Select only those lines containing matches that form whole words'
+  contains=$(grep -Fqw "$key" "$filename"; echo $?) # this may not always be correct, especially because of -q
 
-  # 0 on contains, 1 or 2 for error.
+  # 0 on contains or error, 1 for not contains. We cannot get 2 because of grep -q (see 'man grep')
   echo "$contains"
 }
 
