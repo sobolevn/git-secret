@@ -263,8 +263,9 @@ function teardown {
 
   local gitignore_linecount
   gitignore_linecount=$(wc -l < .gitignore) # should be four lines: ...
-  #echo "# DEBUG: found $gitignore_linecount lines in .gitignore" >&3
+  echo "# DEBUG: found $gitignore_linecount lines in .gitignore" >&3    # uncommented to debug MacOS test failure
   [ "$gitignore_linecount" == 4 ]        # two added by `git secret init`, and one for each `added` file
+    # above fails only on MacOS
 
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
