@@ -62,7 +62,7 @@ function add {
     # And show them all at once.
     local message
     message="these files are not in .gitignore: ${not_ignored[*]}"
-    # messages has spaces between filenames, which can be ambiguous if files have spaces
+    # NOTE: messages has spaces between filenames, which can be ambiguous if files also have spaces
 
     if [[ "$auto_ignore" -eq 0 ]]; then
       # This file is not ignored. user don't want it to be added automatically.
@@ -76,10 +76,7 @@ function add {
       _message "$message"
       _message "auto adding them to .gitignore"
 
-      # we need changes below for #789
-      # because this adds multiple filenames on one line
       for item in "${not_ignored[@]}"; do
-        #echo "# DEBUG: calling _add_ignored_file on: $item" >&3  # fd 3 for bats
         _add_ignored_file "$item"
       done
     fi

@@ -23,7 +23,6 @@ function teardown {
   # Preparations:
   local filename="$TEST_DEFAULT_FILENAME"
   echo "content" > "$filename"
-  #echo "$filename" > ".gitignore"  # this is performed by 'add' now
 
   run git secret add "$filename"
   [ "$status" -eq 0 ]
@@ -143,7 +142,6 @@ function teardown {
   mkdir -p "$sibling"
 
   echo "content" > "$test_file"
-  #echo "$test_file" > ".gitignore"  # this is performed by 'add' now
 
   cd "$sibling"
 
@@ -179,7 +177,6 @@ function teardown {
   mkdir -p "$test_dir"
   touch "$test_dir/$test_file"
   echo "content" > "$test_dir/$test_file"
-  #echo "$test_dir/$test_file" > ".gitignore"    # this is performed by 'add' now
 
   # Testing:
   run git secret add "$test_dir/$test_file"
@@ -195,7 +192,6 @@ function teardown {
   # Preparations:
   local filename="$TEST_DEFAULT_FILENAME"
   echo "content" > "$filename"
-  #echo "$filename" > ".gitignore"   # this is performed by 'add' now
 
   # Testing:
   run git secret add "$filename"
@@ -220,21 +216,15 @@ function teardown {
   # Preparations:
   local filename1="$TEST_DEFAULT_FILENAME"
   echo "content1" > "$filename1"
-  #echo "$filename1" > ".gitignore"  # this is performed by 'add' now
 
   local filename2="$TEST_SECOND_FILENAME"
   echo "content2" > "$filename2"
-  #echo "$filename2" >> ".gitignore" # this is performed by 'add' now
   
   # ADD TEST for .gitignore contents here
   # This fails now because of #789
 
   # Testing:
   run git secret add "$filename1" "$filename2"
-
-  # debugging code
-  #sed 's/^/# DEBUG: output from git secret add: /' < .gitignore >&3  # fd 3 for bats
-  #sed 's/^/# DEBUG: .gitignore: /' < .gitignore >&3  # show .gitignore through bats
 
   [ "$status" -eq 0 ]
   [[ "$output" = *"git-secret: 2 item(s) added."* ]]   # there may be additional lines too
@@ -247,11 +237,9 @@ function teardown {
   # Preparations:
   local filename1="$TEST_DEFAULT_FILENAME"
   echo "content1" > "$filename1"
-  #echo "$filename1" > ".gitignore"  # this is performed by 'add' now
 
   local filename2="$TEST_SECOND_FILENAME"
   echo "content2" > "$filename2"
-  #echo "$filename2" >> ".gitignore" # this is performed by 'add' now
 
   # Testing:
   run git secret add -v "$filename1" "$filename2"
@@ -262,12 +250,8 @@ function teardown {
   [[ "$output" == *"git-secret: 2 item(s) added."* ]]
 
   local gitignore_linecount
-  # sed below is to remove leading whitespace on os
-  #gitignore_linecount=$(wc -l < .gitignore | sed -e 's/^[[:space:]]*//') # should be four lines. 
   gitignore_linecount=$(wc -l < .gitignore) # should be four lines. 
-  #echo "# DEBUG: found $gitignore_linecount lines in .gitignore" >&3    # uncommented to debug MacOS test failure
-  [ "$gitignore_linecount" -eq 4 ]        # two added by `git secret init`, and one for each `added` file
-    # above fails only on MacOS
+  [ "$gitignore_linecount" -eq 4 ]          # two added by `git secret init`, and one for each `added` file
 
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
@@ -277,7 +261,6 @@ function teardown {
   # Preparations:
   local filename="$TEST_FOURTH_FILENAME"
   echo "content" > "$filename"
-  #echo "$filename" > ".gitignore"   # this is performed by 'add' now
 
   run git secret add "$filename"
   [ "$status" -eq 0 ]
