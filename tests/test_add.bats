@@ -262,9 +262,11 @@ function teardown {
   [[ "$output" == *"git-secret: 2 item(s) added."* ]]
 
   local gitignore_linecount
-  gitignore_linecount=$(wc -l < .gitignore) # should be four lines: ...
-  echo "# DEBUG: found $gitignore_linecount lines in .gitignore" >&3    # uncommented to debug MacOS test failure
-  [ "$gitignore_linecount" == 4 ]        # two added by `git secret init`, and one for each `added` file
+  # sed below is to remove leading whitespace on os
+  #gitignore_linecount=$(wc -l < .gitignore | sed -e 's/^[[:space:]]*//') # should be four lines. 
+  gitignore_linecount=$(wc -l < .gitignore) # should be four lines. 
+  #echo "# DEBUG: found $gitignore_linecount lines in .gitignore" >&3    # uncommented to debug MacOS test failure
+  [ "$gitignore_linecount" -eq 4 ]        # two added by `git secret init`, and one for each `added` file
     # above fails only on MacOS
 
   # Cleaning up:
