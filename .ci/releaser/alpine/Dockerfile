@@ -1,6 +1,6 @@
 # Initially copied from
 # https://github.com/jordansissel/fpm/blob/master/Dockerfile
-FROM alpine:3.15.0
+FROM alpine:3.15.1
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
