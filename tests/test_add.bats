@@ -261,6 +261,11 @@ function teardown {
   [[ "$output" == *"git-secret: adding file: ${TEST_SECOND_FILENAME}"* ]]
   [[ "$output" == *"git-secret: 2 item(s) added."* ]]
 
+  local gitignore_linecount
+  gitignore_linecount=$(wc -l < .gitignore) # should be four lines: ...
+  #echo "# DEBUG: found $gitignore_linecount lines in .gitignore" >&3
+  [ "$gitignore_linecount" == 4 ]        # two added by `git secret init`, and one for each `added` file
+
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
 }
