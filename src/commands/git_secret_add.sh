@@ -79,7 +79,7 @@ function add {
       # we need changes below for #789
       # because this adds multiple filenames on one line
       for item in "${not_ignored[@]}"; do
-        echo "# DEBUG: calling _add_ignored_file on: $item" >&3  # fd 3 for bats
+        #echo "# DEBUG: calling _add_ignored_file on: $item" >&3  # fd 3 for bats
         _add_ignored_file "$item"
       done
     fi
