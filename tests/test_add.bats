@@ -212,7 +212,7 @@ function teardown {
 }
 
 
-@test "run 'add' for multiple files" {
+@test "run 'add' for multiple files, and test .gitignore contents" {
   # Preparations:
   local filename1="$TEST_DEFAULT_FILENAME"
   echo "content1" > "$filename1"
