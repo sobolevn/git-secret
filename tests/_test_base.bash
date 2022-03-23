@@ -88,11 +88,13 @@ function file_has_line {
 
   local contains
   # -F means 'Interpret PATTERN as a list of fixed strings' (not regexen)
-  # -q means 'do not write anything to standard output.  Exit immediately with zero status if any match or error is found'
-  # -w means 'Select only those lines containing matches that form whole words'
-  contains=$(grep -Fqw "$key" "$filename"; echo $?) # this may not always be correct, especially because of -q
+  # -x means 'Select only those matches that exactly match the whole line'
+  #contains=$(grep -Fqx "$key" "$filename"; echo $?) # this will indicate match if grep give error because of -q
+  contains=$(grep -Fx "$key" "$filename" 2>&1 > /dev/null; echo $?) # 0 on match, 1 or 2 on error
+  # "Normally, the exit status is 0 if selected lines are found and 1 otherwise." But the exit status is >2 if an error occurred.
+  # see grep man page section about exit codes for details
 
-  # 0 on contains or error, 1 for not contains. We cannot get 2 because of grep -q (see above and 'man grep')
+  # 0 on contains or error, 1 or 2 for not contains or error
   echo "$contains"
 }
 
