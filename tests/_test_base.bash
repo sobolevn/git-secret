@@ -92,7 +92,7 @@ function file_has_line {
   # -w means 'Select only those lines containing matches that form whole words'
   contains=$(grep -Fqw "$key" "$filename"; echo $?) # this may not always be correct, especially because of -q
 
-  # 0 on contains or error, 1 for not contains. We cannot get 2 because of grep -q (see 'man grep')
+  # 0 on contains or error, 1 for not contains. We cannot get 2 because of grep -q (see above and 'man grep')
   echo "$contains"
 }
 
