@@ -219,15 +219,16 @@ function teardown {
 
   local filename2="$TEST_SECOND_FILENAME"
   echo "content2" > "$filename2"
-  
-  # ADD TEST for .gitignore contents here
-  # This fails now because of #789
 
   # Testing:
   run git secret add "$filename1" "$filename2"
-
   [ "$status" -eq 0 ]
   [[ "$output" = *"git-secret: 2 item(s) added."* ]]   # there may be additional lines too
+
+  # test .gitignore has 4 lines as expected
+  local gitignore_linecount
+  gitignore_linecount=$(wc -l < .gitignore)
+  [ "$gitignore_linecount" -eq 4 ]          # two added by `git secret init`, and one for each `added` file
 
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
@@ -248,10 +249,6 @@ function teardown {
   [[ "$output" == *"git-secret: adding file: ${TEST_DEFAULT_FILENAME}"* ]]
   [[ "$output" == *"git-secret: adding file: ${TEST_SECOND_FILENAME}"* ]]
   [[ "$output" == *"git-secret: 2 item(s) added."* ]]
-
-  local gitignore_linecount
-  gitignore_linecount=$(wc -l < .gitignore) # should be four lines. 
-  [ "$gitignore_linecount" -eq 4 ]          # two added by `git secret init`, and one for each `added` file
 
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
