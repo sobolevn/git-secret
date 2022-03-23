@@ -23,7 +23,6 @@ function teardown {
   # Preparations:
   local filename="$TEST_DEFAULT_FILENAME"
   echo "content" > "$filename"
-  echo "$filename" > ".gitignore"
 
   run git secret add "$filename"
   [ "$status" -eq 0 ]
@@ -143,7 +142,6 @@ function teardown {
   mkdir -p "$sibling"
 
   echo "content" > "$test_file"
-  echo "$test_file" > ".gitignore"
 
   cd "$sibling"
 
@@ -179,7 +177,6 @@ function teardown {
   mkdir -p "$test_dir"
   touch "$test_dir/$test_file"
   echo "content" > "$test_dir/$test_file"
-  echo "$test_dir/$test_file" > ".gitignore"
 
   # Testing:
   run git secret add "$test_dir/$test_file"
@@ -195,13 +192,12 @@ function teardown {
   # Preparations:
   local filename="$TEST_DEFAULT_FILENAME"
   echo "content" > "$filename"
-  echo "$filename" > ".gitignore"
 
   # Testing:
   run git secret add "$filename"
   run git secret add "$filename"
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: 0 item(s) added." ]
+  [[ "$output" = *"git-secret: 0 item(s) added."* ]]
 
   # Ensuring that path mappings was set correctly:
   local path_mappings
@@ -216,20 +212,23 @@ function teardown {
 }
 
 
-@test "run 'add' for multiple files" {
+@test "run 'add' for multiple files, and test .gitignore contents" {
   # Preparations:
   local filename1="$TEST_DEFAULT_FILENAME"
   echo "content1" > "$filename1"
-  echo "$filename1" > ".gitignore"
 
   local filename2="$TEST_SECOND_FILENAME"
   echo "content2" > "$filename2"
-  echo "$filename2" >> ".gitignore"
 
   # Testing:
   run git secret add "$filename1" "$filename2"
   [ "$status" -eq 0 ]
-  [ "$output" = "git-secret: 2 item(s) added." ]
+  [[ "$output" = *"git-secret: 2 item(s) added."* ]]   # there may be additional lines too
+
+  # test .gitignore has 4 lines as expected
+  local gitignore_linecount
+  gitignore_linecount=$(wc -l < .gitignore)
+  [ "$gitignore_linecount" -eq 4 ]          # two added by `git secret init`, and one for each `added` file
 
   # Cleaning up:
   rm "$filename1" "$filename2" ".gitignore"
@@ -239,11 +238,9 @@ function teardown {
   # Preparations:
   local filename1="$TEST_DEFAULT_FILENAME"
   echo "content1" > "$filename1"
-  echo "$filename1" > ".gitignore"
 
   local filename2="$TEST_SECOND_FILENAME"
   echo "content2" > "$filename2"
-  echo "$filename2" >> ".gitignore"
 
   # Testing:
   run git secret add -v "$filename1" "$filename2"
@@ -261,7 +258,6 @@ function teardown {
   # Preparations:
   local filename="$TEST_FOURTH_FILENAME"
   echo "content" > "$filename"
-  echo "$filename" > ".gitignore"
 
   run git secret add "$filename"
   [ "$status" -eq 0 ]

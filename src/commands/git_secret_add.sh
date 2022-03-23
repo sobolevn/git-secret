@@ -61,7 +61,8 @@ function add {
   if [[ ! "${#not_ignored[@]}" -eq 0 ]]; then
     # And show them all at once.
     local message
-    message="these files are not in .gitignore: $*"
+    message="these files are not in .gitignore: ${not_ignored[*]}"
+    # NOTE: message has spaces between filenames, which can be ambiguous if files also have spaces
 
     if [[ "$auto_ignore" -eq 0 ]]; then
       # This file is not ignored. user don't want it to be added automatically.

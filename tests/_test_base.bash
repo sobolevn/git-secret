@@ -87,9 +87,12 @@ function file_has_line {
   local filename="$2" # required
 
   local contains
-  contains=$(grep -Fqw "$key" "$filename"; echo $?)
+  # -F means 'Interpret PATTERN as a list of fixed strings' (not regexen)
+  # -q means 'do not write anything to standard output.  Exit immediately with zero status if any match or error is found'
+  # -w means 'Select only those lines containing matches that form whole words'
+  contains=$(grep -Fqw "$key" "$filename"; echo $?) # this may not always be correct, especially because of -q
 
-  # 0 on contains, 1 or 2 for error.
+  # 0 on contains or error, 1 for not contains. We cannot get 2 because of grep -q (see above and 'man grep')
   echo "$contains"
 }
 
@@ -258,7 +261,6 @@ function set_state_secret_add {
   local filename="$1"
   local content="$2"
   echo "$content" > "$filename"      # we add a newline
-  echo "$filename" >> '.gitignore'
 
   git secret add "$filename" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
 }
@@ -267,7 +269,6 @@ function set_state_secret_add_without_newline {
   local filename="$1"
   local content="$2"
   echo -n "$content" > "$filename"      # we do not add a newline
-  echo "$filename" >> '.gitignore'
 
   git secret add "$filename" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
 }
