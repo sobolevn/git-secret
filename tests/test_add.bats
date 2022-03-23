@@ -114,7 +114,7 @@ function teardown {
   [ "$status" -eq 0 ]
 
   [[ -f "$current_dir/.gitignore" ]]
-  run file_has_line "$test_file" "$current_dir/.gitignore"
+  run file_has_line "$nested_dir/$test_file" "$current_dir/.gitignore"
   [ "$output" = '0' ]
 
   # .gitignore was not created:
