@@ -13,6 +13,7 @@
 - Fix adding newlines to `.gitignore` entries (#643)
 - Fix `cat` and `reveal` on named files while in repo subdir (#710)
 - Fix for `removeperson` if same email is present multiple times (#638)
+- Correct error message about files missing from .gitignore
 
 ### Misc
 
@@ -22,6 +23,7 @@
 - Upgrade bats-core to v1.5.0 (#755)
 - Update docs for use with CI/CD server (#675)
 - Test, and build RPMS, with Rocky and Alma Linux instead of CentOS (#765)
+- Test .gitignore contents (#792)
 
 
 ## 0.4.0
