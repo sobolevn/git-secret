@@ -62,7 +62,7 @@ function add {
     # And show them all at once.
     local message
     message="these files are not in .gitignore: ${not_ignored[*]}"
-    # NOTE: messages has spaces between filenames, which can be ambiguous if files also have spaces
+    # NOTE: message has spaces between filenames, which can be ambiguous if files also have spaces
 
     if [[ "$auto_ignore" -eq 0 ]]; then
       # This file is not ignored. user don't want it to be added automatically.
@@ -75,7 +75,6 @@ function add {
       # see https://github.com/sobolevn/git-secret/issues/18 for more.
       _message "$message"
       _message "auto adding them to .gitignore"
-
       for item in "${not_ignored[@]}"; do
         _add_ignored_file "$item"
       done
