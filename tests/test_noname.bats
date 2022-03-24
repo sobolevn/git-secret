@@ -1,8 +1,7 @@
 #!/usr/bin/env bats
 
 # These tests using TEST_NONAME_USER, which has a email but no username.
-# This test is copied from the start of test_remove.bats,
-# and exercises an add and a remove.
+# This was originally based on test_remove.bats
 
 load _test_base
 
@@ -57,3 +56,4 @@ function _has_line {
   [ -f "$(_get_encrypted_filename "$FIRST_FILE")" ]
   [ -f "$(_get_encrypted_filename "$SECOND_FILE")" ]
 }
+
