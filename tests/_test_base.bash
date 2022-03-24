@@ -304,7 +304,7 @@ function unset_current_state {
   # SECRETS_TEST_VERBOSE is experimental
   if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then
     # display the captured output as bats diagnostic (fd3, preceded by '# ')
-    sed "s/^/# $BATS_TEST_DESCRIPTION: /" < "$TEST_GPG_OUTPUT_FILE" >&3
+    sed "s/^/# $BATS_TEST_DESCRIPTION: GPG OUTPUT:/" < "$TEST_GPG_OUTPUT_FILE" >&3
 
     # display the last $output
     # shellcheck disable=SC2001,SC2154
@@ -333,12 +333,9 @@ function unset_current_state {
 trap 'if [[ -f "$TEST_GPG_OUTPUT_FILE" ]]; then if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then echo "git-secret: test: cleaning up: $TEST_GPG_OUTPUT_FILE"; fi; rm -f "$TEST_GPG_OUTPUT_FILE"; fi;' EXIT
 
 function bats_diag_file {
-  local prefix=$1
-  local filename=$2
+  local filename=$1
 
-  #sed -e 's/^/# $prefix: $filename: /' < "$filename" >&3
-  #sed -e 's/^/# /' < "$filename" >&3
   echo "# DEBUG: begin contents: $filename" >&3
-  cat "$filename" | sed -e 's/^/# DEBUG: /' >&3
+  sed -e 's/^/# DEBUG: /' < "$filename" >&3
   echo "# DEBUG: end contents: $filename" >&3
 }
