@@ -83,16 +83,16 @@ function test_user_password {
 function file_has_line {
   # First parameter is the key, second is the filename.
 
-  local key="$1" # required
+  local line="$1" # required
   local filename="$2" # required
 
-  local contains
+  local exit_code
   # -F means 'Interpret PATTERN as a list of fixed strings' (not regexen)
   # -x means 'Select only those matches that exactly match the whole line'
-  contains=$(grep -Fx "$key" "$filename" 2>&1 > /dev/null; echo $?) # 0 on match, 1 or 2 on error
+  exit_code=$(grep -Fx "$line" "$filename" 2>&1 > /dev/null; echo $?)
 
-  # 0 means contains, 1 means not contains, and probably >1 for other errors.
-  echo "$contains"
+  # 0 means contains, 1 means not contains, and probably >1 for errors.
+  echo "$exit_code"
 }
 
 
@@ -330,11 +330,3 @@ function unset_current_state {
 
 # show output if we wind up manually removing the test output file in a trap
 trap 'if [[ -f "$TEST_GPG_OUTPUT_FILE" ]]; then if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then echo "git-secret: test: cleaning up: $TEST_GPG_OUTPUT_FILE"; fi; rm -f "$TEST_GPG_OUTPUT_FILE"; fi;' EXIT
-
-function bats_diag_file {
-  local filename=$1
-
-  echo "# DEBUG: begin contents: $filename" >&3
-  sed -e 's/^/# DEBUG: /' < "$filename" >&3
-  echo "# DEBUG: end contents: $filename" >&3
-}
