@@ -11,8 +11,6 @@
 Bats is a [TAP](https://testanything.org/)-compliant testing framework for Bash.  It provides a simple
 way to verify that the UNIX programs you write behave as expected.
 
-[TAP]: https://testanything.org
-
 A Bats test file is a Bash script with special syntax for defining test cases.
 Under the hood, each test case is just a function with a description.
 
@@ -86,8 +84,7 @@ or look at the other communication channels.
 
 ## Contact
 
-- We are `#bats` on freenode;
-- Or leave a message on [gitter].
+- You can find and chat with us on our [Gitter].
 
 ## Version history
 
@@ -127,4 +124,4 @@ Bats is released under an MIT-style license; see `LICENSE.md` for details.
 See the [parent project](https://github.com/bats-core) at GitHub or the
 [AUTHORS](AUTHORS) file for the current project maintainer team.
 
-[gitter]: https://gitter.im/bats-core/bats-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[gitter]: https://gitter.im/bats-core/bats-core
