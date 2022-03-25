@@ -5,21 +5,14 @@ bats_capture_stack_trace() {
 	local funcname
 	local i
 
-	# The last entry in the stack trace is not useful when en error occured:
-	# It is either duplicated (kinda correct) or has wrong line number (Bash < 4.4)
-	# Therefore we capture the stacktrace but use it only after the next debug
-	# trap fired.
-	# Expansion is required for empty arrays which otherwise error
-	BATS_CURRENT_STACK_TRACE=("${BATS_STACK_TRACE[@]+"${BATS_STACK_TRACE[@]}"}")
-
-	BATS_STACK_TRACE=()
+	BATS_DEBUG_LAST_STACK_TRACE=()
 
 	for ((i = 2; i != ${#FUNCNAME[@]}; ++i)); do
 		# Use BATS_TEST_SOURCE if necessary to work around Bash < 4.4 bug whereby
 		# calling an exported function erases the test file's BASH_SOURCE entry.
 		test_file="${BASH_SOURCE[$i]:-$BATS_TEST_SOURCE}"
 		funcname="${FUNCNAME[$i]}"
-		BATS_STACK_TRACE+=("${BASH_LINENO[$((i - 1))]} $funcname $test_file")
+		BATS_DEBUG_LAST_STACK_TRACE+=("${BASH_LINENO[$((i-1))]} $funcname $test_file")
 		case "$funcname" in
 		"$BATS_TEST_NAME" | setup | teardown | setup_file | teardown_file)
 			break
@@ -29,6 +22,22 @@ bats_capture_stack_trace() {
 			break
 		fi
 	done
+}
+
+bats_get_failure_stack_trace() {
+	local stack_trace_var
+	# See bats_debug_trap for details.
+	if [[ -n "${BATS_DEBUG_LAST_STACK_TRACE_IS_VALID}" ]]; then
+		stack_trace_var=BATS_DEBUG_LAST_STACK_TRACE
+	else
+		stack_trace_var=BATS_DEBUG_LASTLAST_STACK_TRACE
+	fi
+	# shellcheck disable=SC2016
+	eval "$(printf \
+		'%s=(${%s[@]+"${%s[@]}"})' \
+		"${1}" \
+		"${stack_trace_var}" \
+		"${stack_trace_var}")"
 }
 
 bats_print_stack_trace() {
@@ -55,7 +64,9 @@ bats_print_stack_trace() {
 			# don't print "from function `source'"",
 			# when failing in free code during `source $test_file` from bats-exec-file
 			! [[ "$fn" == 'source' &&  $index -eq $count ]]; then 
-			printf "from function \`%s' " "$fn"
+			local quoted_fn
+			bats_quote_code quoted_fn "$fn"
+			printf "from function %s " "$quoted_fn"
 		fi
 
 		if [[ $index -eq $count ]]; then
@@ -69,10 +80,11 @@ bats_print_stack_trace() {
 }
 
 bats_print_failed_command() {
-	if [[ ${#BATS_STACK_TRACE[@]} -eq 0 ]]; then
+	local stack_trace=("${@}")
+	if [[ ${#stack_trace[@]} -eq 0 ]]; then
 		return 
 	fi
-	local frame="${BATS_STACK_TRACE[${#BATS_STACK_TRACE[@]} - 1]}"
+	local frame="${stack_trace[${#stack_trace[@]} - 1]}"
 	local filename
 	local lineno
 	local failed_line
@@ -82,7 +94,9 @@ bats_print_failed_command() {
 	bats_frame_lineno "$frame" 'lineno'
 	bats_extract_line "$filename" "$lineno" 'failed_line'
 	bats_strip_string "$failed_line" 'failed_command'
-	printf '%s' "#   \`${failed_command}' "
+	local quoted_failed_command
+	bats_quote_code quoted_failed_command "$failed_command"
+	printf '#   %s ' "${quoted_failed_command}"
 
 	if [[ "$BATS_ERROR_STATUS" -eq 1 ]]; then
 		printf 'failed%s\n' "$BATS_ERROR_SUFFIX"
@@ -134,8 +148,10 @@ bats_trim_filename() {
 # normalize a windows path from e.g. C:/directory to /c/directory
 # The path must point to an existing/accessable directory, not a file!
 bats_normalize_windows_dir_path() { # <output-var> <path>
-	local output_var="$1"
-	local path="$2"
+	local output_var="$1" path="$2"
+	if [[ "$output_var" != NORMALIZED_INPUT ]]; then
+		local NORMALIZED_INPUT
+	fi
 	if [[ $path == ?:* ]]; then
 		NORMALIZED_INPUT="$(cd "$path" || exit 1; pwd)"
 	else
@@ -169,6 +185,52 @@ bats_emit_trace() {
 	fi
 }
 
+# bats_debug_trap tracks the last line of code executed within a test. This is
+# necessary because $BASH_LINENO is often incorrect inside of ERR and EXIT
+# trap handlers.
+#
+# Below are tables describing different command failure scenarios and the
+# reliability of $BASH_LINENO within different the executed DEBUG, ERR, and EXIT
+# trap handlers. Naturally, the behaviors change between versions of Bash.
+#
+# Table rows should be read left to right. For example, on bash version
+# 4.0.44(2)-release, if a test executes `false` (or any other failing external
+# command), bash will do the following in order:
+# 1. Call the DEBUG trap handler (bats_debug_trap) with $BASH_LINENO referring
+#    to the source line containing the `false` command, then
+# 2. Call the DEBUG trap handler again, but with an incorrect $BASH_LINENO, then
+# 3. Call the ERR trap handler, but with a (possibly-different) incorrect
+#    $BASH_LINENO, then
+# 4. Call the DEBUG trap handler again, but with $BASH_LINENO set to 1, then
+# 5. Call the EXIT trap handler, with $BASH_LINENO set to 1.
+#
+# bash version 4.4.20(1)-release
+#  command     | first DEBUG | second DEBUG | ERR     | third DEBUG | EXIT
+# -------------+-------------+--------------+---------+-------------+--------
+#  false       | OK          | OK           | OK      | BAD[1]      | BAD[1]
+#  [[ 1 = 2 ]] | OK          | BAD[2]       | BAD[2]  | BAD[1]      | BAD[1]
+#  (( 1 = 2 )) | OK          | BAD[2]       | BAD[2]  | BAD[1]      | BAD[1]
+#  ! true      | OK          | ---          | BAD[4]  | ---         | BAD[1]
+#  $var_dne    | OK          | ---          | ---     | BAD[1]      | BAD[1]
+#  source /dne | OK          | ---          | ---     | BAD[1]      | BAD[1]
+#
+# bash version 4.0.44(2)-release
+#  command     | first DEBUG | second DEBUG | ERR     | third DEBUG | EXIT
+# -------------+-------------+--------------+---------+-------------+--------
+#  false       | OK          | BAD[3]       | BAD[3]  | BAD[1]      | BAD[1]
+#  [[ 1 = 2 ]] | OK          | ---          | BAD[3]  | ---         | BAD[1]
+#  (( 1 = 2 )) | OK          | ---          | BAD[3]  | ---         | BAD[1]
+#  ! true      | OK          | ---          | BAD[3]  | ---         | BAD[1]
+#  $var_dne    | OK          | ---          | ---     | BAD[1]      | BAD[1]
+#  source /dne | OK          | ---          | ---     | BAD[1]      | BAD[1]
+#
+# [1] The reported line number is always 1.
+# [2] The reported source location is that of the beginning of the function
+#     calling the command.
+# [3] The reported line is that of the last command executed in the DEBUG trap
+#     handler.
+# [4] The reported source location is that of the call to the function calling
+#     the command.
 bats_debug_trap() {
 	# on windows we sometimes get a mix of paths (when install via nmp install -g)
 	# which have C:/... or /c/... comparing them is going to be problematic.
@@ -176,7 +238,7 @@ bats_debug_trap() {
 	local NORMALIZED_INPUT
 	bats_normalize_windows_dir_path NORMALIZED_INPUT "${1%/*}"
 	local file_excluded='' path
-	for path in "${_BATS_DEBUG_EXCLUDE_PATHS[@]}"; do
+	for path in "${BATS_DEBUG_EXCLUDE_PATHS[@]}"; do
 		if [[ "$NORMALIZED_INPUT" == "$path"* ]]; then
 			file_excluded=1
 			break
@@ -186,6 +248,12 @@ bats_debug_trap() {
 	# don't update the trace within library functions or we get backtraces from inside traps
 	# also don't record new stack traces while handling interruptions, to avoid overriding the interrupted command
 	if [[ -z "$file_excluded" && "${BATS_INTERRUPTED-NOTSET}" == NOTSET ]]; then
+		BATS_DEBUG_LASTLAST_STACK_TRACE=(
+			${BATS_DEBUG_LAST_STACK_TRACE[@]+"${BATS_DEBUG_LAST_STACK_TRACE[@]}"}
+		)
+
+		BATS_DEBUG_LAST_LINENO=(${BASH_LINENO[@]+"${BASH_LINENO[@]}"})
+		BATS_DEBUG_LAST_SOURCE=(${BASH_SOURCE[@]+"${BASH_SOURCE[@]}"})
 		bats_capture_stack_trace
 		bats_emit_trace
 	fi
@@ -195,21 +263,19 @@ bats_debug_trap() {
 # command failure, but the `EXIT` trap will. Also, some command failures may not
 # set `$?` properly. See #72 and #81 for details.
 #
-# For this reason, we call `bats_error_trap` at the very beginning of
-# `bats_teardown_trap` (the `DEBUG` trap for the call will fix the stack trace)
-# and check the value of `$BATS_TEST_COMPLETED` before taking other actions.
-# We also adjust the exit status value if needed.
+# For this reason, we call `bats_check_status_from_trap` at the very beginning
+# of `bats_teardown_trap` and check the value of `$BATS_TEST_COMPLETED` before
+# taking other actions. We also adjust the exit status value if needed.
 #
 # See `bats_exit_trap` for an additional EXIT error handling case when `$?`
 # isn't set properly during `teardown()` errors.
-bats_error_trap() {
+bats_check_status_from_trap() {
 	local status="$?"
 	if [[ -z "$BATS_TEST_COMPLETED" ]]; then
 		BATS_ERROR_STATUS="${BATS_ERROR_STATUS:-$status}"
 		if [[ "$BATS_ERROR_STATUS" -eq 0 ]]; then
 			BATS_ERROR_STATUS=1
 		fi
-		BATS_STACK_TRACE=("${BATS_CURRENT_STACK_TRACE[@]}")
 		trap - DEBUG
 	fi
 }
@@ -220,15 +286,16 @@ bats_add_debug_exclude_path() { # <path>
 		return 1
 	fi
 	if [[ "$OSTYPE" == cygwin || "$OSTYPE" == msys ]]; then
+		local normalized_dir
 		bats_normalize_windows_dir_path normalized_dir "$1"
-		_BATS_DEBUG_EXCLUDE_PATHS+=("$normalized_dir")
+		BATS_DEBUG_EXCLUDE_PATHS+=("$normalized_dir")
 	else
-		_BATS_DEBUG_EXCLUDE_PATHS+=("$1")
+		BATS_DEBUG_EXCLUDE_PATHS+=("$1")
 	fi
 }
 
 bats_setup_tracing() {
-	_BATS_DEBUG_EXCLUDE_PATHS=()
+	BATS_DEBUG_EXCLUDE_PATHS=()
 	# exclude some paths by default
 	bats_add_debug_exclude_path "$BATS_ROOT/lib/"
 	bats_add_debug_exclude_path "$BATS_ROOT/libexec/"
@@ -247,6 +314,7 @@ bats_setup_tracing() {
 		done < <(find "$PWD" -type d -name bats-assert -o -name bats-support)
 	fi
 
+	local exclude_paths path
 	# exclude user defined libraries
 	IFS=':' read -r exclude_paths <<< "${BATS_DEBUG_EXCLUDE_PATHS:-}"
 	for path in "${exclude_paths[@]}"; do
@@ -258,4 +326,37 @@ bats_setup_tracing() {
 	# turn on traps after setting excludedes to avoid tracing the exclude setup
 	trap 'bats_debug_trap "$BASH_SOURCE"' DEBUG
   	trap 'bats_error_trap' ERR
+}
+
+bats_error_trap() {
+  bats_check_status_from_trap
+
+  # If necessary, undo the most recent stack trace captured by bats_debug_trap.
+  # See bats_debug_trap for details.
+  if [[ "${BASH_LINENO[*]}" = "${BATS_DEBUG_LAST_LINENO[*]:-}"
+     && "${BASH_SOURCE[*]}" = "${BATS_DEBUG_LAST_SOURCE[*]:-}" 
+	 && -z "$BATS_DEBUG_LAST_STACK_TRACE_IS_VALID" ]]; then
+    BATS_DEBUG_LAST_STACK_TRACE=(
+      ${BATS_DEBUG_LASTLAST_STACK_TRACE[@]+"${BATS_DEBUG_LASTLAST_STACK_TRACE[@]}"}
+    )
+  fi
+  BATS_DEBUG_LAST_STACK_TRACE_IS_VALID=1
+}
+
+bats_interrupt_trap() {
+  # mark the interruption, to handle during exit
+  BATS_INTERRUPTED=true
+  BATS_ERROR_STATUS=130
+  # debug trap fires before interrupt trap but gets wrong linenumber (line 1)
+  # -> use last last stack trace
+  exit $BATS_ERROR_STATUS
+}
+
+# this is used inside run()
+bats_interrupt_trap_in_run() {
+  # mark the interruption, to handle during exit
+  BATS_INTERRUPTED=true
+  BATS_ERROR_STATUS=130
+  BATS_DEBUG_LAST_STACK_TRACE_IS_VALID=true
+  exit $BATS_ERROR_STATUS
 }
