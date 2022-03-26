@@ -23,7 +23,7 @@
 - Upgrade bats-core to v1.6.0 (#755)
 - Update docs for use with CI/CD server (#675)
 - Test, and build RPMS, with Rocky and Alma Linux instead of CentOS (#765)
-- Test .gitignore contents (#792)
+- Improve testing of .gitignore contents (#792)
 
 
 ## 0.4.0

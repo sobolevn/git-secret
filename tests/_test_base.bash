@@ -17,9 +17,9 @@ FIXTURES_DIR="$BATS_TEST_DIRNAME/fixtures"
 TEST_GPG_HOMEDIR="$BATS_TMPDIR"
 
 # TODO: factor out tempdir creation.
-# On osx TEST_GPG_OUTPUT_FILE, still has 'XXXXXX's, like
+# On osx TEST_OUTPUT_FILE, still has 'XXXXXX's, like
 #   /var/folders/mm/_f0j67x10l92b4zznyx4ylzh00017w/T/gitsecret_output.XXXXXX.RaqyGYqL
-TEST_GPG_OUTPUT_FILE=$(
+TEST_OUTPUT_FILE=$(
   TMPDIR="$BATS_TMPDIR" mktemp -t 'gitsecret_output.XXXXXX'
 )
 
@@ -83,17 +83,16 @@ function test_user_password {
 function file_has_line {
   # First parameter is the key, second is the filename.
 
-  local key="$1" # required
+  local line="$1" # required
   local filename="$2" # required
 
-  local contains
+  local exit_code
   # -F means 'Interpret PATTERN as a list of fixed strings' (not regexen)
-  # -q means 'do not write anything to standard output.  Exit immediately with zero status if any match or error is found'
-  # -w means 'Select only those lines containing matches that form whole words'
-  contains=$(grep -Fqw "$key" "$filename"; echo $?) # this may not always be correct, especially because of -q
+  # -x means 'Select only those matches that exactly match the whole line'
+  exit_code=$(grep -Fx "$line" "$filename" 2>&1 > /dev/null; echo $?)
 
-  # 0 on contains or error, 1 for not contains. We cannot get 2 because of grep -q (see above and 'man grep')
-  echo "$contains"
+  # 0 means contains, 1 means not contains, and probably >1 for errors.
+  echo "$exit_code"
 }
 
 
@@ -104,7 +103,7 @@ function stop_gpg_agent {
   username=$(id -u -n)
   if [[ "$SECRETS_DOCKER_ENV" == 'windows' ]]; then
     ps -l -u "$username" | gawk \
-      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_OUTPUT_FILE" 2>&1
   else
     local ps_is_busybox
     ps_is_busybox=_exe_is_busybox 'ps'
@@ -112,7 +111,7 @@ function stop_gpg_agent {
       echo '# git-secret: tests: not stopping gpg-agent on busybox' >&3
     else
       ps -wx -U "$username" | gawk \
-        '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+        '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_OUTPUT_FILE" 2>&1
     fi
   fi
 }
@@ -143,7 +142,7 @@ function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
 
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
-  $GPGTEST --import "$public_key" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  $GPGTEST --import "$public_key" >> "$TEST_OUTPUT_FILE" 2>&1
   rm -f "$public_key" || _abort "Couldn't delete public key: $public_key"
 }
 
@@ -161,7 +160,7 @@ function install_fixture_full_key {
   cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
   bash -c "$gpgtest_import --allow-secret-key-import \
-    --import \"$private_key\"" >> "${TEST_GPG_OUTPUT_FILE}" 2>&1
+    --import \"$private_key\"" >> "${TEST_OUTPUT_FILE}" 2>&1
 
   # since 0.1.2 fingerprint is returned:
   fingerprint=$(get_gpg_fingerprint_by_email "$email")
@@ -178,7 +177,7 @@ function uninstall_fixture_key {
   local email
 
   email="$1"
-  $GPGTEST --yes --delete-key "$email" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  $GPGTEST --yes --delete-key "$email" >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
 
@@ -192,7 +191,7 @@ function uninstall_fixture_full_key {
     fingerprint=$(get_gpg_fingerprint_by_email "$email")
   fi
 
-  $GPGTEST --yes --delete-secret-keys "$fingerprint" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  $GPGTEST --yes --delete-secret-keys "$fingerprint" >> "$TEST_OUTPUT_FILE" 2>&1
 
   uninstall_fixture_key "$1"
 }
@@ -240,12 +239,12 @@ function set_state_initial {
 
 
 function set_state_git {
-  git init >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  git init >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
 
 function set_state_secret_init {
-  git secret init >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  git secret init >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
 
@@ -253,7 +252,7 @@ function set_state_secret_tell {
   local email
 
   email="$1"
-  git secret tell -d "$TEST_GPG_HOMEDIR" "$email" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  git secret tell -d "$TEST_GPG_HOMEDIR" "$email" >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
 
@@ -262,7 +261,7 @@ function set_state_secret_add {
   local content="$2"
   echo "$content" > "$filename"      # we add a newline
 
-  git secret add "$filename" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  git secret add "$filename" >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
 function set_state_secret_add_without_newline {
@@ -270,13 +269,13 @@ function set_state_secret_add_without_newline {
   local content="$2"
   echo -n "$content" > "$filename"      # we do not add a newline
 
-  git secret add "$filename" >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  git secret add "$filename" >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
 
 function set_state_secret_hide {
   local armor="$1"
-  SECRETS_GPG_ARMOR="$armor" git secret hide >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  SECRETS_GPG_ARMOR="$armor" git secret hide >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
 
@@ -286,7 +285,7 @@ function unset_current_state {
 
   # unsets `secret_hide`
   # removes .secret files:
-  git secret clean >> "$TEST_GPG_OUTPUT_FILE" 2>&1
+  git secret clean >> "$TEST_OUTPUT_FILE" 2>&1
 
   # unsets `secret_add`, `secret_tell` and `secret_init` by removing $_SECRETS_DIR
   local secrets_dir
@@ -304,14 +303,14 @@ function unset_current_state {
   # SECRETS_TEST_VERBOSE is experimental
   if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then
     # display the captured output as bats diagnostic (fd3, preceded by '# ')
-    sed "s/^/# $BATS_TEST_DESCRIPTION: /" < "$TEST_GPG_OUTPUT_FILE" >&3
+    sed "s/^/# $BATS_TEST_DESCRIPTION: VERBOSE OUTPUT: /" < "$TEST_OUTPUT_FILE" >&3
 
     # display the last $output
     # shellcheck disable=SC2001,SC2154
-    echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' final output: /" >&3
+    echo "$output" | sed "s/^/# $BATS_TEST_DESCRIPTION: FINAL OUTPUT: /" >&3
   fi
 
-  rm -f "$TEST_GPG_OUTPUT_FILE"
+  rm -f "$TEST_OUTPUT_FILE"
 
   # new code to remove temporary gpg homedir artifacts.
   # For #360, 'find and rm only relevant files when test fails'.
@@ -330,5 +329,12 @@ function unset_current_state {
 }
 
 # show output if we wind up manually removing the test output file in a trap
-trap 'if [[ -f "$TEST_GPG_OUTPUT_FILE" ]]; then if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then echo "git-secret: test: cleaning up: $TEST_GPG_OUTPUT_FILE"; fi; rm -f "$TEST_GPG_OUTPUT_FILE"; fi;' EXIT
+trap 'if [[ -f "$TEST_OUTPUT_FILE" ]]; then if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then echo "git-secret: test: cleaning up: $TEST_OUTPUT_FILE"; fi; rm -f "$TEST_OUTPUT_FILE"; fi;' EXIT
 
+function bats_diag_file {
+  local filename=$1
+
+  echo "# DEBUG: begin contents: $filename" >&3
+  sed -e 's/^/# DEBUG: /' < "$filename" >&3
+  echo "# DEBUG: end contents: $filename" >&3
+}
