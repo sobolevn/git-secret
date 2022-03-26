@@ -49,4 +49,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Run checks
-      run: brew install gawk gnupg && SECRETS_DOCKER_ENV=${{ matrix.test-verbose }} test
+      run: brew install gawk gnupg && SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
