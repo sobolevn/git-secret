@@ -214,6 +214,7 @@ function git_commit {
 
   commit_gpgsign=$(git config commit.gpgsign)
 
+  git config --global init.defaultBranch main   # we change the default branch name from 'master'
   git config --local user.name "$TEST_DEFAULT_USER"
   git config --local commit.gpgsign false
 
@@ -303,7 +304,7 @@ function unset_current_state {
   # SECRETS_TEST_VERBOSE is experimental
   if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then
     # display the captured output as bats diagnostic (fd3, preceded by '# ')
-    sed "s/^/# $BATS_TEST_DESCRIPTION: TEST OUTPUT:/" < "$TEST_OUTPUT_FILE" >&3
+    sed "s/^/# $BATS_TEST_DESCRIPTION: VERBOSE OUTPUT: /" < "$TEST_OUTPUT_FILE" >&3
 
     # display the last $output
     # shellcheck disable=SC2001,SC2154
