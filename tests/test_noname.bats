@@ -56,4 +56,3 @@ function _has_line {
   [ -f "$(_get_encrypted_filename "$FIRST_FILE")" ]
   [ -f "$(_get_encrypted_filename "$SECOND_FILE")" ]
 }
-
