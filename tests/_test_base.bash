@@ -303,11 +303,11 @@ function unset_current_state {
   # SECRETS_TEST_VERBOSE is experimental
   if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then
     # display the captured output as bats diagnostic (fd3, preceded by '# ')
-    sed "s/^/# $BATS_TEST_DESCRIPTION: GPG OUTPUT:/" < "$TEST_OUTPUT_FILE" >&3
+    sed "s/^/# $BATS_TEST_DESCRIPTION: TEST OUTPUT:/" < "$TEST_OUTPUT_FILE" >&3
 
     # display the last $output
     # shellcheck disable=SC2001,SC2154
-    echo "$output" | sed "s/^/# '$BATS_TEST_DESCRIPTION' final output: /" >&3
+    echo "$output" | sed "s/^/# $BATS_TEST_DESCRIPTION: FINAL OUTPUT: /" >&3
   fi
 
   rm -f "$TEST_OUTPUT_FILE"
