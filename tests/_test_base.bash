@@ -239,8 +239,7 @@ function set_state_initial {
 
 
 function set_state_git {
-  # we change the default branch name to 'main'
-  git init  --initial-branch=main >> "$TEST_OUTPUT_FILE" 2>&1
+  git init >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
 
