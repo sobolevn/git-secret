@@ -214,7 +214,6 @@ function git_commit {
 
   commit_gpgsign=$(git config commit.gpgsign)
 
-  git config --local init.defaultBranch main   # we change the default branch name from 'master'
   git config --local user.name "$TEST_DEFAULT_USER"
   git config --local commit.gpgsign false
 
@@ -240,6 +239,7 @@ function set_state_initial {
 
 
 function set_state_git {
+  git config --local init.defaultBranch main   # we change the default branch name
   git init >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
