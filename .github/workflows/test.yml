@@ -43,14 +43,12 @@ jobs:
 
   osx-ci:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        test-verbose: [0, 1]
     steps:
     - uses: actions/checkout@v3
+    - name: Install deps
+      run: brew install gawk gnupg
     - name: Run checks
-      run: brew install gawk gnupg && make test
-
-  osx-ci-verbose-test:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Run checks
-      run: brew install gawk gnupg && SECRETS_TEST_VERBOSE=1 make test
+      run: SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
