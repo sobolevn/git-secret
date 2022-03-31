@@ -25,12 +25,12 @@ function is_git_version_ge_2_28_0() { # based on code from github autopilot
     fi
 }
 
-# _SECRETS_VERBOSE is expected to be empty or '1'. 
-# Empty means 'off', any other value means 'on'.
 # shellcheck disable=SC2153
 if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
   # shellcheck disable=SC2034
   _SECRETS_VERBOSE='1'
+  # _SECRETS_VERBOSE is empty or '1'. 
+  # Empty means 'off', any other value means 'on'.
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
