@@ -782,7 +782,7 @@ function _decrypt {
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
-  local args=( "--use-agent" "--decrypt" "--no-permission-warning" )
+  local args=( "--use-agent" "--decrypt" )
 
   if [[ "$write_to_file" -eq 1 ]]; then
     args+=( "-o" "$filename" )
@@ -806,6 +806,8 @@ function _decrypt {
 
   if [[ -z "$_SECRETS_VERBOSE" ]]; then
     args+=( "--quiet" )
+  else
+    args+=( "--no-permission-warning" )
   fi
 
   set +e   # disable 'set -e' so we can capture exit_code
