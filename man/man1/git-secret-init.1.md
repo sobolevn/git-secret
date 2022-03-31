@@ -11,9 +11,14 @@ git-secret-init - initializes git-secret repository.
 Until repository is initialized with `git secret init`, all other `git-secret` commands are unavailable.
 
 If a `.gitsecret` directory already exists, `git-secret-init` exits without making any changes.
-Otherwise, a .gitsecret directory is created with appropriate sub-directories,
-and patterns to ignore `git-secret`'s `random_seed_file`
-and not ignore `.secret` files are added to `.gitignore`.
+Otherwise, 
+
+* `.gitignore` is modified to ignore `git-secret`'s `random_seed_file`,
+and to not ignore `.secret` files,
+
+* a .gitsecret directory is created with the sub-directories /keys and /paths,
+
+* The `.gitsecret/keys` subdirectory permissions are set to 700 to make gnupg happy.
 
 (See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
 folder with the `SECRETS_DIR` environment variable, and changing the extension `git-secret` uses for secret files
