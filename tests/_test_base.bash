@@ -36,6 +36,19 @@ BEGIN { OFS=":"; FS=":"; }
 }
 '
 
+# git >= 2.28.0 supports --initial-branch=main
+function is_git_version_ge_2_28_0() { # based on code from github autopilot
+    local git_version=$(git --version | awk '{print $3}')
+    local git_version_major=$(echo $git_version | awk -F. '{print $1}')
+    local git_version_minor=$(echo $git_version | awk -F. '{print $2}')
+    local git_version_patch=$(echo $git_version | awk -F. '{print $3}')
+    if [[ $git_version_major -ge 2 ]] && [[ $git_version_minor -ge 28 ]] && [[ $git_version_patch -ge 0 ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # GPG-based stuff:
 : "${SECRETS_GPG_COMMAND:='gpg'}"
 
@@ -239,7 +252,11 @@ function set_state_initial {
 
 
 function set_state_git {
-  git init >> "$TEST_OUTPUT_FILE" 2>&1
+  if [ $(is_git_version_ge_2_28_0) eq 1 ]; then
+    git init --initial-branch=main >> "$TEST_OUTPUT_FILE" 2>&1
+  else
+    git init >> "$TEST_OUTPUT_FILE" 2>&1
+  fi
 }
 
 
