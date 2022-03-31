@@ -7,6 +7,7 @@
 - Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
   when encrypting files, so secret files are stored
   in text format rather than binary (#631)
+- Do not suppress permission warnings from gnupg in verbose mode (#811)
 
 ### Bugfixes
 
@@ -18,7 +19,6 @@
 ### Misc
 
 - Rename `killperson` command to `removeperson` (#684)
-- Moves `file_has_line` utility to tests and fixes how it is used
 - Refactor docs: new pages, new content 
 - Upgrade bats-core to v1.6.0 (#755)
 - Update docs for use with CI/CD server (#675)
