@@ -13,6 +13,7 @@ _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 
+# returns 0 for true, 1 for false (really)
 function is_git_version_ge_2_28_0() { # based on code from github autopilot
     # shellcheck disable=SC2155
     local git_version=$(git --version | awk '{print $3}')

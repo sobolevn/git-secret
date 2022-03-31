@@ -252,7 +252,7 @@ function set_state_initial {
 
 
 function set_state_git {
-  if [ "$(is_git_version_ge_2_28_0)" eq 1 ]; then
+  if [ "$(is_git_version_ge_2_28_0)" eq 0 ]; then
     git init --initial-branch=main >> "$TEST_OUTPUT_FILE" 2>&1
   else
     git init >> "$TEST_OUTPUT_FILE" 2>&1
