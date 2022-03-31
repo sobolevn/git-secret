@@ -13,7 +13,19 @@ _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 
-# _SECRETS_VERBOSE is expected to be empty or '1'.
+function is_git_version_ge_2_28_0() { # based on code from github autopilot
+    local git_version=$(git --version | awk '{print $3}')
+    local git_version_major=$(echo $git_version | awk -F. '{print $1}')
+    local git_version_minor=$(echo $git_version | awk -F. '{print $2}')
+    local git_version_patch=$(echo $git_version | awk -F. '{print $3}')
+    if [[ $git_version_major -ge 2 ]] && [[ $git_version_minor -ge 28 ]] && [[ $git_version_patch -ge 0 ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# _SECRETS_VERBOSE is expected to be empty or '1'. 
 # Empty means 'off', any other value means 'on'.
 # shellcheck disable=SC2153
 if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
