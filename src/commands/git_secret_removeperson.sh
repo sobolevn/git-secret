@@ -30,7 +30,7 @@ function removeperson {
 
   _assert_keyring_contains_emails_at_least_once "$secrets_dir_keys" "git-secret keyring" "${emails[@]}"
 
-  local args=( --homedir "$secrets_dir_keys" --no-permission-warning --batch --yes )
+  local args=( --homedir "$secrets_dir_keys" --batch --yes )
   if [[ -n "$_SECRETS_VERBOSE" ]]; then
     args+=( '--no-permission-warning' )
   fi
