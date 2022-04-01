@@ -104,7 +104,7 @@ function tell {
     if [[ -z "$_SECRETS_VERBOSE" ]]; then
       $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1 3>&-
     else
-      $SECRETS_GPG_COMMAND --no-permission-warning "${args[@]}" 3>&-
+      $SECRETS_GPG_COMMAND "${args[@]}" 3>&-
     fi
     exit_code=$?
 
