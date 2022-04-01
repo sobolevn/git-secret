@@ -61,9 +61,8 @@ function add {
     # Add these files to `.gitignore` automatically:
     # see https://github.com/sobolevn/git-secret/issues/18 for more.
 
-    # NOTE: output has spaces between filenames, which can be ambiguous if files also have spaces
-    _message "files not in .gitignore, adding: ${not_ignored[*]}"
     for item in "${not_ignored[@]}"; do
+      _message "file not in .gitignore, adding: $item"
       _add_ignored_file "$item"
     done
   fi
