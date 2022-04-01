@@ -100,7 +100,7 @@ function tell {
     fi
 
     # Importing public key to the local keyring:
-    local args=( --homedir "$secrets_dir_keys" --no-permission-warning --import "$keyfile" )
+    local args=( --homedir "$secrets_dir_keys" --import "$keyfile" )
     if [[ -z "$_SECRETS_VERBOSE" ]]; then
       $SECRETS_GPG_COMMAND "${args[@]}" > /dev/null 2>&1 3>&-
     else

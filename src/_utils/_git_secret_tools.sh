@@ -13,12 +13,13 @@ _SECRETS_DIR_KEYS_TRUSTDB="${_SECRETS_DIR_KEYS}/trustdb.gpg"
 
 _SECRETS_DIR_PATHS_MAPPING="${_SECRETS_DIR_PATHS}/mapping.cfg"
 
-# _SECRETS_VERBOSE is expected to be empty or '1'.
-# Empty means 'off', any other value means 'on'.
+
 # shellcheck disable=SC2153
 if [[ -n "$SECRETS_VERBOSE" ]] && [[ "$SECRETS_VERBOSE" -ne 0 ]]; then
   # shellcheck disable=SC2034
   _SECRETS_VERBOSE='1'
+  # _SECRETS_VERBOSE is empty or '1'. 
+  # Empty means 'off', any other value means 'on'.
 fi
 
 : "${SECRETS_EXTENSION:=".secret"}"
@@ -782,7 +783,7 @@ function _decrypt {
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
-  local args=( "--use-agent" "--decrypt" "--no-permission-warning" )
+  local args=( "--use-agent" "--decrypt" )
 
   if [[ "$write_to_file" -eq 1 ]]; then
     args+=( "-o" "$filename" )
@@ -806,6 +807,8 @@ function _decrypt {
 
   if [[ -z "$_SECRETS_VERBOSE" ]]; then
     args+=( "--quiet" )
+  else
+    args+=( "--no-permission-warning" )
   fi
 
   set +e   # disable 'set -e' so we can capture exit_code

@@ -163,7 +163,7 @@ function hide {
       if [[ "$update_only_modified" -eq 0 ]] ||
          [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
-        local args=( --homedir "$secrets_dir_keys" '--no-permission-warning' --use-agent --yes '--trust-model=always' --encrypt )
+        local args=( --homedir "$secrets_dir_keys" --use-agent --yes '--trust-model=always' --encrypt )
 
         # SECRETS_GPG_ARMOR is expected to be empty or '1'.
         # Empty means 'off', any other value means 'on'.
@@ -172,6 +172,10 @@ function hide {
         if [[ -n "$SECRETS_GPG_ARMOR" ]] &&
            [[ "$SECRETS_GPG_ARMOR" -ne 0 ]]; then
           args+=( '--armor' )
+        fi
+
+        if [[ -n "$_SECRETS_VERBOSE" ]]; then
+            args+=( '--no-permission-warning' )
         fi
 
         # we depend on $recipients being split on whitespace
