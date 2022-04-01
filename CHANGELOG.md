@@ -24,6 +24,7 @@
 - Update docs for use with CI/CD server (#675)
 - Test, and build RPMS, with Rocky and Alma Linux instead of CentOS (#765)
 - Improve testing of .gitignore contents (#792)
+- Automate running verbose tests with SECRETS_TEST_VERBOSE=1 (#794)
 
 
 ## 0.4.0
