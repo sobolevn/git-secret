@@ -190,7 +190,7 @@ function _temporary_file {
   # which will be removed on system exit.
   temporary_filename=$(_os_based __temp_file)  # is not `local` on purpose.
 
-  trap 'if [[ -f "$temporary_filename" ]]; then if [[ -n "$_SECRETS_VERBOSE" ]] || [[ -n "$SECRETS_TEST_VERBOSE" ]]; then echo "git-secret: cleaning up: $temporary_filename"; fi; rm -f "$temporary_filename"; fi;' EXIT
+  trap 'if [[ -f "$temporary_filename" ]]; then if [[ -n "$_SECRETS_VERBOSE" ]] || [[ "$SECRETS_TEST_VERBOSE" == 1 ]]; then echo "git-secret: cleaning up: $temporary_filename"; fi; rm -f "$temporary_filename"; fi;' EXIT
 }
 
 
