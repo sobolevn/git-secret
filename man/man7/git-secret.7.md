@@ -37,15 +37,17 @@ And you're done!
 2. Import this key into your `gpg` keyring (in `~/.gnupg` or similar) by running `gpg --import KEY_NAME.txt`
 
 3. Now add this person to your secrets repo by running `git secret tell persons@email.id`
-(this will be the email address associated with the public key)
+(this will be the email address associated with their public key)
 
-4. The newly added user cannot yet read the encrypted files. Now, re-encrypt the files using
+4. Now remove the other user's public key from your personal keychain with `gpg --delete-keys persons@email.id`
+
+5. The newly added user cannot yet read the encrypted files. Now, re-encrypt the files using
 `git secret reveal; git secret hide -d`, and then commit and push the newly encrypted files.
 (The -d options deletes the unencrypted file after re-encrypting it).
 Now the newly added user will be able to decrypt the files in the repo using `git-secret reveal`.
 
-Note that it is possible to add yourself to the git-secret repo without decrypting existing files.
-It will be possible to decrypt them after re-encrypting them with the new keyring. So, if you don't
+Note that it is possible to add yourself to the git-secret repo without being able decrypting existing files.
+It will be possible to decrypt them after re-encrypting them with the new keyring. If you do not
 want unexpected keys added, you can configure some server-side security policy with the `pre-receive` hook.
 
 ### Using gpg
