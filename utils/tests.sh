@@ -26,7 +26,7 @@ chmod 0700 "${TEST_DIR}"
     #  (IE, like: `echo '# message here' >&3`).
     # bats ... 3>&1 shows diagnostic output
     bats "${SECRETS_PROJECT_ROOT}/tests" 3>&1
-    #bats "${SECRETS_PROJECT_ROOT}/tests/test_tell.bats" 3>&1
+    # bats "${SECRETS_PROJECT_ROOT}/tests/test_tell.bats" 3>&1
 )
 
 rm -rf "${TEST_DIR}"
