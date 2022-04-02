@@ -324,7 +324,7 @@ function unset_current_state {
   stop_gpg_agent
 
   # SECRETS_TEST_VERBOSE is experimental
-  if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then
+  if [[ "$SECRETS_TEST_VERBOSE" == 1 ]]; then
     # display the captured output as bats diagnostic (fd3, preceded by '# ')
     sed "s/^/# $BATS_TEST_DESCRIPTION: VERBOSE OUTPUT: /" < "$TEST_OUTPUT_FILE" >&3
 
@@ -352,7 +352,7 @@ function unset_current_state {
 }
 
 # show output if we wind up manually removing the test output file in a trap
-trap 'if [[ -f "$TEST_OUTPUT_FILE" ]]; then if [[ -n "$SECRETS_TEST_VERBOSE" ]]; then echo "git-secret: test: cleaning up: $TEST_OUTPUT_FILE"; fi; rm -f "$TEST_OUTPUT_FILE"; fi;' EXIT
+trap 'if [[ -f "$TEST_OUTPUT_FILE" ]]; then if [[ "$SECRETS_TEST_VERBOSE" == 1 ]]; then echo "git-secret: test: cleaning up: $TEST_OUTPUT_FILE"; fi; rm -f "$TEST_OUTPUT_FILE"; fi;' EXIT
 
 function bats_diag_file {
   local filename=$1
