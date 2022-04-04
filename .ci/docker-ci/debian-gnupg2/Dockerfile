@@ -1,4 +1,4 @@
-FROM debian:11.2-slim
+FROM debian:11.3-slim
 
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
