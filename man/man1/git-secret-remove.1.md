@@ -9,8 +9,9 @@ git-secret-remove - removes files from index.
 ## DESCRIPTION
 `git-secret-remove` - deletes files from `.gitsecret/paths/mapping.cfg`.
 
-This stops these files from being tracked by `git-secret` and therefore 
-they won't be encrypted or decrypted in the future.
+This stops these files from being tracked by `git-secret`, and from
+being encrypted or decrypted.
+
 There's also a -c option to delete existing encrypted versions of the files provided.
 
 Unlike `add`, which automatically add pathnames to `.gitignore`, 
