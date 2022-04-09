@@ -7,7 +7,7 @@ git-secret-usage - prints all the available commands.
 
 
 ## DESCRIPTION
-`git-secret-usage` is used to print all the available commands.
+`git-secret-usage` - prints all the available `git-secret` commands.
 
 
 ## OPTIONS
