@@ -465,7 +465,7 @@ function _warn_or_abort {
 }
 
 
-function _find_and_clean {
+function _find_and_remove_secrets {
   # required:
   local pattern="$1" # can be any string pattern
 
@@ -482,12 +482,12 @@ function _find_and_clean {
 }
 
 
-function _find_and_clean_formatted {
+function _find_and_remove_secrets_formatted {
   # required:
   local pattern="$1" # can be any string pattern
 
   local outputs
-  outputs=$(_find_and_clean "$pattern")
+  outputs=$(_find_and_remove_secrets "$pattern")
 
   if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
     # shellcheck disable=SC2001
