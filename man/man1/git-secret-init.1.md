@@ -8,7 +8,7 @@ git-secret-init - initializes git-secret repository.
 
 ## DESCRIPTION
 `git-secret-init` should be run inside a `git` repo to set up the .gitsecret directory and initialize the repo for git-secret.
-Until repository is initialized with `git secret init`, all other `git-secret` commands are unavailable.
+Until a repository is initialized with `git secret init`, all other `git-secret` commands are unavailable.
 
 If a `.gitsecret` directory already exists, `git-secret-init` exits without making any changes.
 Otherwise, 
