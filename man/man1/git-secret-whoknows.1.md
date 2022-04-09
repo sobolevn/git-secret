@@ -7,7 +7,7 @@ git-secret-whoknows - prints email-labels for each key in the keyring.
 
 
 ## DESCRIPTION
-`git-secret-whoknows` - print list of email addresses who are allowed to access the secrets in this repo.
+`git-secret-whoknows` - print email addresses allowed to access the secrets in this repo.
 
 
 ## OPTIONS
