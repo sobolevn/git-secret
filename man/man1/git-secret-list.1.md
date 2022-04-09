@@ -7,7 +7,7 @@ git-secret-list - prints all the added files.
 
 
 ## DESCRIPTION
-`git-secret-list` prints all the currently added tracked files from the `.gitsecret/paths/mapping.cfg`.
+`git-secret-list` - prints the currently tracked secret files from `.gitsecret/paths/mapping.cfg`.
 
 (See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
 folder using the `SECRETS_DIR` environment variable.
