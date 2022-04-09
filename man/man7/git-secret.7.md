@@ -46,8 +46,10 @@ And you're done!
 (The -d options deletes the unencrypted file after re-encrypting it).
 Now the newly added user will be able to decrypt the files in the repo using `git-secret reveal`.
 
-Note that it is possible to add yourself to the git-secret repo without being able decrypting existing files.
-It will be possible to decrypt them after re-encrypting them with the new keyring. If you do not
+Note that when you first add a user to a git-secret repo, they will not be able to decrypt existing files
+until another user re-encrypts the files with the new keyring.  
+
+If you do not
 want unexpected keys added, you can configure some server-side security policy with the `pre-receive` hook.
 
 ### Using gpg
