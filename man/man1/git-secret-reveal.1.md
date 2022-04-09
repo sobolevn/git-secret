@@ -16,7 +16,8 @@ will need to have a secret key matching one of the
 public keys which were used in the encryption (i.e., one of the public keys in the 
 `git-secret` repo's keychain.) 
 
-Under the hood, this uses the `gpg --decrypt` command.
+Under the hood, this uses the `gpg --decrypt` command
+and the user's secret key (typically from their home directory) to _decrypt_ files.
 
 
 ## OPTIONS
