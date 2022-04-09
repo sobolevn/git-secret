@@ -7,7 +7,8 @@ git-secret-cat - decrypts files passed on command line to stdout
 
 
 ## DESCRIPTION
-`git-secret-cat` - Outputs to stdout the contents of the files named on the command line.
+`git-secret-cat` - Outputs the decrypted contents of the named files to stdout.
+
 As with `git-secret-reveal`, you'll need to have a public/private keypair that is allowed to
 decrypt this repo.
 
