@@ -48,7 +48,7 @@ And you're done!
 3. Now add this person to your secrets repo by running `git secret tell persons@email.id`
 (this will be the email address associated with their public key)
 
-4. Now remove the other user's public key from your personal keychain with `gpg --delete-keys persons@email.id`
+4. Now remove the other user's public key from your personal keyring with `gpg --delete-keys persons@email.id`
 
 5. The newly added user cannot yet read the encrypted files. Now, re-encrypt the files using
 `git secret reveal; git secret hide -d`, and then commit and push the newly encrypted files.
@@ -161,7 +161,7 @@ you should not change the data in these files directly.
 
 Exactly which files exist in the `.gitsecret` folder and what their contents are
 vary slightly across different versions of gpg, and some versions of gpg
-might not work well with keychains created with newer versions of gpg. 
+might not work well with keyrings created with newer versions of gpg. 
 Thus it is best to use git-secret with the same version of gpg being used by all users.
 This can be forced by installing matching versions of gpg 
 and using `SECRETS_GPG_COMMAND` environment variable.

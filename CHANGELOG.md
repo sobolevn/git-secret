@@ -164,7 +164,7 @@
 - Show commands run by Makefile as per debian upstream recommendations (#386)
 - Upgrade bats-core to v1.1.0, import bats-core into vendor/bats-core (#377)
 - Use gawk to parse emails from gpg output
-- Optimize code that parses keychains
+- Optimize code that parses keyrings
 - Remove unused code
 
 ## Version 0.2.5
@@ -187,7 +187,7 @@
 - Issue error message when unable to hide a secret (#202, #238)
 - Accept gpg key with no name, only an email (#227)
 - Require keys to be specified by email, as documented (#267)
-- Disallow 'git secret tell' or 'killperson' with emails that are not in keychain (also #267)
+- Disallow 'git secret tell' or 'killperson' with emails that are not in keyring (also #267)
 
 ### Misc
 

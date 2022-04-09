@@ -8,7 +8,7 @@ git-secret-tell - adds a person, who can access private data.
 
 ## DESCRIPTION
 `git-secret tell` - accepts one or more email addresses as an input, searches for the public key for that
-email in the current users `gnupg` keyring, then imports the corresponding public key into your `git-secret` repo's keychain.
+email in the current users `gnupg` keyring, then imports the corresponding public key into your `git-secret` repo's keyring.
 
 This lets the specified user encrypt new files,
 but will not immediately be able to decrypt existing files, which were encrypted without their key.
@@ -16,11 +16,11 @@ Files should be re-encrypted with the new keyring by someone who already has acc
 in order for the new user to be able to decrypt the files.
 
 `git-secret tell` works only with email addresses, and will exit with an error if you have
-multiple keys in your keychain with specified email addresses, or if one of the specified emails
-is already associated with a key in the `git-secret` keychain.
+multiple keys in your keyring with specified email addresses, or if one of the specified emails
+is already associated with a key in the `git-secret` repo's keyring.
 
-Versions of `git-secret tell` after `0.3.2` will warn about keys that are expired, revoked, or otherwise invalid,
-and also warns if multiple keys are found for a single email address.
+Versions of `git-secret tell` after `0.3.2` will warn about keys that are expired, revoked, or otherwise invalid.
+It will also warn if multiple keys are found for a single email address.
 
 **Do not manually import secret keys into `git-secret`**. It won't work with imported secret keys anyway.
 

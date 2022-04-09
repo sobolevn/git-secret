@@ -175,7 +175,7 @@ function teardown {
 
 
 @test "run 'tell' with key without email and with comment" {
-  # install works because it works on filename, not contents of keychain
+  # install works because it works on filename, not contents of keyring
   install_fixture_key "$TEST_NOEMAIL_COMMENT_USER"
 
   # Testing the command itself fails because you have to use an email address

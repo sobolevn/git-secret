@@ -17,7 +17,7 @@ Later a permitted user can use their secret key (typically from their home direc
 
 It is recommended to encrypt (or re-encrypt) all the files in a `git-secret` repo each
 time `git secret hide` is run.  
-Otherwise the keychain (the one stored in `.gitsecret/keys/*.gpg`),
+Otherwise the keyring (the one stored in `.gitsecret/keys/*.gpg`),
 may have changed since the last time the files were encrypted, and it's possible
 to create a state where the users in the output of `git secret whoknows`
 may not be able to decrypt the some files in the repo, or may be able decrypt files
