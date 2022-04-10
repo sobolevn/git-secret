@@ -53,4 +53,4 @@ jobs:
     - name: Install deps
       run: brew install gawk gnupg
     - name: Run checks
-      run: TERM=ansii SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
+      run: TERM=ansi SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
