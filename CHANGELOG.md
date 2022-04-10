@@ -7,7 +7,7 @@
 - Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
   when encrypting files, so secret files are stored
   in text format rather than binary (#631)
-- Do not suppress permission warnings from gnupg in verbose mode (#811)
+- Show gnupg permission warnings in `tell`, `hide`, `reveal`, and `removeperson` (#811)
 - `git secret init` now sets `.gitsecret/keys` permission to 0700 (#811)
 
 ### Bugfixes
