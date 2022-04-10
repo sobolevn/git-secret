@@ -57,7 +57,7 @@ function is_git_version_ge_2_28_0 { # based on code from github autopilot
 : "${SECRETS_GPG_COMMAND:='gpg'}"
 
 # This command is used with absolute homedir set
-# we used to also disabled warnings with `--no-permission-warning`, but now,
+# we used to also disable warnings with `--no-permission-warning`, but now,
 # for #811, we now run tests allowing permission warnings to be emitted
 GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --batch"
 
