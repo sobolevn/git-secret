@@ -7,11 +7,12 @@ git-secret-removeperson - deletes key identified by an email from the inner keyr
 
 
 ## DESCRIPTION
-`git-secret-removeperson` - removes the keys associated with the passed email addresses 
-from the repo's `git-secret` keyring.
+`git-secret-removeperson` - removes public keys for passed email addresses from repo's `git-secret` keyring.
 
-If you remove a user's access with `git-secret-removeperson`, and run `git-secret-reveal` and `git-secret-hide -r`,
-it will no longer be possible for that user to decrypt the hidden files.
+This command is used to begin the process of disallowing a user from encrypting and decrypting secrets with `git-secret`.
+
+If you remove a user's access with `git-secret-removeperson`, and then run `git-secret-reveal` and `git-secret-hide -r`,
+that user will no longer be able user to decrypt the hidden files.
 
 
 ## OPTIONS
@@ -21,7 +22,7 @@ it will no longer be possible for that user to decrypt the hidden files.
 
 ## MANUAL
 
-Run `man git-secret-removeperson` to see this note.
+Run `man git-secret-removeperson` to see this document.
 
 
 ## SEE ALSO

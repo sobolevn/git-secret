@@ -7,8 +7,9 @@ git-secret-clean - removes all the hidden files.
 
 
 ## DESCRIPTION
-`git-secret-clean` deletes all the encrypted files.
-Verbose output is enabled with the `-v` option, in which case the program prints which files are deleted.
+`git-secret-clean` deletes all encrypted files tracked by `git-secret`. 
+Does not delete unencrypted versions.
+Verbose output is enabled with the `-v` option, in which case the program shows deleted files.
 
 
 ## OPTIONS
@@ -21,7 +22,7 @@ as documented at [git-secret(7)](https://git-secret.io/)
 
 ## MANUAL
 
-Run `man git-secret-clean` to see this note.
+Run `man git-secret-clean` to see this document.
 
 
 ## SEE ALSO

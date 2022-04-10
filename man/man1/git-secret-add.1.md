@@ -12,7 +12,7 @@ and adds filepath(s) into `.gitsecret/paths/mapping.cfg`.
 (It is not recommended to alter `.gitsecret/paths/mapping.cfg` manually.)
 
 As of 0.2.6, this command also ensures the filepath is mentioned `.gitignore`
-because the contents are now considered secret and should not be committed into the repository unencrypted.
+as the contents are now considered secret and should not be committed into the repository unencrypted.
 
 The `add` action will fail unless there are already users in `git-secret`'s keyring.
 
@@ -29,7 +29,7 @@ folder using the SECRETS_DIR environment variable.
 
 ## MANUAL
 
-Run `man git-secret-add` to see this note.
+Run `man git-secret-add` to see this document.
 
 
 ## SEE ALSO

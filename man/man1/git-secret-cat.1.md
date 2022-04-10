@@ -1,4 +1,4 @@
-git-secret-cat - decrypts files passed on command line to stdout
+git-secret-cat - decrypts files passed on command line to stdout.
 =============================================
 
 ## SYNOPSIS
@@ -9,23 +9,23 @@ git-secret-cat - decrypts files passed on command line to stdout
 ## DESCRIPTION
 `git-secret-cat` - Outputs the decrypted contents of the named files to stdout.
 
-As with `git-secret-reveal`, you'll need to have a public/private keypair that is allowed to
-decrypt this repo.
+As with `git-secret-reveal`, you'll need to have the private key for one of the emails allowed to
+decrypt this repo in your personal keyring.
 
-Note also that this command can be affected by the `SECRETS_PINENTRY` environment variable. See
+Note this command can be affected by the `SECRETS_PINENTRY` environment variable. See
 (See [git-secret(7)](https://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
 
 
 ## OPTIONS
 
-    -d  - specifies `--homedir` option for the `gpg`, basically use this option if you store your keys in a custom location.
+    -d  - specifies `--homedir` option for the `gpg`, use this option if you store your keys in a custom location.
     -p  - specifies password for noinput mode, adds `--passphrase` option for `gpg`.
     -h  - shows help.
 
 
 ## MANUAL
 
-Run `man git-secret-cat` to see this note.
+Run `man git-secret-cat` to see this document.
 
 
 ## SEE ALSO

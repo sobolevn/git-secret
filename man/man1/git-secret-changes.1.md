@@ -7,14 +7,14 @@ git-secret-changes - view diff of the hidden files.
 
 
 ## DESCRIPTION
-`git-secret-changes` - shows changes between the current version of hidden files and the ones committed.
+`git-secret-changes` - display changes between the current versions of secret files and the ones committed.
 
 If no filenames are provided, changes to all hidden files will be shown. Alternately,
-you can provide any number of hidden files to this command as arguments, and it will show changes for those files.
+provide any number of hidden files to this command as arguments, and it will show changes for those files.
 
-Note that files must be specified by their unencrypted names, without the `.secret` suffix.
+Note files must be specified by their unencrypted names, without the `.secret` suffix.
 
-Note also that this command can be affected by the `SECRETS_PINENTRY` environment variable. See
+Note also this command can be affected by the `SECRETS_PINENTRY` environment variable. See
 (See [git-secret(7)](https://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
 
 
@@ -27,7 +27,7 @@ Note also that this command can be affected by the `SECRETS_PINENTRY` environmen
 
 ## MANUAL
 
-Run `man git-secret-changes` to see this note.
+Run `man git-secret-changes` to see this document.
 
 
 ## SEE ALSO

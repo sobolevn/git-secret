@@ -17,7 +17,7 @@ git-secret-usage - prints all the available commands.
 
 ## MANUAL
 
-Run `man git-secret-usage` to see this note.
+Run `man git-secret-usage` to see this document.
 
 
 ## SEE ALSO

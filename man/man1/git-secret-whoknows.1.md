@@ -1,4 +1,4 @@
-git-secret-whoknows - prints email-labels for each key in the keyring.
+git-secret-whoknows - print email for each key in the keyring.
 ======================================================================
 
 ## SYNOPSIS
@@ -18,7 +18,7 @@ git-secret-whoknows - prints email-labels for each key in the keyring.
 
 ## MANUAL
 
-Run `man git-secret-whoknows` to see this note.
+Run `man git-secret-whoknows` to see this document.
 
 
 ## SEE ALSO

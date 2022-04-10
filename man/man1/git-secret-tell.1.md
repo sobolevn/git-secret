@@ -1,4 +1,4 @@
-git-secret-tell - adds a person, who can access private data.
+git-secret-tell - adds person who can access private data.
 ===============================================================
 
 ## SYNOPSIS
@@ -7,8 +7,7 @@ git-secret-tell - adds a person, who can access private data.
 
 
 ## DESCRIPTION
-`git-secret tell` - accepts one or more email addresses as an input, searches for the public key for that
-email in the current users `gnupg` keyring, then imports the corresponding public key into your `git-secret` repo's keyring.
+`git-secret tell` - adds user(s) to the list of those able to encypt/decrypt secrets.
 
 This lets the specified user encrypt new files,
 but will not immediately be able to decrypt existing files, which were encrypted without their key.
@@ -19,10 +18,16 @@ in order for the new user to be able to decrypt the files.
 multiple keys in your keyring with specified email addresses, or if one of the specified emails
 is already associated with a key in the `git-secret` repo's keyring.
 
+Under the hood, `git-secret-tell` searches in the current user's `gnupg` keyring for public key(s) of passed
+email(s), then imports the corresponding public key(s) into your `git-secret` repo's keyring.
+
 Versions of `git-secret tell` after `0.3.2` will warn about keys that are expired, revoked, or otherwise invalid.
 It will also warn if multiple keys are found for a single email address.
 
 **Do not manually import secret keys into `git-secret`**. It won't work with imported secret keys anyway.
+
+For more details about how `git-secret` uses public and private keys,
+see the documentation for `git-secret-hide` and `git-secret-reveal`.
 
 ## OPTIONS
 
@@ -33,7 +38,7 @@ It will also warn if multiple keys are found for a single email address.
 
 ## MANUAL
 
-Run `man git-secret-tell` to see this note.
+Run `man git-secret-tell` to see this document.
 
 
 ## SEE ALSO

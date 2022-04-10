@@ -59,7 +59,7 @@ not be been modified since the last time they were encrypted.
 
 ## MANUAL
 
-Run `man git-secret-hide` to see this note.
+Run `man git-secret-hide` to see this document.
 
 
 ## SEE ALSO
