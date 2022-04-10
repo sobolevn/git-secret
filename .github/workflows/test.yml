@@ -48,9 +48,7 @@ jobs:
         test-verbose: [0, 1]
     steps:
     - uses: actions/checkout@v3
-    - name: Show env vars
-      run: printenv
     - name: Install deps
       run: brew install gawk gnupg
     - name: Run checks
-      run: TERM=ansi SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
+      run: SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
