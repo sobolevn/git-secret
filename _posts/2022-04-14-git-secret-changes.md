@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-changes'
-date: 2022-04-02 15:17:03 +0000
+date: 2022-04-14 23:08:21 +0000
 permalink: git-secret-changes
 categories: command
 ---
@@ -14,12 +14,15 @@ git-secret-changes - view diff of the hidden files.
 
 
 ## DESCRIPTION
-`git-secret-changes` - shows changes between the current version of hidden files and the ones already committed.
-You can provide any number of hidden files to this command as arguments, and it will show changes for these files only.
-Note that files must be specified by their encrypted names, typically `filename.yml.secret`.
-If no arguments are provided, information about all hidden files will be shown.
+`git-secret-changes` - show changes between the current versions of secret files and encrypted versions.
 
-Note also that this command can be affected by the `SECRETS_PINENTRY` environment variable. See
+If no filenames are provided, changes to all hidden files will be shown. Alternately,
+provide any number of hidden files to this command as arguments, and it will show changes for those files.
+
+Note files must be specified by their unencrypted names, without the `.secret` suffix,
+(or whatever is specified by the `SECRETS_EXTENSION` environment variable).
+
+Note also this command can be affected by the `SECRETS_PINENTRY` environment variable. See
 (See [git-secret(7)](https://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
 
 
@@ -32,7 +35,7 @@ Note also that this command can be affected by the `SECRETS_PINENTRY` environmen
 
 ## MANUAL
 
-Run `man git-secret-changes` to see this note.
+Run `man git-secret-changes` to see this document.
 
 
 ## SEE ALSO

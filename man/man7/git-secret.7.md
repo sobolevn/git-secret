@@ -3,30 +3,39 @@ git-secret - bash tool to store private data inside a git repo.
 
 ## Usage: Setting up git-secret in a repository
 
-These steps cover the basic process of using `git-secret`:
+These steps cover the basic process of using `git-secret`
+to specify users and files that will interact with `git-secret`, 
+and to encrypt and decrypt secrets.
 
-0. Before starting, [make sure you have created a `gpg` RSA key-pair](#using-gpg): a public and a secret key identified by your email address.
+0. Before starting, [make sure you have created a `gpg` RSA key-pair](#using-gpg): 
+which are a public key and a secret key pair, identified by your email address and
+stored with your gpg configuration.
+Generally this gpg configuration and keys will be stored somewhere in your home directory.
 
-1. Begin with an existing or new git repository. You'll use the `git-secret` commands to add the keyrings and information
-to make `git-secret` hide and reveal files in this repository.
+1. Begin with an existing or new git repository. 
 
-2. Initialize the `git-secret` repository by running `git secret init` command. The `.gitsecret/` folder will be created.
+2. Initialize the `git-secret` repository by running `git secret init`. The `.gitsecret/` folder will be created,
+with subdirectories `keys/` and `paths/`, 
+`.gitsecret/keys/random_seed` will be added to `.gitignore`,
+and `.gitignore` will be configured to _not_ ignore `.secret` files.
+
 **Note** all the contents of the `.gitsecret/` folder should be checked in, **/except/** the `random_seed` file.
 In other words, of all the files in `.gitsecret/`, only the `random_seed` file should be mentioned in your `.gitignore` file.
-By default, `git secret init` will add the file `.gitsecret/keys/random_seed` to your `.gitignore` file.
 
-3. Add the first user to the `git-secret` repo keyring by running `git secret tell your@gpg.email`.
+3. Add the first user to the `git-secret` repo keyring by running `git secret tell your@email.id`.
 
 4. Now it's time to add files you wish to encrypt inside the `git-secret` repository.
-This can be done by running `git secret add <filenames...>` command. Make sure these files are ignored by mentions in
-`.gitignore`, otherwise `git-secret` won't allow you to add them, as these files could be stored unencrypted. In the default configuration, `git-secret add` will automatically add the unencrypted versions of the files to `.gitignore` for you.
+This can be done by running `git secret add <filenames...>` command, which will also (as of 0.2.6) 
+add entries to `.gitignore`, stopping those files from being be added or committed to the repo unencrypted. 
 
-5. When done, run `git secret hide` to encrypt all files which you have added by the `git secret add` command.
-The data will be encrypted with the public-keys described by the `git secret tell` command.
+5. Then run `git secret hide` to encrypt the files you added with `git secret add`.
+The files will be encrypted with the public keys in your git-secret repo's keyring,
+each corresponding to a user's email that you used with `tell`.
+
 After using `git secret hide` to encrypt your data, it is safe to commit your changes.
 **NOTE:** It's recommended to add the `git secret hide` command to your `pre-commit` hook, so you won't miss any changes.
 
-6. Later you can decrypt files with the `git secret reveal` command, or just print their contents to stdout with the
+6. Later you can decrypt files with the `git secret reveal` command, or print their contents to stdout with the
 `git secret cat` command. If you used a password on your GPG key (always recommended), it will ask you for your password.
 And you're done!
 
@@ -39,15 +48,17 @@ And you're done!
 3. Now add this person to your secrets repo by running `git secret tell persons@email.id`
 (this will be the email address associated with their public key)
 
-4. Now remove the other user's public key from your personal keychain with `gpg --delete-keys persons@email.id`
+4. Now remove the other user's public key from your personal keyring with `gpg --delete-keys persons@email.id`
 
 5. The newly added user cannot yet read the encrypted files. Now, re-encrypt the files using
 `git secret reveal; git secret hide -d`, and then commit and push the newly encrypted files.
 (The -d options deletes the unencrypted file after re-encrypting it).
 Now the newly added user will be able to decrypt the files in the repo using `git-secret reveal`.
 
-Note that it is possible to add yourself to the git-secret repo without being able decrypting existing files.
-It will be possible to decrypt them after re-encrypting them with the new keyring. If you do not
+Note that when you first add a user to a git-secret repo, they will not be able to decrypt existing files
+until another user re-encrypts the files with the new keyring.  
+
+If you do not
 want unexpected keys added, you can configure some server-side security policy with the `pre-receive` hook.
 
 ### Using gpg
@@ -128,7 +139,7 @@ The settings available to be changed are:
 
 * `$SECRETS_GPG_COMMAND` - sets the `gpg` alternatives, defaults to `gpg`.
 It can be changed to `gpg`, `gpg2`, `pgp`, `/usr/local/gpg` or any other value.
-After doing so rerun the tests to be sure that it won't break anything. Tested to be working with: `gpg`, `gpg2`.
+After doing so rerun the tests to be sure that it won't break anything. Tested with `gpg` and `gpg2`.
 
 * `$SECRETS_GPG_ARMOR` - sets the `gpg` [`--armor` mode](https://www.gnupg.org/gph/en/manual/r1290.html). Can be set to `1` to store secrets file as text. By default is `0` and store files as binaries.
 
@@ -149,13 +160,16 @@ Use the various `git-secret` commands to manipulate the files in `.gitsecret`,
 you should not change the data in these files directly.
 
 Exactly which files exist in the `.gitsecret` folder and what their contents are
-vary slightly across different versions of gpg. Thus it is best to use
-git-secret with the same version of gpg being used by all users.
-This can be forced using `SECRETS_GPG_COMMAND` environment variable.
+vary slightly across different versions of gpg, and some versions of gpg
+might not work well with keyrings created with newer versions of gpg. 
+Thus it is best to use git-secret with the same version of gpg being used by all users.
+This can be forced by installing matching versions of gpg 
+and using `SECRETS_GPG_COMMAND` environment variable.
 
-Specifically, there is an issue between `gpg` version 2.1.20 and later versions
+For example, there is an issue between `gpg` version 2.1.20 and later versions
 which can cause problems reading and writing keyring files between systems
 (this shows up in errors like 'gpg: skipped packet of type 12 in keybox').
+This is not the only issue it is possible to encounter.
 
 The `git-secret` internal data is separated into two directories:
 
@@ -169,6 +183,12 @@ All the other internal data is stored in the directory:
 ### `.gitsecret/keys`
 
 This directory contains data used by git-secret and PGP to allow and maintain the correct encryption and access rights for the permitted parties.
+
+In particular, this directory contains a keyring with all the public keys for the emails used with `tell`.
+This is the keyring used to encrypt files with `git-secret-hide`. 
+`git-secret-reveal` and `git-secret-cat` 
+instead use the user's private keys (which probably reside somewhere like ~/.gnupg/)
+and which are not in the `.gitsecret/keys` directory.
 
 Generally speaking, all the files in this directory *except* `random_seed` should be checked into your repo.
 By default, `git secret init` will add the file `.gitsecret/keys/random_seed` to your `.gitignore` file.

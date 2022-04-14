@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-init'
-date: 2022-04-02 15:17:03 +0000
+date: 2022-04-14 23:08:21 +0000
 permalink: git-secret-init
 categories: command
 ---
@@ -14,8 +14,11 @@ git-secret-init - initializes git-secret repository.
 
 
 ## DESCRIPTION
-`git-secret-init` should be run inside a `git` repo to set up the .gitsecret directory and initialize the repo for git-secret.
-Until repository is initialized with `git secret init`, all other `git-secret` commands are unavailable.
+`git-secret-init` - initializes a `git-secret` repo by setting up a `.gitsecret` directory.
+
+`git-secret-init` should be run inside a `git` repo, to create the 
+`.gitsecret` directory and initialize the repo for git-secret.
+Until a repository is initialized with `git secret init`, all other `git-secret` commands are unavailable.
 
 If a `.gitsecret` directory already exists, `git-secret-init` exits without making any changes.
 Otherwise, 
@@ -25,9 +28,9 @@ and to not ignore `.secret` files,
 
 * a .gitsecret directory is created with the sub-directories /keys and /paths,
 
-* The `.gitsecret/keys` subdirectory permissions are set to 700 to make gnupg happy.
+* The `.gitsecret/keys` subdirectory permission is set to 700 to make gnupg happy.
 
-(See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
+See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
 folder with the `SECRETS_DIR` environment variable, and changing the extension `git-secret` uses for secret files
 with the `SECRETS_EXTENSION` environment variable.
 
@@ -39,7 +42,7 @@ with the `SECRETS_EXTENSION` environment variable.
 
 ## MANUAL
 
-Run `man git-secret-init` to see this note.
+Run `man git-secret-init` to see this document.
 
 
 ## SEE ALSO

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-clean'
-date: 2022-04-02 15:17:03 +0000
+date: 2022-04-14 23:08:21 +0000
 permalink: git-secret-clean
 categories: command
 ---
@@ -14,9 +14,16 @@ git-secret-clean - removes all the hidden files.
 
 
 ## DESCRIPTION
-`git-secret-clean` deletes all the encrypted files.
-Verbose output is enabled with the `-v` option, in which case the program prints which files are deleted.
+`git-secret-clean` deletes all files in the current `git-secret` repo that end with `.secret`.
 
+Note that it will delete any files ending in `.secret`, even if they are not tracked by `git-secret`. 
+
+Also note that this command does not delete unencrypted versions of files.
+
+Verbose mode, enabled with the `-v` option, displays the filenames deleted.
+
+You can change the extension `git-secret` uses for encrypted files
+with the `SECRETS_EXTENSION` environment variable.
 
 ## OPTIONS
 
@@ -28,7 +35,7 @@ as documented at [git-secret(7)](https://git-secret.io/)
 
 ## MANUAL
 
-Run `man git-secret-clean` to see this note.
+Run `man git-secret-clean` to see this document.
 
 
 ## SEE ALSO

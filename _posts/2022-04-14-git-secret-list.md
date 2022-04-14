@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-list'
-date: 2022-04-02 15:17:03 +0000
+date: 2022-04-14 23:08:21 +0000
 permalink: git-secret-list
 categories: command
 ---
@@ -14,7 +14,9 @@ git-secret-list - prints all the added files.
 
 
 ## DESCRIPTION
-`git-secret-list` prints all the currently added tracked files from the `.gitsecret/paths/mapping.cfg`.
+`git-secret-list` - print the files currently considered secret in this repo.
+
+Shows tracked files from `.gitsecret/paths/mapping.cfg`.
 
 (See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
 folder using the `SECRETS_DIR` environment variable.
@@ -27,7 +29,7 @@ folder using the `SECRETS_DIR` environment variable.
 
 ## MANUAL
 
-Run `man git-secret-list` to see this note.
+Run `man git-secret-list` to see this document.
 
 
 ## SEE ALSO
