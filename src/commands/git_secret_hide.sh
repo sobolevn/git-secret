@@ -19,7 +19,7 @@ function _optional_clean {
   local clean="$1"
 
   if [[ $clean -eq 1 ]]; then
-    _find_and_clean_formatted "*$SECRETS_EXTENSION"
+    _find_and_remove_secrets_formatted "*$SECRETS_EXTENSION"
   fi
 }
 
@@ -40,7 +40,7 @@ function _optional_delete {
       # So the formatting would not be repeated several times here:
       local filename
       filename=$(_get_record_filename "$line")
-      _find_and_clean "*$filename"
+      _find_and_remove_secrets "*$filename"
     done < "$path_mappings"
 
     if [[ -n "$_SECRETS_VERBOSE" ]]; then

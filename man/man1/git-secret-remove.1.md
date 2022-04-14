@@ -7,9 +7,16 @@ git-secret-remove - removes files from index.
 
 
 ## DESCRIPTION
-`git-secret-remove` deletes files from `.gitsecret/paths/mapping.cfg`,
-so they won't be encrypted or decrypted in the future.
+`git-secret-remove` - stops files from being tracked by `git-secret`.
+
+This deletes filenames from `.gitsecret/paths/mapping.cfg`, 
+which stops these files from being tracked by `git-secret`, and from
+being encrypted to, or decrypted from, `.secret` encrypted versions.
+
 There's also a -c option to delete existing encrypted versions of the files provided.
+
+Note unlike `add`, which automatically add pathnames to `.gitignore`, 
+`remove` does not delete pathnames from `.gitignore`.
 
 (See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
 folder using the `SECRETS_DIR` environment variable.
@@ -23,7 +30,7 @@ folder using the `SECRETS_DIR` environment variable.
 
 ## MANUAL
 
-Run `man git-secret-remove` to see this note.
+Run `man git-secret-remove` to see this document.
 
 
 ## SEE ALSO
