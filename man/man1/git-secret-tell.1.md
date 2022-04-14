@@ -1,4 +1,4 @@
-git-secret-tell - adds a person, who can access private data.
+git-secret-tell - adds person who can access private data.
 ===============================================================
 
 ## SYNOPSIS
@@ -7,31 +7,38 @@ git-secret-tell - adds a person, who can access private data.
 
 
 ## DESCRIPTION
-`git-secret tell` receives one or more email addresses as an input, searches for the `gpg`-key in the `gpg`
-`homedir` by these emails, then imports the corresponding public key into `git-secret`'s inner keychain.
-From this moment this person can encrypt new files with the keyring which contains their key,
-but they cannot decrypt the old files, which were already encrypted without their key.
-The files should be re-encrypted with the new keyring by someone who has the unencrypted files.
+`git-secret tell` - adds user(s) to the list of those able to encypt/decrypt secrets.
 
-Because `git-secret tell` works with only email addresses, it will exit with an error if you have
-multiple keys in your keychain with specified email addresses, or if one of the specified emails
-is already associated with a key in the `git-secret` keychain.
+This lets the specified user encrypt new files,
+but will not immediately be able to decrypt existing files, which were encrypted without their key.
+Files should be re-encrypted with the new keyring by someone who already has access
+in order for the new user to be able to decrypt the files.
 
-Versions of `git-secret tell` after `0.3.2` will warn about keys that are expired, revoked, or otherwise invalid,
-and also if multiple keys are found for a single email address.
+`git-secret tell` works only with email addresses, and will exit with an error if you have
+multiple keys in your keyring with specified email addresses, or if one of the specified emails
+is already associated with a key in the `git-secret` repo's keyring.
+
+Under the hood, `git-secret-tell` searches in the current user's `gnupg` keyring for public key(s) of passed
+email(s), then imports the corresponding public key(s) into your `git-secret` repo's keyring.
+
+Versions of `git-secret tell` after `0.3.2` will warn about keys that are expired, revoked, or otherwise invalid.
+It will also warn if multiple keys are found for a single email address.
 
 **Do not manually import secret keys into `git-secret`**. It won't work with imported secret keys anyway.
 
+For more details about how `git-secret` uses public and private keys,
+see the documentation for `git-secret-hide` and `git-secret-reveal`.
+
 ## OPTIONS
 
-    -m  - takes your current `git config user.email` as an identifier for the key.
-    -d  - specifies `--homedir` option for the `gpg`, basically use this option if your store your keys in a custom location.
+    -m  - uses your current `git config user.email` setting as an identifier for the key.
+    -d  - specifies `--homedir` option for `gpg`, basically use this option if your store your keys in a custom location.
     -h  - shows help.
 
 
 ## MANUAL
 
-Run `man git-secret-tell` to see this note.
+Run `man git-secret-tell` to see this document.
 
 
 ## SEE ALSO

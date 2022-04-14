@@ -7,11 +7,16 @@ git-secret-reveal - decrypts all added files.
 
 
 ## DESCRIPTION
-`git-secret-reveal` - decrypts all the files in `.gitsecret/paths/mapping.cfg`,
-or the passed `pathspec`s.
-You will need to have imported the paired secret-key with one of the
-public-keys which were used in the encryption.
-Under the hood, this uses the `gpg --decrypt` command.
+`git-secret-reveal` - decrypts passed files, or all files considered secret by `git-secret` 
+
+Under the hood, `reveal` uses the `gpg --decrypt` command
+and your private key (typically from your personal keyring in your
+home directory) to _decrypt_ files.
+
+Therefore, for this operation to succeed, your personal keyring must contain a private key 
+matching one of the public keys which were used to encrypt the secrets --
+i.e., one of the public keys in `git-secret` repo's keyring when the file was encrypted. 
+
 
 
 ## OPTIONS
@@ -37,7 +42,7 @@ Under the hood, this uses the `gpg --decrypt` command.
 
 ## MANUAL
 
-Run `man git-secret-reveal` to see this note.
+Run `man git-secret-reveal` to see this document.
 
 
 ## SEE ALSO

@@ -18,7 +18,7 @@ allowing users you trust to access encrypted data using pgp and their secret key
 With `git-secret`, changes to access rights are simplified, and private-public key issues are handled for you.
 
 When someone's permission is revoked, secrets do not need to be changed with `git-secret` -
-just remove their key from the keychain using `git secret removeperson their@email.com`,
+just remove their key from the repo's keyring using `git secret removeperson their@email.com`,
 re-encrypt the files, and they won't be able to decrypt secrets anymore.
 If you think the user might have copied the secrets or keys when they had access, then
 you should also change the secrets.

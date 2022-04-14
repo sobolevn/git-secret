@@ -25,5 +25,5 @@ function clean {
   _user_required
 
   # User should see properly formatted output:
-  _find_and_clean_formatted "*$SECRETS_EXTENSION"
+  _find_and_remove_secrets_formatted "*$SECRETS_EXTENSION"
 }

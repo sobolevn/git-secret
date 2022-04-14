@@ -58,7 +58,7 @@ function changes {
     local decrypted
     decrypted_x=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase"; echo x$?)
     decrypted="${decrypted_x%x*}"
-    # we ignore the exit code because _decrypt will _abort if appropriate.
+    # we ignore the exit code because _decrypt will abort_ if appropriate.
 
 
     _message "changes in ${path}:"

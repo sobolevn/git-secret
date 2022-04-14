@@ -465,7 +465,7 @@ function _warn_or_abort {
 }
 
 
-function _find_and_clean {
+function _find_and_remove_secrets {
   # required:
   local pattern="$1" # can be any string pattern
 
@@ -482,12 +482,12 @@ function _find_and_clean {
 }
 
 
-function _find_and_clean_formatted {
+function _find_and_remove_secrets_formatted {
   # required:
   local pattern="$1" # can be any string pattern
 
   local outputs
-  outputs=$(_find_and_clean "$pattern")
+  outputs=$(_find_and_remove_secrets "$pattern")
 
   if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
     # shellcheck disable=SC2001
@@ -806,9 +806,7 @@ function _decrypt {
   fi
 
   if [[ -z "$_SECRETS_VERBOSE" ]]; then
-    args+=( "--quiet" )
-  else
-    args+=( "--no-permission-warning" )
+    args+=( "--quiet" "--no-permission-warning" )
   fi
 
   set +e   # disable 'set -e' so we can capture exit_code
@@ -816,9 +814,10 @@ function _decrypt {
   #echo "# gpg passphrase: $passphrase" >&3
   local exit_code
   if [[ -n "$passphrase" ]]; then
-    exec 4<<<"$passphrase"  # use 4, because descriptor 3 is used by bats
-    $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 4 "$encrypted_filename"
+    exec 5<<<"$passphrase"  # use 5, because descriptors 3 and 4 are used by bats
+    $SECRETS_GPG_COMMAND "${args[@]}" --batch --yes --no-tty --passphrase-fd 5 "$encrypted_filename"
     exit_code=$?
+    exec 5>&-   # close file descriptor 5
   else
     $SECRETS_GPG_COMMAND "${args[@]}" "$encrypted_filename"
     exit_code=$?
