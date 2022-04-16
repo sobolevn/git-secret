@@ -39,7 +39,7 @@ uninstall:
 test: clean build
 	export SECRETS_PROJECT_ROOT="$(shell echo $${PWD})"; \
 	export PATH="$(shell echo $${PWD})/vendor/bats-core/bin:$(shell echo $${PWD}):$(shell echo $${PATH})"; \
-	SECRETS_TEST_VERBOSE=1 "${SHELL}" ./utils/tests.sh
+	"${SHELL}" ./utils/tests.sh
 
 # We use this script in CI and you can do this too!
 # What happens here?
