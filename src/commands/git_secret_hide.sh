@@ -174,10 +174,7 @@ function hide {
           args+=( '--armor' )
         fi
 
-        # for #811, allow permission warnings even if not in verbose mode
-        #if [[ -n "$_SECRETS_VERBOSE" ]]; then
-        #    args+=( '--no-permission-warning' )
-        #fi
+        # we no longer use --no-permission-warning here in verbose mode, for #811
 
         # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2206
