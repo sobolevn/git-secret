@@ -7,8 +7,9 @@ git-secret-add - starts to track added files.
 
 
 ## DESCRIPTION
-`git secret add` - tells `git secret` which files hold secrets,
-and adds filepath(s) into `.gitsecret/paths/mapping.cfg`.
+`git secret add` - tells `git secret` which files hold secrets.
+
+Adds filepath(s) into `.gitsecret/paths/mapping.cfg`.
 (It is not recommended to alter `.gitsecret/paths/mapping.cfg` manually.)
 
 As of 0.2.6, this command also ensures the filepath is mentioned `.gitignore`

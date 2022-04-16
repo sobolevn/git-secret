@@ -7,7 +7,7 @@ git-secret-reveal - decrypts all added files.
 
 
 ## DESCRIPTION
-`git-secret-reveal` - decrypts passed files, or all files considered secret by `git-secret` 
+`git-secret-reveal` - decrypts passed files, or all files considered secret by `git-secret`.
 
 Under the hood, `reveal` uses the `gpg --decrypt` command
 and your private key (typically from your personal keyring in your
