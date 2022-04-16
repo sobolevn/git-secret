@@ -806,7 +806,8 @@ function _decrypt {
   fi
 
   if [[ -z "$_SECRETS_VERBOSE" ]]; then
-    args+=( "--quiet" "--no-permission-warning" )
+    # we no longer use --no-permission-warning here, for #811
+    args+=( "--quiet" )
   fi
 
   set +e   # disable 'set -e' so we can capture exit_code

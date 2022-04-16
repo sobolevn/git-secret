@@ -86,8 +86,9 @@ function tell {
       $SECRETS_GPG_COMMAND --export -a "$email" > "$keyfile" 3>&-
       exit_code=$?
     else
-      # It means that homedir is set as an extra argument via `-d`:
-      $SECRETS_GPG_COMMAND --no-permission-warning --homedir="$homedir" \
+      # This means that homedir is set as an extra argument via `-d`:
+      # we no longer use --no-permission-warning here, for #811
+      $SECRETS_GPG_COMMAND --homedir="$homedir" \
         --export -a "$email" > "$keyfile" 3>&-
       exit_code=$?
     fi
