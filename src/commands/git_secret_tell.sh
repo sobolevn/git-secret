@@ -87,7 +87,7 @@ function tell {
       exit_code=$?
     else
       # This means that homedir is set as an extra argument via `-d`:
-      # For #811, allow permission warnings from gnupg
+      # we no longer use --no-permission-warning here, for #811
       $SECRETS_GPG_COMMAND --homedir="$homedir" \
         --export -a "$email" > "$keyfile" 3>&-
       exit_code=$?
