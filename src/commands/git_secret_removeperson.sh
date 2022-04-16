@@ -31,7 +31,7 @@ function removeperson {
   _assert_keyring_contains_emails_at_least_once "$secrets_dir_keys" "git-secret keyring" "${emails[@]}"
 
   local args=( --homedir "$secrets_dir_keys" --batch --yes )
-  # we no longer use --no-permission-warning here in verbose mode, for #811
+  # we no longer use --no-permission-warning here in non-verbose mode, for #811
 
   for email in "${emails[@]}"; do
     # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
