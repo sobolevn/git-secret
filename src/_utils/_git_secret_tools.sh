@@ -806,8 +806,7 @@ function _decrypt {
   fi
 
   if [[ -z "$_SECRETS_VERBOSE" ]]; then
-    # for #811, allow permission warnings (that are not suppressed by --quiet) even if not in verbose mode
-    #args+=( "--no-permission-warning" )
+    # we no longer use --no-permission-warning here, for #811
     args+=( "--quiet" )
   fi
 
