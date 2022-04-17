@@ -1,4 +1,4 @@
-git-secret-removeperson - deletes key identified by an email from the inner keyring.
+git-secret-removeperson - removes user's public key from repo keyring.
 ==================================================================================
 
 ## SYNOPSIS

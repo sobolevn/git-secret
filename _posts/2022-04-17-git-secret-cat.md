@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-cat'
-date: 2022-04-16 00:13:24 +0000
+date: 2022-04-17 19:17:27 +0000
 permalink: git-secret-cat
 categories: command
 ---
@@ -14,7 +14,7 @@ git-secret-cat - decrypts files passed on command line to stdout.
 
 
 ## DESCRIPTION
-`git-secret-cat` - Outputs the decrypted contents of the named files to stdout.
+`git-secret-cat` - prints the decrypted contents of the passed files.
 
 As with `git-secret-reveal`, you'll need to have the private key for one of the emails allowed to
 decrypt this repo in your personal keyring.

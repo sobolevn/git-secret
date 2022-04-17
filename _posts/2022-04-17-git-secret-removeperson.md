@@ -1,11 +1,11 @@
 ---
 layout: post
 title: 'git-secret-removeperson'
-date: 2022-04-16 00:13:24 +0000
+date: 2022-04-17 19:17:27 +0000
 permalink: git-secret-removeperson
 categories: command
 ---
-git-secret-removeperson - deletes key identified by an email from the inner keyring.
+git-secret-removeperson - removes user's public key from repo keyring.
 ==================================================================================
 
 ## SYNOPSIS

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-reveal'
-date: 2022-04-16 00:13:24 +0000
+date: 2022-04-17 19:17:27 +0000
 permalink: git-secret-reveal
 categories: command
 ---
@@ -14,7 +14,7 @@ git-secret-reveal - decrypts all added files.
 
 
 ## DESCRIPTION
-`git-secret-reveal` - decrypts passed files, or all files considered secret by `git-secret` 
+`git-secret-reveal` - decrypts passed files, or all files considered secret by `git-secret`.
 
 Under the hood, `reveal` uses the `gpg --decrypt` command
 and your private key (typically from your personal keyring in your
@@ -22,7 +22,7 @@ home directory) to _decrypt_ files.
 
 Therefore, for this operation to succeed, your personal keyring must contain a private key 
 matching one of the public keys which were used to encrypt the secrets --
-i.e., one of the public keys in `git-secret` repo's keyring when the file was encrypted. 
+i.e., one of the public keys in your repo's `git-secret` keyring when the file was encrypted. 
 
 
 
