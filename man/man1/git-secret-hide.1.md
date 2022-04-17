@@ -1,4 +1,4 @@
-git-secret-hide - encrypts all added files with the inner keyring.
+git-secret-hide - encrypts all added files with repo keyring.
 ==================================================================
 
 ## SYNOPSIS
