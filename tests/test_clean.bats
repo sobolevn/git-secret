@@ -68,7 +68,7 @@ function _secret_files_exists {
   second_filename=$(_get_encrypted_filename "$SECOND_FILE")
 
   # Output must be verbose:
-  [[ "$output" == *"cleaning"* ]]
+  [[ "$output" == *"deleted"* ]]
   [[ "$output" == *"$first_filename"* ]]
   [[ "$output" == *"$second_filename"* ]]
 }
