@@ -502,7 +502,7 @@ function _list_all_added_files {
   path_mappings=$(_get_secrets_dir_paths_mapping)
 
   if [[ ! -s "$path_mappings" ]]; then
-    _abort "$path_mappings is missing."
+    _abort "path_mappings file is missing or empty: $path_mappings"
   fi
 
   local filename
@@ -540,7 +540,7 @@ function _secrets_dir_is_not_ignored {
   ignores=$(_check_ignore "$git_secret_dir")
 
   if [[ ! $ignores -eq 1 ]]; then
-    _abort "'$git_secret_dir' is in .gitignore"
+    _abort "entry already in .gitignore: $git_secret_dir"
   fi
 }
 
@@ -784,7 +784,7 @@ function _decrypt {
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
   if [ ! -f "$encrypted_filename" ]; then
-    _abort "cannot find encrypted version of file: $filename"
+    _abort "cannot find file to decrypt: $filename$SECRETS_EXTENSION"
   fi
 
   local args=( "--use-agent" "--decrypt" )
