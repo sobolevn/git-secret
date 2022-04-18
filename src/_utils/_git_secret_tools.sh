@@ -478,7 +478,7 @@ function _find_and_remove_secrets {
   root=$(_get_git_root_path)
 
   # shellcheck disable=SC2086
-  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose_opt
+  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose_opt | sed "s/^/git-secret: /"
 }
 
 
