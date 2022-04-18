@@ -784,7 +784,7 @@ function _decrypt {
   encrypted_filename=$(_get_encrypted_filename "$filename")
 
   if [ ! -f "$encrypted_filename" ]; then
-    _abort "cannot find file to decrypt: $filename$SECRETS_EXTENSION"
+    _warn_or_abort "cannot find file to decrypt: $encrypted_filename" "1" "$error_ok"
   fi
 
   local args=( "--use-agent" "--decrypt" )
