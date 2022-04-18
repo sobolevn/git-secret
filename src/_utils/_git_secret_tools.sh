@@ -545,6 +545,7 @@ function _secrets_dir_is_not_ignored {
 }
 
 
+# returns 1 if true, which is reverse of normal bash convention
 function _exe_is_busybox {
   local exe
   exe="$1"
