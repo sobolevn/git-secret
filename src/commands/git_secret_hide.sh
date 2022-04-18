@@ -32,8 +32,10 @@ function _optional_delete {
       local filename
       filename=$(_get_record_filename "$line")
       if [[ -e "$filename" ]]; then 
-        _message "removing: $filename"
         rm "$filename"
+        if [[ -n "$_SECRETS_VERBOSE" ]]; then
+          _message "deleted: $filename"
+        fi
       fi
     done < "$path_mappings"
   fi
