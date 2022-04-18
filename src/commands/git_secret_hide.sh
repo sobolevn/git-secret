@@ -33,7 +33,7 @@ function _optional_delete {
       filename=$(_get_record_filename "$line")
       if [[ -e "$filename" ]]; then 
         _message "removing: $filename"
-        rm $filename
+        rm "$filename"
       fi
     done < "$path_mappings"
   fi
