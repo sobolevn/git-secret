@@ -469,16 +469,17 @@ function _find_and_remove_secrets {
   # required:
   local pattern="$1" # can be any string pattern
 
-  local verbose_opt=''
-  if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    verbose_opt='v';
-  fi
-
   local root
   root=$(_get_git_root_path)
 
+  local verbose_opt=''
+  if [[ -n "$_SECRETS_VERBOSE" ]]; then
+    verbose_opt='v';    # this will cause 'rm' to show filenames deleted
+  fi
+
+  # show filenames deleted in verbose mode, preceded by 'git-secret: cleaning: '
   # shellcheck disable=SC2086
-  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose_opt | sed "s/^/git-secret: /"
+  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose_opt | sed "s/^/git-secret: cleaning: /"
 }
 
 
@@ -491,7 +492,7 @@ function _find_and_remove_secrets_formatted {
 
   if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
     # shellcheck disable=SC2001
-    echo "$outputs" | sed "s/^/git-secret: cleaning: /"
+    echo "$outputs" # lines are already preceded by 'git-secret: cleaning: '
   fi
 }
 
