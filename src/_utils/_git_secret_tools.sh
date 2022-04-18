@@ -474,7 +474,7 @@ function _find_and_remove_secrets_formatted {
     encrypted_filename=$(_get_encrypted_filename "$filename")
     if [[ -f "$encrypted_filename" ]]; then
       rm "$encrypted_filename"
-      if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
+      if [[ -n "$_SECRETS_VERBOSE" ]]; then
         echo "git-secret: deleted: $encrypted_filename"
       fi
     fi
