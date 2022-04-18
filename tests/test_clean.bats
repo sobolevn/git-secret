@@ -79,7 +79,7 @@ function _secret_files_exists {
   [ "$status" -eq 0 ]
 
   # Output must be verbose:
-  [[ "$output" == *"cleaning"* ]]
+  [[ "$output" == *"deleted:"* ]]
 }
 
 # this test is like above, but sets SECRETS_VERBOSE env var to 0

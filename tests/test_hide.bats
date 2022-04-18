@@ -268,7 +268,7 @@ function teardown {
   [ -f "$FILE_TO_HIDE" ]
 
   # Output should be verbose:
-  [[ "$output" == *"cleaning:"* ]]
+  [[ "$output" == *"deleted:"* ]]
   [[ "$output" == *"$encrypted_filename"* ]]
 }
 
