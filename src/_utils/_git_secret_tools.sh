@@ -472,14 +472,14 @@ function _find_and_remove_secrets {
   local root
   root=$(_get_git_root_path)
 
-  local verbose_opt=''
-  if [[ -n "$_SECRETS_VERBOSE" ]]; then
-    verbose_opt='v';    # this will cause 'rm' to show filenames deleted
-  fi
+  #local verbose_opt='v'
+  #if [[ -n "$_SECRETS_VERBOSE" ]]; then
+  #  verbose_opt='v';    # this will cause 'rm' to output filenames deleted
+  #fi
 
   # show filenames deleted in verbose mode, preceded by 'git-secret: cleaning: '
   # shellcheck disable=SC2086
-  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -f$verbose_opt | sed "s/^/git-secret: cleaning: /"
+  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -fv | sed "s/^/git-secret: cleaning: /"
 }
 
 
