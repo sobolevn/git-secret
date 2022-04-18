@@ -53,24 +53,6 @@ function is_git_version_ge_2_28_0 { # based on code from github autopilot
     fi
 }
 
-# git >= 2.2.0 supports gpgconf --kill
-# this should be factored with above function
-function is_gnupg_version_ge_2_2_0 { # based on code from github autopilot
-    # shellcheck disable=SC2155
-    local git_version=$(gpg --version | head -1 | awk '{print $3}')
-    # shellcheck disable=SC2155
-    local git_version_major=$(echo "$git_version" | awk -F. '{print $1}')
-    # shellcheck disable=SC2155
-    local git_version_minor=$(echo "$git_version" | awk -F. '{print $2}')
-    # shellcheck disable=SC2155
-    local git_version_patch=$(echo "$git_version" | awk -F. '{print $3}')
-    if [[ "$git_version_major" -ge 2 ]] && [[ "$git_version_minor" -ge 2 ]] && [[ "$git_version_patch" -ge 0 ]]; then
-        echo 0
-    else
-        echo 1
-    fi
-}
-
 # GPG-based stuff:
 : "${SECRETS_GPG_COMMAND:='gpg'}"
 
@@ -136,28 +118,17 @@ function file_has_line {
 function stop_gpg_agent {
   local username
   username=$(id -u -n)
-
-  local has_gpgconf_exe
-  has_gpgconf_exe=$(command -v gpgconf 2>&1 > /dev/null; echo $?)  # 0 if found
-  local has_kill_option
-  has_kill_option=$(is_gnupg_version_ge_2_2_0) # 0 for true
-
-  if [[ $has_gpgconf_exe -eq '0' && $has_kill_option -eq '0' ]]; then
-     # gpgconf --kill might not exist before gnupg 2.0, even if docs say it does
-     gpgconf --kill gpg-agent >> "$TEST_OUTPUT_FILE" 2>&1
+  if [[ "$SECRETS_DOCKER_ENV" == 'windows' ]]; then
+    ps -l -u "$username" | gawk \
+      '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_OUTPUT_FILE" 2>&1
   else
-    if [[ "$SECRETS_DOCKER_ENV" == 'windows' ]]; then
-      ps -l -u "$username" | gawk \
-        '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_OUTPUT_FILE" 2>&1
+    local ps_is_busybox
+    ps_is_busybox=_exe_is_busybox 'ps'
+    if [[ $ps_is_busybox -eq '1' ]]; then
+      echo '# git-secret: tests: not stopping gpg-agent on busybox' >&3
     else
-      local ps_is_busybox
-      ps_is_busybox=_exe_is_busybox 'ps'  # 1 if found, this is reverse of normal bash convention
-      if [[ $ps_is_busybox -eq '1' ]]; then
-        echo '# git-secret: tests: not stopping gpg-agent on busybox' >&3
-      else
-        ps -wx -U "$username" | gawk \
-          '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_OUTPUT_FILE" 2>&1
-      fi
+      ps -wx -U "$username" | gawk \
+        '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_OUTPUT_FILE" 2>&1
     fi
   fi
 }
