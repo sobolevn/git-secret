@@ -160,7 +160,7 @@ function teardown {
   rm "$FILE_TO_HIDE"
 
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "WRONG"
-  [ "$status" -eq 2 ]
+  [ "$status" -eq 1 ]
   [ ! -f "$FILE_TO_HIDE" ]
 }
 
