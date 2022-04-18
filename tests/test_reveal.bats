@@ -50,7 +50,7 @@ function teardown {
   rm -f "$FILE_TO_HIDE"
 
   local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret reveal -Z k-d "$TEST_GPG_HOMEDIR" -p "$password"
+  run git secret reveal -Z -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -ne 0 ]
 }
 
@@ -61,6 +61,11 @@ function teardown {
   [ "$status" -ne 0 ]
 }
 
+@test "run 'reveal' on nonexistant file" {
+  local password=$(test_user_password "$TEST_DEFAULT_USER")
+  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" "DOES-NOT-EXIST"
+  [ "$status" -ne 0 ]
+}
 
 @test "run 'reveal' with '-f'" {
   rm "$FILE_TO_HIDE"
