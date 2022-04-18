@@ -108,7 +108,7 @@ function hide {
   # If -c option was provided, clean the hidden files
   # before creating new ones.
   if [[ $clean -eq 1 ]]; then
-    _find_and_remove_secrets_formatted "*$SECRETS_EXTENSION"
+    _find_and_remove_secrets_formatted
   fi
 
   # Encrypting files:

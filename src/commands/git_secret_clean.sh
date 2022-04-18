@@ -24,15 +24,5 @@ function clean {
 
   _user_required
 
-  local filenames
-  _list_all_added_files # sets array variable 'filenames'
-
-  for filename in "${filenames[@]}"; do
-    local path # absolute path
-    encrypted_filename=$(_get_encrypted_filename "$filename")
-    if [[ -f "$encrypted_filename" ]]; then
-      rm "$encrypted_filename"
-      echo "git-secret: deleted: $encrypted_filename"
-    fi
-  done
+  _find_and_remove_secrets_formatted
 }

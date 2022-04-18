@@ -465,31 +465,22 @@ function _warn_or_abort {
 }
 
 
-function _find_and_remove_secrets {
-  # required:
-  local pattern="$1" # can be any string pattern
-
-  local root
-  root=$(_get_git_root_path)
-
-  # return filenames deleted, preceded by 'git-secret: cleaning: '
-  # shellcheck disable=SC2086
-  find "$root" -path "$pattern" -type f -print0 | xargs -0 rm -fv | sed "s/^/git-secret: cleaning: /"
-}
-
-
 function _find_and_remove_secrets_formatted {
-  # required:
-  local pattern="$1" # can be any string pattern
+  local filenames
+  _list_all_added_files # sets array variable 'filenames'
 
-  local outputs
-  outputs=$(_find_and_remove_secrets "$pattern")
-
-  if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
-    # shellcheck disable=SC2001
-    echo "$outputs" # lines are already preceded by 'git-secret: cleaning: '
-  fi
+  for filename in "${filenames[@]}"; do
+    local path # absolute path
+    encrypted_filename=$(_get_encrypted_filename "$filename")
+    if [[ -f "$encrypted_filename" ]]; then
+      rm "$encrypted_filename"
+      if [[ -n "$_SECRETS_VERBOSE" ]] && [[ -n "$outputs" ]]; then
+        echo "git-secret: deleted: $encrypted_filename"
+      fi
+    fi
+  done
 }
+
 
 
 # this sets the global array variable 'filenames'
