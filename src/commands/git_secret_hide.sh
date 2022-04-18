@@ -33,7 +33,7 @@ function _optional_delete {
 
     # We use custom formatting here:
     if [[ -n "$_SECRETS_VERBOSE" ]]; then
-      echo && _message 'removing unencrypted files:'
+      echo && _message 'removing unencrypted files'
     fi
 
     while read -r line; do
@@ -42,10 +42,6 @@ function _optional_delete {
       filename=$(_get_record_filename "$line")
       _find_and_remove_secrets "*$filename"
     done < "$path_mappings"
-
-    if [[ -n "$_SECRETS_VERBOSE" ]]; then
-      echo
-    fi
   fi
 }
 
