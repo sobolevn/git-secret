@@ -812,8 +812,6 @@ function _decrypt {
   if [[ -z "$_SECRETS_VERBOSE" ]]; then
     # we no longer use --no-permission-warning here, for #811
     args+=( "--quiet" )
-  else
-    args+=( '-v' )  # add -v for verbosity in git-secret verbose mode
   fi
 
   set +e   # disable 'set -e' so we can capture exit_code
