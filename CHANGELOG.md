@@ -8,6 +8,7 @@
   when encrypting files, so secret files are stored
   in text format rather than binary (#631)
 - `git secret init` now sets `.gitsecret/keys` permission to 0700 (#811)
+- Improve verbose and non-verbose output
 
 ### Bugfixes
 
