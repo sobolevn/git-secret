@@ -53,6 +53,9 @@ function remove {
       encrypted_filename=$(_get_encrypted_filename "$path")
 
       rm "$encrypted_filename" # fail on error
+      if [[ -n "$_SECRETS_VERBOSE" ]]; then
+          _message "deleted: $filename"
+      fi
     fi
   done
 
