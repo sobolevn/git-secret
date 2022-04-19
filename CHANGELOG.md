@@ -22,7 +22,7 @@
 
 - Allow gnupg permission warnings in `tell`, `hide`, `reveal`, and `removeperson` (#811)
 - Rename `killperson` command to `removeperson` (#684)
-- Improve error messaging decrypting nonexistant files (#706)
+- Improve error messaging decrypting nonexistent files (#706)
 - Improve, expand, correct, and update docs (#699)
 - Update docs for use with CI/CD server (#675)
 - Upgrade bats-core to v1.6.0 (#755)

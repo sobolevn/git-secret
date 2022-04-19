@@ -61,7 +61,7 @@ function teardown {
   [ "$status" -ne 0 ]
 }
 
-@test "run 'reveal' on nonexistant file" {
+@test "run 'reveal' on nonexistent file" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" "DOES-NOT-EXIST"
   [ "$status" -ne 0 ]
