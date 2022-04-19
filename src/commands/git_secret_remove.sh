@@ -54,7 +54,7 @@ function remove {
 
       rm "$encrypted_filename" # fail on error
       if [[ -n "$_SECRETS_VERBOSE" ]]; then
-          _message "deleted: $filename"
+          _message "deleted: $encrypted_filename"
       fi
     fi
   done
