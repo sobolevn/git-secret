@@ -15,14 +15,6 @@ BEGIN { FS=":"; OFS=":"; }
 }
 '
 
-function _optional_clean {
-  local clean="$1"
-
-  if [[ $clean -eq 1 ]]; then
-    _find_and_remove_secrets_formatted "*$SECRETS_EXTENSION"
-  fi
-}
-
 
 function _optional_delete {
   local delete="$1"
@@ -33,19 +25,19 @@ function _optional_delete {
 
     # We use custom formatting here:
     if [[ -n "$_SECRETS_VERBOSE" ]]; then
-      echo && _message 'removing unencrypted files:'
+      _message 'removing unencrypted files'
     fi
 
-    while read -r line; do
-      # So the formatting would not be repeated several times here:
+    while read -r line; do  # each line is a record like: filename: or filename:hash
       local filename
       filename=$(_get_record_filename "$line")
-      _find_and_remove_secrets "*$filename"
+      if [[ -e "$filename" ]]; then 
+        rm "$filename"
+        if [[ -n "$_SECRETS_VERBOSE" ]]; then
+          _message "deleted: $filename"
+        fi
+      fi
     done < "$path_mappings"
-
-    if [[ -n "$_SECRETS_VERBOSE" ]]; then
-      echo
-    fi
   fi
 }
 
@@ -115,9 +107,11 @@ function hide {
   # We need user to continue:
   _user_required
 
-  # If -c option was provided, it would clean the hidden files
+  # If -c option was provided, clean the hidden files
   # before creating new ones.
-  _optional_clean "$clean"
+  if [[ $clean -eq 1 ]]; then
+    _find_and_remove_secrets_formatted
+  fi
 
   # Encrypting files:
 

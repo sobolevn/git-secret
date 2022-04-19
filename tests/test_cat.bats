@@ -55,7 +55,7 @@ function teardown {
 
 @test "run 'cat' with wrong filename" {
   run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" NO_SUCH_FILE
-  [ "$status" -eq 2 ]
+  [ "$status" -eq 1 ]
 }
 
 

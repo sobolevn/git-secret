@@ -7,19 +7,22 @@
 - Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
   when encrypting files, so secret files are stored
   in text format rather than binary (#631)
-- Allow gnupg permission warnings in `tell`, `hide`, `reveal`, and `removeperson` (#811)
 - `git secret init` now sets `.gitsecret/keys` permission to 0700 (#811)
+- Improve verbose and non-verbose output
 
 ### Bugfixes
 
 - Fix adding newlines to `.gitignore` entries (#643)
 - Fix `cat` and `reveal` on named files while in repo subdir (#710)
+- Fix `clean`, `hide`, `reveal` so they only remove marked secret files (#833)
 - Fix for `removeperson` if same email is present multiple times (#638)
 - Correct error message about files missing from .gitignore
 
 ### Misc
 
+- Allow gnupg permission warnings in `tell`, `hide`, `reveal`, and `removeperson` (#811)
 - Rename `killperson` command to `removeperson` (#684)
+- Improve error messaging decrypting nonexistent files (#706)
 - Improve, expand, correct, and update docs (#699)
 - Update docs for use with CI/CD server (#675)
 - Upgrade bats-core to v1.6.0 (#755)

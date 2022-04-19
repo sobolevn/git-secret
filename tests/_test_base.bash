@@ -259,9 +259,9 @@ function set_state_git {
   local has_initial_branch_option
   has_initial_branch_option=$(is_git_version_ge_2_28_0) # 0 for true
   if [[ "$has_initial_branch_option" == 0 ]]; then
-    git init --initial-branch=main >> "$TEST_OUTPUT_FILE" 2>&1
+    git init --initial-branch=main | sed 's/^/git: /' >> "$TEST_OUTPUT_FILE" 2>&1
   else
-    git init >> "$TEST_OUTPUT_FILE" 2>&1
+    git init | sed 's/^/git: /' >> "$TEST_OUTPUT_FILE" 2>&1
   fi
 }
 
