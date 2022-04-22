@@ -52,19 +52,3 @@ jobs:
       run: brew install gawk gnupg
     - name: Run checks
       run: SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
-
-  windows-ci:
-    runs-on: windows-latest
-    steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: mingw64
-        update: true
-        install: >-
-          base-devel
-          git man make 
-    - uses: actions/checkout@v3
-      with:
-        msystem: mingw64
-    - name: Run checks
-      run: make test
