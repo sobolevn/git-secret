@@ -63,7 +63,5 @@ jobs:
           base-devel
           git man make 
     - uses: actions/checkout@v3
-    - name: run git describe --dirty
-      run: git describe --dirty
     - name: Run checks
-      run: make test
+      run: SECRETS_TEST_VERBOSE=1 make test
