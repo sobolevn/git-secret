@@ -133,6 +133,10 @@ function _os_based {
       "$1_linux" "${@:2}"
     ;;
 
+    MSYS*)
+      "$1_linux" "${@:2}"
+    ;;
+
     CYGWIN*)
       "$1_linux" "${@:2}"
     ;;
