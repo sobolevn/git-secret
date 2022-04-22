@@ -69,6 +69,4 @@ jobs:
     - name: Run checks
       with:
         msystem: mingw64
-      env: 
-        SECRETS_TEST_VERBOSE: 1
       run: make test
