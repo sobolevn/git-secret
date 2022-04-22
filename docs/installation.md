@@ -88,3 +88,7 @@ PREFIX="/usr/local" make install
 ```
 
 Note that you can install to any prefix in your `PATH`
+
+On Windows you will have to run [Git Bash](https://gitforwindows.org/) or [Mingw-w64](https://www.mingw-w64.org/) as administrator to execute 
+the installation using `make`. By default, the installation will be saved to `%PROGRAMFILES%\Git\usr\local\bin` which you have to add to your `Path`
+environment variable.
