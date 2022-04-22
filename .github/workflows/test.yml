@@ -55,6 +55,8 @@ jobs:
 
   windows-ci:
     runs-on: windows-latest
+      with:
+        msystem: mingw64
     steps:
     - uses: msys2/setup-msys2@v2
       with:
@@ -67,6 +69,4 @@ jobs:
       with:
         msystem: mingw64
     - name: Run checks
-      with:
-        msystem: mingw64
       run: make test
