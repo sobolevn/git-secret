@@ -53,7 +53,7 @@ jobs:
     - name: Run checks
       run: SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
 
-  windows-ci:
+  windows-msys2-ci:
     runs-on: windows-latest
     steps:
     - uses: msys2/setup-msys2@v2
@@ -64,5 +64,13 @@ jobs:
           base-devel
           git man make 
     - uses: actions/checkout@v3
+    - name: Run checks
+      run: make test
+
+  windows-cygwin-ci:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cygwin/cygwin-install-action@master
     - name: Run checks
       run: make test
