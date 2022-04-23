@@ -79,6 +79,26 @@ yay -S git-secret
 
 ---
 
+### Windows
+
+Because `git-secret` depends on many unix tools and features, to get `git-secret` running on Windows 
+you have to install these tools. There are multiple ways to do this.
+
+#### WSL, GITFORWINDOWS, CYGWIN, AND MSYS2
+
+Docs to be written
+
+#### Mingw-w64
+
+One way to install the prerequisites for `git-secret` on Windows is to run 
+[Git Bash](https://gitforwindows.org/) or [Mingw-w64](https://www.mingw-w64.org/) 
+as administrator. 
+By default, the installation will be saved to `%PROGRAMFILES%\Git\usr\local\bin` 
+which you have to add to your `Path`
+environment variable.
+You'll need to install `make` and probably other tools.
+---
+
 ### Manual
 
 ```bash
@@ -89,6 +109,3 @@ PREFIX="/usr/local" make install
 
 Note that you can install to any prefix in your `PATH`
 
-On Windows you will have to run [Git Bash](https://gitforwindows.org/) or [Mingw-w64](https://www.mingw-w64.org/) as administrator to execute 
-the installation using `make`. By default, the installation will be saved to `%PROGRAMFILES%\Git\usr\local\bin` which you have to add to your `Path`
-environment variable.
