@@ -53,35 +53,6 @@ jobs:
     - name: Run checks
       run: SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
 
-  windows-msys2-ci:
-    runs-on: windows-latest
-    steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: mingw64
-        update: true
-        install: >-
-          base-devel
-          git man make 
-    - uses: actions/checkout@v3
-    - name: Run checks
-      run: make test
-      env:
-        SECRETS_DOCKER_ENV: windows
-        SECRETS_TEST_VERBOSE: 1
-
-  windows-cygwin-ci:
-    runs-on: windows-latest
-    steps:
-    - run: git config --global core.autocrlf input
-    - uses: actions/checkout@v3
-    - uses: cygwin/cygwin-install-action@master
-    - name: Run checks
-      run: make test
-      env:
-        SECRETS_DOCKER_ENV: windows
-        SECRETS_TEST_VERBOSE: 1
-
   windows-wsl-ci:
     runs-on: windows-latest
     steps:
@@ -89,8 +60,6 @@ jobs:
       with: 
         update: 'true'
         additional-packages: gnupg make man git gawk file
-      env:
-        SECRETS_TEST_VERBOSE: 1
     - run: git config --global core.autocrlf input
     - uses: actions/checkout@v3
     - shell: wsl-bash {0}
