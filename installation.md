@@ -126,21 +126,23 @@ so we are confident this method works.
 
 #### Mingw-w64
 
-One way to install the prerequisites for `git-secret` on Windows is to run 
+One way to install the prerequisites for `git-secret` on Windows is to use 
 [Mingw-w64](https://www.mingw-w64.org/) and install the needed packages.
-By default, the installation will be saved to `%PROGRAMFILES%\Git\usr\local\bin` 
-which you have to add to your `PATH` environment variable.
-If you're using Mingw-264, you'll need to install `make` and probably other tools
-such as `gnupg make man git gawk`. (This list might not be comprehensive).
+By default, the `Mingw-w64` installation will be saved to `C:\msys64`. You'll need to 
+install `make` and probably other tools such as `gnupg`, `make`, `man`, `git`, and `gawk`. 
+(This list might not be complete). Again we have automated testing of `git-secret` on `WSL`
+so we are confident this method works.
 
 #### MSYS and Cygwin
 
 It should also be possible to use `git-secret` with [MSYS](https://www.msys2.org/)
-or [Cygwin](https://www.cygwin.com/), we have gotten most of the way to getting
-`git-secret`'s self-tests running on these setups with Windows. 
-If you can help with these docs please do!
-We welcome contributions to this documentation (as well as any
-other git-secret docs).
+or [Cygwin](https://www.cygwin.com/), and we have gotten _most_ of the way to getting
+`git-secret`'s self-tests running on these setups with Windows (see 
+[windows-related issues](https://github.com/sobolevn/git-secret/issues?q=is%3Aissue+is%3Aopen+windows).
+
+If you can help with getting the tests to work on additional platforms, and/or updating
+these docs please do!  We welcome contributions `git-secret`, and to this documentation 
+(as well as to other git-secret docs or code).
 
 ---
 
