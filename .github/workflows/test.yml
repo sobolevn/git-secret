@@ -68,6 +68,7 @@ jobs:
       run: make test
       env:
         SECRETS_DOCKER_ENV: windows
+        SECRETS_TEST_VERBOSE: 1
 
   windows-cygwin-ci:
     runs-on: windows-latest
@@ -79,3 +80,4 @@ jobs:
       run: make test
       env:
         SECRETS_DOCKER_ENV: windows
+        SECRETS_TEST_VERBOSE: 1
