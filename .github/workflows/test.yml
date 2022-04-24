@@ -88,7 +88,7 @@ jobs:
     - uses: Vampire/setup-wsl@v1
       with: 
         update: 'true'
-        additional-packages: gnupg make man
+        additional-packages: gnupg make man git gawk
       env:
         SECRETS_TEST_VERBOSE: 1
     - run: git config --global core.autocrlf input
