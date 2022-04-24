@@ -26,19 +26,19 @@ This also means you have to maintain extra secure servers where all your secrets
 
 ### How does `git-secret` solve these problems?
 
-1. `git-secret` encrypts files and stores them inside the `git` repository, providing a history of changes for every commit.
-2. `git-secret` doesn't require any other deploy operations other than providing the appropriate
-private key (to allow decryption), and using `git secret reveal`, 
-to automatically decrypt all the secret files.
+1. `git-secret` encrypts files and stores them inside your `git` repository, providing a history of changes for every commit.
+2. `git-secret` doesn't require any extra deploy operations other than providing the appropriate
+private key (to allow decryption), and using `git secret reveal`
+to decrypt all the secret files.
 
 ### What is `git-secret`?
 
 `git-secret` is a bash tool to store your private data inside a `git` repo. 
 
-How's that? Basically, it uses `gpg` to encrypt the tracked files with the 
-public keys of all the users that you trust (which you have specified with
-`git secret tell email@address.id`).
-Then permitted users can decrypt these files using their personal secret key. 
+How's that? Basically, it uses `gpg` to encrypt files with the 
+public keys of the users that you trust, and which you have specified with
+`git secret tell email@address.id`.
+Then these users can decrypt these files using their personal secret key. 
 
 Why deal with all this private/public key stuff? 
 To make it easier to manage access rights. 
