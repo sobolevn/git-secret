@@ -93,7 +93,58 @@ yay -S git-secret
 
 ---
 
-### Manual
+### Windows
+
+`git-secret` depends on many unix tools and features that Windows systems do not usually
+include by default.  Therefore to get `git-secret` running on Windows you have to 
+install a these tools, probably using of the toolkits described below. 
+(Each has a different install and setup process).
+
+Then, once the pre-requisite unix tools are installed,
+you can use the Manual Installation instructione below to 
+manually install `git-secret` (see below).  
+
+Some options to install the required unix tools on your windows system include
+WSL, CYGWIN, MSYS, and Mingw-w64 (which may have some overlap).
+
+Documenting how each is installed and operates is beyond the scope of this document, 
+so we will cover the topic in broad strokes. Improvements to this documentation
+(or any other git-secret documentation) are welcome. 
+
+Again, after you install the unix tools needed, you can install 
+`git-secret` on windows using the `Manual Installation` steps below.
+
+#### WSL
+
+Perhaps the easiest way to get `git-secret` operating on windows is using `WSL`
+(if your system supports it). 
+You'll need to install these additional packages: `gnupg make man git gawk file`.
+Here are instructions to install [WSL](https://docs.microsoft.com/en-us/windows/wsl/install)
+
+We have successfully set up automated testing of `git-secret` on `WSL`, 
+so we are confident this method works.
+
+#### Mingw-w64
+
+One way to install the prerequisites for `git-secret` on Windows is to run 
+[Mingw-w64](https://www.mingw-w64.org/) and install the needed packages.
+By default, the installation will be saved to `%PROGRAMFILES%\Git\usr\local\bin` 
+which you have to add to your `PATH` environment variable.
+If you're using Mingw-264, you'll need to install `make` and probably other tools
+such as `gnupg make man git gawk`. (This list might not be comprehensive).
+
+#### MSYS and Cygwin
+
+It should also be possible to use `git-secret` with (MSYS)[https://www.msys2.org/]
+or (Cygwin)[https://www.cygwin.com/], we have gotten most of the way to getting
+`git-secret`'s self-tests running on these setups with Windows. 
+If you can help with these docs please do!
+We welcome contributions to this documentation (as well as any
+other git-secret docs).
+
+---
+
+### Manual Installation
 
 ```bash
 git clone https://github.com/sobolevn/git-secret.git git-secret
@@ -101,8 +152,7 @@ cd git-secret && make build
 PREFIX="/usr/local" make install
 ```
 
-Note that you can install to any prefix in your `PATH`
+Note that you can change prefix to be any directory you subsequently include in in your `PATH`
+environment variable. We generally recommend you stick to the the default 
+install locations for simplicity, but if you know what you're doing you are welcome to change it.
 
-On Windows you will have to run [Git Bash](https://gitforwindows.org/) or [Mingw-w64](https://www.mingw-w64.org/) as administrator to execute 
-the installation using `make`. By default, the installation will be saved to `%PROGRAMFILES%\Git\usr\local\bin` which you have to add to your `Path`
-environment variable.
