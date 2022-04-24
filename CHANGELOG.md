@@ -27,6 +27,7 @@
 - Update docs for use with CI/CD server (#675)
 - Upgrade bats-core to v1.6.0 (#755)
 - Test, and build RPMS, with Rocky and Alma Linux instead of CentOS (#765)
+- Test code on windows using WSL (#846)
 - Improve testing of .gitignore contents (#792)
 - Automate running verbose tests with SECRETS_TEST_VERBOSE=1 (#794)
 

@@ -52,3 +52,15 @@ jobs:
       run: brew install gawk gnupg
     - name: Run checks
       run: SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
+
+  windows-wsl-ci:
+    runs-on: windows-latest
+    steps:
+    - uses: Vampire/setup-wsl@v1
+      with: 
+        update: 'true'
+        additional-packages: gnupg make man git gawk file
+    - run: git config --global core.autocrlf input
+    - uses: actions/checkout@v3
+    - shell: wsl-bash {0}
+      run: make test
