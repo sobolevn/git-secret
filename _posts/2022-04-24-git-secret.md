@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret'
-date: 2022-04-24 14:23:27 +0000
+date: 2022-04-24 15:15:33 +0000
 permalink: git-secret
 categories: usage
 ---
@@ -49,13 +49,18 @@ And you're done!
 ### Usage: Adding someone to a repository using git-secret
 
 1. [Get their `gpg` public-key](#using-gpg). **You won't need their secret key.**
+They can export their public key for you using a command like:
 
-2. Import this key into your `gpg` keyring (in `~/.gnupg` or similar) by running `gpg --import KEY_NAME.txt`
+```shell
+gpg --armor --export their@email.com > public_key.txt   # armor here makes it ascii
+```
+ 
+2. Import this key into your `gpg` keyring (in `~/.gnupg` or similar) by running `gpg --import public_key.txt`
 
-3. Now add this person to your secrets repo by running `git secret tell persons@email.id`
+3. Now add this person to your secrets repo by running `git secret tell their@email.id`
 (this will be the email address associated with their public key)
 
-4. Now remove the other user's public key from your personal keyring with `gpg --delete-keys persons@email.id`
+4. Now remove the other user's public key from your personal keyring with `gpg --delete-keys their@email.id`
 
 5. The newly added user cannot yet read the encrypted files. Now, re-encrypt the files using
 `git secret reveal; git secret hide -d`, and then commit and push the newly encrypted files.
@@ -99,9 +104,9 @@ with the changes in your code.
 
 One way of doing it is the following:
 
-1. [create a gpg key](#using-gpg) for your CI/CD environment. You can chose any name and email address you want: for instance `MyApp CodeShip <myapp@codeship.com>`
-if your app is called MyApp and your CI/CD provider is CodeShip. It is easier not to define a passphrase for that key. However, if defining a passphrase is unavoidable, use a unique passphrase for the private key.
-2. run `gpg --armor --export-secret-key myapp@codeship.com` to get your private key value
+1. [create a gpg key](#using-gpg) for your CI/CD environment. You can chose any name and email address you want: for instance `MyApp Example <myapp@example.com>`
+if your app is called MyApp and your CI/CD provider is Example. It is easier not to define a passphrase for that key. However, if defining a passphrase is unavoidable, use a unique passphrase for the private key.
+2. run `gpg --armor --export-secret-key myapp@example.com` to get your private key value
 3. Create an env var on your CI/CD server `GPG_PRIVATE_KEY` and assign it the private key value. If a passphrase has been setup for the private key, create another env var on the CI/CD server `GPG_PASSPHRASE` and assign it the passphrase of the private key.
 4. Then write your Continuous Deployment build script. For instance:
 
@@ -167,8 +172,8 @@ Use the various `git-secret` commands to manipulate the files in `.gitsecret`,
 you should not change the data in these files directly.
 
 Exactly which files exist in the `.gitsecret` folder and what their contents are
-vary slightly across different versions of gpg, and some versions of gpg
-might not work well with keyrings created with newer versions of gpg. 
+vary slightly across different versions of gpg. Also, some versions of gpg
+might not work well with keyrings created or modified with newer versions of gpg. 
 Thus it is best to use git-secret with the same version of gpg being used by all users.
 This can be forced by installing matching versions of gpg 
 and using `SECRETS_GPG_COMMAND` environment variable.
@@ -176,7 +181,13 @@ and using `SECRETS_GPG_COMMAND` environment variable.
 For example, there is an issue between `gpg` version 2.1.20 and later versions
 which can cause problems reading and writing keyring files between systems
 (this shows up in errors like 'gpg: skipped packet of type 12 in keybox').
-This is not the only issue it is possible to encounter.
+
+This is not the only issue it is possible to encounter sharing files between different versions
+of `gpg`.
+Generally you are most likely to encounter issues between `gpg`
+versions if you use `git-secret tell` or `git-secret removeperson` to modify
+your repo's `git-secret` keyring using a newer version of `gpg`, and then try to operate
+on that keyring using an older version of `gpg`.
 
 The `git-secret` internal data is separated into two directories:
 
@@ -189,13 +200,16 @@ All the other internal data is stored in the directory:
 
 ### `.gitsecret/keys`
 
-This directory contains data used by git-secret and PGP to allow and maintain the correct encryption and access rights for the permitted parties.
+This directory contains data used by `git-secret` and `gpg` to encrypt files to 
+be accessed by the permitted users.
 
-In particular, this directory contains a keyring with all the public keys for the emails used with `tell`.
+In particular, this directory contains a `gnupg keyring` with public keys for the emails used with `tell`.
+
 This is the keyring used to encrypt files with `git-secret-hide`. 
-`git-secret-reveal` and `git-secret-cat` 
-instead use the user's private keys (which probably reside somewhere like ~/.gnupg/)
-and which are not in the `.gitsecret/keys` directory.
+
+`git-secret-reveal` and `git-secret-cat`, which decrypt secrets,
+instead use the user's _private keys_ (which probably reside somewhere like ~/.gnupg/).
+Note that user's private keys, needed for decryption, are _not_ in the `.gitsecret/keys` directory.
 
 Generally speaking, all the files in this directory *except* `random_seed` should be checked into your repo.
 By default, `git secret init` will add the file `.gitsecret/keys/random_seed` to your `.gitignore` file.
