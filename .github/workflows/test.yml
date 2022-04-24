@@ -67,7 +67,7 @@ jobs:
     - name: Run checks
       run: make test
       env:
-        SECRETS_DOCKER_ENV=windows
+        SECRETS_DOCKER_ENV: windows
 
   windows-cygwin-ci:
     runs-on: windows-latest
@@ -78,4 +78,4 @@ jobs:
     - name: Run checks
       run: make test
       env:
-        SECRETS_DOCKER_ENV=windows
+        SECRETS_DOCKER_ENV: windows
