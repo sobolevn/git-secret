@@ -82,7 +82,7 @@ jobs:
         SECRETS_DOCKER_ENV: windows
         SECRETS_TEST_VERBOSE: 1
 
-  windows-wsl-cl:
+  windows-wsl-ci:
     runs-on: windows-latest
     steps:
     - name: Run "wsl --install Ubuntu"
