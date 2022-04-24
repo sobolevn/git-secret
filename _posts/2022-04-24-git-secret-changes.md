@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-changes'
-date: 2022-04-24 15:15:33 +0000
+date: 2022-04-24 18:53:23 +0000
 permalink: git-secret-changes
 categories: command
 ---
