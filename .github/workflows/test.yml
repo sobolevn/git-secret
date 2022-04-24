@@ -53,6 +53,19 @@ jobs:
     - name: Run checks
       run: SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
 
+  freebsd-ci:
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v3
+    - name: Test in FreeBSD
+      id: test
+      uses: vmactions/freebsd-vm@v0.1.6
+      with:
+        usesh: true
+        prepare: pkg install -y gnupg make 
+      run: |
+        make test
+
   windows-wsl-ci:
     runs-on: windows-latest
     steps:
