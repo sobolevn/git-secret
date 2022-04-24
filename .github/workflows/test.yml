@@ -86,6 +86,9 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: Vampire/setup-wsl@v1
+      with: 
+        update: 'true'
+        additional-packages: gnupg make man
       env:
         SECRETS_TEST_VERBOSE: 1
     - shell: wsl-bash {0}
