@@ -85,16 +85,8 @@ jobs:
   windows-wsl-ci:
     runs-on: windows-latest
     steps:
-    - name: Run "wsl --install Ubuntu"
-      run: wsl --install --distribution Ubuntu
-    - name: Run "wsl --list --all"
-      run: wsl --list --all
-    - name: Run "bash --version"
-      run: bash --version
-    - name: Run "wsl --update"
-      run: wsl --update
-    - uses: actions/checkout@v3
-    - name: Run checks
-      run: make test
+    - uses: Vampire/setup-wsl@v1
       env:
         SECRETS_TEST_VERBOSE: 1
+    - shell: wsl-bash
+      run: make test
