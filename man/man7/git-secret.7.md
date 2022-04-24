@@ -20,7 +20,7 @@ with subdirectories `keys/` and `paths/`,
 and `.gitignore` will be configured to _not_ ignore `.secret` files.
 
 **Note** all the contents of the `.gitsecret/` folder should be checked in, **/except/** the `random_seed` file.
-In other words, of all the files in `.gitsecret/`, only the `random_seed` file should be mentioned in your `.gitignore` file.
+This also means that of all the files in `.gitsecret/`, only the `random_seed` file should be mentioned in your `.gitignore` file.
 
 3. Add the first user to the `git-secret` repo keyring by running `git secret tell your@email.id`.
 
@@ -120,7 +120,7 @@ git secret reveal -p "$GPG_PASSPHRASE"
 Note: your CI/CD might not allow you to create a multiline value. In that case, you can export it on one line with
 
 ```shell
-gpg --armor --export-secret-key myapp@codeship.com | tr '\n' ','
+gpg --armor --export-secret-key myapp@example.com | tr '\n' ','
 ```
 
 You can then create your private key file with:
