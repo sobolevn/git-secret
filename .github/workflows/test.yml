@@ -84,6 +84,7 @@ jobs:
 
   windows-wsl-cl:
     runs-on: windows-latest
+    steps:
     - name: Run "wsl --install Ubuntu"
       run: wsl --install --distribution Ubuntu
     - name: Run "wsl --list --all"
