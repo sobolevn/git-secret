@@ -66,7 +66,7 @@ jobs:
         run: |
           which -a bash
           which -a shell
-          make test
+          gmake test
 
   windows-wsl-ci:
     runs-on: windows-latest
