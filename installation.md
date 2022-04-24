@@ -103,7 +103,7 @@ yay -S git-secret
 
 `git-secret` depends on many unix tools and features that Windows systems do not usually
 include by default.  Therefore to get `git-secret` running on Windows you have to 
-install a these tools, probably using one of the toolkits described below. 
+install these tools, probably using one of the toolkits described below. 
 (Each has a different install and setup process, and there may be additional 
 package systems to install the prerequisites on Windows).
 
