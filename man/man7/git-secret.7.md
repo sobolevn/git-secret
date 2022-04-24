@@ -97,9 +97,9 @@ with the changes in your code.
 
 One way of doing it is the following:
 
-1. [create a gpg key](#using-gpg) for your CI/CD environment. You can chose any name and email address you want: for instance `MyApp CodeShip <myapp@codeship.com>`
-if your app is called MyApp and your CI/CD provider is CodeShip. It is easier not to define a passphrase for that key. However, if defining a passphrase is unavoidable, use a unique passphrase for the private key.
-2. run `gpg --armor --export-secret-key myapp@codeship.com` to get your private key value
+1. [create a gpg key](#using-gpg) for your CI/CD environment. You can chose any name and email address you want: for instance `MyApp Example <myapp@example.com>`
+if your app is called MyApp and your CI/CD provider is Example. It is easier not to define a passphrase for that key. However, if defining a passphrase is unavoidable, use a unique passphrase for the private key.
+2. run `gpg --armor --export-secret-key myapp@example.com` to get your private key value
 3. Create an env var on your CI/CD server `GPG_PRIVATE_KEY` and assign it the private key value. If a passphrase has been setup for the private key, create another env var on the CI/CD server `GPG_PASSPHRASE` and assign it the passphrase of the private key.
 4. Then write your Continuous Deployment build script. For instance:
 
