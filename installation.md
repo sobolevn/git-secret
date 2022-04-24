@@ -135,8 +135,8 @@ such as `gnupg make man git gawk`. (This list might not be comprehensive).
 
 #### MSYS and Cygwin
 
-It should also be possible to use `git-secret` with (MSYS)[https://www.msys2.org/]
-or (Cygwin)[https://www.cygwin.com/], we have gotten most of the way to getting
+It should also be possible to use `git-secret` with [MSYS](https://www.msys2.org/)
+or [Cygwin](https://www.cygwin.com/), we have gotten most of the way to getting
 `git-secret`'s self-tests running on these setups with Windows. 
 If you can help with these docs please do!
 We welcome contributions to this documentation (as well as any
