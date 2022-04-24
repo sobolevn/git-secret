@@ -63,8 +63,8 @@ jobs:
       with:
         usesh: true
         prepare: pkg install -y gnupg make 
-      run: |
-        make test
+        run: |
+          make test
 
   windows-wsl-ci:
     runs-on: windows-latest
