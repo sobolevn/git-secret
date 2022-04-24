@@ -62,7 +62,7 @@ jobs:
       uses: vmactions/freebsd-vm@v0.1.6
       with:
         usesh: true
-        prepare: pkg install -y gnupg make 
+        prepare: pkg install -y gnupg 
         run: |
           make test
 
