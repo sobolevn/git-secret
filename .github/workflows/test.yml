@@ -91,5 +91,6 @@ jobs:
         additional-packages: gnupg make man
       env:
         SECRETS_TEST_VERBOSE: 1
+    - uses: actions/checkout@v3
     - shell: wsl-bash {0}
       run: make test
