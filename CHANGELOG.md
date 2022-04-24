@@ -7,6 +7,7 @@
 - Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
   when encrypting files, so secret files are stored
   in text format rather than binary (#631)
+- Allow gnupg permission warnings in `tell`, `hide`, `reveal`, and `removeperson` (#811)
 - `git secret init` now sets `.gitsecret/keys` permission to 0700 (#811)
 - Improve verbose and non-verbose output
 
@@ -20,14 +21,14 @@
 
 ### Misc
 
-- Allow gnupg permission warnings in `tell`, `hide`, `reveal`, and `removeperson` (#811)
 - Rename `killperson` command to `removeperson` (#684)
 - Improve error messaging decrypting nonexistent files (#706)
 - Improve, expand, correct, and update docs (#699)
 - Update docs for use with CI/CD server (#675)
 - Upgrade bats-core to v1.6.0 (#755)
 - Test, and build RPMS, with Rocky and Alma Linux instead of CentOS (#765)
-- Test code on windows using WSL (#846)
+- Automate testing code on windows using WSL (#846)
+- Automate testing code on FreeBSD (#455)
 - Improve testing of .gitignore contents (#792)
 - Automate running verbose tests with SECRETS_TEST_VERBOSE=1 (#794)
 - Improve documentation about installing on Windows (#843)
