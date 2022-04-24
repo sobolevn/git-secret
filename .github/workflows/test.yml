@@ -88,5 +88,5 @@ jobs:
     - uses: Vampire/setup-wsl@v1
       env:
         SECRETS_TEST_VERBOSE: 1
-    - shell: wsl-bash
+    - shell: wsl-bash {0}
       run: make test
