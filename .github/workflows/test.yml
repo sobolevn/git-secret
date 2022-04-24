@@ -91,13 +91,10 @@ jobs:
       run: wsl --list --all
     - name: Run "bash --version"
       run: bash --version
-    - name: Run "wsl whoami"
-      run: wsl --distribution Ubuntu whoami
     - name: Run "wsl --status"
       run: wsl --status
     - uses: actions/checkout@v3
     - name: Run checks
       run: make test
       env:
-        SECRETS_DOCKER_ENV: windows
         SECRETS_TEST_VERBOSE: 1
