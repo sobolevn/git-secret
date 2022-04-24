@@ -28,21 +28,24 @@ Also we welcome improvements to tests or `git-secret` code for any platform.
 
 There are several ways to install `git-secret`, depending on your OS and distribution.
 They generally all have different installation processes, and we only go into 
-a little explanation, because describing how to install the pre-requisites on all
-systems is currently outside the scope of this document.
+a short explanation, because describing how to install the prerequisites on all
+systems is currently outside the scope of this document. 
+(We welcome documentation improvements.)
 
 ---
 
-### Homebrew
+### Mac OS X/Homebrew
 
 This is a packaging system for OSX. To install `git-secret` on OSX, you can install
 `homebrew` and then use:
 
-`brew install git-secret`
+```bash
+brew install git-secret
+````
 
 ---
 
-### `deb` package
+### Debian-Type Systems/`deb` package
 
 `deb` is a packaging system for [Debian](https://www.debian.org/) and related linux
 distributions.
@@ -56,7 +59,7 @@ Pre-requirements: make sure you have installed `apt-transport-https` and `ca-cer
 
 ---
 
-### `rpm` package
+### Red Hat Systems/`rpm` package
 
 `rpm` is a packaging system for Fedora, CentOS, and other Red Hat based linux distributions.
 You can find the `rpm` repository [here](https://gitsecret.jfrog.io/artifactory/git-secret-rpm/).
@@ -67,7 +70,7 @@ You can find the `rpm` repository [here](https://gitsecret.jfrog.io/artifactory/
 
 ---
 
-### Alpine
+### Alpine Systems/`apk` package
 
 `apk` is a packaging system for Alpine.
 You can find the `apk` `git-secret` packaging 
@@ -81,7 +84,7 @@ and you can see a list of supported architectures
 
 ---
 
-### Arch Linux
+### Arch Linux/`PKGBUILD` or `AUR`
 
 The _Arch_ way to install git-secret is to use the directions for
 "Installing Packages" at [Arch User Repository Documentation](https://wiki.archlinux.org/index.php/Arch_User_Repository#Installing_packages)
@@ -96,15 +99,16 @@ yay -S git-secret
 
 ---
 
-### Windows
+### Windows/`WSL`, `Cygwin`, `MSYS`, or `Mingw-w64`
 
 `git-secret` depends on many unix tools and features that Windows systems do not usually
 include by default.  Therefore to get `git-secret` running on Windows you have to 
-install a these tools, probably using of the toolkits described below. 
-(Each has a different install and setup process).
+install a these tools, probably using one of the toolkits described below. 
+(Each has a different install and setup process, and there may be additional 
+package systems to install the prerequisites on Windows).
 
-Then, once the pre-requisite unix tools are installed,
-you can use the Manual Installation instructione below to 
+Then, once the prerequisite unix tools are installed,
+you can use the Manual Installation instructions below to 
 manually install `git-secret` (see below).  
 
 Some options to install the required unix tools on your windows system include
