@@ -64,6 +64,8 @@ jobs:
         usesh: true
         prepare: pkg install -y gnupg bash
         run: |
+          which -a bash
+          which -a shell
           make test
 
   windows-wsl-ci:
