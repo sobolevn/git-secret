@@ -29,6 +29,7 @@
 - Test, and build RPMS, with Rocky and Alma Linux instead of CentOS (#765)
 - Improve testing of .gitignore contents (#792)
 - Automate running verbose tests with SECRETS_TEST_VERBOSE=1 (#794)
+- Improve documentation about installing on Windows (#843)
 
 
 ## 0.4.0
