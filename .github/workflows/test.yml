@@ -66,6 +66,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Run checks
       run: make test
+      env:
+        SECRETS_DOCKER_ENV=windows
 
   windows-cygwin-ci:
     runs-on: windows-latest
@@ -75,3 +77,5 @@ jobs:
     - uses: cygwin/cygwin-install-action@master
     - name: Run checks
       run: make test
+      env:
+        SECRETS_DOCKER_ENV=windows
