@@ -10,7 +10,7 @@ READ_PERM=0644
 EXEC_PERM=0755
 
 SCRIPT_NAME='git-secret'
-SCRIPT_DESCRIPTION='A bash-tool to store your private data inside a git repository.'
+SCRIPT_DESCRIPTION='Shell scripts to encrypt your private data inside a git repository.'
 SCRIPT_VERSION="$GITSECRET_VERSION"
 
 # This may be overridden:
