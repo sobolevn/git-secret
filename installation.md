@@ -15,24 +15,37 @@ gpg (GnuPG) 1.4.20
 
 ## Supported platforms
 
-`git-secret` works with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04, `Debian` >= 8.3, and `Fedora` / `CentOS`.
-You can check the full list [here](https://github.com/sobolevn/git-secret/blob/master/.github/workflows/test.yml).
-You can add your platform to this list, if all the tests pass for you.
-`Cygwin` support [is planned](https://github.com/sobolevn/git-secret/issues/40).
+`git-secret` is tested with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04, `Debian` >= 8.3, `Fedora` / `CentOS`, and `Windows` >= 10 using `WSL`.
+You can check the full list of automated test platforms
+[here](https://github.com/sobolevn/git-secret/blob/master/.github/workflows/test.yml).
+
+We are always interested in getting `git-secret` working at tested on additional systems.
+If you get `git-secret` working on a new system and the tests pass for you, 
+you can add a Github Action to test your platform to that file. 
+Also we welcome improvements to tests or `git-secret` code for any platform.
 
 ## Installation process
 
-There are several ways to install `git-secret`:
+There are several ways to install `git-secret`, depending on your OS and distribution.
+They generally all have different installation processes, and we only go into 
+a little explanation, because describing how to install the pre-requisites on all
+systems is currently outside the scope of this document.
 
 ---
 
 ### Homebrew
+
+This is a packaging system for OSX. To install `git-secret` on OSX, you can install
+`homebrew` and then use:
 
 `brew install git-secret`
 
 ---
 
 ### `deb` package
+
+`deb` is a packaging system for [Debian](https://www.debian.org/) and related linux
+distributions.
 
 You can find the `deb` repository [here](https://gitsecret.jfrog.io/artifactory/git-secret-deb/).
 Pre-requirements: make sure you have installed `apt-transport-https` and `ca-certificates`
@@ -45,6 +58,7 @@ Pre-requirements: make sure you have installed `apt-transport-https` and `ca-cer
 
 ### `rpm` package
 
+`rpm` is a packaging system for Fedora, CentOS, and other Red Hat based linux distributions.
 You can find the `rpm` repository [here](https://gitsecret.jfrog.io/artifactory/git-secret-rpm/).
 
 ```bash
