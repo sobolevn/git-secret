@@ -144,7 +144,7 @@ install `make` and probably other tools such as `gnupg`, `make`, `man`, `git`, a
 `git-secret` also works with [MSYS](https://www.msys2.org/)
 and [Cygwin](https://www.cygwin.com/), and we have gotten _most_ of the way to getting
 `git-secret`'s self-tests running on these setups with Windows (see 
-[windows-related issues](https://github.com/sobolevn/git-secret/issues?q=is%3Aissue+is%3Aopen+windows).
+[windows-related issues](https://github.com/sobolevn/git-secret/issues?q=is%3Aissue+is%3Aopen+windows)).
 
 We welcome contributions to `git-secret` and its documentation .
 
