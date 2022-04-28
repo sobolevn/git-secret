@@ -701,7 +701,7 @@ function _get_users_in_gpg_keyring {
   ## We use --fixed-list-mode so older versions of gpg emit 'uid:' lines.
   ## Gawk splits on colon as --with-colon, matches field 1 as 'uid',
   result=$($SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode | \
-      gawk -F: '$1=="uid"' )
+      gawk -F: '$1=="uid"&&$2!="r"' )
 
   local emails
   emails=$(_extract_emails_from_gpg_output "$result")
