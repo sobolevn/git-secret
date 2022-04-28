@@ -7,6 +7,28 @@ flag=0; $1 == "pub" { cnt++ }
 END { print cnt }
 '
 
+# shellcheck disable=SC2016
+AWK_EXTRACT_FINGERPRINT='
+BEGIN{ f="" }
+{
+  if($1=="fpr")
+  {
+    f = $10
+  }
+  else if($1=="uid")
+  {
+    if($2!="r"&&length(f)>0)
+    {
+       print f
+    }
+  }
+  else
+  {
+    f=""
+  }
+}
+'
+
 function get_gpg_key_count {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
@@ -80,16 +102,29 @@ function tell {
     # shellcheck disable=SC2154
     local keyfile="$temporary_filename"
 
+    local fingerprint
+    fingerprint="$($SECRETS_GPG_COMMAND --no-permission-warning --list-public-keys \
+      --fixed-list-mode --fingerprint --with-colon "$email" | gawk -F: "$AWK_EXTRACT_FINGERPRINT")"
+
     # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
     local exit_code
     if [[ -z "$homedir" ]]; then
-      $SECRETS_GPG_COMMAND --export -a "$email" > "$keyfile" 3>&-
+      if [[ -n "$fingerprint" ]]; then
+        $SECRETS_GPG_COMMAND --export -a "$fingerprint" > "$keyfile" 3>&-
+      else
+        $SECRETS_GPG_COMMAND --export -a "$email" > "$keyfile" 3>&-
+      fi
       exit_code=$?
     else
       # This means that homedir is set as an extra argument via `-d`:
       # we no longer use --no-permission-warning here, for #811
-      $SECRETS_GPG_COMMAND --homedir="$homedir" \
-        --export -a "$email" > "$keyfile" 3>&-
+      if [[ -n "$fingerprint" ]]; then
+        $SECRETS_GPG_COMMAND --homedir="$homedir" \
+          --export -a "$fingerprint" > "$keyfile" 3>&-
+      else
+        $SECRETS_GPG_COMMAND --homedir="$homedir" \
+          --export -a "$email" > "$keyfile" 3>&-
+      fi
       exit_code=$?
     fi
     if [[ "$exit_code" -ne 0 ]]; then
