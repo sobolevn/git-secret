@@ -15,11 +15,12 @@ gpg (GnuPG) 1.4.20
 
 ## Supported platforms
 
-`git-secret` is tested with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04, `Debian` >= 8.3, `Fedora` / `CentOS`, and `Windows` >= 10 using `WSL`.
+`git-secret` is tested with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04, `Debian` >= 8.3, 
+`Fedora` / `Rocky Linux` / `AlmaLinux`, `FreeBSD`, `and `Windows` >= 10 using `WSL`.
 You can check the full list of automated test platforms
 [here](https://github.com/sobolevn/git-secret/blob/master/.github/workflows/test.yml).
 
-We are always interested in getting `git-secret` working at tested on additional systems.
+We are always interested in getting `git-secret` working and tested on additional systems.
 If you get `git-secret` working on a new system and the tests pass for you, 
 you can add a Github Action to test your platform to that file. 
 Also we welcome improvements to tests or `git-secret` code for any platform.
