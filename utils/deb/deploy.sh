@@ -14,8 +14,11 @@ source "$SECRETS_PROJECT_ROOT/utils/build-utils.sh"
 readonly BASE_API_URL='https://gitsecret.jfrog.io/artifactory'
 
 # This folder should contain just one `.dev` file:
-readonly DEB_FILE_LOCATION="$(locate_release 'deb')"
-readonly DEB_FILE_NAME="$(basename "$DEB_FILE_LOCATION")"
+readonly DEB_FILE_LOCATION
+DEB_FILE_LOCATION="$(locate_release 'deb')"
+
+readonly DEB_FILE_NAME
+DEB_FILE_NAME="$(basename "$DEB_FILE_LOCATION")"
 
 
 curl -sS \

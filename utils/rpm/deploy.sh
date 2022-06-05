@@ -14,8 +14,11 @@ source "$SECRETS_PROJECT_ROOT/utils/build-utils.sh"
 readonly BASE_API_URL='https://gitsecret.jfrog.io/artifactory'
 
 # This folder should contain just one `.rpm` file:
-readonly RPM_FILE_LOCATION="$(locate_release 'rpm')"
-readonly RPM_FILE_NAME="$(basename "$RPM_FILE_LOCATION")"
+readonly RPM_FILE_LOCATION
+RPM_FILE_LOCATION="$(locate_release 'rpm')"
+
+readonly RPM_FILE_NAME
+RPM_FILE_NAME="$(basename "$RPM_FILE_LOCATION")"
 
 
 curl -sS \
