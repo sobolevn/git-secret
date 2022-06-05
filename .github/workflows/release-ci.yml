@@ -12,11 +12,13 @@ on:
     paths:
       - 'utils/**'
       - '.ci/release-ci/**'
+      - 'Makefile'
       - '.github/workflows/release-ci.yml'
   pull_request:
     paths:
       - 'utils/**'
       - '.ci/release-ci/**'
+      - 'Makefile'
       - '.github/workflows/release-ci.yml'
 
 concurrency:
