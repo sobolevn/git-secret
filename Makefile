@@ -157,6 +157,7 @@ release: build-release
 	docker run \
 		--volume="$${PWD}:/code" \
 		-e SECRETS_ARTIFACTORY_CREDENTIALS \
+		-e SECRETS_DEPLOY_DRY_RUN \
 		--rm gitsecret-releaser \
 		bash "./utils/$${SECRETS_RELEASE_TYPE}/deploy.sh"
 
