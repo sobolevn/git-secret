@@ -28,7 +28,7 @@ function upload_with_architecture {
     --max-time 10 \
     --retry 3 \
     --retry-delay 5 \
-    -XPUT "$BASE_API_URL/git-secret-apk/all/main/$arch/$VERSION_NAME" \
+    -XPUT "$BASE_API_URL/git-secret-apk/latest-stable/main/$arch/$VERSION_NAME" \
     -T "$file_location"
 }
 

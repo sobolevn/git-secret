@@ -2,12 +2,7 @@
 # http://dl-cdn.alpinelinux.org/alpine/v3.13/main/
 # shellcheck disable=SC2034
 readonly ALPINE_ARCHITECTURES=(
-  'aarch64'
-  'armhf'
-  'armv7'
-  'mips64'
-  'ppc64le'
-  's390x'
+  # We only support popular arches:
   'x86'
   'x86_64'
 )
