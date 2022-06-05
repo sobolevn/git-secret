@@ -71,7 +71,7 @@ jobs:
   create-issue-on-failure:
     name: Create an issue if release-ci cron failed
     runs-on: ubuntu-latest
-    needs: [existing]
+    needs: [existing, dryrun]
     if: ${{ github.event_name == 'schedule' && github.repository == 'sobolevn/git-secret' && always() && (needs.existing.result == 'failure' || needs.dryrun.result == 'failure') }}
     permissions:
       issues: write
