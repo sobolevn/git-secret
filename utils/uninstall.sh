@@ -3,7 +3,7 @@
 set -e
 
 
-PREFIX="$1"
+readonly PREFIX="$1"
 if [ -z "$PREFIX" ]; then
   echo "usage: $0 <prefix>" >&2
   exit 1

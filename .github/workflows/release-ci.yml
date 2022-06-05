@@ -4,27 +4,27 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
-    
+
   # In case we change the some build scripts:
   push:
     branches:
       - master
     paths:
-      - 'utils/*/install.sh'
+      - 'utils/**'
       - '.ci/release-ci/**'
       - '.github/workflows/release-ci.yml'
   pull_request:
     paths:
-      - 'utils/*/install.sh'
+      - 'utils/**'
       - '.ci/release-ci/**'
       - '.github/workflows/release-ci.yml'
 
-concurrency: 
+concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
-  build:
+  existing:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -50,12 +50,29 @@ jobs:
         SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" \
         make release-ci
 
+  # Keep in sync with `release.yml`:
+  dryrun:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        release-type:
+          - apk
+          - deb
+          - rpm
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run dry run of the release process
+      run: |
+        SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" \
+        SECRETS_RELEASE_DRY_RUN=1 \
+          make release
+
   # https://github.community/t/run-github-actions-job-only-if-previous-job-has-failed/174786/2
   create-issue-on-failure:
     name: Create an issue if release-ci cron failed
     runs-on: ubuntu-latest
-    needs: [build]
-    if: ${{ github.event_name == 'schedule' && github.repository == 'sobolevn/git-secret' && always() && needs.build.result == 'failure' }}
+    needs: [existing]
+    if: ${{ github.event_name == 'schedule' && github.repository == 'sobolevn/git-secret' && always() && (needs.existing.result == 'failure' || needs.dryrun.result == 'failure') }}
     permissions:
       issues: write
     steps:

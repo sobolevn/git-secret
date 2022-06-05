@@ -1,7 +1,7 @@
 # Full list is here:
 # http://dl-cdn.alpinelinux.org/alpine/v3.13/main/
 # shellcheck disable=SC2034
-ALPINE_ARCHITECTURES=(
+readonly ALPINE_ARCHITECTURES=(
   'aarch64'
   'armhf'
   'armv7'

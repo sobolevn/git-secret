@@ -2,15 +2,20 @@
 
 set -e
 
+if [[ "$SECRETS_DEPLOY_DRY_RUN" == 1 ]]; then
+  echo 'dry-run finished'
+  exit 0
+fi
+
 # shellcheck disable=SC1090,SC1091
 source "$SECRETS_PROJECT_ROOT/utils/build-utils.sh"
 # shellcheck disable=SC1090,SC1091
 source "$SECRETS_PROJECT_ROOT/utils/apk/meta.sh"
 
-VERSION_NAME="git-secret-${SCRIPT_VERSION}.apk"
+readonly VERSION_NAME="git-secret-${SCRIPT_VERSION}.apk"
 
 # Artifactory location:
-BASE_API_URL='https://gitsecret.jfrog.io/artifactory'
+readonly BASE_API_URL='https://gitsecret.jfrog.io/artifactory'
 
 
 function upload_with_architecture {
@@ -18,7 +23,8 @@ function upload_with_architecture {
   local file_location
   file_location="$(locate_release 'apk' "$arch")"
 
-  curl -sS -u "$SECRETS_ARTIFACTORY_CREDENTIALS" \
+  curl -sS \
+    -u "$SECRETS_ARTIFACTORY_CREDENTIALS" \
     --max-time 10 \
     --retry 3 \
     --retry-delay 5 \
@@ -31,7 +37,8 @@ for architecture in "${ALPINE_ARCHITECTURES[@]}"; do
 done
 
 # Now, we need to trigger metadata reindex:
-curl -sS -u "$SECRETS_ARTIFACTORY_CREDENTIALS" \
+curl -sS \
+  -u "$SECRETS_ARTIFACTORY_CREDENTIALS" \
   --max-time 5 \
   --retry 3 \
   --retry-delay 5 \

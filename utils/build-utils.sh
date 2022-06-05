@@ -6,19 +6,19 @@ set -e
 source "$SECRETS_PROJECT_ROOT/src/version.sh"
 
 # Initializing and settings:
-READ_PERM=0644
-EXEC_PERM=0755
+readonly READ_PERM=0644
+readonly EXEC_PERM=0755
 
-SCRIPT_NAME='git-secret'
-SCRIPT_DESCRIPTION='Shell scripts to encrypt your private data inside a git repository.'
-SCRIPT_VERSION="$GITSECRET_VERSION"
+readonly SCRIPT_NAME='git-secret'
+readonly SCRIPT_DESCRIPTION='Shell scripts to encrypt your private data inside a git repository.'
+readonly SCRIPT_VERSION="$GITSECRET_VERSION"
 
 # This may be overridden:
 if [[ -z "$SCRIPT_BUILD_DIR" ]]; then
   SCRIPT_BUILD_DIR="$PWD/build"
 fi
 
-SCRIPT_DEST_DIR="$SCRIPT_BUILD_DIR/buildroot"
+readonly SCRIPT_DEST_DIR="$SCRIPT_BUILD_DIR/buildroot"
 
 
 function locate_release {
