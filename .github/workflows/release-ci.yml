@@ -64,7 +64,8 @@ jobs:
     - name: Run dry run of the release process
       run: |
         SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" \
-        SECRETS_RELEASE_DRY_RUN=1 \
+        SECRETS_DEPLOY_DRY_RUN=1 \
+        SECRETS_ARTIFACTORY_CREDENTIALS='fake' \
           make release
 
   # https://github.community/t/run-github-actions-job-only-if-previous-job-has-failed/174786/2
