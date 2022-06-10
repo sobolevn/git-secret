@@ -7,7 +7,7 @@ function _check_setup {
   local is_tree
   is_tree=$(_is_inside_git_tree)
   if [[ "$is_tree" -ne 0 ]]; then
-    _abort "git repo not found using git. Perhaps use 'git init' or 'git clone', then in repo use 'git secret init'"
+    _abort "git cannot locate repo. Perhaps use 'git init'/'git clone', then 'git secret init'"
   fi
 
   # Checking if the '.gitsecret' dir (or as set by SECRETS_DIR) is not ignored:
