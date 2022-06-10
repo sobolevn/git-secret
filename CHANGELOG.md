@@ -2,6 +2,10 @@
 
 ## {{Next Version}}
 
+### Misc
+
+- Temporarily disable apk builds on alpine (#881)
+
 ## 0.5.0
 
 ### Features
