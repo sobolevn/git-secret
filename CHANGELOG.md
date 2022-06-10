@@ -2,6 +2,12 @@
 
 ## {{Next Version}}
 
+### Misc
+
+- Temporarily disable apk builds on alpine (#881)
+
+## 0.5.0
+
 ### Features
 
 - Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
