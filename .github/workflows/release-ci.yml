@@ -41,8 +41,8 @@ jobs:
             release-env: rocky
           - release-type: rpm
             release-env: alma
-          - release-type: apk
-            release-env: alpine
+          #- release-type: apk      # temp removal of alpine releases for #881
+          #  release-env: alpine    # temp removal of alpine releases for #881
 
     steps:
     - uses: actions/checkout@v3
