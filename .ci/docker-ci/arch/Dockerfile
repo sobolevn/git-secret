@@ -13,5 +13,5 @@ RUN pacman -Syu --needed --noconfirm \
   diffutils \
   file \
   make \
-  procps
-
+  procps \
+  archlinux-keyring # for #883
