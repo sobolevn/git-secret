@@ -157,6 +157,7 @@ function hide {
       if [[ "$update_only_modified" -eq 0 ]] ||
          [[ "$fsdb_file_hash" != "$file_hash" ]]; then
 
+        # we no longer use --no-permission-warning here, for #811
         local args=( --homedir "$secrets_dir_keys" --use-agent --yes '--trust-model=always' --encrypt )
 
         # SECRETS_GPG_ARMOR is expected to be empty or '1'.
@@ -167,8 +168,6 @@ function hide {
            [[ "$SECRETS_GPG_ARMOR" -ne 0 ]]; then
           args+=( '--armor' )
         fi
-
-        # we no longer use --no-permission-warning here in non-verbose mode, for #811
 
         # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2206
