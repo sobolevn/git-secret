@@ -2,6 +2,12 @@
 
 ## {{Next Version}}
 
+### Misc
+
+- Improve error messaging when we cannot find git repo (#874)
+
+## 0.5.0
+
 ### Features
 
 - Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
