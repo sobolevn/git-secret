@@ -2,6 +2,8 @@
 
 ## {{Next Version}}
 
+## 0.5.0
+
 ### Features
 
 - Adds `SECRETS_GPG_ARMOR` env variable to use `gpg --armor`
