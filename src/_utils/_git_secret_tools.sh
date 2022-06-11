@@ -781,10 +781,6 @@ function _decrypt {
     # we no longer use --no-permission-warning on decryption, for #811 
     local args=( "--use-agent" "--decrypt" )
   
-    # don't use --quiet unless caller requests (for cat and changes), for #887
-    if [[ "$quiet" -eq 1 ]]; then
-      args+=( "--quiet" )
-    fi
     if [[ "$write_to_file" -eq 1 ]]; then
       args+=( "-o" "$filename" )
     fi
@@ -803,6 +799,11 @@ function _decrypt {
       else
         args+=( "--pinentry-mode" "loopback" )
       fi
+    fi
+
+    if [[ "$quiet" -eq 1 ]] || [[ -z "$_SECRETS_VERBOSE" ]]; then
+      # don't use --quiet unless caller requests, or we're in verbose mode, for #887
+      args+=( "--quiet" )
     fi
   
     set +e   # disable 'set -e' so we can capture exit_code
