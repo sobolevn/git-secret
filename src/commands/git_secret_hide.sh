@@ -169,6 +169,10 @@ function hide {
           args+=( '--armor' )
         fi
 
+        if [[ -n "$_SECRETS_VERBOSE" ]]; then
+          args+=( '--verbose' )
+        fi
+
         # we depend on $recipients being split on whitespace
         # shellcheck disable=SC2206
         args+=( $recipients -o "$output_path" "$input_path" )
