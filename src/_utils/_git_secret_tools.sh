@@ -801,14 +801,10 @@ function _decrypt {
       fi
     fi
 
-    if [[ "$quiet" -eq 1 ]] || [[ -z "$_SECRETS_VERBOSE" ]]; then
-      # don't use --quiet unless caller requests, or we're in verbose mode, for #887 ...
+    if [[ -z "$_SECRETS_VERBOSE" ]] || [[ "$quiet" = 1 ]]; then
       args+=( "--quiet" )
-    else
-      # ... otherwise run in verbose mode
-      args+=( "--verbose" )
     fi
-  
+
     set +e   # disable 'set -e' so we can capture exit_code
   
     #echo "# gpg passphrase: $passphrase" >&3
