@@ -4,6 +4,7 @@
 
 ### Misc
 
+- Improve error messaging when we cannot find git repo (#874)
 - Temporarily disable apk builds on alpine (#881)
 
 ## 0.5.0
