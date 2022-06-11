@@ -801,10 +801,11 @@ function _decrypt {
       fi
     fi
 
-    # don't use --quiet unless caller requests, or we're in verbose mode, for #887
     if [[ "$quiet" -eq 1 ]] || [[ -z "$_SECRETS_VERBOSE" ]]; then
+      # don't use --quiet unless caller requests, or we're in verbose mode, for #887 ...
       args+=( "--quiet" )
     else
+      # ... otherwise run in verbose mode
       args+=( "--verbose" )
     fi
   
