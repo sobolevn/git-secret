@@ -35,6 +35,9 @@ function teardown {
 
   [ "$status" -eq 0 ]
 
+  #echo "# '$BATS_TEST_DESCRIPTION': written to file: $FILE_CONTENTS" >&3
+  #echo "# '$BATS_TEST_DESCRIPTION': read from file: $output" >&3
+    
   # $output is the output from 'git secret cat' above
   [ "$FILE_CONTENTS" == "$output" ]
 }
@@ -50,12 +53,6 @@ function teardown {
   # $output _contains_ the output from 'git secret cat',
   # may have extra output from gpg
   [[ "$output" == *"$FILE_CONTENTS"* ]]
-}
-
-
-@test "run 'cat' with bad filename" {
-  run git secret cat -d "$TEST_GPG_HOMEDIR" -p "$password" NO_SUCH_FILE
-  [ "$status" -ne 0 ]
 }
 
 
