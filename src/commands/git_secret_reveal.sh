@@ -62,7 +62,7 @@ function reveal {
     fi
 
     # The parameters are: filename, write-to-file, force, homedir, passphrase, error_ok, quiet
-    local quiet = "0"  # don't be quiet when revealing, for #887
+    local quiet=0  # don't be quiet when revealing, for #887
     _decrypt "$path" "1" "$force" "$homedir" "$passphrase" "$force_continue" "$quiet"
 
     if [[ ! -f "$path" ]]; then
