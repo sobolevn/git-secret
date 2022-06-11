@@ -56,7 +56,8 @@ function changes {
     # now do a two-step to protect trailing newlines from the $() construct.
     local decrypted_x
     local decrypted
-    decrypted_x=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase"; echo x$?)
+    local quiet=1   # we must decrypt in 'quiet' mode for changes
+    decrypted_x=$(_decrypt "$path" "0" "0" "$homedir" "$passphrase" "$quiet"; echo x$?)
     decrypted="${decrypted_x%x*}"
     # we ignore the exit code because _decrypt will abort_ if appropriate.
 

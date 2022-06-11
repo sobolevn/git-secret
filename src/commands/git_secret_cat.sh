@@ -35,6 +35,7 @@ function cat {
     path=$(_prepend_relative_root_path "$filename")  # this uses the _relative version because of #710
 
     # The parameters are: filename, write-to-file, force, homedir, passphrase
-    _decrypt "$path" "0" "0" "$homedir" "$passphrase"
+    local quiet=1
+    _decrypt "$path" "0" "0" "$homedir" "$passphrase" "$quiet"  # in cat mode, don't show output from gnupg
   done
 }

@@ -770,6 +770,7 @@ function _decrypt {
   local homedir=${4:-""}
   local passphrase=${5:-""}
   local error_ok=${6:-0} # can be 0 or 1
+  local quiet=${7:-0} # can be 0 or 1
 
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
@@ -777,9 +778,13 @@ function _decrypt {
   if [ ! -f "$encrypted_filename" ]; then
     _warn_or_abort "cannot find file to decrypt: $encrypted_filename" "1" "$error_ok"
   else
-    # we no longer use --quiet nor --no-permission-warning on decryption, for #811 and #887
+    # we no longer use --no-permission-warning on decryption, for #811 
     local args=( "--use-agent" "--decrypt" )
   
+    # don't use --quiet unless caller requests (for cat and changes), for #887
+    if [[ "$quiet" -eq 1 ]]; then
+      args+=( "--quiet" )
+    fi
     if [[ "$write_to_file" -eq 1 ]]; then
       args+=( "-o" "$filename" )
     fi
