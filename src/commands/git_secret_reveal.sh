@@ -61,9 +61,8 @@ function reveal {
       _abort "cannot decrypt to secret version of file: $filename"
     fi
 
-    # The parameters are: filename, write-to-file, force, homedir, passphrase, error_ok, quiet
-    local quiet=0  # don't be quiet when revealing, for #887
-    _decrypt "$path" "1" "$force" "$homedir" "$passphrase" "$force_continue" "$quiet"
+    # The parameters are: filename, write-to-file, force, homedir, passphrase, error_ok
+    _decrypt "$path" "1" "$force" "$homedir" "$passphrase" "$force_continue"
 
     if [[ ! -f "$path" ]]; then
       _warn_or_abort "cannot find decrypted version of file: $filename" "2" "$force_continue"

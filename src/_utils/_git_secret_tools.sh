@@ -770,7 +770,6 @@ function _decrypt {
   local homedir=${4:-""}
   local passphrase=${5:-""}
   local error_ok=${6:-0} # can be 0 or 1
-  local quiet=${7:-0} # can be 0 or 1
 
   local encrypted_filename
   encrypted_filename=$(_get_encrypted_filename "$filename")
@@ -801,7 +800,7 @@ function _decrypt {
       fi
     fi
 
-    if [[ -z "$_SECRETS_VERBOSE" ]] || [[ "$quiet" = 1 ]]; then
+    if [[ -z "$_SECRETS_VERBOSE" ]]; then
       args+=( "--quiet" )
     fi
 
