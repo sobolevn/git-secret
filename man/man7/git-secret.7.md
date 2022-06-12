@@ -183,10 +183,10 @@ The `git-secret` internal data is separated into two directories:
 
 ### `.gitsecret/paths`
 
-This directory currently contains only the file `mapping.cfg`, which lists all the files your storing encrypted.
+This directory currently contains only the file `mapping.cfg`, which lists all the files git-secret will consider secret.
 In other words, the path mappings: what files are tracked to be hidden and revealed.
 
-All the other internal data is stored in the directory:
+All other internal data used by git-secret is stored in the directory:
 
 ### `.gitsecret/keys`
 
