@@ -42,10 +42,8 @@ And you're done!
 ### Usage: Adding someone to a repository using git-secret
 
 1. [Get their `gpg` public-key](#using-gpg). **You won't need their secret key.**
-They can export their public key for you using a command like:
-
-> gpg --armor --export their@email.com > public_key.txt
-> # armor here makes it ascii
+They can export their public key for you using a command like: 
+`gpg --armor --export their@email.id > public_key.txt # --armor here makes it ascii`
  
 2. Import this key into your `gpg` keyring (in `~/.gnupg` or similar) by running `gpg --import public_key.txt`
 
@@ -185,10 +183,10 @@ The `git-secret` internal data is separated into two directories:
 
 ### `.gitsecret/paths`
 
-This directory currently contains only the file `mapping.cfg`, which lists all the files your storing encrypted.
+This directory currently contains only the file `mapping.cfg`, which lists all the files git-secret will consider secret.
 In other words, the path mappings: what files are tracked to be hidden and revealed.
 
-All the other internal data is stored in the directory:
+All other internal data used by git-secret is stored in the directory:
 
 ### `.gitsecret/keys`
 
