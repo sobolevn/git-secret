@@ -46,14 +46,10 @@ function teardown {
 
 
 @test "run 'reveal' with bad arg" {
-  cp "$FILE_TO_HIDE" "${FILE_TO_HIDE}2"
-  rm -f "$FILE_TO_HIDE"
-
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -Z -d "$TEST_GPG_HOMEDIR" -p "$password"
   [ "$status" -ne 0 ]
 }
-
 
 @test "run 'reveal' on secret version of file" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")

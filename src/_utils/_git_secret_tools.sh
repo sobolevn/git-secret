@@ -777,6 +777,7 @@ function _decrypt {
   if [ ! -f "$encrypted_filename" ]; then
     _warn_or_abort "cannot find file to decrypt: $encrypted_filename" "1" "$error_ok"
   else
+    # we no longer use --no-permission-warning on decryption, for #811 
     local args=( "--use-agent" "--decrypt" )
   
     if [[ "$write_to_file" -eq 1 ]]; then
@@ -798,12 +799,11 @@ function _decrypt {
         args+=( "--pinentry-mode" "loopback" )
       fi
     fi
-  
+
     if [[ -z "$_SECRETS_VERBOSE" ]]; then
-      # we no longer use --no-permission-warning here, for #811
       args+=( "--quiet" )
     fi
-  
+
     set +e   # disable 'set -e' so we can capture exit_code
   
     #echo "# gpg passphrase: $passphrase" >&3

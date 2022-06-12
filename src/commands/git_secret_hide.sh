@@ -109,6 +109,7 @@ function hide {
 
   # If -c option was provided, clean the hidden files
   # before creating new ones.
+  # BUG: if passed files, we should only delete them, but we always delete all secret files; see issue #834
   if [[ $clean -eq 1 ]]; then
     _find_and_remove_secrets_formatted
   fi
@@ -167,6 +168,10 @@ function hide {
         if [[ -n "$SECRETS_GPG_ARMOR" ]] &&
            [[ "$SECRETS_GPG_ARMOR" -ne 0 ]]; then
           args+=( '--armor' )
+        fi
+
+        if [[ -n "$_SECRETS_VERBOSE" ]]; then
+          args+=( '--verbose' )
         fi
 
         # we depend on $recipients being split on whitespace
