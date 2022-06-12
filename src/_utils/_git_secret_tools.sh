@@ -571,7 +571,8 @@ function _user_required {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
-  # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
+  # for info about 3>&-
+  # see https://github.com/bats-core/bats-core/blob/master/docs/source/writing-tests.md#file-descriptor-3-read-this-if-bats-hangs 
   local keys_exist
   keys_exist=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning -n --list-keys 3>&-)
   local exit_code=$?
@@ -602,7 +603,7 @@ function _get_user_key_expiry {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
 
-  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core/blob/master/docs/source/writing-tests.md#file-descriptor-3-read-this-if-bats-hangs
   line=$($SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon --fixed-list-mode "$username" | grep ^pub: 3>&-)
 
   local expiry_epoch
@@ -729,7 +730,7 @@ function _extract_emails_from_gpg_output {
   # gensub() outputs email from <> within field 10, "User-ID".  If there's no <>, then field is just an email address
   #  (and maybe a comment) and we pass it through.
   # Sed at the end removes any 'comment' that appears in parentheses, for #530
-  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core/blob/master/docs/source/writing-tests.md#file-descriptor-3-read-this-if-bats-hangs
   local emails
   emails=$(echo "$result" | gawk -F: '{print gensub(/.*<(.*)>.*/, "\\1", "g", $10); }' | sed 's/([^)]*)//g' 3>&-)
   echo "$emails"
