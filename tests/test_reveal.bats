@@ -51,14 +51,6 @@ function teardown {
   [ "$status" -ne 0 ]
 }
 
-@test "run 'reveal' with bad filename" {
-  local password=$(test_user_password "$TEST_DEFAULT_USER")
-  run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" "DOES-NOT-EXIST"
-  [ "$status" -ne 0 ]
-}
-
-
-
 @test "run 'reveal' on secret version of file" {
   local password=$(test_user_password "$TEST_DEFAULT_USER")
   run git secret reveal -d "$TEST_GPG_HOMEDIR" -p "$password" "$FILE_TO_HIDE$SECRETS_EXTENSION"
