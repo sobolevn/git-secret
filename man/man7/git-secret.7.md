@@ -42,10 +42,8 @@ And you're done!
 ### Usage: Adding someone to a repository using git-secret
 
 1. [Get their `gpg` public-key](#using-gpg). **You won't need their secret key.**
-They can export their public key for you using a command like:
-
-> gpg --armor --export their@email.com > public_key.txt
-> # armor here makes it ascii
+They can export their public key for you using a command like: 
+`gpg --armor --export their@email.com > public_key.txt # --armor here makes it ascii`
  
 2. Import this key into your `gpg` keyring (in `~/.gnupg` or similar) by running `gpg --import public_key.txt`
 
