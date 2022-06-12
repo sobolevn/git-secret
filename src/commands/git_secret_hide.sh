@@ -181,7 +181,7 @@ function hide {
         set +e  # disable 'set -e' so we can capture exit_code
 
      	  # For info about `3>&-` see:
-        # https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+        # https://github.com/bats-core/bats-core/blob/master/docs/source/writing-tests.md#file-descriptor-3-read-this-if-bats-hangs
         local gpg_output
         gpg_output=$($SECRETS_GPG_COMMAND "${args[@]}" 3>&-)  # we leave stderr alone
         local exit_code=$?

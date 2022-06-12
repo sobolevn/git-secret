@@ -34,7 +34,7 @@ function removeperson {
   # we no longer use --no-permission-warning here in non-verbose mode, for #811
 
   for email in "${emails[@]}"; do
-    # see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
+    # see https://github.com/bats-core/bats-core/blob/master/docs/source/writing-tests.md#file-descriptor-3-read-this-if-bats-hangs for info about 3>&-
     $SECRETS_GPG_COMMAND "${args[@]}" --delete-key "$email" 3>&-
     local exit_code=$?
     if [[ "$exit_code" -ne 0 ]]; then

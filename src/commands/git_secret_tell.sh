@@ -10,7 +10,7 @@ END { print cnt }
 function get_gpg_key_count {
   local secrets_dir_keys
   secrets_dir_keys=$(_get_secrets_dir_keys)
-  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+  # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core/blob/master/docs/source/writing-tests.md#file-descriptor-3-read-this-if-bats-hangs
   $SECRETS_GPG_COMMAND --homedir "$secrets_dir_keys" --no-permission-warning --list-public-keys --with-colon | gawk "$AWK_GPG_KEY_CNT" 3>&-
   local exit_code=$?
   if [[ "$exit_code" -ne 0 ]]; then
@@ -80,7 +80,7 @@ function tell {
     # shellcheck disable=SC2154
     local keyfile="$temporary_filename"
 
-    # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core#file-descriptor-3-read-this-if-bats-hangs
+    # 3>&- closes fd 3 for bats, see https://github.com/bats-core/bats-core/blob/master/docs/source/writing-tests.md#file-descriptor-3-read-this-if-bats-hangs
     local exit_code
     if [[ -z "$homedir" ]]; then
       $SECRETS_GPG_COMMAND --export -a "$email" > "$keyfile" 3>&-
