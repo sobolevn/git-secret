@@ -16,7 +16,7 @@ gpg (GnuPG) 1.4.20
 ## Supported platforms
 
 `git-secret` is tested with `Mac OS X` >= 10.9, `Ubuntu` >= 14.04, `Debian` >= 8.3, 
-`Fedora` / `Rocky Linux` / `AlmaLinux`, `FreeBSD`, `and `Windows` >= 10 using `WSL`.
+`Fedora` / `Rocky Linux` / `AlmaLinux`, `FreeBSD`, and `Windows` >= 10 using `WSL`.
 You can check the full list of automated test platforms
 [here](https://github.com/sobolevn/git-secret/blob/master/.github/workflows/test.yml).
 
