@@ -6,6 +6,7 @@
 
 - Improve error messaging when we cannot find git repo (#874)
 - Temporarily disable apk builds on alpine (#881)
+- Have `hide -v` show output from gnupg
 
 ## 0.5.0
 
