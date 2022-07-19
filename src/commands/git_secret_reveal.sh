@@ -44,8 +44,10 @@ function reveal {
 
   local counter=0
   local to_show=( "$@" )
+  local path_prepend_func='_prepend_relative_root_path'
 
   if [ ${#to_show[@]} -eq 0 ]; then
+    path_prepend_func='_prepend_root_path'
     while read -r record; do
       to_show+=("$record")  # add record to array
     done < "$path_mappings"
@@ -55,7 +57,7 @@ function reveal {
     local filename
     local path
     filename=$(_get_record_filename "$line")
-    path=$(_prepend_relative_root_path "$filename")  # this uses the _relative version because of #710
+    path=$("$path_prepend_func" "$filename")
 
     if [[ "$filename" == *"$SECRETS_EXTENSION" ]]; then
       _abort "cannot decrypt to secret version of file: $filename"
