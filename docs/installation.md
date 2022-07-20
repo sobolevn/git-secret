@@ -160,6 +160,6 @@ PREFIX="/usr/local" make install
 ```
 
 Note that you can change `PREFIX` to be any directory you subsequently include in in your `PATH`
-environment variable. We generally recommend you stick to the the default 
+environment variable. We generally recommend you stick to the default 
 install locations for simplicity, but if you know what you're doing you are welcome to change it.
 
