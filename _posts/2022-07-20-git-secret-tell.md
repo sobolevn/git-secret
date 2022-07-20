@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-tell'
-date: 2022-06-17 18:35:07 +0000
+date: 2022-07-20 06:33:24 +0000
 permalink: git-secret-tell
 categories: command
 ---
@@ -14,7 +14,7 @@ git-secret-tell - adds person who can access private data.
 
 
 ## DESCRIPTION
-`git-secret tell` - adds user(s) to the list of those able to encypt/decrypt secrets.
+`git-secret tell` - adds user(s) to the list of those able to encrypt/decrypt secrets.
 
 This lets the specified user encrypt new files,
 but will not immediately be able to decrypt existing files, which were encrypted without their key.
