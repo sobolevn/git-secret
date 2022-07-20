@@ -7,7 +7,7 @@ git-secret-tell - adds person who can access private data.
 
 
 ## DESCRIPTION
-`git-secret tell` - adds user(s) to the list of those able to encypt/decrypt secrets.
+`git-secret tell` - adds user(s) to the list of those able to encrypt/decrypt secrets.
 
 This lets the specified user encrypt new files,
 but will not immediately be able to decrypt existing files, which were encrypted without their key.
