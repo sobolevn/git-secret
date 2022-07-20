@@ -19,7 +19,7 @@ section: default
 # Priority.
 priority: main
 
-# Maintaner.
+# Maintainer.
 maintainer: Nikita Sobolev <mail@sobolevn.me>
 
 # Description.
