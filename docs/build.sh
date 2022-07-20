@@ -28,7 +28,7 @@ function copy_to_posts {
   timestamp=$(date "+%Y-%m-%d %H:%M:%S %z")
   current_date=$(date "+%Y-%m-%d")
 
-  # Creating command refernce:
+  # Creating command reference:
   for com in "$MAN_LOCATION"/git-secret-*.1.md; do
     local short_name
     short_name=$(echo "$com" | sed -n "s|$MAN_LOCATION/\(.*\)\.1\.md|\1|p")
