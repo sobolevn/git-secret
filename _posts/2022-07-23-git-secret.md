@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret'
-date: 2022-07-20 06:33:24 +0000
+date: 2022-07-23 09:33:02 +0000
 permalink: git-secret
 categories: usage
 ---
@@ -33,7 +33,7 @@ This also means that of all the files in `.gitsecret/`, only the `random_seed` f
 
 4. Now it's time to add files you wish to encrypt inside the `git-secret` repository.
 This can be done by running `git secret add <filenames...>` command, which will also (as of 0.2.6) 
-add entries to `.gitignore`, stopping those files from being be added or committed to the repo unencrypted. 
+add entries to `.gitignore`, stopping those files from being added or committed to the repo unencrypted. 
 
 5. Then run `git secret hide` to encrypt the files you added with `git secret add`.
 The files will be encrypted with the public keys in your git-secret repo's keyring,
