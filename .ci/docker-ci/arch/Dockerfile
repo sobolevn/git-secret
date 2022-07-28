@@ -3,8 +3,8 @@ FROM archlinux:base-20220529.0.58327
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
 
-RUN pacman -Sy archlinux-keyring && pacman -Syu && \
-  pacman -Syu --needed --noconfirm \
+RUN pacman -Syu --needed --noconfirm \
+  archlinux-keyring \
   # Direct dependencies:
   bash \
   gawk \
