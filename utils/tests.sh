@@ -4,7 +4,8 @@
 
 set -e
 
-TEST_DIR=/tmp/git-secret-test
+#TEST_DIR=/tmp/git-secret-test
+TEST_DIR="/tmp/git secret test"
 
 rm -rf "${TEST_DIR}"
 mkdir "${TEST_DIR}"
