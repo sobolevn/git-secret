@@ -6,8 +6,11 @@ load _test_base
 
 @test "test for perl binary" {
 
-  run command -v perl
-  [ "$status" -eq 0 ]
+  perl -v           # show output
+  command -v perl # show output
+
+  #run command -v perl
+  #[ "$status" -eq 0 ]
 
   local perl_test_file="perl-v-output"
 
