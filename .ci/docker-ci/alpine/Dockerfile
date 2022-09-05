@@ -14,4 +14,5 @@ RUN apk add --no-cache --update \
   # Assumed to be present:
   file \
   make \
-  procps
+  procps \
+  perl
