@@ -29,7 +29,7 @@ jobs:
       matrix:
         docker-env:
           - alma
-          #- alpine         # temporarily disable this test
+          - alpine
           #- arch           # we can't get this to pass as of 2022-09-05
           - debian-gnupg1  # We need to test legacy version of gnupg
           - debian-gnupg2
