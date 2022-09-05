@@ -3,18 +3,11 @@
 load _test_base
 
 
-function setup {
-}
 
-
-function teardown {
-}
-
-
-@test "run 'add' normally" {
+@test "test for perl binary" {
 
   run which perl
-  [ "$status" -ne 0 ]
+  [ "$status" -eq 0 ]
 
   local perl_test_file="perl-v-output"
 
