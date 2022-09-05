@@ -30,7 +30,7 @@ jobs:
         docker-env:
           - alma
           - alpine
-          - arch
+          #- arch           # disable arch testing for now, see #916
           - debian-gnupg1  # We need to test legacy version of gnupg
           - debian-gnupg2
           - fedora
