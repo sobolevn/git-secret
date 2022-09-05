@@ -1,4 +1,4 @@
-FROM alpine:3.16.1
+FROM alpine:3.16.2
 
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
@@ -14,5 +14,4 @@ RUN apk add --no-cache --update \
   # Assumed to be present:
   file \
   make \
-  procps \
-  perl
+  procps 
