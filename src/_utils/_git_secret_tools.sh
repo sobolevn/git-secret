@@ -222,6 +222,11 @@ function _get_record_filename {
   local filename
   filename=$(echo "$record" | awk -F: '{print $1}')
 
+  # remove / in top level file
+  if [[ $filename == "/"* ]]; then
+    filename="${filename:1}"
+  fi
+
   echo "$filename"
 }
 
@@ -309,6 +314,16 @@ function _git_normalize_filename {
   if [[ $filename != *"/"* ]]; then
     result="/$result"
   fi
+
+  echo "$result"
+}
+
+
+function _git_normalize_filename2 {
+  local filename="$1" # required
+
+  local result
+  result=$(git ls-files --full-name -o "$filename")
 
   echo "$result"
 }
