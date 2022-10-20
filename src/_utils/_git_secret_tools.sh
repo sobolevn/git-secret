@@ -304,6 +304,12 @@ function _git_normalize_filename {
 
   local result
   result=$(git ls-files --full-name -o "$filename")
+
+  # if file is in the top level, append a / so only that top level file is considered
+  if [[ $filename != *"/"* ]]; then
+    result="/$result"
+  fi
+
   echo "$result"
 }
 
