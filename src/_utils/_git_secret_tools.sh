@@ -319,16 +319,6 @@ function _git_normalize_filename {
 }
 
 
-function _git_normalize_filename2 {
-  local filename="$1" # required
-
-  local result
-  result=$(git ls-files --full-name -o "$filename")
-
-  echo "$result"
-}
-
-
 function _maybe_create_gitignore {
   # This function creates '.gitignore' if it was missing.
 
