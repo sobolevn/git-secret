@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret'
-date: 2022-10-21 14:27:14 +0000
+date: 2022-10-27 17:51:47 +0000
 permalink: git-secret
 categories: usage
 ---
