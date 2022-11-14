@@ -9,13 +9,18 @@ on:
       - 'docs/**/*'
       - 'utils/*/install.sh'
 
-concurrency: 
-  group: ${{ github.head_ref || github.run_id }}
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - uses: actions/checkout@v3
