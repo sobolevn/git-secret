@@ -11,7 +11,7 @@ on:
       - 'docs/**'
   workflow_dispatch:
 
-concurrency: 
+concurrency:
   group: ${{ github.head_ref || github.run_id }}-test
   cancel-in-progress: true
 
@@ -30,7 +30,7 @@ jobs:
         docker-env:
           - alma
           - alpine
-          #- arch           # disable arch testing for now, see #916
+          - arch
           - debian-gnupg1  # We need to test legacy version of gnupg
           - debian-gnupg2
           - fedora
@@ -63,16 +63,13 @@ jobs:
       with:
         usesh: true
         prepare: pkg install -y gnupg bash gmake git gawk
-        run: |
-          which -a bash
-          which -a shell
-          gmake test
+        run: gmake test
 
   windows-wsl-ci:
     runs-on: windows-latest
     steps:
     - uses: Vampire/setup-wsl@v1
-      with: 
+      with:
         update: 'true'
         additional-packages: gnupg make man git gawk file
     - run: git config --global core.autocrlf input
