@@ -21,7 +21,7 @@ Note also this command can be affected by the `SECRETS_PINENTRY` environment var
 
 ## OPTIONS
 
-    -d  - specifies `--homedir` option for the `gpg`. Use this option if your store your keys in a custom location.
+    -d  - specifies `--homedir` option for the `gpg`. Use this option if you store your keys in a custom location.
     -p  - specifies password for noinput mode, adds `--passphrase` option for `gpg`.
     -h  - shows help.
 
