@@ -71,8 +71,8 @@ jobs:
   windows-wsl-ci:
     runs-on: windows-latest
     steps:
-    - uses: Vampire/setup-wsl@v1
-      with:
+    - uses: Vampire/setup-wsl@v2
+      with: 
         update: 'true'
         additional-packages: gnupg make man git gawk file
     - run: git config --global core.autocrlf input
