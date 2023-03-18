@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-whoknows'
-date: 2023-01-24 08:39:19 +0000
+date: 2023-03-18 12:28:42 +0000
 permalink: git-secret-whoknows
 categories: command
 ---
