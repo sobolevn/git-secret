@@ -2,8 +2,8 @@
 title: git-secret
 email: mail@sobolevn.me
 description: Shell scripts to encrypt your private data inside a git repository.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "git-secret.io" # the base hostname & protocol for your site
+baseurl: "/git-secret" # the subpath of your site, e.g. /blog
+url: "sobolevn.me" # the base hostname & protocol for your site
 
 # GitHub links:
 github_username: sobolevn
