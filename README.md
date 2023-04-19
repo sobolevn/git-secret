@@ -34,7 +34,7 @@ you should also change the secrets.
 `git-secret` [supports `brew`](https://formulae.brew.sh/formula/git-secret), just type: `brew install git-secret`
 
 It also supports `apt` and `yum`. You can also use `make` if you want to.
-See the [installation section](https://git-secret.io/installation) for the details.
+See the [installation section](https://sobolevn.me/git-secret/installation) for the details.
 
 ### Requirements
 
