@@ -45,7 +45,7 @@ jobs:
           #  release-env: alpine    # temp removal of alpine releases for #881
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Run checks
       run: |
         SECRETS_RELEASE_ENV="${{ matrix.release-env }}" \
@@ -62,7 +62,7 @@ jobs:
           - deb
           - rpm
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Run dry run of the release process
       run: |
         SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" \
