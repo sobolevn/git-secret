@@ -20,6 +20,6 @@ jobs:
   build-man:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Checks that manual generation works
       run: make build-man
