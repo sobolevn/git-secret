@@ -1,4 +1,4 @@
-FROM archlinux:base-20220529.0.58327
+FROM archlinux/archlinux:base-20221113.0.102202
 
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"

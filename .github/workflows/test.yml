@@ -11,8 +11,11 @@ on:
       - 'docs/**'
   workflow_dispatch:
 
-concurrency: 
-  group: ${{ github.head_ref || github.run_id }}-test
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -30,7 +33,7 @@ jobs:
         docker-env:
           - alma
           - alpine
-          #- arch           # disable arch testing for now, see #916
+          - arch
           - debian-gnupg1  # We need to test legacy version of gnupg
           - debian-gnupg2
           - fedora
@@ -63,10 +66,7 @@ jobs:
       with:
         usesh: true
         prepare: pkg install -y gnupg bash gmake git gawk
-        run: |
-          which -a bash
-          which -a shell
-          gmake test
+        run: gmake test
 
   windows-wsl-ci:
     runs-on: windows-latest

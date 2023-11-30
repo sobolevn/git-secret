@@ -21,8 +21,11 @@ on:
       - 'Makefile'
       - '.github/workflows/release-ci.yml'
 
+permissions:
+  contents: read
+
 concurrency:
-  group: ${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -41,8 +44,8 @@ jobs:
             release-env: rocky
           - release-type: rpm
             release-env: alma
-          #- release-type: apk      # temp removal of alpine releases for #881
-          #  release-env: alpine    # temp removal of alpine releases for #881
+          # - release-type: apk  # see #881
+          #   release-env: alpine
 
     steps:
     - uses: actions/checkout@v4
