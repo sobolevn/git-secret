@@ -1,4 +1,4 @@
-FROM ubuntu:23.10
+FROM ubuntu:24.04
 
 LABEL maintainer="mail@sobolevn.me"
 LABEL vendor="git-secret team"
