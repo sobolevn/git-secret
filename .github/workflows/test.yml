@@ -59,7 +59,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Run checks
       id: test
-      uses: vmactions/freebsd-vm@v0.3.0
+      uses: vmactions/freebsd-vm@v1.0.4
       with:
         usesh: true
         prepare: pkg install -y gnupg bash gmake git gawk
