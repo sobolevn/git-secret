@@ -39,9 +39,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Run checks
-      run: SECRETS_TEST_VERBOSE=1 SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
-      # SECRETS_TEST_VERBOSE=1 above made alpine tests work once, otherwise it fails 3 tests. 
-      # BUT we could not reproduce this
+      run: |
+        whoami
+        pwd
+        SECRETS_TEST_VERBOSE=1 SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
+        # SECRETS_TEST_VERBOSE=1 above made alpine tests work once, otherwise it fails 3 tests. 
+        # BUT we could not reproduce this
 
   osx-ci:
     runs-on: macos-latest
