@@ -39,7 +39,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Run checks
-      run: SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
+      run: SECRETS_TEST_VERBOSE=1 SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
+      # SECRETS_TEST_VERBOSE=1 above makes alpine tests work, otherwise it fails 3 tests
+       
 
   osx-ci:
     runs-on: macos-latest
