@@ -54,18 +54,21 @@ jobs:
       run: SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
 
   freebsd-ci:
-    runs-on: macos-10.15
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: Run checks
       id: test
-      uses: vmactions/freebsd-vm@v0.3.0
+      uses: vmactions/freebsd-vm@v1
       with:
         usesh: true
         prepare: pkg install -y gnupg bash gmake git gawk
         run: |
           which -a bash
           which -a shell
+          whoami
+          env
+          freebsd-version
           gmake test
 
   windows-wsl-ci:
