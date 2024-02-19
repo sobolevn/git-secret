@@ -39,7 +39,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Run checks
-      run: SECRETS_TEST_VERBOSE=1 SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
+      run: SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
 
   osx-ci:
     runs-on: macos-latest
