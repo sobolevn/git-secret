@@ -15,3 +15,13 @@ RUN pacman -Syu --needed --noconfirm \
   make \
   procps
 
+WORKDIR /build
+
+COPY PKGBUILD .
+
+# Build the package
+RUN makepkg --noconfirm
+
+# Clean up unnecessary files and packages to reduce the image size
+RUN rm -rf /var/cache/pacman/pkg/* && \
+    pacman -Rns --noconfirm $(pacman -Qdtq)
