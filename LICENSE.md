@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2016 Nikita Sobolev
+Copyright (c) 2025 Nikita Sobolev
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
