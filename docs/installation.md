@@ -70,17 +70,9 @@ You can find the `rpm` repository [here](https://gitsecret.jfrog.io/artifactory/
 
 ---
 
-### Alpine Systems / `apk` package
+### Alpine Systems
 
-`apk` is a packaging system for Alpine.
-You can find the `apk` `git-secret` packaging 
-[here](https://gitsecret.jfrog.io/artifactory/git-secret-apk/),
-and you can see a list of supported architectures 
-[here](https://github.com/sobolevn/git-secret/blob/master/utils/apk/meta.sh)
-
-```bash
-{% include install-apk.sh %}
-```
+Use `Manual Installation` method described below.
 
 ---
 
