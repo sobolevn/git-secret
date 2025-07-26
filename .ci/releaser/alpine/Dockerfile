@@ -12,7 +12,6 @@ RUN apk add --no-cache --update \
     # fpm deps:
     ruby \
     ruby-dev \
-    ruby-etc \
     gcc \
     libffi-dev \
     make \
