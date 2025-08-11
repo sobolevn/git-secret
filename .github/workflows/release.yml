@@ -23,7 +23,7 @@ jobs:
           # - deb
           # - rpm
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Run checks
       run: SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" make release
       env:
@@ -33,7 +33,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   needs: ['release-packages']
   #   steps:
-  #   - uses: actions/checkout@v4
+  #   - uses: actions/checkout@v5
   #   - run: make changelog
   #     env:
   #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
