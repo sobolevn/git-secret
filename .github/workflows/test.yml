@@ -22,7 +22,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Shellcheck and Hadolint
       run: make lint
 
@@ -41,7 +41,7 @@ jobs:
           - rocky
           - ubuntu
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Run checks
       run: SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
 
@@ -52,7 +52,7 @@ jobs:
       matrix:
         test-verbose: [0, 1]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Install deps
       run: brew install gawk gnupg
     - name: Run checks
@@ -61,7 +61,7 @@ jobs:
   freebsd-ci:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Run checks
       id: test
       uses: vmactions/freebsd-vm@v1
@@ -84,6 +84,6 @@ jobs:
         update: 'true'
         additional-packages: gnupg make man git gawk file
     - run: git config --global core.autocrlf input
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - shell: wsl-bash {0}
       run: make test
