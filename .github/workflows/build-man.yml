@@ -22,6 +22,6 @@ jobs:
   build-man:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Checks that manual generation works
       run: make build-man
