@@ -11,7 +11,7 @@ POSTS_LOCATION='docs/_posts'
 
 
 function checkout_manuals {
-  cp -r man/ docs/man
+  cp -R man/ docs/man
 }
 
 
