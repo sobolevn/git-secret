@@ -82,6 +82,41 @@ function teardown {
 }
 
 
+@test "run 'init' in directory with spaces in parent path" {
+  # This test covers this issue:
+  # https://github.com/sobolevn/git-secret/issues/135
+
+  if [[ "$BATS_RUNNING_FROM_GIT" -eq 1 ]]; then
+    skip "this test is skipped while 'git commit'. See #334"
+  fi
+
+  local test_dir="$BATS_TMPDIR/path with spaces"
+  local current_dir="$PWD"
+
+  mkdir -p "$test_dir"
+  cd "$test_dir"
+
+  local has_initial_branch_option
+  has_initial_branch_option=$(is_git_version_ge_2_28_0)
+  if [[ "$has_initial_branch_option" == 0 ]]; then
+    git init --initial-branch=main >> "$TEST_OUTPUT_FILE" 2>&1
+  else
+    git init >> "$TEST_OUTPUT_FILE" 2>&1
+  fi
+
+  run git secret init
+  [ "$status" -eq 0 ]
+
+  local secrets_dir
+  secrets_dir=$(_get_secrets_dir)
+  [[ -d "$secrets_dir" ]]
+
+  # Cleaning up:
+  cd "$current_dir"
+  rm -rf "$test_dir"
+}
+
+
 @test "run 'init' with '.gitsecret' already initialized" {
   local secrets_dir
   secrets_dir=$(_get_secrets_dir)

@@ -22,7 +22,7 @@ function removeperson {
   local emails=( "$@" )
 
   if [[ ${#emails[@]} -eq 0 ]]; then
-    _abort "at least one email is required for removeperson."
+    _abort "at least one email or fingerprint is required for removeperson."
   fi
   # Getting the local git-secret `gpg` key directory:
   local secrets_dir_keys

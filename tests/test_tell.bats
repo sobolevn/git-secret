@@ -249,3 +249,40 @@ function teardown {
   cd "$current_dir"
   rm -r "$root_dir"
 }
+
+
+@test "run 'tell' with fingerprint" {
+  local fingerprint
+  fingerprint=$(get_gpg_public_fingerprint_by_email "$TEST_DEFAULT_USER")
+
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$fingerprint"
+  [ "$status" -eq 0 ]
+
+  # Testing that now user is found:
+  run _user_required
+  [ "$status" -eq 0 ]
+
+  # Testing that now user is in the list of people who knows the secret:
+  run git secret whoknows
+  [[ "$output" == *"$TEST_DEFAULT_USER"* ]]
+}
+
+
+@test "run 'tell' with fingerprint on the same key twice" {
+  local fingerprint
+  fingerprint=$(get_gpg_public_fingerprint_by_email "$TEST_DEFAULT_USER")
+
+  # first time should succeed
+  git secret tell -d "$TEST_GPG_HOMEDIR" "$fingerprint"
+
+  # second time should fail because the key is already in the keyring
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "$fingerprint"
+  [ "$status" -ne 0 ]
+}
+
+
+@test "run 'tell' with invalid fingerprint" {
+  # A hex string that doesn't match any key
+  run git secret tell -d "$TEST_GPG_HOMEDIR" "DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF"
+  [ "$status" -eq 1 ]
+}

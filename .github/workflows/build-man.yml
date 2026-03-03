@@ -7,9 +7,11 @@ on:
       - master
     paths:
       - 'docs/**/*'
+      - '.github/workflows/build-man.yml'
   pull_request:
     paths:
       - 'docs/**/*'
+      - '.github/workflows/build-man.yml'
   workflow_dispatch:
 
 permissions:
@@ -23,6 +25,6 @@ jobs:
   build-man:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Checks that manual generation works
       run: make build-man

@@ -18,17 +18,21 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Shellcheck and Hadolint
       run: make lint
 
   docker-ci:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         docker-env:
           - alma
@@ -40,29 +44,30 @@ jobs:
           - rocky
           - ubuntu
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Run checks
       run: SECRETS_DOCKER_ENV="${{ matrix.docker-env }}" make docker-ci
 
   osx-ci:
     runs-on: macos-latest
     strategy:
+      fail-fast: false
       matrix:
         test-verbose: [0, 1]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Install deps
       run: brew install gawk gnupg
     - name: Run checks
       run: SECRETS_TEST_VERBOSE=${{ matrix.test-verbose }} make test
 
   freebsd-ci:
-    runs-on: macos-10.15
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Run checks
       id: test
-      uses: vmactions/freebsd-vm@v0.3.0
+      uses: vmactions/freebsd-vm@v1
       with:
         usesh: true
         prepare: pkg install -y gnupg bash gmake git gawk
@@ -71,11 +76,12 @@ jobs:
   windows-wsl-ci:
     runs-on: windows-latest
     steps:
-    - uses: Vampire/setup-wsl@v2
-      with: 
+    - uses: Vampire/setup-wsl@v6
+      with:
+        distribution: Ubuntu-22.04
         update: 'true'
         additional-packages: gnupg make man git gawk file
     - run: git config --global core.autocrlf input
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - shell: wsl-bash {0}
       run: make test

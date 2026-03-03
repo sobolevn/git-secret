@@ -34,7 +34,7 @@ you should also change the secrets.
 `git-secret` [supports `brew`](https://formulae.brew.sh/formula/git-secret), just type: `brew install git-secret`
 
 It also supports `apt` and `yum`. You can also use `make` if you want to.
-See the [installation section](https://git-secret.io/installation) for the details.
+See the [installation section](https://sobolevn.me/git-secret/installation) for the details.
 
 ### Requirements
 
@@ -63,7 +63,7 @@ If your secret file holds more data than just a single password these
 precautions should not be necessary, but could be followed for greater
 security.
 
-If you found any security related issues, please do not disclose it in public. Send an email to `security@wemake.services`
+If you found any security related issues, please do not disclose it in public. Send an email to `mail@sobolevn.me`
 
 
 ## Changelog

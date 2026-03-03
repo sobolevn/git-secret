@@ -22,7 +22,7 @@ function setup {
 
 
 function teardown {
-  rm "$FILE_TO_HIDE"
+  rm -f "$FILE_TO_HIDE"
 
   uninstall_fixture_full_key "$TEST_DEFAULT_USER" "$FINGERPRINT"
   unset_current_state

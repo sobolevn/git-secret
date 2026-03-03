@@ -1,6 +1,6 @@
 # Initially copied from
 # https://github.com/jordansissel/fpm/blob/master/Dockerfile
-FROM alpine:3.17.2
+FROM alpine:3.23.3
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
@@ -12,7 +12,6 @@ RUN apk add --no-cache --update \
     # fpm deps:
     ruby \
     ruby-dev \
-    ruby-etc \
     gcc \
     libffi-dev \
     make \

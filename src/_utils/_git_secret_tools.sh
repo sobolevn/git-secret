@@ -202,13 +202,11 @@ function _temporary_file {
 
 
 function _gawk_inplace {
-  local parms="$*"
-  local dest_file
-  dest_file="$(echo "$parms" | gawk -v RS="'" -v FS="'" 'END{ gsub(/^\s+/,""); print $1 }')"
+  local dest_file="${!#}"  # last argument
 
   _temporary_file
 
-  bash -c "gawk ${parms}" > "$temporary_filename"
+  gawk "$@" > "$temporary_filename"
   mv "$temporary_filename" "$dest_file"
 }
 
@@ -253,7 +251,7 @@ function _fsdb_rm_record {
   local key="$1"  # required
   local fsdb="$2" # required
 
-  _gawk_inplace -v key="'$key'" "'$AWK_FSDB_RM_RECORD'" "$fsdb"
+  _gawk_inplace -v "key=$key" "$AWK_FSDB_RM_RECORD" "$fsdb"
 }
 
 
@@ -261,7 +259,7 @@ function _fsdb_clear_hashes {
   # First parameter is the path to fsdb
   local fsdb="$1" # required
 
-  _gawk_inplace "'$AWK_FSDB_CLEAR_HASHES'" "$fsdb"
+  _gawk_inplace "$AWK_FSDB_CLEAR_HASHES" "$fsdb"
 }
 
 
@@ -640,6 +638,37 @@ function _assert_keyring_contains_emails_at_least_once {
 
 
 
+function _is_gpg_fingerprint {
+  # Returns 0 if the input looks like a GPG fingerprint or key ID
+  # (8+ hex characters), 1 otherwise.
+  local input="$1"
+  local clean_input
+  clean_input=$(echo "$input" | tr -d ' ')
+  if [[ "$clean_input" =~ ^[A-Fa-f0-9]{8,}$ ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+
+function _check_fingerprint_in_keyring {
+  # Checks if a key matching the given fingerprint exists in the keyring.
+  # Returns 0 if found, 1 if not found.
+  local homedir="$1"
+  local fingerprint="$2"
+
+  local args=()
+  if [[ -n "$homedir" ]]; then
+    args+=( "--homedir" "$homedir" )
+  fi
+
+  # 3>&- closes fd 3 for bats
+  $SECRETS_GPG_COMMAND "${args[@]}" --no-permission-warning --list-keys "$fingerprint" > /dev/null 2>&1 3>&-
+  return $?
+}
+
+
 function _assert_keyring_emails {
   local homedir="$1"
   local keyring_name="$2"
@@ -653,27 +682,40 @@ function _assert_keyring_emails {
   local gpg_uids
   gpg_uids=$(_get_users_in_gpg_keyring "$homedir")
   for email in "${emails[@]}"; do
-    if [[ $email != *"@"* ]]; then
-      _abort "does not appear to be an email: $email"
-    fi
-    local emails_found=0
-    for uid in $gpg_uids; do
-      if [[ "$uid" == "$email" ]]; then
-        emails_found=$((emails_found+1))
+    if _is_gpg_fingerprint "$email"; then
+      # For fingerprints, check directly with gpg
+      if [[ $expected -eq 1 ]]; then
+        if ! _check_fingerprint_in_keyring "$homedir" "$email"; then
+          _abort "no key found in gpg $keyring_name for fingerprint: $email"
+        fi
+      else
+        if _check_fingerprint_in_keyring "$homedir" "$email"; then
+          _abort "key already exists in gpg $keyring_name for fingerprint: $email"
+        fi
       fi
-    done
-    if [[ $expected -eq 1 ]]; then
-        if [[ $emails_found -eq 0 ]]; then
-          _abort "no key found in gpg $keyring_name for: $email"
-        elif [[ $emails_found -gt 1 ]]; then
-          if [[ $allow_duplicates -ne 1 ]]; then
+    else
+      if [[ $email != *"@"* ]]; then
+        _abort "does not appear to be an email or fingerprint: $email"
+      fi
+      local emails_found=0
+      for uid in $gpg_uids; do
+        if [[ "$uid" == "$email" ]]; then
+          emails_found=$((emails_found+1))
+        fi
+      done
+      if [[ $expected -eq 1 ]]; then
+          if [[ $emails_found -eq 0 ]]; then
+            _abort "no key found in gpg $keyring_name for: $email"
+          elif [[ $emails_found -gt 1 ]]; then
+            if [[ $allow_duplicates -ne 1 ]]; then
+              _abort "$emails_found keys found in gpg $keyring_name for: $email"
+            fi
+          fi
+      else
+          if [[ $emails_found -gt 0 ]]; then
             _abort "$emails_found keys found in gpg $keyring_name for: $email"
           fi
-        fi
-    else
-        if [[ $emails_found -gt 0 ]]; then
-          _abort "$emails_found keys found in gpg $keyring_name for: $email"
-        fi
+      fi
     fi
 
   done

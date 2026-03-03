@@ -64,7 +64,7 @@ function tell {
   if [[ "${#emails[@]}" -eq 0 ]]; then
     # If after possible addition of git_email, emails are still empty,
     # we should raise an exception.
-    _abort "you must use -m or provide at least one email address."
+    _abort "you must use -m or provide at least one email address or fingerprint."
   fi
 
   local secrets_dir_keys

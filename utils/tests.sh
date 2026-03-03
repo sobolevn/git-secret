@@ -4,10 +4,10 @@
 
 set -e
 
-TEST_DIR=/tmp/git-secret-test
+TEST_DIR="/tmp/git-secret-test/this dir has spaces"
 
 rm -rf "${TEST_DIR}"
-mkdir "${TEST_DIR}"
+mkdir -p "${TEST_DIR}"
 echo "# created dir: ${TEST_DIR}"
 
 chmod 0700 "${TEST_DIR}"

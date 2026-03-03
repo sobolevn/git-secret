@@ -3,11 +3,11 @@ git-secret-removeperson - removes user's public key from repo keyring.
 
 ## SYNOPSIS
 
-    git secret removeperson <emails>...
+    git secret removeperson <emails or fingerprints>...
 
 
 ## DESCRIPTION
-`git-secret-removeperson` - removes public keys for passed email addresses from repo's `git-secret` keyring.
+`git-secret-removeperson` - removes public keys for passed email addresses or GPG fingerprints from repo's `git-secret` keyring.
 
 This command is used to begin the process of disallowing a user from encrypting and decrypting secrets with `git-secret`.
 

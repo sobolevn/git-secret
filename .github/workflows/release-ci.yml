@@ -44,11 +44,11 @@ jobs:
             release-env: rocky
           - release-type: rpm
             release-env: alma
-          # - release-type: apk  # see #881
-          #   release-env: alpine
+          - release-type: apk
+            release-env: alpine
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Run checks
       run: |
         SECRETS_RELEASE_ENV="${{ matrix.release-env }}" \
@@ -65,7 +65,7 @@ jobs:
           - deb
           - rpm
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Run dry run of the release process
       run: |
         SECRETS_RELEASE_TYPE="${{ matrix.release-type }}" \
@@ -82,7 +82,7 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |

@@ -3,7 +3,7 @@ git-secret-tell - adds person who can access private data.
 
 ## SYNOPSIS
 
-    git secret tell [-m] [-d dir] [emails]...
+    git secret tell [-m] [-d dir] [emails or fingerprints]...
 
 
 ## DESCRIPTION
@@ -14,12 +14,14 @@ but will not immediately be able to decrypt existing files, which were encrypted
 Files should be re-encrypted with the new keyring by someone who already has access
 in order for the new user to be able to decrypt the files.
 
-`git-secret tell` works only with email addresses, and will exit with an error if you have
+`git-secret tell` works with email addresses or GPG key fingerprints, and will exit with an error if you have
 multiple keys in your keyring with specified email addresses, or if one of the specified emails
 is already associated with a key in the `git-secret` repo's keyring.
 
 Under the hood, `git-secret-tell` searches in the current user's `gnupg` keyring for public key(s) of passed
-email(s), then imports the corresponding public key(s) into your `git-secret` repo's keyring.
+email(s) or fingerprint(s), then imports the corresponding public key(s) into your `git-secret` repo's keyring.
+
+Fingerprints should be specified as a hex string of 8 or more characters (e.g., full 40-character fingerprints).
 
 Versions of `git-secret tell` after `0.3.2` will warn about keys that are expired, revoked, or otherwise invalid.
 It will also warn if multiple keys are found for a single email address.

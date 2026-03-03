@@ -111,3 +111,19 @@ function teardown {
   [ "$status" -eq 1 ]
 }
 
+
+@test "run 'removeperson' with fingerprint" {
+  local fingerprint
+  fingerprint=$(get_gpg_public_fingerprint_by_email "$TEST_DEFAULT_USER")
+
+  run git secret removeperson "$fingerprint"
+  [ "$status" -eq 0 ]
+
+  # Testing output:
+  [[ "$output" == *"removed keys"* ]]
+
+  # Then whoknows must return an error with status code 1:
+  run git secret whoknows
+  [ "$status" -eq 1 ]
+}
+

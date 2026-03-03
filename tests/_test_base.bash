@@ -56,8 +56,10 @@ function is_git_version_ge_2_28_0 { # based on code from github autopilot
 # GPG-based stuff:
 : "${SECRETS_GPG_COMMAND:='gpg'}"
 
-# This command is used with absolute homedir set and disabled warnings:
-GPGTEST="$SECRETS_GPG_COMMAND --homedir=$TEST_GPG_HOMEDIR --no-permission-warning --batch"
+# This function is used with absolute homedir set and disabled warnings:
+function _gpgtest {
+  "$SECRETS_GPG_COMMAND" --homedir "$TEST_GPG_HOMEDIR" --no-permission-warning --batch "$@"
+}
 
 # Test key fixture data. Fixtures are at tests/fixtures/gpg/$email
 
@@ -123,9 +125,10 @@ function stop_gpg_agent {
       '/gpg-agent/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_OUTPUT_FILE" 2>&1
   else
     local ps_is_busybox
-    ps_is_busybox=_exe_is_busybox 'ps'
+    ps_is_busybox=$(_exe_is_busybox 'ps')
     if [[ $ps_is_busybox -eq '1' ]]; then
-      echo '# git-secret: tests: not stopping gpg-agent on busybox' >&3
+      # On Alpine/busybox, ps doesn't show command arguments, so use gpgconf instead
+      gpgconf --homedir "$TEST_GPG_HOMEDIR" --kill gpg-agent >> "$TEST_OUTPUT_FILE" 2>&1 || true
     else
       ps -wx -U "$username" | gawk \
         '/gpg-agent --homedir/ { if ( $0 !~ "awk" ) { system("kill "$1) } }' >> "$TEST_OUTPUT_FILE" 2>&1
@@ -134,23 +137,24 @@ function stop_gpg_agent {
 }
 
 
-function get_gpgtest_prefix {
-  if [[ $GPG_VER_21 -eq 1  ]]; then
-    # shellcheck disable=SC2086
-    echo "echo \"$(test_user_password $1)\" | "
-  else
-    echo ''
-  fi
-}
-
-
 function get_gpg_fingerprint_by_email {
   local email="$1"
   local fingerprint
 
-  fingerprint=$($GPGTEST --with-fingerprint \
+  fingerprint=$(_gpgtest --with-fingerprint \
                          --with-colon \
                          --list-secret-key "$email" | gawk "$AWK_GPG_GET_FP")
+  echo "$fingerprint"
+}
+
+
+function get_gpg_public_fingerprint_by_email {
+  local email="$1"
+  local fingerprint
+
+  fingerprint=$(_gpgtest --with-fingerprint \
+                         --with-colon \
+                         --list-keys "$email" | gawk "$AWK_GPG_GET_FP")
   echo "$fingerprint"
 }
 
@@ -159,16 +163,13 @@ function install_fixture_key {
   local public_key="$BATS_TMPDIR/public-${1}.key"
 
   cp "$FIXTURES_DIR/gpg/${1}/public.key" "$public_key"
-  $GPGTEST --import "$public_key" >> "$TEST_OUTPUT_FILE" 2>&1
+  _gpgtest --import "$public_key" >> "$TEST_OUTPUT_FILE" 2>&1
   rm -f "$public_key" || _abort "Couldn't delete public key: $public_key"
 }
 
 
 function install_fixture_full_key {
   local private_key="$BATS_TMPDIR/private-${1}.key"
-  local gpgtest_prefix
-  gpgtest_prefix=$(get_gpgtest_prefix "$1")
-  local gpgtest_import="$gpgtest_prefix $GPGTEST"
   local email
   local fingerprint
 
@@ -176,8 +177,13 @@ function install_fixture_full_key {
 
   cp "$FIXTURES_DIR/gpg/${1}/private.key" "$private_key"
 
-  bash -c "$gpgtest_import --allow-secret-key-import \
-    --import \"$private_key\"" >> "${TEST_OUTPUT_FILE}" 2>&1
+  if [[ "${GPG_VER_21:-0}" -eq 1 ]]; then
+    test_user_password "$1" | _gpgtest --allow-secret-key-import \
+      --import "$private_key" >> "${TEST_OUTPUT_FILE}" 2>&1
+  else
+    _gpgtest --allow-secret-key-import \
+      --import "$private_key" >> "${TEST_OUTPUT_FILE}" 2>&1
+  fi
 
   # since 0.1.2 fingerprint is returned:
   fingerprint=$(get_gpg_fingerprint_by_email "$email")
@@ -194,7 +200,7 @@ function uninstall_fixture_key {
   local email
 
   email="$1"
-  $GPGTEST --yes --delete-key "$email" >> "$TEST_OUTPUT_FILE" 2>&1
+  _gpgtest --yes --delete-key "$email" >> "$TEST_OUTPUT_FILE" 2>&1
 }
 
 
@@ -208,7 +214,7 @@ function uninstall_fixture_full_key {
     fingerprint=$(get_gpg_fingerprint_by_email "$email")
   fi
 
-  $GPGTEST --yes --delete-secret-keys "$fingerprint" >> "$TEST_OUTPUT_FILE" 2>&1
+  _gpgtest --yes --delete-secret-keys "$fingerprint" >> "$TEST_OUTPUT_FILE" 2>&1
 
   uninstall_fixture_key "$1"
 }
@@ -252,6 +258,12 @@ function remove_git_repository {
 function set_state_initial {
   cd "$BATS_TMPDIR" || exit 1
   rm -rf "${BATS_TMPDIR:?}/*"
+  # Safety net: remove hidden dirs that may persist from a prior failed teardown.
+  # The rm above is a no-op (glob inside double quotes is literal), so we must
+  # explicitly clean up dot-dirs to prevent 'already initialized' errors.
+  rm -rf "${BATS_TMPDIR:?}/${_SECRETS_DIR}"
+  rm -rf "${BATS_TMPDIR:?}/.git"
+  rm -rf "${BATS_TMPDIR:?}/.gitignore"
 }
 
 
