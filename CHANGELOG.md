@@ -30,6 +30,7 @@
 - Fix `clean`, `hide`, `reveal` so they only remove marked secret files (#833)
 - Fix for `removeperson` if same email is present multiple times (#638)
 - Correct error message about files missing from .gitignore
+- Updated installation instructions for Debian/Ubuntu to remove deprecated apt-key
 
 ### Misc
 
