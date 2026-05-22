@@ -33,7 +33,7 @@ function teardown {
 
   local files_list
   files_list=$(cat "$path_mappings")
-  [ "$files_list" = "$filename" ]
+  [ "$files_list" = "/$filename" ]
 
   # Cleaning up:
   rm "$filename" ".gitignore"
@@ -70,7 +70,7 @@ function teardown {
   echo "content" > "$test_file"
 
   local quoted_name
-  quoted_name=$(printf '%q' "$test_file")
+  quoted_name=$(printf '%q' "/$test_file")
 
   # add -i is now a no-op (See #225) so this tests that -i does nothing.
   run git secret add -i "$test_file"
@@ -114,7 +114,7 @@ function teardown {
   [ "$status" -eq 0 ]
 
   [[ -f "$current_dir/.gitignore" ]]
-  run file_has_line "$nested_dir/$test_file" "$current_dir/.gitignore"
+  run file_has_line "/$nested_dir/$test_file" "$current_dir/.gitignore"
   [ "$output" = '0' ]
 
   # .gitignore was not created:
@@ -205,7 +205,7 @@ function teardown {
 
   local files_list
   files_list=$(cat "$path_mappings")
-  [ "$files_list" = "$filename" ]
+  [ "$files_list" = "/$filename" ]
 
   # Cleaning up:
   rm "$filename" ".gitignore"
@@ -268,7 +268,7 @@ function teardown {
 
   local files_list
   files_list=$(cat "$path_mappings")
-  [ "$files_list" = "$filename" ]
+  [ "$files_list" = "/$filename" ]
 
   # Ensuring the file is correctly git-ignored
   run git check-ignore "$filename"
