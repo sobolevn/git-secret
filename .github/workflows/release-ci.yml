@@ -21,8 +21,11 @@ on:
       - 'Makefile'
       - '.github/workflows/release-ci.yml'
 
+permissions:
+  contents: read
+
 concurrency:
-  group: ${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
