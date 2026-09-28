@@ -11,7 +11,7 @@ git-secret-list - prints all the added files.
 
 Shows tracked files from `.gitsecret/paths/mapping.cfg`.
 
-(See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
+(See [git-secret(7)](https://sobolevn.me/git-secret/git-secret) for information about renaming the .gitsecret
 folder using the `SECRETS_DIR` environment variable.
 
 
@@ -27,6 +27,6 @@ Run `man git-secret-list` to see this document.
 
 ## SEE ALSO
 
-[git-secret-whoknows(1)](https://git-secret.io/git-secret-whoknows), [git-secret-add(1)](https://git-secret.io/git-secret-add),
-[git-secret-remove(1)](https://git-secret.io/git-secret-remove), [git-secret-hide(1)](https://git-secret.io/git-secret-hide),
-[git-secret-reveal(1)](https://git-secret.io/git-secret-reveal), [git-secret-cat(1)](https://git-secret.io/git-secret-cat)
+[git-secret-whoknows(1)](https://sobolevn.me/git-secret/git-secret-whoknows), [git-secret-add(1)](https://sobolevn.me/git-secret/git-secret-add),
+[git-secret-remove(1)](https://sobolevn.me/git-secret/git-secret-remove), [git-secret-hide(1)](https://sobolevn.me/git-secret/git-secret-hide),
+[git-secret-reveal(1)](https://sobolevn.me/git-secret/git-secret-reveal), [git-secret-cat(1)](https://sobolevn.me/git-secret/git-secret-cat)

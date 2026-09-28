@@ -6,7 +6,7 @@
 [![Homebrew](https://img.shields.io/homebrew/v/git-secret.svg)](https://formulae.brew.sh/formula/git-secret)
 [![Supporters](https://img.shields.io/opencollective/all/git-secret.svg?color=gold&label=supporters)](https://opencollective.com/git-secret)
 
-[![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](https://git-secret.io/)
+[![git-secret](https://raw.githubusercontent.com/sobolevn/git-secret/gh-pages/images/git-secret-big.png)](https://sobolevn.me/git-secret/)
 
 
 ## What is `git-secret`?
@@ -87,7 +87,7 @@ Here are some packagings of `git-secret` that we're aware of:
 - https://packages.debian.org/sid/git-secret
 - https://github.com/void-linux/void-packages/blob/master/srcpkgs/git-secret/template
 
-Such packages are considered 'downstream' because the git-secret code 'flows' from the `git-secret` [repository](https://git-secret.io/installation)
+Such packages are considered 'downstream' because the git-secret code 'flows' from the `git-secret` [repository](https://sobolevn.me/git-secret/installation)
 to the various rpm/deb/dpkg/etc packages that are created for specific OSes and distributions.
 
 We have also added notes specifically for packagers in [CONTRIBUTING.md](CONTRIBUTING.md).

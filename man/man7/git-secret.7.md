@@ -102,7 +102,7 @@ if your app is called MyApp and your CI/CD provider is Example. It is easier not
 
 ```shell
 # As the first step: install git-secret,
-# see: https://git-secret.io/installation
+# see: https://sobolevn.me/git-secret/installation
 
 # Create private key file
 echo "$GPG_PRIVATE_KEY" > ./private_key.gpg
