@@ -27,5 +27,5 @@ Run `man git-secret-removeperson` to see this document.
 
 ## SEE ALSO
 
-[git-secret-tell(1)](https://git-secret.io/git-secret-tell), [git-secret-remove(1)](https://git-secret.io/git-secret-remove),
-[git-secret-clean(1)](https://git-secret.io/git-secret-clean)
+[git-secret-tell(1)](https://sobolevn.me/git-secret/git-secret-tell), [git-secret-remove(1)](https://sobolevn.me/git-secret/git-secret-remove),
+[git-secret-clean(1)](https://sobolevn.me/git-secret/git-secret-clean)

@@ -23,7 +23,7 @@ and to not ignore `.secret` files,
 
 * The `.gitsecret/keys` subdirectory permission is set to 700 to make gnupg happy.
 
-See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
+See [git-secret(7)](https://sobolevn.me/git-secret/git-secret) for information about renaming the .gitsecret
 folder with the `SECRETS_DIR` environment variable, and changing the extension `git-secret` uses for secret files
 with the `SECRETS_EXTENSION` environment variable.
 
@@ -40,4 +40,4 @@ Run `man git-secret-init` to see this document.
 
 ## SEE ALSO
 
-[git-secret-usage(1)](https://git-secret.io/git-secret-usage), [git-secret-tell(1)](https://git-secret.io/git-secret-tell)
+[git-secret-usage(1)](https://sobolevn.me/git-secret/git-secret-usage), [git-secret-tell(1)](https://sobolevn.me/git-secret/git-secret-tell)

@@ -22,6 +22,6 @@ Run `man git-secret-usage` to see this document.
 
 ## SEE ALSO
 
-[git-secret-init(1)](https://git-secret.io/git-secret-init), [git-secret-add(1)](https://git-secret.io/git-secret-add),
-[git-secret-hide(1)](https://git-secret.io/git-secret-hide), [git-secret-reveal(1)](https://git-secret.io/git-secret-reveal),
-[git-secret-cat(1)](https://git-secret.io/git-secret-cat)
+[git-secret-init(1)](https://sobolevn.me/git-secret/git-secret-init), [git-secret-add(1)](https://sobolevn.me/git-secret/git-secret-add),
+[git-secret-hide(1)](https://sobolevn.me/git-secret/git-secret-hide), [git-secret-reveal(1)](https://sobolevn.me/git-secret/git-secret-reveal),
+[git-secret-cat(1)](https://sobolevn.me/git-secret/git-secret-cat)
