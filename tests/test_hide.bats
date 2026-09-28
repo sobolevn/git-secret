@@ -278,7 +278,7 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # File must be removed:
-  [ ! -f "$FILE_TO_HIDE" ]
+  [ ! -f "/$FILE_TO_HIDE" ]
 }
 
 
@@ -287,7 +287,7 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # File must be removed:
-  [ ! -f "$FILE_TO_HIDE" ]
+  [ ! -f "/$FILE_TO_HIDE" ]
 
   # It should be verbose:
   [[ "$output" == *"removing unencrypted files"* ]]
@@ -311,8 +311,8 @@ function teardown {
   [ "$status" -eq 0 ]
 
   # File must be removed:
-  [ ! -f "$FILE_TO_HIDE" ]
-  [ ! -f "$second_file" ]
+  [ ! -f "/$FILE_TO_HIDE" ]
+  [ ! -f "/$second_file" ]
 
   # It should be verbose:
   [[ "$output" == *"removing unencrypted files"* ]]
