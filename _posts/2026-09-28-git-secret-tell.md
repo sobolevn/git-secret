@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-tell'
-date: 2026-05-12 08:54:00 +0000
+date: 2026-09-28 17:34:28 +0000
 permalink: git-secret-tell
 categories: command
 ---
@@ -52,6 +52,6 @@ Run `man git-secret-tell` to see this document.
 
 ## SEE ALSO
 
-[git-secret-init(1)](https://git-secret.io/git-secret-init), [git-secret-add(1)](https://git-secret.io/git-secret-add),
-[git-secret-hide(1)](https://git-secret.io/git-secret-hide), [git-secret-reveal(1)](https://git-secret.io/git-secret-reveal),
-[git-secret-cat(1)](https://git-secret.io/git-secret-cat), [git-secret-removeperson(1)](https://git-secret.io/git-secret-removeperson)
+[git-secret-init(1)](https://sobolevn.me/git-secret/git-secret-init), [git-secret-add(1)](https://sobolevn.me/git-secret/git-secret-add),
+[git-secret-hide(1)](https://sobolevn.me/git-secret/git-secret-hide), [git-secret-reveal(1)](https://sobolevn.me/git-secret/git-secret-reveal),
+[git-secret-cat(1)](https://sobolevn.me/git-secret/git-secret-cat), [git-secret-removeperson(1)](https://sobolevn.me/git-secret/git-secret-removeperson)

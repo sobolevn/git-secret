@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-remove'
-date: 2026-05-12 08:54:00 +0000
+date: 2026-09-28 17:34:28 +0000
 permalink: git-secret-remove
 categories: command
 ---
@@ -25,7 +25,7 @@ There's also a -c option to delete existing encrypted versions of the files prov
 Note unlike `add`, which automatically add pathnames to `.gitignore`, 
 `remove` does not delete pathnames from `.gitignore`.
 
-(See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
+(See [git-secret(7)](https://sobolevn.me/git-secret/git-secret) for information about renaming the .gitsecret
 folder using the `SECRETS_DIR` environment variable.
 
 
@@ -42,5 +42,5 @@ Run `man git-secret-remove` to see this document.
 
 ## SEE ALSO
 
-[git-secret-add(1)](https://git-secret.io/git-secret-add), [git-secret-clean(1)](https://git-secret.io/git-secret-clean),
-[git-secret-removeperson(1)](https://git-secret.io/git-secret-removeperson)
+[git-secret-add(1)](https://sobolevn.me/git-secret/git-secret-add), [git-secret-clean(1)](https://sobolevn.me/git-secret/git-secret-clean),
+[git-secret-removeperson(1)](https://sobolevn.me/git-secret/git-secret-removeperson)

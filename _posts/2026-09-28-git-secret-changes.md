@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-changes'
-date: 2026-05-12 08:54:00 +0000
+date: 2026-09-28 17:34:28 +0000
 permalink: git-secret-changes
 categories: command
 ---
@@ -23,7 +23,7 @@ Note files must be specified by their unencrypted names, without the `.secret` s
 (or whatever is specified by the `SECRETS_EXTENSION` environment variable).
 
 Note also this command can be affected by the `SECRETS_PINENTRY` environment variable. See
-(See [git-secret(7)](https://git-secret.io/git-secret) for information using `SECRETS_PINENTRY`.
+(See [git-secret(7)](https://sobolevn.me/git-secret/git-secret) for information using `SECRETS_PINENTRY`.
 
 
 ## OPTIONS
@@ -40,6 +40,6 @@ Run `man git-secret-changes` to see this document.
 
 ## SEE ALSO
 
-[git-secret-add(1)](https://git-secret.io/git-secret-add), [git-secret-tell(1)](https://git-secret.io/git-secret-tell),
-[git-secret-hide(1)](https://git-secret.io/git-secret-hide), [git-secret-reveal(1)](https://git-secret.io/git-secret-reveal),
-[git-secret-cat(1)](https://git-secret.io/git-secret-cat)
+[git-secret-add(1)](https://sobolevn.me/git-secret/git-secret-add), [git-secret-tell(1)](https://sobolevn.me/git-secret/git-secret-tell),
+[git-secret-hide(1)](https://sobolevn.me/git-secret/git-secret-hide), [git-secret-reveal(1)](https://sobolevn.me/git-secret/git-secret-reveal),
+[git-secret-cat(1)](https://sobolevn.me/git-secret/git-secret-cat)

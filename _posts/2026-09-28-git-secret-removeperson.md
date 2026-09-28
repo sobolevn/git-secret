@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-removeperson'
-date: 2026-05-12 08:54:00 +0000
+date: 2026-09-28 17:34:28 +0000
 permalink: git-secret-removeperson
 categories: command
 ---
@@ -34,5 +34,5 @@ Run `man git-secret-removeperson` to see this document.
 
 ## SEE ALSO
 
-[git-secret-tell(1)](https://git-secret.io/git-secret-tell), [git-secret-remove(1)](https://git-secret.io/git-secret-remove),
-[git-secret-clean(1)](https://git-secret.io/git-secret-clean)
+[git-secret-tell(1)](https://sobolevn.me/git-secret/git-secret-tell), [git-secret-remove(1)](https://sobolevn.me/git-secret/git-secret-remove),
+[git-secret-clean(1)](https://sobolevn.me/git-secret/git-secret-clean)

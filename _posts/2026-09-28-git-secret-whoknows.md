@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-whoknows'
-date: 2026-05-12 08:54:00 +0000
+date: 2026-09-28 17:34:28 +0000
 permalink: git-secret-whoknows
 categories: command
 ---
@@ -30,6 +30,6 @@ Run `man git-secret-whoknows` to see this document.
 
 ## SEE ALSO
 
-[git-secret-list(1)](https://git-secret.io/git-secret-list), [git-secret-tell(1)](https://git-secret.io/git-secret-tell),
-[git-secret-hide(1)](https://git-secret.io/git-secret-hide), [git-secret-reveal(1)](https://git-secret.io/git-secret-reveal),
-[git-secret-cat(1)](https://git-secret.io/git-secret-cat)
+[git-secret-list(1)](https://sobolevn.me/git-secret/git-secret-list), [git-secret-tell(1)](https://sobolevn.me/git-secret/git-secret-tell),
+[git-secret-hide(1)](https://sobolevn.me/git-secret/git-secret-hide), [git-secret-reveal(1)](https://sobolevn.me/git-secret/git-secret-reveal),
+[git-secret-cat(1)](https://sobolevn.me/git-secret/git-secret-cat)

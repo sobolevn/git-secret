@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'git-secret-add'
-date: 2026-05-12 08:54:00 +0000
+date: 2026-09-28 17:34:28 +0000
 permalink: git-secret-add
 categories: command
 ---
@@ -25,7 +25,7 @@ as the contents are now considered secret and should not be committed into the r
 The `add` action will fail unless there are already users in `git-secret`'s keyring.
 
 
-(See [git-secret(7)](https://git-secret.io/git-secret) for information about renaming the .gitsecret
+(See [git-secret(7)](https://sobolevn.me/git-secret/git-secret) for information about renaming the .gitsecret
 folder using the SECRETS_DIR environment variable.
 
 ## OPTIONS
@@ -42,5 +42,5 @@ Run `man git-secret-add` to see this document.
 
 ## SEE ALSO
 
-[git-secret-init(1)](https://git-secret.io/git-secret-init), [git-secret-tell(1)](https://git-secret.io/git-secret-tell),
-[git-secret-hide(1)](https://git-secret.io/git-secret-hide), [git-secret-reveal(1)](https://git-secret.io/git-secret-reveal)
+[git-secret-init(1)](https://sobolevn.me/git-secret/git-secret-init), [git-secret-tell(1)](https://sobolevn.me/git-secret/git-secret-tell),
+[git-secret-hide(1)](https://sobolevn.me/git-secret/git-secret-hide), [git-secret-reveal(1)](https://sobolevn.me/git-secret/git-secret-reveal)
