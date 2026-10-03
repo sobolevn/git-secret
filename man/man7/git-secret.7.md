@@ -102,7 +102,7 @@ if your app is called MyApp and your CI/CD provider is Example. It is easier not
 
 ```shell
 # As the first step: install git-secret,
-# see: https://git-secret.io/installation
+# see: https://sobolevn.me/git-secret/installation
 
 # Create private key file
 echo "$GPG_PRIVATE_KEY" > ./private_key.gpg
@@ -127,30 +127,6 @@ echo "$GPG_PRIVATE_KEY" | tr ',' '\n' > ./private_key.gpg
 ```
 
 Also note: the `gpg` version on the CI/CD server **MUST INTEROPERATE** with the one used locally. Otherwise, `gpg` decryption can fail, which leads to `git secret reveal` reporting `cannot find decrypted version of file` error. The best way to ensure this is to use the same version of gnupg on different systems.
-
-## Using `git diff` and `git log` with encrypted files
-
-`git-secret` stores encrypted blobs, so plain `git diff` / `git log -p` shows
-ciphertext instead of the real change. You can teach standard `git` commands
-to decrypt on the fly with a `textconv` driver configured via `.gitattributes`
-and `git config`:
-
-```bash
-# 1. Mark secret files so git routes them through a custom diff driver
-echo "*.secret diff=gpg" > .gitattributes
-
-# 2. Tell git how to decrypt a blob for display
-git config --local diff.gpg.textconv 'gpg --decrypt 2> /dev/null'
-```
-
-With those two lines, `git diff` and `git log -p` render the decrypted plain
-text for `.secret` files while the repository still stores ciphertext. Adjust
-the attribute pattern to match your secret files (e.g. `*.env.encrypted`), and
-scope the driver with `--local` (or per-identity `--global`) as appropriate.
-
-> **Note:** this is a display convenience only — it does not change what
-> `git secret` stores or what collaborators can read. Everyone who wants to
-> view the diff still needs the private key to decrypt.
 
 ## Environment Variables and Configuration
 
