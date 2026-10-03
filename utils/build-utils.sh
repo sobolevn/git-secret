@@ -73,7 +73,7 @@ function build_package {
     --name "$SCRIPT_NAME" \
     --version "$SCRIPT_VERSION" \
     --description "$SCRIPT_DESCRIPTION" \
-    --url 'https://git-secret.io' \
+    --url 'https://sobolevn.me/git-secret/' \
     --maintainer 'Nikita Sobolev (mail@sobolevn.me)' \
     --license 'MIT' \
     --depends 'bash' \

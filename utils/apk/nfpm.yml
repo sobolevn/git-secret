@@ -30,7 +30,7 @@ description: Shell scripts to encrypt your private data inside a git repository.
 vendor: git-secret team
 
 # Package's homepage.
-homepage: https://git-secret.io
+homepage: https://sobolevn.me/git-secret/
 
 # License.
 license: MIT

@@ -110,7 +110,7 @@ Development looks like this:
 - `master` branch is protected, so only fully tested code goes there. It is also used to create a new `git` tag and a `github` release
 
 By convention, you can name your branches like `issue-###-short-description`, but that's not required.
-The `gh-pages` branch is used for the pages at `git-secret.io`. See 'Release Process' below.
+The `gh-pages` branch is used for the pages at `sobolevn.me/git-secret`. See 'Release Process' below.
 
 ### Writing tests
 
